@@ -44,7 +44,7 @@ specifiers:
   react: ^18.2.0
   react-app-rewired: ^2.2.1
   react-dom: ^18.2.0
-  react-ga: ^3.3.1
+  react-ga4: ^1.4.1
   react-helmet-async: ^1.3.0
   react-i18next: ^11.18.5
   react-json-view: ^1.21.3
@@ -97,7 +97,7 @@ dependencies:
   numbro: 2.3.6
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
-  react-ga: 3.3.1_react@18.2.0
+  react-ga4: 1.4.1
   react-helmet-async: 1.3.0_biqbaboplfbrettd7655fr4n2y
   react-i18next: 11.18.5_4sidbwfhen5r7txudrvpua6nty
   react-json-view: 1.21.3_zxljzmqdrxwnuenbkrz77w74uy
@@ -11169,14 +11169,9 @@ packages:
       use-sidecar: 1.1.2_ug65io7jkbhmo4fihdmbrh3ina
     dev: false
 
-  /react-ga/3.3.1_react@18.2.0:
+  /react-ga4/1.4.1:
     resolution:
-      { integrity: sha512-4Vc0W5EvXAXUN/wWyxvsAKDLLgtJ3oLmhYYssx+YzphJpejtOst6cbIHCIyF50Fdxuf5DDKqRYny24yJ2y7GFQ== }
-    peerDependencies:
-      prop-types: ^15.6.0
-      react: ^15.6.2 || ^16.0 || ^17 || ^18
-    dependencies:
-      react: 18.2.0
+      { integrity: sha512-ioBMEIxd4ePw4YtaloTUgqhQGqz5ebDdC4slEpLgy2sLx1LuZBC9iYCwDymTXzcntw6K1dHX183ulP32nNdG7w== }
     dev: false
 
   /react-helmet-async/1.3.0_biqbaboplfbrettd7655fr4n2y:

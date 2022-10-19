@@ -1,4 +1,4 @@
-import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 
 export const initAnalytics = () => {
   const API_KEY = process.env.REACT_APP_ANALYTICS_KEY
