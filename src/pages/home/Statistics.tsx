@@ -6,7 +6,7 @@ import { Card } from 'components/Card'
 import { Box, InlineBox } from 'components/container'
 import { Divider } from 'components/Divider'
 import { NumberFormat } from 'components/NumberFormat'
-import React, { useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAppStats } from 'state/api/hooks'
 import { fontZero } from 'theme/style'
 import { vars } from 'theme/theme.css'
@@ -16,6 +16,8 @@ import EpochIcon from 'assets/home/Epoch.svg'
 import MarketCapIcon from 'assets/home/MarketCap.svg'
 import TransactionsIcon from 'assets/home/Transactions.svg'
 import { useMarketInfoQuery } from 'api'
+import { useCountUp } from 'react-countup'
+import { Link } from 'components/link'
 
 const StatsIcon = styled.img`
   width: 30px;
@@ -84,6 +86,33 @@ const renderStatistic = (
         <Content>{value}</Content>
       </Box>
     </Box>
+  )
+}
+
+const TransactionsCountUp = ({ value }: { value: number }) => {
+  const countUpRef = React.useRef(null)
+  const [start] = useState(value)
+
+  const formattingFn = useCallback((val: number) => {
+    return new Intl.NumberFormat('en-gb', { useGrouping: true }).format(val)
+  }, [])
+
+  const { update } = useCountUp({
+    ref: countUpRef,
+    start: start,
+    end: start,
+    duration: 0.5,
+    formattingFn,
+  })
+
+  useEffect(() => {
+    update(value)
+  }, [value])
+
+  return (
+    <Link to="/tx">
+      <span ref={countUpRef} />
+    </Link>
   )
 }
 
@@ -202,7 +231,12 @@ export const Statistics = ({ ...rest }) => {
             {renderStatistic(
               'Transactions',
               <>
-                <NumberFormat useGrouping to="/tx" value={stats?.latest_transaction_version} fallback="--" />
+                {/* <NumberFormat useGrouping to="/tx" value={stats?.latest_transaction_version} fallback="--" /> */}
+                {stats?.latest_transaction_version ? (
+                  <TransactionsCountUp value={stats.latest_transaction_version} />
+                ) : (
+                  '--'
+                )}
                 <HelpText>
                   (<NumberFormat marginRight="2px" value={stats?.tps} fallback="--" /> TPS)
                 </HelpText>
