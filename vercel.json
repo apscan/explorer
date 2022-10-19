@@ -1,0 +1,19 @@
+{
+  "routes": [
+    {
+      "src": "/fonts/(.*)",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "dest": "/fonts/$1"
+    },
+    {
+      "src": "/images/(.*)",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/static/(.*)",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "dest": "/static/$1"
+    }
+  ]
+}
