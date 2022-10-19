@@ -1,12 +1,12 @@
-import * as amplitude from '@amplitude/analytics-browser'
+import ReactGA from 'react-ga'
 
 export const initAnalytics = () => {
-  const API_KEY = process.env.REACT_APP_AMPLITUDE_KEY
+  const API_KEY = process.env.REACT_APP_ANALYTICS_KEY
 
   if (typeof API_KEY === 'undefined') {
-    console.error(`REACT_APP_AMPLITUDE_KEY is undefined, Amplitude analytics will not run.`)
+    console.error(`REACT_APP_ANALYTICS_KEY is undefined, Amplitude analytics will not run.`)
     return
   }
 
-  amplitude.init(API_KEY)
+  ReactGA.initialize(API_KEY)
 }

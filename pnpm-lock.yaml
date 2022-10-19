@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@amplitude/analytics-browser': ^1.5.5
   '@chakra-ui/react': ^2.2.9
   '@craco/craco': ^6.4.5
   '@emotion/babel-plugin': ^11.10.2
@@ -45,6 +44,7 @@ specifiers:
   react: ^18.2.0
   react-app-rewired: ^2.2.1
   react-dom: ^18.2.0
+  react-ga: ^3.3.1
   react-helmet-async: ^1.3.0
   react-i18next: ^11.18.5
   react-json-view: ^1.21.3
@@ -71,7 +71,6 @@ specifiers:
   workbox-streams: ^6.5.4
 
 dependencies:
-  '@amplitude/analytics-browser': 1.5.5
   '@chakra-ui/react': 2.2.9_kwjdylbqj6pspeszli4dc362ma
   '@emotion/cache': 11.10.3
   '@emotion/react': 11.10.0_ug65io7jkbhmo4fihdmbrh3ina
@@ -98,6 +97,7 @@ dependencies:
   numbro: 2.3.6
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-ga: 3.3.1_react@18.2.0
   react-helmet-async: 1.3.0_biqbaboplfbrettd7655fr4n2y
   react-i18next: 11.18.5_4sidbwfhen5r7txudrvpua6nty
   react-json-view: 1.21.3_zxljzmqdrxwnuenbkrz77w74uy
@@ -147,52 +147,6 @@ packages:
     resolution:
       { integrity: sha512-+u76oB43nOHrF4DDWRLWDCtci7f3QJoEBigemIdIeTi1ODqjx6Tad9NCVnPRwewWlKkVab5PlK8DCtPTyX7S8g== }
     dev: true
-
-  /@amplitude/analytics-browser/1.5.5:
-    resolution:
-      { integrity: sha512-vmUdvLqRN1yc9Rjd4kxPBhlEKebG9AcZ2+7Kuqf6PcD5mOn1wjRxenx2GzQ7qHVh4j/7n31S7mWA8UbHROKHfg== }
-    dependencies:
-      '@amplitude/analytics-client-common': 0.3.1
-      '@amplitude/analytics-core': 0.9.6
-      '@amplitude/analytics-types': 0.11.0
-      '@amplitude/ua-parser-js': 0.7.31
-      tslib: 2.4.0
-    dev: false
-
-  /@amplitude/analytics-client-common/0.3.1:
-    resolution:
-      { integrity: sha512-QPpRrl3DGZ7mP3FAk0/O5tOtcqywH3zgS1bmJR03/dt0MYFcmB5lJm4YnRq6hB+AkCT7GrHZyUT81GDCaL/3Fw== }
-    dependencies:
-      '@amplitude/analytics-connector': 1.4.5
-      '@amplitude/analytics-core': 0.9.6
-      '@amplitude/analytics-types': 0.11.0
-      tslib: 2.4.0
-    dev: false
-
-  /@amplitude/analytics-connector/1.4.5:
-    resolution:
-      { integrity: sha512-ELAP6ivg+13uSk+TOirGZE/92M+tTbeiQ/i7eXgDO4Hiy00Abf/UxO/rp9WovtxCyeFYTILrujEYxPv5cRQmFw== }
-    dependencies:
-      '@amplitude/ua-parser-js': 0.7.31
-    dev: false
-
-  /@amplitude/analytics-core/0.9.6:
-    resolution:
-      { integrity: sha512-nVQPdHDD5fDU3G144JkDOpabb1QzrIoXzlx7/GwXia78P5aGk/kLI7YE8c684JR+FJCilo08YZbkEBTsILdnBg== }
-    dependencies:
-      '@amplitude/analytics-types': 0.11.0
-      tslib: 2.4.0
-    dev: false
-
-  /@amplitude/analytics-types/0.11.0:
-    resolution:
-      { integrity: sha512-xvqGwF9Ga1zd41AcJdfSL7HFqfv/us25gotzxc3N9a3KsRwAkrcYRfsx0baaD4iLUQDNFfFq3OCW83T/UK4lgw== }
-    dev: false
-
-  /@amplitude/ua-parser-js/0.7.31:
-    resolution:
-      { integrity: sha512-+z8UGRaj13Pt5NDzOnkTBy49HE2CX64jeL0ArB86HAtilpnfkPB7oqkigN7Lf2LxscMg4QhFD7mmCfedh3rqTg== }
-    dev: false
 
   /@ampproject/remapping/2.2.0:
     resolution:
@@ -11213,6 +11167,16 @@ packages:
       react-clientside-effect: 1.2.6_react@18.2.0
       use-callback-ref: 1.3.0_ug65io7jkbhmo4fihdmbrh3ina
       use-sidecar: 1.1.2_ug65io7jkbhmo4fihdmbrh3ina
+    dev: false
+
+  /react-ga/3.3.1_react@18.2.0:
+    resolution:
+      { integrity: sha512-4Vc0W5EvXAXUN/wWyxvsAKDLLgtJ3oLmhYYssx+YzphJpejtOst6cbIHCIyF50Fdxuf5DDKqRYny24yJ2y7GFQ== }
+    peerDependencies:
+      prop-types: ^15.6.0
+      react: ^15.6.2 || ^16.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-helmet-async/1.3.0_biqbaboplfbrettd7655fr4n2y:
