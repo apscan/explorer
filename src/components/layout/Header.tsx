@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import { useMarketInfoQuery } from 'api'
 import Logo from 'assets/apscan-logo.png'
 import { ReactComponent as GasIcon } from 'assets/icons/gas.svg'
 import { Box, Container, InlineBox } from 'components/container'
@@ -29,30 +30,26 @@ const GasPrice = () => {
 }
 
 const Price = () => {
-  const stats = useAppStats()
+  const { data: market } = useMarketInfoQuery()
 
   const isDown = useMemo(() => {
-    return stats?.market?.usd_24h_change < 0
-  }, [stats?.market?.usd_24h_change])
+    return market?.usd_24h_change < 0
+  }, [market?.usd_24h_change])
 
   return (
     <>
-      <NumberFormat marginLeft="4px" minimumFractionDigits={2} prefix="$" value={stats?.market?.usd} fallback="--" />
-      <InlineBox
-        css={css`
-          color: ${isDown ? vars.text.error : vars.text.success};
-        `}
-        marginLeft="4px"
-      >
-        (
-        <NumberFormat
-          type="percent"
-          maximumFractionDigits={2}
-          value={stats?.market?.usd_24h_change / 100}
-          fallback="--"
-        />
-        )
-      </InlineBox>
+      <NumberFormat marginLeft="4px" minimumFractionDigits={2} prefix="$" value={market?.usd} fallback="--" />
+      {market?.usd_24h_change && (
+        <InlineBox
+          css={css`
+            color: ${isDown ? vars.text.error : vars.text.success};
+          `}
+          marginLeft="4px"
+        >
+          (
+          <NumberFormat type="percent" maximumFractionDigits={2} value={market?.usd_24h_change / 100} fallback="--" />)
+        </InlineBox>
+      )}
     </>
   )
 }

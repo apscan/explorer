@@ -15,6 +15,7 @@ import AccountIcon from 'assets/home/Account.svg'
 import EpochIcon from 'assets/home/Epoch.svg'
 import MarketCapIcon from 'assets/home/MarketCap.svg'
 import TransactionsIcon from 'assets/home/Transactions.svg'
+import { useMarketInfoQuery } from 'api'
 
 const StatsIcon = styled.img`
   width: 30px;
@@ -88,6 +89,7 @@ const renderStatistic = (
 
 export const Statistics = ({ ...rest }) => {
   const stats = useAppStats()
+  const { data: market } = useMarketInfoQuery()
 
   const epochPercent = useMemo(() => {
     if (stats?.last_reconfiguration_time && stats?.time_microseconds && stats?.epoch_interval) {
@@ -131,7 +133,7 @@ export const Statistics = ({ ...rest }) => {
                 />
                 <InlineBox marginLeft="4px" color={vars.text.secondary}>
                   (
-                  <NumberFormat minimumFractionDigits={2} prefix="$" value={stats?.market?.usd} fallback="--" />)
+                  <NumberFormat minimumFractionDigits={2} prefix="$" value={market?.usd} fallback="--" />)
                 </InlineBox>
               </InlineBox>,
               'left',
@@ -146,7 +148,7 @@ export const Statistics = ({ ...rest }) => {
                 useGrouping
                 minimumFractionDigits={2}
                 prefix="$"
-                value={stats?.market?.usd_market_cap}
+                value={market?.usd_market_cap}
                 fallback="--"
               />,
               'right'
