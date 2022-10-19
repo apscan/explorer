@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import 'simplebar-react/dist/simplebar.min.css'
 import { AppUpdater } from 'state/application/updater'
+import { initAnalytics } from 'utils/initAnalytics'
 import { initSentry } from 'utils/sentry'
 import './i18n'
 import App from './pages/App'
@@ -47,6 +48,7 @@ if (process.env.REACT_APP_SERVICE_WORKER !== 'false') {
 
 if (process.env.NODE_ENV === 'production') {
   initSentry()
+  initAnalytics()
 }
 
 reportWebVitals()

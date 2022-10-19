@@ -126,6 +126,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+
     accountsCount: builder.query<any, string | void>({
       query: () => ({
         url: `/accounts?limit=20`,
