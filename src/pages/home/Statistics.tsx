@@ -131,7 +131,7 @@ export const Statistics = ({ ...rest }) => {
                 />
                 <InlineBox marginLeft="4px" color={vars.text.secondary}>
                   (
-                  <NumberFormat minimumFractionDigits={2} prefix="$" value={stats?.market.usd} fallback="--" />)
+                  <NumberFormat minimumFractionDigits={2} prefix="$" value={stats?.market?.usd} fallback="--" />)
                 </InlineBox>
               </InlineBox>,
               'left',
