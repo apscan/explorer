@@ -38,6 +38,7 @@ export const homeApi = emptySplitApi.injectEndpoints({
 
         return {
           ...data,
+          validators_count: (data.active_validators_count || 0) + (data.pending_validators_count || 0),
           staked_percent: toFixedNumber(data.actively_staked, 'fixed128x8')
             .divUnsafe(toFixedNumber(data.total_supply, 'fixed128x8'))
             .toString(),

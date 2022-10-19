@@ -53,7 +53,7 @@ const columns = [
   }),
 ]
 
-export const Events = ({ id }: { id: any }) => {
+export const Events = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
@@ -68,13 +68,17 @@ export const Events = ({ id }: { id: any }) => {
     }
   )
 
-  const pageProps = useRangePagination(start, setStart, pageSize, page)
+  const pageProps = useRangePagination(start, setStart, pageSize, {
+    min: page?.min,
+    max: page?.max,
+    count: count,
+  })
 
   return (
     <Box padding="12px">
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={page?.count} /> events
+          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> events
         </CardHeadStats>
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

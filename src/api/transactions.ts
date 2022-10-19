@@ -65,7 +65,6 @@ export const txApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },
@@ -84,7 +83,6 @@ export const txApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },

@@ -99,7 +99,7 @@ export const Block = () => {
       id && {
         label: tabNameWithCount(tabs.tx.name, data?.transactions_count),
         key: tabs.tx.key,
-        children: <BlockTransactions id={blockHeight} />,
+        children: <BlockTransactions id={blockHeight} count={data?.transactions_count} />,
       },
     ].filter(Boolean) as any
 

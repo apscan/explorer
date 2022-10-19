@@ -45,7 +45,7 @@ const columns = [
   }),
 ]
 
-export const Modules = ({ id }: { id: any }) => {
+export const Modules = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
@@ -56,17 +56,21 @@ export const Modules = ({ id }: { id: any }) => {
       pageSize,
     },
     {
-      skip: id == null,
+      skip: id == null || !count,
     }
   )
 
-  const pageProps = useRangePagination(start, setStart, pageSize, page)
+  const pageProps = useRangePagination(start, setStart, pageSize, {
+    min: page?.min,
+    max: page?.max,
+    count: count,
+  })
 
   return (
     <Box padding="12px">
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={page?.count} /> modules
+          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> modules
         </CardHeadStats>
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

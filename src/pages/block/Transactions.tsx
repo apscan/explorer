@@ -15,7 +15,7 @@ const StatsNumberFormat = styled(NumberFormat)`
   margin-right: 4px;
 `
 
-export const BlockTransactions = ({ id }: { id?: string }) => {
+export const BlockTransactions = ({ id, count }: { id?: string; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
@@ -26,10 +26,15 @@ export const BlockTransactions = ({ id }: { id?: string }) => {
       pageSize,
     },
     {
-      skip: id == null,
+      skip: id == null || !count,
     }
   )
-  const pageProps = useRangePagination(start, setStart, pageSize, page)
+
+  const pageProps = useRangePagination(start, setStart, pageSize, {
+    min: page?.min,
+    max: page?.max,
+    count: count,
+  })
 
   const [minVersion, maxVersion] = useMemo(() => {
     if (!data) return []
@@ -42,7 +47,7 @@ export const BlockTransactions = ({ id }: { id?: string }) => {
         <CardHeadStats variant="tabletab">
           Transactions <StatsNumberFormat fallback="--" prefix="#" value={minVersion} /> to{' '}
           <StatsNumberFormat fallback="--" prefix="#" value={maxVersion} /> (Total of
-          <StatsNumberFormat fallback="--" useGrouping value={page?.count} /> transactions)
+          <StatsNumberFormat fallback="--" useGrouping value={count} /> transactions)
         </CardHeadStats>
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

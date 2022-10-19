@@ -18,6 +18,7 @@ import { useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
 import { vars } from 'theme/theme.css'
 import { NumberFormat } from 'components/NumberFormat'
+import { useAppStats } from 'state/api/hooks'
 
 const helper = createColumnHelper<any>()
 
@@ -116,6 +117,7 @@ const columns = [
 ]
 
 export const Validators = () => {
+  const stats = useAppStats()
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
@@ -124,7 +126,11 @@ export const Validators = () => {
     pageSize,
   })
 
-  const pageProps = useRangePagination(start, setStart, pageSize, page)
+  const pageProps = useRangePagination(start, setStart, pageSize, {
+    min: page?.min,
+    max: page?.max,
+    count: stats?.validators_count,
+  })
 
   return (
     <Container>
@@ -133,7 +139,8 @@ export const Validators = () => {
       <Card variant="table">
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={page?.count} /> validators
+            Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={stats?.validators_count} />{' '}
+            validators
           </CardHeadStats>
           <Pagination {...pageProps} />
         </CardHead>

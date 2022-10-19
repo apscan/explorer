@@ -56,27 +56,27 @@ export const Account = () => {
       data?.transfers_count && {
         label: tabNameWithCount(tabs.transfers.name, data?.transfers_count),
         key: tabs.transfers.key,
-        children: <Transfers id={data?.address} />,
+        children: <Transfers id={data?.address} count={data?.transfers_count} />,
       },
       data?.transactions_count && {
         label: tabNameWithCount(tabs.tx.name, data?.transactions_count),
         key: tabs.tx.key,
-        children: <AccountTransactions id={data?.address} />,
+        children: <AccountTransactions id={data?.address} count={data?.transactions_count} />,
       },
       data?.events_count && {
         label: tabNameWithCount(tabs.events.name, data?.events_count),
         key: tabs.events.key,
-        children: <Events id={data?.address} />,
+        children: <Events id={data?.address} count={data?.events_count} />,
       },
       data?.resources_count && {
         label: tabNameWithCount(tabs.resources.name, data?.resources_count),
         key: tabs.resources.key,
-        children: <Resources id={data?.address} />,
+        children: <Resources id={data?.address} count={data?.resources_count} />,
       },
       data?.module_count && {
         label: tabNameWithCount(tabs.modules.name, data?.module_count),
         key: tabs.modules.key,
-        children: <Modules id={data?.address} />,
+        children: <Modules id={data?.address} count={data?.module_count} />,
       },
     ].filter(Boolean) as any
 

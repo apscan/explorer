@@ -21,7 +21,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },
@@ -39,7 +38,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },
@@ -57,7 +55,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },
@@ -75,7 +72,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },
@@ -93,7 +89,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },
@@ -133,7 +128,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
         headers: {
           'Range-Unit': 'items',
           Range: '0-24',
-          Prefer: 'count=exact',
         },
       }),
     }),

@@ -97,7 +97,7 @@ export const Transaction = () => {
       result.push({
         label: tabNameWithCount(tabs.changes.name, data?.changes?.length) as any,
         key: tabs.changes.key,
-        children: <Changes id={version} />,
+        children: <Changes id={version} count={data?.changes?.length} />,
       })
     }
 
@@ -105,7 +105,7 @@ export const Transaction = () => {
       result.push({
         label: tabNameWithCount(tabs.events.name, data?.events?.length) as any,
         key: tabs.events.key,
-        children: <Events id={version} />,
+        children: <Events id={version} count={data?.events?.length} />,
       })
     }
 

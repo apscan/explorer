@@ -9,7 +9,7 @@ import { TransactionsTable } from 'pages/transactions/TransactionsTable'
 import { useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
 
-export const AccountTransactions = ({ id }: { id: string }) => {
+export const AccountTransactions = ({ id, count }: { id: string; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
@@ -20,16 +20,20 @@ export const AccountTransactions = ({ id }: { id: string }) => {
       pageSize,
     },
     {
-      skip: id == null,
+      skip: id == null || !count,
     }
   )
-  const pageProps = useRangePagination(start, setStart, pageSize, page)
+  const pageProps = useRangePagination(start, setStart, pageSize, {
+    min: page?.min,
+    max: page?.max,
+    count: count,
+  })
 
   return (
     <Box padding="12px">
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={page?.count} /> transactions
+          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> transactions
         </CardHeadStats>
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

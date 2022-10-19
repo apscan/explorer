@@ -12,7 +12,6 @@ export const validatorApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },

@@ -22,7 +22,6 @@ export const blockApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },
@@ -39,21 +38,6 @@ export const blockApi = emptySplitApi.injectEndpoints({
       },
       transformResponse(response: any[]) {
         return response?.[0] || null
-      },
-    }),
-    blockTransactionCount: builder.query<any, string | void | undefined>({
-      keepUnusedDataFor: 86400, // keep for 24 hours
-      query: (id) => {
-        return {
-          url: `${getBlockTranscationUrl(id)}&limit=1`,
-          headers: {
-            Prefer: 'count=exact',
-          },
-        }
-      },
-      transformResponse(data, meta) {
-        const page = parseHeaders(meta?.response?.headers)
-        return page.count
       },
     }),
     blocks: builder.query<
@@ -88,10 +72,4 @@ export const blockApi = emptySplitApi.injectEndpoints({
   overrideExisting: false,
 })
 
-export const {
-  useBlocksQuery,
-  useBlockMetadataQuery,
-  useBlockDetailQuery,
-  useBlockTransactionsQuery,
-  useBlockTransactionCountQuery,
-} = blockApi
+export const { useBlocksQuery, useBlockMetadataQuery, useBlockDetailQuery, useBlockTransactionsQuery } = blockApi
