@@ -1,7 +1,7 @@
-import { useAppSelector } from 'state/hooks'
-import { AppState } from 'state'
 import { useStatsQuery } from 'api'
 import { useEffect, useMemo, useRef } from 'react'
+import { AppState } from 'state'
+import { useAppSelector } from 'state/hooks'
 
 export const useAppFocused = (): boolean => {
   const appFocused = useAppSelector((state: AppState) => state.api.config.focused)

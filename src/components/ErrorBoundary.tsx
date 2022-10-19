@@ -1,5 +1,6 @@
 import { Box } from 'components/container'
 import React, { ErrorInfo, PropsWithChildren } from 'react'
+import * as Sentry from '@sentry/react'
 
 type ErrorBoundaryState = {
   error: Error | null
@@ -38,6 +39,7 @@ export class ErrorBoundary extends React.Component<PropsWithChildren<unknown>, E
         }
       })
       .catch((error) => {
+        Sentry.captureException(error)
         console.error('Failed to update service worker', error)
       })
 
@@ -45,6 +47,7 @@ export class ErrorBoundary extends React.Component<PropsWithChildren<unknown>, E
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } })
     console.log({
       ...error,
       ...errorInfo,

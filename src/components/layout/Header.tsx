@@ -1,13 +1,13 @@
 import { css } from '@emotion/react'
 import Logo from 'assets/apscan-logo.png'
 import { ReactComponent as GasIcon } from 'assets/icons/gas.svg'
-import { Box, Container } from 'components/container'
+import { Box, Container, InlineBox } from 'components/container'
 import { Divider } from 'components/Divider'
 import { Icon } from 'components/Icon'
 import { Link } from 'components/link'
 import { NumberFormat } from 'components/NumberFormat'
 import { SearchGroup } from 'components/search-group'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { useAppStats } from 'state/api/hooks'
 import { vars } from 'theme/theme.css'
 import { container, content, contentWrapper, divider, header, logo, logoImg } from './Header.styles'
@@ -25,6 +25,35 @@ const GasPrice = () => {
       fallback="--"
       value={stats?.latest_gas_fee}
     />
+  )
+}
+
+const Price = () => {
+  const stats = useAppStats()
+
+  const isDown = useMemo(() => {
+    return stats?.market?.usd_24h_change < 0
+  }, [stats?.market?.usd_24h_change])
+
+  return (
+    <>
+      <NumberFormat marginLeft="4px" minimumFractionDigits={2} prefix="$" value={stats?.market?.usd} fallback="--" />
+      <InlineBox
+        css={css`
+          color: ${isDown ? vars.text.error : vars.text.success};
+        `}
+        marginLeft="4px"
+      >
+        (
+        <NumberFormat
+          type="percent"
+          maximumFractionDigits={2}
+          value={stats?.market?.usd_24h_change / 100}
+          fallback="--"
+        />
+        )
+      </InlineBox>
+    </>
   )
 }
 
@@ -50,7 +79,7 @@ export const Header = memo(({ isHome }: { isHome?: boolean }) => {
                 align-items: center;
               `}
             >
-              APT: <NumberFormat marginLeft="4px" minimumFractionDigits={2} prefix="$" value={undefined} fallback="-" />
+              APT: <Price />
               <Divider
                 css={css`
                   height: 12px;

@@ -88,6 +88,7 @@ export const NumberFormat = memo(
               return [
                 numbro(showValue).format({
                   average: true,
+                  thousandSeparated: useGrouping,
                   forceAverage,
                   mantissa: 2,
                   spaceSeparated: true,

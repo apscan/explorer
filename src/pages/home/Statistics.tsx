@@ -129,10 +129,10 @@ export const Statistics = ({ ...rest }) => {
                   value={stats?.total_supply}
                   fallback="--"
                 />
-                {/* <InlineBox marginLeft="4px" color={vars.text.secondary}>
+                <InlineBox marginLeft="4px" color={vars.text.secondary}>
                   (
-                  <NumberFormat minimumFractionDigits={2} prefix="$" value={undefined} fallback="--" />)
-                </InlineBox> */}
+                  <NumberFormat minimumFractionDigits={2} prefix="$" value={stats?.market.usd} fallback="--" />)
+                </InlineBox>
               </InlineBox>,
               'left',
               <StatsIcon src={MarketCapIcon} alt="marketcap" />
@@ -146,8 +146,8 @@ export const Statistics = ({ ...rest }) => {
                 useGrouping
                 minimumFractionDigits={2}
                 prefix="$"
-                value={undefined}
-                fallback="-"
+                value={stats?.market?.usd_market_cap}
+                fallback="--"
               />,
               'right'
             )}

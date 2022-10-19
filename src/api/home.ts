@@ -1,11 +1,19 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 import { SearchOption } from 'components/search-group/types'
 import { toFixedNumber } from 'utils/number'
 import { emptySplitApi } from './api'
+import * as Sentry from '@sentry/react'
 
 export const homeApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     lastTransactions: builder.query<any, number | void>({
       query: (limit = 10) => ({ url: `/transactions?type=eq.user_transaction&limit=${limit}` }),
+    }),
+
+    marketInfo: builder.query<any, void>({
+      query: () => ({
+        url: 'https://api.coingecko.com/api/v3/simple/price?ids=aptos&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true',
+      }),
     }),
 
     chainConfig: builder.query<any, number | void>({
@@ -21,17 +29,34 @@ export const homeApi = emptySplitApi.injectEndpoints({
     }),
 
     stats: builder.query<any, void>({
-      query: () => ({ url: `/blockchain_stats` }),
-      transformResponse: (response: any[]) => {
-        if (!response?.[0]) return null
+      // query: () => ({ url: `/blockchain_stats` }),
+      // queryFn
+      async queryFn(args, queryApi, extraOptions, fetch) {
+        // // get a random user
 
-        const data = response[0]
+        const [stats, market] = await Promise.all([
+          fetch('/blockchain_stats'),
+          fetch(
+            'https://api.coingecko.com/api/v3/simple/price?ids=aptos&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true'
+          ),
+        ])
+
+        if (stats.error) return { error: stats.error as FetchBaseQueryError }
+
+        if (market.error) {
+          Sentry.captureMessage(`coingecko ${(market?.error as any)?.error}`)
+        }
+
+        const data = (stats.data as any[])[0]
 
         return {
-          ...data,
-          staked_percent: toFixedNumber(data.actively_staked, 'fixed128x8')
-            .divUnsafe(toFixedNumber(data.total_supply, 'fixed128x8'))
-            .toString(),
+          data: {
+            ...data,
+            market: (market.data as any).aptos || undefined,
+            staked_percent: toFixedNumber(data.actively_staked, 'fixed128x8')
+              .divUnsafe(toFixedNumber(data.total_supply, 'fixed128x8'))
+              .toString(),
+          },
         }
       },
     }),
@@ -151,6 +176,7 @@ export const homeApi = emptySplitApi.injectEndpoints({
 
 export const {
   useLastBlocksQuery,
+  useMarketInfoQuery,
   useLastTransactionsQuery,
   useStatsQuery,
   useLastVersionQuery,
