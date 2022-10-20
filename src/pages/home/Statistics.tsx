@@ -89,7 +89,7 @@ const renderStatistic = (
   )
 }
 
-const TransactionsCountUp = ({ value }: { value: string }) => {
+const TransactionsCountUp = ({ value }: { value: number }) => {
   const countUpRef = React.useRef(null)
   const [start] = useState(value)
 
