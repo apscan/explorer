@@ -50,38 +50,38 @@ export const Account = () => {
   const address = useMemo(() => data?.address, [data])
 
   const items = useMemo(() => {
-    if (!data) return []
+    if (!data || !address) return []
 
     let result = [
       data?.transfers_count && {
         label: tabNameWithCount(tabs.transfers.name, data?.transfers_count),
         key: tabs.transfers.key,
-        children: <Transfers id={data?.address} count={data?.transfers_count} />,
+        children: <Transfers key={address} id={address} count={data?.transfers_count} />,
       },
       data?.transactions_count && {
         label: tabNameWithCount(tabs.tx.name, data?.transactions_count),
         key: tabs.tx.key,
-        children: <AccountTransactions id={data?.address} count={data?.transactions_count} />,
+        children: <AccountTransactions key={address} id={address} count={data?.transactions_count} />,
       },
       data?.events_count && {
         label: tabNameWithCount(tabs.events.name, data?.events_count),
         key: tabs.events.key,
-        children: <Events id={data?.address} count={data?.events_count} />,
+        children: <Events key={address} id={address} count={data?.events_count} />,
       },
       data?.resources_count && {
         label: tabNameWithCount(tabs.resources.name, data?.resources_count),
         key: tabs.resources.key,
-        children: <Resources id={data?.address} count={data?.resources_count} />,
+        children: <Resources key={address} id={address} count={data?.resources_count} />,
       },
       data?.module_count && {
         label: tabNameWithCount(tabs.modules.name, data?.module_count),
         key: tabs.modules.key,
-        children: <Modules id={data?.address} count={data?.module_count} />,
+        children: <Modules key={address} id={address} count={data?.module_count} />,
       },
     ].filter(Boolean) as any
 
     return result
-  }, [data])
+  }, [data, address])
 
   const defaultActiveKey = useTabActiveKey(tabs, searchParams)
 
