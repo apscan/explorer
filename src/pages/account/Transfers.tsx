@@ -32,18 +32,18 @@ const columns = [
     header: 'Asset',
     cell: (info) => 'Aptos Coin',
   }),
-  helper.accessor('type', {
-    header: 'Type',
-    cell: (info) => (
-      <Box
-        css={css`
-          word-break: break-all;
-        `}
-      >
-        {info.getValue()}
-      </Box>
-    ),
-  }),
+  // helper.accessor('type', {
+  //   header: 'Type',
+  //   cell: (info) => (
+  //     <Box
+  //       css={css`
+  //         word-break: break-all;
+  //       `}
+  //     >
+  //       {info.getValue()}
+  //     </Box>
+  //   ),
+  // }),
   helper.accessor('sender', {
     header: 'Sender',
     cell: (info) =>
