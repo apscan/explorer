@@ -89,7 +89,7 @@ const renderStatistic = (
   )
 }
 
-const TransactionsCountUp = ({ value }: { value: number }) => {
+const TransactionsCountUp = ({ value, tps, timestamp }: { timestamp: string; tps: number; value: number }) => {
   const countUpRef = React.useRef(null)
   const [start] = useState(value)
 
@@ -106,8 +106,10 @@ const TransactionsCountUp = ({ value }: { value: number }) => {
   })
 
   useEffect(() => {
-    update(value)
-  }, [value])
+    if (timestamp) {
+      update(value + tps)
+    }
+  }, [value, tps, timestamp])
 
   return (
     <Link to="/tx">
@@ -233,7 +235,11 @@ export const Statistics = ({ ...rest }) => {
               <>
                 {/* <NumberFormat useGrouping to="/tx" value={stats?.latest_transaction_version} fallback="--" /> */}
                 {stats?.latest_transaction_version ? (
-                  <TransactionsCountUp value={stats.latest_transaction_version} />
+                  <TransactionsCountUp
+                    timestamp={stats?.time_microseconds}
+                    tps={stats?.tps}
+                    value={stats.latest_transaction_version}
+                  />
                 ) : (
                   '--'
                 )}
