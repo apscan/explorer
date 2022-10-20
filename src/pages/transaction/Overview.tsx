@@ -16,6 +16,18 @@ import { TxHash } from 'components/transaction/TxHash'
 import { TxType } from 'components/transaction/TxType'
 import { VmStatus } from 'components/VmStatus'
 import { DateFormat } from 'state/application/slice'
+import { parseUserTransfer } from 'utils/parseUserTransfer'
+
+const renderUserTransfer = (data: any) => {
+  const transfer = parseUserTransfer(data.payload)
+
+  return (
+    <>
+      {renderRow('Receiver', <Address size="full" value={transfer?.receiver} />)}
+      {renderRow('Amount', <AmountFormat value={transfer?.amount} />)}
+    </>
+  )
+}
 
 const renderUserTransactionSection = (data: any) => {
   const gasFee = BigInt(data?.gas_used || 0) * BigInt(data?.user_transaction?.gas_unit_price || 0)
@@ -27,6 +39,7 @@ const renderUserTransactionSection = (data: any) => {
   return (
     <>
       <Divider />
+      {/* {renderUserTransfer(data)} */}
       {renderRow('Sequence Number', <NumberFormat value={data?.user_transaction?.sequence_number} />)}
       {renderRow(
         'Expiration Timestamp',

@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountTransferQuery } from 'api'
+import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box, InlineBox } from 'components/container'
@@ -14,6 +15,7 @@ import { Version } from 'components/transaction/Version'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
+import { parseUserTransfer } from 'utils/parseUserTransfer'
 
 const helper = createColumnHelper<any>()
 
@@ -41,6 +43,15 @@ const columns = [
         {info.getValue()}
       </Box>
     ),
+  }),
+  helper.accessor('sender', {
+    header: 'Sender',
+    cell: (info) =>
+      info.getValue() ? (
+        <Address as={info.getValue() === info.row.original?.address ? 'span' : undefined} value={info.getValue()} />
+      ) : (
+        '-'
+      ),
   }),
   helper.accessor('in_out', {
     header: '',
@@ -82,6 +93,20 @@ const columns = [
       )
     },
   }),
+  helper.accessor(
+    (data: any) => {
+      return parseUserTransfer(data?.payload)?.receiver
+    },
+    {
+      header: 'Receiver',
+      cell: (info) =>
+        info.getValue() ? (
+          <Address as={info.getValue() === info.row.original?.address ? 'span' : undefined} value={info.getValue()} />
+        ) : (
+          '-'
+        ),
+    }
+  ),
   helper.accessor('data.amount', {
     header: 'Amount (APT)',
     cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
