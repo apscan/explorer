@@ -10,7 +10,7 @@ export const AppUpdater = () => {
   })
 
   useStatsQuery(undefined, {
-    pollingInterval: appFocused ? 3000 : 0,
+    pollingInterval: appFocused ? 5000 : 0,
     refetchOnFocus: true,
   })
 
