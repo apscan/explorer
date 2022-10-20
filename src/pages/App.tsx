@@ -82,7 +82,7 @@ const routes = [
 function App() {
   return (
     <ErrorBoundary>
-      <DocumentTitle value="Aptos (APT) Blockchain Explorer" />
+      <DocumentTitle value="Aptos (APT) Blockchain Explorer | Apscan" />
       <Routes>
         {routes.map((route) => (
           <Route key={route.path} path={route.path} element={route.element} />
