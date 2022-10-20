@@ -101,7 +101,7 @@ const TransactionsCountUp = ({ value }: { value: number }) => {
     ref: countUpRef,
     start: start,
     end: start,
-    duration: 0.5,
+    duration: 10,
     formattingFn,
   })
 
