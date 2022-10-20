@@ -9,8 +9,22 @@ export const useAppFocused = (): boolean => {
   return appFocused
 }
 
+export const useAppStatsPolling = () => {
+  const appFocused = useAppFocused()
+
+  const { data } = useStatsQuery(undefined, {
+    pollingInterval: appFocused ? 5000 : 0,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  })
+
+  return useMemo(() => data || {}, [data])
+}
+
 export const useAppStats = () => {
-  const { data } = useStatsQuery()
+  const { data } = useStatsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  })
 
   return useMemo(() => data || {}, [data])
 }

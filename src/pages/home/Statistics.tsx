@@ -1,23 +1,23 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { FixedNumber } from '@ethersproject/bignumber'
-import { AmountFormat } from 'components/AmountFormat'
-import { Card } from 'components/Card'
-import { Box, InlineBox } from 'components/container'
-import { Divider } from 'components/Divider'
-import { NumberFormat } from 'components/NumberFormat'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useAppStats } from 'state/api/hooks'
-import { fontZero } from 'theme/style'
-import { vars } from 'theme/theme.css'
-import { HistoryChart } from './HistoryChart'
+import { useMarketInfoQuery } from 'api'
 import AccountIcon from 'assets/home/Account.svg'
 import EpochIcon from 'assets/home/Epoch.svg'
 import MarketCapIcon from 'assets/home/MarketCap.svg'
 import TransactionsIcon from 'assets/home/Transactions.svg'
-import { useMarketInfoQuery } from 'api'
-import { useCountUp } from 'react-countup'
+import { AmountFormat } from 'components/AmountFormat'
+import { Card } from 'components/Card'
+import { Box, InlineBox } from 'components/container'
+import { Divider } from 'components/Divider'
 import { Link } from 'components/link'
+import { NumberFormat } from 'components/NumberFormat'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCountUp } from 'react-countup'
+import { useAppStatsPolling } from 'state/api/hooks'
+import { fontZero } from 'theme/style'
+import { vars } from 'theme/theme.css'
+import { HistoryChart } from './HistoryChart'
 
 const StatsIcon = styled.img`
   width: 30px;
@@ -107,7 +107,7 @@ const TransactionsCountUp = ({ value }: { value: number }) => {
 
   useEffect(() => {
     update(value)
-  }, [value])
+  }, [value, update])
 
   return (
     <Link to="/tx">
@@ -117,7 +117,8 @@ const TransactionsCountUp = ({ value }: { value: number }) => {
 }
 
 export const Statistics = ({ ...rest }) => {
-  const stats = useAppStats()
+  const stats = useAppStatsPolling()
+
   const { data: market } = useMarketInfoQuery()
 
   const epochPercent = useMemo(() => {
@@ -162,7 +163,8 @@ export const Statistics = ({ ...rest }) => {
                 />
                 <InlineBox marginLeft="4px" color={vars.text.secondary}>
                   (
-                  <NumberFormat minimumFractionDigits={2} prefix="$" value={market?.usd} fallback="--" />)
+                  <NumberFormat maximumFractionDigits={2} prefix="$" value={market?.quotes?.USD?.price} fallback="--" />
+                  )
                 </InlineBox>
               </InlineBox>,
               'left',
@@ -177,7 +179,7 @@ export const Statistics = ({ ...rest }) => {
                 useGrouping
                 minimumFractionDigits={2}
                 prefix="$"
-                value={market?.usd_market_cap}
+                value={market?.quotes?.USD?.market_cap}
                 fallback="--"
               />,
               'right'

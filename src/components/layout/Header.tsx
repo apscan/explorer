@@ -32,14 +32,21 @@ const GasPrice = () => {
 const Price = () => {
   const { data: market } = useMarketInfoQuery()
 
+  const change = useMemo(() => market?.quotes?.USD.percent_change_24h, [market])
   const isDown = useMemo(() => {
-    return market?.usd_24h_change < 0
-  }, [market?.usd_24h_change])
+    return change < 0
+  }, [change])
 
   return (
     <>
-      <NumberFormat marginLeft="4px" minimumFractionDigits={2} prefix="$" value={market?.usd} fallback="--" />
-      {market?.usd_24h_change && (
+      <NumberFormat
+        marginLeft="4px"
+        maximumFractionDigits={2}
+        prefix="$"
+        value={market?.quotes?.USD?.price}
+        fallback="--"
+      />
+      {change && (
         <InlineBox
           css={css`
             color: ${isDown ? vars.text.error : vars.text.success};
@@ -47,7 +54,7 @@ const Price = () => {
           marginLeft="4px"
         >
           (
-          <NumberFormat type="percent" maximumFractionDigits={2} value={market?.usd_24h_change / 100} fallback="--" />)
+          <NumberFormat type="percent" maximumFractionDigits={2} value={change / 100} fallback="--" />)
         </InlineBox>
       )}
     </>

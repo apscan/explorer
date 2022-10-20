@@ -10,11 +10,8 @@ export const homeApi = emptySplitApi.injectEndpoints({
 
     marketInfo: builder.query<any, void>({
       query: () => ({
-        url: 'https://api.coingecko.com/api/v3/simple/price?ids=aptos&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true',
+        url: 'https://api.coinpaprika.com/v1/tickers/apt-aptos',
       }),
-      transformResponse: (response: any[]) => {
-        return (response as any)?.aptos
-      },
     }),
 
     chainConfig: builder.query<any, number | void>({
