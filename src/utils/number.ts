@@ -14,7 +14,8 @@ export const hexlify = (value: string | number | bigint) => {
       }
     }
   }
-  if (typeof value === 'number' || typeof value === 'bigint') return _hexlify(BigInt(value))
+  if (typeof value === 'bigint') return _hexlify(value)
+  if (typeof value === 'number' && /\d+/.test(value.toString())) return _hexlify(BigInt(value))
 
   throw new Error(`Invalid value = ${value}`)
 }
