@@ -4,7 +4,7 @@ import { Box } from 'components/container'
 import { vars } from 'theme/theme.css'
 
 const KeyWrapper = styled(Box)`
-  width: 30%;
+  width: 25%;
   color: ${vars.text.body};
   font-size: 14px;
   font-weight: 400;
@@ -12,7 +12,7 @@ const KeyWrapper = styled(Box)`
 
 const ValueWrapper = styled(Box)`
   font-weight: 400;
-  width: 100%;
+  width: 75%;
   color: ${vars.text.body};
 `
 

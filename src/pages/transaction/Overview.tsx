@@ -9,7 +9,7 @@ import { Divider } from 'components/Divider'
 import { Hash } from 'components/Hash'
 import { HashesTable } from 'components/HashesTable'
 import { renderRow } from 'components/helpers'
-import { JsonView, JsonViewContainer } from 'components/JsonView'
+import { JsonView } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { SeeMore } from 'components/SeeMore'
 import { TxHash } from 'components/transaction/TxHash'
@@ -75,13 +75,8 @@ const renderUserTransactionSection = (data: any) => {
           </InlineBox>
         </InlineBox>
       )}
-      {renderRow(
-        'Signature',
-        <JsonViewContainer>
-          <JsonView src={data?.user_transaction?.signature} />
-        </JsonViewContainer>
-      )}
-      {renderRow('Payload', <JsonView src={data?.payload} />)}
+      {renderRow('Signature', <JsonView withContainer src={data?.user_transaction?.signature} />)}
+      {renderRow('Payload', <JsonView withContainer src={data?.payload} />)}
     </>
   )
 }
@@ -91,7 +86,7 @@ const renderGenesisTransactionSection = (data: any) => {
     <>
       <Divider />
       {renderRow('Epoch', null)}
-      {renderRow('Payload', <JsonView src={data?.payload} />)}
+      {renderRow('Payload', <JsonView withContainer src={data?.payload} />)}
     </>
   )
 }
