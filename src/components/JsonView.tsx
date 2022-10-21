@@ -1,9 +1,13 @@
 import { css } from '@emotion/react'
 import ReactJson, { ReactJsonViewProps } from 'react-json-view'
-import { Box } from './container'
+import { Box, BoxProps } from './container'
 
 type JsonViewProps = ReactJsonViewProps & {
   fallback?: React.ReactNode
+}
+
+export const JsonViewContainer = ({ children, ...props }: BoxProps) => {
+  return <Box {...props}>{children}</Box>
 }
 
 export const JsonView = ({ src, fallback, ...props }: JsonViewProps) => {

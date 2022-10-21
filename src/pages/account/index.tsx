@@ -7,9 +7,8 @@ import { DocumentTitle } from 'components/DocumentTitle'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
 import { useSearchTab } from 'hooks/useSearchTab'
-import { useTabActiveKey } from 'hooks/useTabActiveKey'
-import { useCallback, useMemo } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useMemo } from 'react'
+import { useParams } from 'react-router-dom'
 import { vars } from 'theme/theme.css'
 import { tabNameWithCount } from 'utils'
 import { Events } from './Events'
@@ -18,29 +17,6 @@ import { Overview } from './Overview'
 import { Resources } from './Resources'
 import { AccountTransactions } from './Transactions'
 import { Transfers } from './Transfers'
-
-const tabs = {
-  transfers: {
-    key: 'transfers',
-    name: 'Transfers',
-  },
-  tx: {
-    key: 'tx',
-    name: 'Transactions',
-  },
-  events: {
-    key: 'events',
-    name: 'Events',
-  },
-  resources: {
-    key: 'resources',
-    name: 'Resources',
-  },
-  modules: {
-    key: 'modules',
-    name: 'Modules',
-  },
-}
 
 export const Account = () => {
   const { id } = useParams<{ id: string }>()
