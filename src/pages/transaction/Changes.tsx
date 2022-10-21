@@ -52,7 +52,7 @@ const columns = [
     cell: (info) => <Hash value={info.getValue()} size="short" />,
   }),
 
-  helper.accessor('data', {
+  helper.accessor('data.move_resource_data', {
     header: 'Data',
     cell: (info) => {
       if (info.getValue()) {

@@ -22,10 +22,10 @@ const columns = [
     header: 'Address',
     cell: (info) => <Address size="short" value={info.getValue()} />,
   }),
-  helper.accessor('time_microseconds', {
-    header: () => <SwitchDateFormat />,
-    cell: (info) => <DateTime value={info.getValue()} />,
-  }),
+  // helper.accessor('time_microseconds', {
+  //   header: () => <SwitchDateFormat />,
+  //   cell: (info) => <DateTime value={info.getValue()} />,
+  // }),
   helper.accessor('creation_number', {
     header: 'Creation Number',
     cell: (info) => <NumberFormat value={info.getValue()} />,
