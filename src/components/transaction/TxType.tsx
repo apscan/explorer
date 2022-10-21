@@ -9,11 +9,11 @@ const Wrapper = styled(Box)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  background-color: ${vars.colors.badgeBg};
-  padding: 4px 8px;
+  /* border-radius: 6px; */
+  /* background-color: ${vars.colors.badgeBg}; */
+  /* padding: 4px 8px; */
   color: ${vars.text.body};
-  font-size: 10px;
+  /* font-size: 10px; */
   font-weight: 500;
   white-space: nowrap;
 `
