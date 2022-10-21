@@ -57,7 +57,7 @@ const renderUserTransactionSection = (data: any) => {
           <NumberFormat fallback="--" value={data?.gas_used} />
           <InlineBox marginLeft="4px">
             (
-            <NumberFormat fallback="--" type="percent" value={gasUsedPercentage} />)
+            <NumberFormat maximumFractionDigits={1} fallback="--" type="percent" value={gasUsedPercentage} />)
           </InlineBox>
         </InlineBox>
       )}
