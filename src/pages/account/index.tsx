@@ -83,7 +83,7 @@ export const Account = () => {
         children: <Modules key={address} id={address} count={data?.module_count} />,
         hide: !data?.module_count,
       },
-    ].filter(Boolean) as any
+    ].filter((item) => !item.hide) as any
   }, [data, address])
 
   const [activeKey, onTabChange] = useSearchTab(tabs)
