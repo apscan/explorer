@@ -45,7 +45,7 @@ const JsonViewContainer = ({
               position: absolute;
               right: 12px;
               top: 8px;
-              font-size: 20px;
+              font-size: 16px;
               z-index: 1;
             `}
           >
