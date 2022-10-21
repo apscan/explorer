@@ -6,6 +6,7 @@ import { Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
+import { useSearchTab } from 'hooks/useSearchTab'
 import { useTabActiveKey } from 'hooks/useTabActiveKey'
 import { useCallback, useMemo } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
@@ -43,59 +44,49 @@ const tabs = {
 
 export const Account = () => {
   const { id } = useParams<{ id: string }>()
-  const [searchParams, setSearchParams] = useSearchParams()
 
   const { data } = useAccountDetailQuery(id)
 
   const address = useMemo(() => data?.address, [data])
 
-  const items = useMemo(() => {
-    if (!data || !address) return []
+  const tabs = useMemo(() => {
+    if (!data || !address) return undefined
 
-    let result = [
-      data?.transfers_count && {
-        label: tabNameWithCount(tabs.transfers.name, data?.transfers_count),
-        key: tabs.transfers.key,
+    return [
+      {
+        label: tabNameWithCount('Transfers', data?.transfers_count),
+        key: 'transfers',
         children: <Transfers key={address} id={address} count={data?.transfers_count} />,
+        hide: !data?.transfers_count,
       },
-      data?.transactions_count && {
-        label: tabNameWithCount(tabs.tx.name, data?.transactions_count),
-        key: tabs.tx.key,
+      {
+        label: tabNameWithCount('Transactions', data?.transactions_count),
+        key: 'tx',
         children: <AccountTransactions key={address} id={address} count={data?.transactions_count} />,
+        hide: !data?.transactions_count,
       },
-      data?.events_count && {
-        label: tabNameWithCount(tabs.events.name, data?.events_count),
-        key: tabs.events.key,
+      {
+        label: tabNameWithCount('Events', data?.events_count),
+        key: 'events',
         children: <Events key={address} id={address} count={data?.events_count} />,
+        hide: !data?.events_count,
       },
-      data?.resources_count && {
-        label: tabNameWithCount(tabs.resources.name, data?.resources_count),
-        key: tabs.resources.key,
+      {
+        label: tabNameWithCount('Resources', data?.resources_count),
+        key: 'resources',
         children: <Resources key={address} id={address} count={data?.resources_count} />,
+        hide: !data?.resources_count,
       },
-      data?.module_count && {
-        label: tabNameWithCount(tabs.modules.name, data?.module_count),
-        key: tabs.modules.key,
+      {
+        label: tabNameWithCount('Modules', data?.module_count),
+        key: 'modules',
         children: <Modules key={address} id={address} count={data?.module_count} />,
+        hide: !data?.module_count,
       },
     ].filter(Boolean) as any
-
-    return result
   }, [data, address])
 
-  const defaultActiveKey = useTabActiveKey(tabs, searchParams)
-
-  const onActiveKeyChange = useCallback(
-    (activeKey: string) => {
-      const index = items.findIndex(({ key }: { key: string }) => key === activeKey)
-      if (index <= 0) {
-        setSearchParams({}, { replace: true })
-      } else {
-        setSearchParams({ tab: items[index].key }, { replace: true })
-      }
-    },
-    [items, setSearchParams]
-  )
+  const [activeKey, onTabChange] = useSearchTab(tabs)
 
   return (
     <Container>
@@ -128,7 +119,7 @@ export const Account = () => {
         <Overview data={data} />
       </Card>
       <Card>
-        <Tabs onChange={onActiveKeyChange} defaultActiveKey={defaultActiveKey} size="large" items={items} />
+        <Tabs onTabClick={onTabChange} activeKey={activeKey} size="large" items={tabs} />
       </Card>
     </Container>
   )
