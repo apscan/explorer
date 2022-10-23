@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { ColumnDef, flexRender, getCoreRowModel, getExpandedRowModel, Row, useReactTable } from '@tanstack/react-table'
-import { Fragment, memo, useEffect } from 'react'
+import { Fragment, memo } from 'react'
 import { Box, BoxProps } from '../container/Box'
 import { Table, Tbody, Td, Th, Thead, Tr } from './TableComponents'
 

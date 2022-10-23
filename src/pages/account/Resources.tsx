@@ -3,9 +3,10 @@ import { useAccountResourcesQuery } from 'api'
 import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
 import { Hash } from 'components/Hash'
-import { JsonView } from 'components/JsonView'
+import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
+import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
@@ -29,9 +30,32 @@ const columns = [
   }),
   helper.accessor('move_resource_data', {
     header: 'Data',
-    cell: (info) => <JsonView collapsed={0} src={info.getValue()} />,
+    cell: (info) => <JsonViewEllipsis src={info.getValue()} />,
+  }),
+
+  helper.accessor('expand', {
+    header: (header) => {
+      return (
+        <ExpandButton
+          expandAll
+          expanded={header.table.getIsSomeRowsExpanded()}
+          onClick={() => header.table.toggleAllRowsExpanded()}
+        />
+      )
+    },
+    cell: (info) => {
+      return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+    },
   }),
 ]
+
+const renderSubComponent = ({ row }: { row: any }) => {
+  return <JsonView src={row.original?.move_resource_data} withContainer />
+}
+
+const getRowCanExpand = (row: any) => {
+  return Boolean(row?.original?.move_resource_data)
+}
 
 export const Resources = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
@@ -62,7 +86,12 @@ export const Resources = ({ id, count }: { id: any; count: number }) => {
         </CardHeadStats>
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
-      <DataTable dataSource={data} columns={columns} />
+      <DataTable
+        renderSubComponent={renderSubComponent}
+        getRowCanExpand={getRowCanExpand}
+        dataSource={data}
+        columns={columns}
+      />
       {pageProps?.total && pageProps.total > 1 && (
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />

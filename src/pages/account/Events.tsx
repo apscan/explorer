@@ -6,7 +6,7 @@ import { Box } from 'components/container'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
-import { JsonView } from 'components/JsonView'
+import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useState } from 'react'
@@ -14,6 +14,7 @@ import { usePageSize } from 'state/application/hooks'
 import { Version } from 'components/transaction/Version'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DateTime } from 'components/DateTime'
+import { ExpandButton } from 'components/table/ExpandButton'
 
 const helper = createColumnHelper<any>()
 
@@ -49,9 +50,32 @@ const columns = [
 
   helper.accessor('data', {
     header: 'Data',
-    cell: (info) => <JsonView collapsed={0} src={info.getValue()} />,
+    cell: (info) => <JsonViewEllipsis src={info.getValue()} />,
+  }),
+
+  helper.accessor('expand', {
+    header: (header) => {
+      return (
+        <ExpandButton
+          expandAll
+          expanded={header.table.getIsSomeRowsExpanded()}
+          onClick={() => header.table.toggleAllRowsExpanded()}
+        />
+      )
+    },
+    cell: (info) => {
+      return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+    },
   }),
 ]
+
+const renderSubComponent = ({ row }: { row: any }) => {
+  return <JsonView src={row.original?.data} withContainer />
+}
+
+const getRowCanExpand = (row: any) => {
+  return Boolean(row?.original?.data)
+}
 
 export const Events = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
@@ -82,7 +106,12 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
         </CardHeadStats>
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
-      <DataTable dataSource={data} columns={columns} />
+      <DataTable
+        renderSubComponent={renderSubComponent}
+        getRowCanExpand={getRowCanExpand}
+        dataSource={data}
+        columns={columns}
+      />
       {pageProps?.total && pageProps.total > 1 && (
         <CardFooter variant="tabletab">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />

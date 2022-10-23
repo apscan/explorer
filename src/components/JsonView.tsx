@@ -4,8 +4,6 @@ import ReactJson, { ReactJsonViewProps } from 'react-json-view'
 import { Box, BoxProps } from './container'
 import { CopyButton } from './CopyButton'
 
-import { Icon } from './Icon'
-
 const JsonViewContainer = ({
   children,
   isDisabled,
@@ -61,7 +59,7 @@ type JsonViewProps = ReactJsonViewProps & {
   ellipsis?: boolean
 }
 
-export const JsonViewEllipsis = ({ src, ...props }: { src: object } & BoxProps) => {
+export const JsonViewEllipsis = ({ src, maxWidth, ...props }: { src: object } & BoxProps) => {
   const text = useMemo(() => {
     if (src) {
       return JSON.stringify(src)
@@ -74,7 +72,7 @@ export const JsonViewEllipsis = ({ src, ...props }: { src: object } & BoxProps) 
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        max-width: 200px;
+        max-width: ${maxWidth || '200px'};
       `}
       {...props}
     >

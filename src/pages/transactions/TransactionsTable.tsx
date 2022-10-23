@@ -2,19 +2,15 @@ import { createColumnHelper, Row } from '@tanstack/react-table'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { BlockHeight } from 'components/block/BlockHeight'
-import { DataTable } from 'components/table'
 import { DateTime } from 'components/DateTime'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
+import { DataTable } from 'components/table'
 import { TxType } from 'components/transaction/TxType'
 import { Version } from 'components/transaction/Version'
 import { memo, useMemo } from 'react'
-import { Icon } from 'components/Icon'
 
-import { BaseButton } from 'components/buttons'
-import { css } from '@emotion/react'
-import { vars } from 'theme/theme.css'
 import { ExpandButton } from 'components/table/ExpandButton'
 
 const helper = createColumnHelper<any>()
@@ -86,7 +82,15 @@ const columns = [
     },
   }),
   helper.accessor('expand', {
-    header: '',
+    header: (header) => {
+      return (
+        <ExpandButton
+          expandAll
+          expanded={header.table.getIsAllRowsExpanded()}
+          onClick={() => header.table.toggleAllRowsExpanded()}
+        />
+      )
+    },
     cell: (info) => {
       if (info.row.original.type !== 'user_transaction') return ''
       return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
