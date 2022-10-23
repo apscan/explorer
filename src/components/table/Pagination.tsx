@@ -24,6 +24,7 @@ const StyledButton = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
   font-weight: 500;
   padding: 4.8px 9.6px;
   background-color: ${vars.colors.badgeBg};

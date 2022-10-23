@@ -4,10 +4,7 @@ import ReactJson, { ReactJsonViewProps } from 'react-json-view'
 import { Box, BoxProps } from './container'
 import { CopyButton } from './CopyButton'
 
-type JsonViewProps = ReactJsonViewProps & {
-  fallback?: React.ReactNode
-  withContainer?: boolean
-}
+import { Icon } from './Icon'
 
 const JsonViewContainer = ({
   children,
@@ -18,7 +15,7 @@ const JsonViewContainer = ({
   data: object
   isDisabled?: boolean
 }) => {
-  const text = useMemo(() => (!isDisabled && data ? JSON.stringify(data, null, 2) : undefined), [data])
+  const text = useMemo(() => (!isDisabled && data ? JSON.stringify(data, null, 2) : undefined), [isDisabled, data])
 
   if (isDisabled) return <>{children}</>
 
@@ -58,7 +55,35 @@ const JsonViewContainer = ({
   )
 }
 
-export const JsonView = ({ src, fallback, withContainer, ...props }: JsonViewProps) => {
+type JsonViewProps = ReactJsonViewProps & {
+  fallback?: React.ReactNode
+  withContainer?: boolean
+  ellipsis?: boolean
+}
+
+export const JsonViewEllipsis = ({ src, ...props }: { src: object } & BoxProps) => {
+  const text = useMemo(() => {
+    if (src) {
+      return JSON.stringify(src)
+    }
+  }, [src])
+
+  return (
+    <Box
+      css={css`
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 200px;
+      `}
+      {...props}
+    >
+      {text}
+    </Box>
+  )
+}
+
+export const JsonView = ({ src, fallback, ellipsis, withContainer, ...props }: JsonViewProps) => {
   if (src == null) return <>{fallback}</>
 
   return (
@@ -73,10 +98,9 @@ export const JsonView = ({ src, fallback, withContainer, ...props }: JsonViewPro
           .collapsed-icon {
             display: inline-flex;
             align-items: center;
+            position: relative;
+            top: 1.8px;
           }
-          /* .string-value {
-            white-space: nowrap;
-          } */
         `}
       >
         <ReactJson name={false} enableClipboard={false} displayDataTypes={false} src={src} {...props} />

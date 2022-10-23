@@ -1,15 +1,21 @@
-import { createColumnHelper } from '@tanstack/react-table'
+import { createColumnHelper, Row } from '@tanstack/react-table'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { BlockHeight } from 'components/block/BlockHeight'
 import { DataTable } from 'components/table'
 import { DateTime } from 'components/DateTime'
-import { JsonView } from 'components/JsonView'
+import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { TxType } from 'components/transaction/TxType'
 import { Version } from 'components/transaction/Version'
 import { memo, useMemo } from 'react'
+import { Icon } from 'components/Icon'
+
+import { BaseButton } from 'components/buttons'
+import { css } from '@emotion/react'
+import { vars } from 'theme/theme.css'
+import { ExpandButton } from 'components/table/ExpandButton'
 
 const helper = createColumnHelper<any>()
 
@@ -33,7 +39,7 @@ const columns = [
     header: 'Sender',
     cell: (info) => {
       if (!info?.row?.original?.type) return null
-      
+
       if (info.row.original.type === 'user_transaction') {
         return <Address value={info.getValue()} size="short" />
       } else {
@@ -75,8 +81,15 @@ const columns = [
       if (info.row.original.type !== 'user_transaction') {
         return '-'
       } else {
-        return <JsonView collapsed={0} src={info.getValue()} />
+        return <JsonViewEllipsis src={info.getValue()} />
       }
+    },
+  }),
+  helper.accessor('expand', {
+    header: '',
+    cell: (info) => {
+      if (info.row.original.type !== 'user_transaction') return ''
+      return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
     },
   }),
 ]
@@ -84,6 +97,14 @@ const columns = [
 type TransactionsTableProps = {
   data?: any
   variant?: 'block' | 'account'
+}
+
+const renderSubComponent = ({ row }: { row: Row<any> }) => {
+  return <JsonView src={row.original?.payload} withContainer />
+}
+
+const getRowCanExpand = (row: any) => {
+  return row.original.type === 'user_transaction'
 }
 
 export const TransactionsTable = memo(({ data, variant }: TransactionsTableProps) => {
@@ -99,5 +120,13 @@ export const TransactionsTable = memo(({ data, variant }: TransactionsTableProps
     return undefined
   }, [variant])
 
-  return <DataTable columnVisibility={columnVisibility} dataSource={data} columns={columns} />
+  return (
+    <DataTable
+      renderSubComponent={renderSubComponent}
+      columnVisibility={columnVisibility}
+      dataSource={data}
+      columns={columns}
+      getRowCanExpand={getRowCanExpand}
+    />
+  )
 })
