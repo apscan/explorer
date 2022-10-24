@@ -3,8 +3,8 @@ import styled from '@emotion/styled'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { useMarketInfoQuery } from 'api'
 import AccountIcon from 'assets/home/Account.svg'
-import EpochIcon from 'assets/home/Epoch.svg'
-import MarketCapIcon from 'assets/home/MarketCap.svg'
+import TotalSupplyIcon from 'assets/home/TotalSupply.svg'
+import StakedIcon from 'assets/home/Staked.svg'
 import TransactionsIcon from 'assets/home/Transactions.svg'
 import { AmountFormat } from 'components/AmountFormat'
 import { Card } from 'components/Card'
@@ -149,7 +149,6 @@ export const Statistics = ({ ...rest }) => {
       >
         <ItemSection>
           <StatisticItem>
-            {/* - APT SUPPLY: 1,000,000,000 ($1.00, +0.0%) */}
             {renderStatistic(
               'APT SUPPLY',
               <InlineBox alignItems="center">
@@ -168,7 +167,7 @@ export const Statistics = ({ ...rest }) => {
                 </InlineBox>
               </InlineBox>,
               'left',
-              <StatsIcon src={MarketCapIcon} alt="marketcap" />
+              <StatsIcon src={TotalSupplyIcon} alt="totalSupply" />
             )}
             {renderStatistic(
               'Fully Diluted VAL.',
@@ -225,7 +224,7 @@ export const Statistics = ({ ...rest }) => {
                 </HelpText>
               </>,
               'left',
-              <StatsIcon src={EpochIcon} alt="epoch" />
+              <StatsIcon src={StakedIcon} alt="staked" />
             )}
             {renderStatistic(
               'Epoch & Round',
@@ -254,7 +253,6 @@ export const Statistics = ({ ...rest }) => {
             {renderStatistic(
               'Transactions',
               <>
-                {/* <NumberFormat useGrouping to="/tx" value={stats?.latest_transaction_version} fallback="--" /> */}
                 {stats?.latest_transaction_version ? (
                   <TransactionsCountUp value={stats.latest_transaction_version} />
                 ) : (
