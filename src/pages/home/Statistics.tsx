@@ -18,6 +18,7 @@ import { useAppStatsPolling } from 'state/api/hooks'
 import { fontZero } from 'theme/style'
 import { vars } from 'theme/theme.css'
 import { HistoryChart } from './HistoryChart'
+import { toFixedNumber } from 'utils/number'
 
 const StatsIcon = styled.img`
   width: 30px;
@@ -133,6 +134,14 @@ export const Statistics = ({ ...rest }) => {
     }
   }, [stats])
 
+  const fully = useMemo(() => {
+    if (!market?.quotes?.USD?.price || !stats?.total_supply) return undefined
+
+    return FixedNumber.from(market.quotes.USD.price.toString(), 'fixed128x18').mulUnsafe(
+      toFixedNumber(stats.total_supply).toFormat('fixed128x18')
+    )
+  }, [market?.quotes?.USD?.price, stats?.total_supply])
+
   return (
     <Card
       css={css`
@@ -179,7 +188,7 @@ export const Statistics = ({ ...rest }) => {
                   useGrouping
                   maximumFractionDigits={3}
                   prefix="$"
-                  value={market?.quotes?.USD?.market_cap}
+                  value={fully}
                   fallback="--"
                 />
                 {market?.quotes?.USD?.percent_change_24h && (
