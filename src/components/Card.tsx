@@ -23,7 +23,7 @@ export const CardHead = styled(Box)`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 12px;
     `}
   ${(props) =>
     props.variant === 'tabletab' &&
@@ -31,7 +31,7 @@ export const CardHead = styled(Box)`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     `}
 `
 
@@ -62,7 +62,7 @@ export const CardFooter = styled(Box)`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 24px 0;
+      margin: 12px 0 0;
     `}
   ${(props) =>
     props.variant === 'tabletab' &&
@@ -70,6 +70,6 @@ export const CardFooter = styled(Box)`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 24px 0;
+      margin: 12px 0 0;
     `}
 `

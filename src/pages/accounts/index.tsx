@@ -161,7 +161,7 @@ export const Accounts = () => {
             {addressCount && addressCount > 10000 && (
               <Box
                 css={css`
-                  font-size: 0.8em;
+                  margin-left: 4px;
                 `}
               >
                 (Showing the last 10,000 top accounts only)
