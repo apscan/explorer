@@ -3,8 +3,8 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountTransferQuery } from 'api'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
-import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box, InlineBox } from 'components/container'
+import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { InlineBox } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
@@ -117,7 +117,7 @@ export const Transfers = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
-  const { data: { data, page } = {} } = useAccountTransferQuery(
+  const { data: { data, page } = {}, isLoading } = useAccountTransferQuery(
     {
       id: id!,
       start,
@@ -135,7 +135,7 @@ export const Transfers = ({ id, count }: { id: any; count: number }) => {
   })
 
   return (
-    <Box padding="12px">
+    <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> transfers
@@ -149,6 +149,6 @@ export const Transfers = ({ id, count }: { id: any; count: number }) => {
           <Pagination {...pageProps} />
         </CardFooter>
       )}
-    </Box>
+    </CardBody>
   )
 }

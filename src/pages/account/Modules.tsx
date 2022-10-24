@@ -1,13 +1,13 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountModulesQuery } from 'api'
-import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
-import { DataTable } from 'components/table'
-import { Pagination } from 'components/table/Pagination'
-import { ShowRecords } from 'components/table/ShowRecords'
 import { Hash } from 'components/Hash'
 import { JsonView } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
+import { DataTable } from 'components/table'
+import { Pagination } from 'components/table/Pagination'
+import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
@@ -49,7 +49,7 @@ export const Modules = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
-  const { data: { data, page } = {} } = useAccountModulesQuery(
+  const { data: { data, page } = {}, isLoading } = useAccountModulesQuery(
     {
       id: id!,
       start,
@@ -67,7 +67,7 @@ export const Modules = ({ id, count }: { id: any; count: number }) => {
   })
 
   return (
-    <Box padding="12px">
+    <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> modules
@@ -81,6 +81,6 @@ export const Modules = ({ id, count }: { id: any; count: number }) => {
           <Pagination {...pageProps} />
         </CardFooter>
       )}
-    </Box>
+    </CardBody>
   )
 }

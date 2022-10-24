@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { useBlockTransactionsQuery } from 'api'
-import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box } from 'components/container'
+import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { NumberFormat } from 'components/NumberFormat'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
@@ -19,7 +18,7 @@ export const BlockTransactions = ({ id, count }: { id?: string; count: number })
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
-  const { data: { data, page } = {} } = useBlockTransactionsQuery(
+  const { data: { data, page } = {}, isLoading } = useBlockTransactionsQuery(
     {
       id: id!,
       start,
@@ -42,7 +41,7 @@ export const BlockTransactions = ({ id, count }: { id?: string; count: number })
   }, [data])
 
   return (
-    <Box padding="12px">
+    <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Transactions <StatsNumberFormat fallback="--" prefix="#" value={minVersion} /> to{' '}
@@ -58,6 +57,6 @@ export const BlockTransactions = ({ id, count }: { id?: string; count: number })
           <Pagination {...pageProps} />
         </CardFooter>
       )}
-    </Box>
+    </CardBody>
   )
 }

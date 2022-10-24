@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTransactionChangesQuery } from 'api'
 import { Address } from 'components/Address'
-import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
 import { Hash } from 'components/Hash'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
@@ -92,7 +92,7 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
-  const { data: { data, page } = {} } = useTransactionChangesQuery(
+  const { data: { data, page } = {}, isLoading } = useTransactionChangesQuery(
     {
       id: id!,
       start,
@@ -110,7 +110,7 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
   })
 
   return (
-    <Box padding="12px">
+    <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> changes
@@ -129,6 +129,6 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
           <Pagination {...pageProps} />
         </CardFooter>
       )}
-    </Box>
+    </CardBody>
   )
 }

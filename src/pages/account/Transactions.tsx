@@ -1,6 +1,5 @@
 import { useAccountTransactionsQuery } from 'api'
-import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box } from 'components/container'
+import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { NumberFormat } from 'components/NumberFormat'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
@@ -13,7 +12,7 @@ export const AccountTransactions = ({ id, count }: { id: string; count: number }
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
-  const { data: { data, page } = {} } = useAccountTransactionsQuery(
+  const { data: { data, page } = {}, isLoading } = useAccountTransactionsQuery(
     {
       id: id!,
       start,
@@ -30,7 +29,7 @@ export const AccountTransactions = ({ id, count }: { id: string; count: number }
   })
 
   return (
-    <Box padding="12px">
+    <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> transactions
@@ -44,6 +43,6 @@ export const AccountTransactions = ({ id, count }: { id: string; count: number }
           <Pagination {...pageProps} />
         </CardFooter>
       )}
-    </Box>
+    </CardBody>
   )
 }

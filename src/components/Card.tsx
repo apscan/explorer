@@ -17,6 +17,32 @@ const card = css`
   position: relative;
 `
 
+const Loading = ({ ...props }: BoxProps) => {
+  return (
+    <Box
+      css={css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 500px;
+      `}
+      {...props}
+    >
+      <Spinner
+        css={css`
+          --spinner-size: 40px;
+        `}
+        speed="0.65s"
+        thickness="3px"
+        size="lg"
+        color={vars.colors.link}
+        emptyColor={vars.colors.buttonBg1}
+      />
+    </Box>
+  )
+}
+
 export const Card = ({ variant, isLoading, ...props }: BoxProps & { isLoading?: boolean; variant?: string }) => {
   if (isLoading)
     return (
@@ -29,26 +55,7 @@ export const Card = ({ variant, isLoading, ...props }: BoxProps & { isLoading?: 
         ]}
         {...props}
       >
-        <Box
-          css={css`
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            min-height: 500px;
-          `}
-        >
-          <Spinner
-            css={css`
-              --spinner-size: 40px;
-            `}
-            speed="0.65s"
-            thickness="3px"
-            size="lg"
-            color={vars.colors.link}
-            emptyColor={vars.colors.buttonBg1}
-          />
-        </Box>
+        <Loading />
       </Box>
     )
 
@@ -63,6 +70,21 @@ export const Card = ({ variant, isLoading, ...props }: BoxProps & { isLoading?: 
       {...props}
     />
   )
+}
+
+export const CardBody = ({ variant, isLoading, ...props }: BoxProps & { isLoading?: boolean; variant?: string }) => {
+  if (isLoading)
+    return (
+      <Box padding="12px" {...props}>
+        <Loading
+          css={css`
+            min-height: 200px;
+          `}
+        />
+      </Box>
+    )
+
+  return <Box padding="12px" {...props} />
 }
 
 export const CardHead = styled(Box)`

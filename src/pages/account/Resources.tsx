@@ -1,6 +1,6 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountResourcesQuery } from 'api'
-import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
 import { Hash } from 'components/Hash'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
@@ -61,7 +61,7 @@ export const Resources = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
-  const { data: { data, page } = {} } = useAccountResourcesQuery(
+  const { data: { data, page } = {}, isLoading } = useAccountResourcesQuery(
     {
       id: id!,
       start,
@@ -79,7 +79,7 @@ export const Resources = ({ id, count }: { id: any; count: number }) => {
   })
 
   return (
-    <Box padding="12px">
+    <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> resources
@@ -98,6 +98,6 @@ export const Resources = ({ id, count }: { id: any; count: number }) => {
           <Pagination {...pageProps} />
         </CardFooter>
       )}
-    </Box>
+    </CardBody>
   )
 }

@@ -1,20 +1,20 @@
 import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountEventsQuery } from 'api'
-import { CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
-import { DataTable } from 'components/table'
-import { Pagination } from 'components/table/Pagination'
-import { ShowRecords } from 'components/table/ShowRecords'
+import { DateTime } from 'components/DateTime'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
+import { SwitchDateFormat } from 'components/SwitchDateFormat'
+import { DataTable } from 'components/table'
+import { ExpandButton } from 'components/table/ExpandButton'
+import { Pagination } from 'components/table/Pagination'
+import { ShowRecords } from 'components/table/ShowRecords'
+import { Version } from 'components/transaction/Version'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
-import { Version } from 'components/transaction/Version'
-import { SwitchDateFormat } from 'components/SwitchDateFormat'
-import { DateTime } from 'components/DateTime'
-import { ExpandButton } from 'components/table/ExpandButton'
 
 const helper = createColumnHelper<any>()
 
@@ -81,7 +81,7 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(0)
 
-  const { data: { data, page } = {} } = useAccountEventsQuery(
+  const { data: { data, page } = {}, isLoading } = useAccountEventsQuery(
     {
       id: id!,
       start,
@@ -99,7 +99,7 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
   })
 
   return (
-    <Box padding="12px">
+    <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> events
@@ -118,6 +118,6 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
           <Pagination {...pageProps} />
         </CardFooter>
       )}
-    </Box>
+    </CardBody>
   )
 }
