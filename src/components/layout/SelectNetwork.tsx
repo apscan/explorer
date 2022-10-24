@@ -1,3 +1,4 @@
+import { Icon } from '@chakra-ui/react'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ReactComponent as AptosLogo } from 'assets/aptos-logo.svg'
@@ -45,10 +46,17 @@ export const SelectNetwork = memo(() => {
               <Box
                 css={css`
                   display: flex;
+                  align-items: center;
                 `}
               >
                 {currentNetwork?.mainnet ? (
-                  <AptosLogo />
+                  <Icon
+                    css={css`
+                      width: 24px;
+                      height: 24px;
+                    `}
+                    as={AptosLogo}
+                  />
                 ) : (
                   <Box>
                     <Badge>{currentNetwork?.chainName}</Badge>

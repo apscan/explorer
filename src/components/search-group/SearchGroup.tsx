@@ -173,7 +173,7 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
         `};
         ${variant === 'header' &&
         css`
-          width: 80%;
+          width: calc(100% - 16px);
           margin-top: 8px;
           margin-left: auto;
         `};
@@ -197,7 +197,7 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
       </StyledSelectWrapper>
       <Popover gutter={0} matchWidth autoFocus={false} isOpen={isOpen}>
         <PopoverTrigger>
-          <Box width="642px">
+          <Box width={variant === 'header' ? '100%' : '642px'}>
             <SearchInputGroup
               onFocus={() => setInside(true)}
               onBlur={onBlur}
