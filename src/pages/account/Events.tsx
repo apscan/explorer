@@ -54,6 +54,9 @@ const columns = [
   }),
 
   helper.accessor('expand', {
+    meta: {
+      isExpandButton: true,
+    },
     header: (header) => {
       return (
         <ExpandButton

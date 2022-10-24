@@ -14,6 +14,7 @@ export const Table = styled(ChakraTable)``
 export const Tbody = styled(ChakraTbody)``
 
 export const Td = styled(ChakraTd)`
+  word-break: break-all;
   letter-spacing: inherit;
   color: ${vars.text.body};
   border-top: 1px solid ${vars.colors.border1};

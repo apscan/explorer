@@ -18,16 +18,25 @@ const helper = createColumnHelper<any>()
 const columns = [
   helper.accessor('version', {
     header: 'Version',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => (
       <Version vmStatus={info.row.original.vm_status} success={info.row.original.success} value={info.getValue()} />
     ),
   }),
   helper.accessor('block_height', {
+    meta: {
+      nowrap: true,
+    },
     id: 'block_height',
     header: 'Block',
     cell: (info) => <BlockHeight value={info.getValue()} />,
   }),
   helper.accessor('time_microseconds', {
+    meta: {
+      nowrap: true,
+    },
     header: () => <SwitchDateFormat />,
     cell: (info) => <DateTime value={info.getValue()} />,
   }),
@@ -57,6 +66,9 @@ const columns = [
   }),
   helper.accessor('gas_fees', {
     header: 'Tx Fee (APT)',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       if (info.row.original.type !== 'user_transaction') {
         return '-'
@@ -90,6 +102,9 @@ const columns = [
           onClick={() => header.table.toggleAllRowsExpanded()}
         />
       )
+    },
+    meta: {
+      isExpandButton: true,
     },
     cell: (info) => {
       if (info.row.original.type !== 'user_transaction') return ''

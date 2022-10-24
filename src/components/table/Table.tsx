@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ColumnDef, flexRender, getCoreRowModel, getExpandedRowModel, Row, useReactTable } from '@tanstack/react-table'
 import { Fragment, memo, useEffect, useRef } from 'react'
@@ -47,14 +48,40 @@ export const DataTable = memo(
     return (
       <StyledWrapper {...props}>
         <Table>
+          <colgroup>
+            {table.getAllColumns().map((column) => {
+              return (
+                <col
+                  key={column.id}
+                  css={css`
+                    ${(column.columnDef.meta as any)?.isExpandButton &&
+                    `
+                    width: 48px;
+                  `}
+                  `}
+                />
+              )
+            })}
+          </colgroup>
           <Thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <Th key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </Th>
-                ))}
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <Th
+                      css={css`
+                        ${(header.column.columnDef.meta as any)?.nowrap &&
+                        css`
+                          white-space: nowrap;
+                        `}
+                      `}
+                      key={header.id}
+                      colSpan={header.colSpan}
+                    >
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    </Th>
+                  )
+                })}
               </Tr>
             ))}
           </Thead>
@@ -64,7 +91,19 @@ export const DataTable = memo(
               const tr = (
                 <Tr key={row.id}>
                   {row.getVisibleCells().map((cell) => {
-                    return <Td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</Td>
+                    return (
+                      <Td
+                        css={css`
+                          ${(cell.column.columnDef.meta as any)?.nowrap &&
+                          css`
+                            white-space: nowrap;
+                          `}
+                        `}
+                        key={cell.id}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </Td>
+                    )
                   })}
                 </Tr>
               )
