@@ -6,7 +6,7 @@ import { SearchOption, SearchItem } from '../types'
 export const useSearchOptions = () => {
   const { t } = useTranslation()
   const options = useMemo<SearchItem[]>(() => {
-    const desc = t('Address / Tx Version & Hash /  Block Height & Hash')
+    const desc = t('Account Address / Tx Version & Hash /  Block Height & Hash')
 
     return [
       {
