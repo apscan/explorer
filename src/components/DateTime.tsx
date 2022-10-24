@@ -64,7 +64,7 @@ export const DateTime = memo(
         } else if (format === DateFormat.LOCAL || format === DateFormat.UTC) {
           return age
         }
-      }, [age, local, format])
+      }, [age, format, localFull])
 
       if (value == null || value === '0' || value === 0)
         return (

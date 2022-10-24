@@ -13,12 +13,10 @@ import { PageTitle } from 'components/PageTitle'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
-import { Tooltip } from 'components/Tooltip'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useState } from 'react'
 import { useAppStats } from 'state/api/hooks'
 import { usePageSize } from 'state/application/hooks'
-import { vars } from 'theme/theme.css'
 
 const helper = createColumnHelper<any>()
 
