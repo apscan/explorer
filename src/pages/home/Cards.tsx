@@ -17,6 +17,7 @@ import { Tooltip } from 'components/Tooltip'
 import { Version } from 'components/transaction/Version'
 import { memo } from 'react'
 import SimpleBar from 'simplebar-react'
+import { useAppFocused } from 'state/api/hooks'
 import { DateFormat } from 'state/application/slice'
 import { vars } from 'theme/theme.css'
 
@@ -137,7 +138,8 @@ const getTimeDeltaMs = (time1: string | number, time2: string | number) => {
 }
 
 export const LatestBlocks = memo(({ ...rest }) => {
-  const { data } = useLastBlocksQuery(26, { refetchOnMountOrArgChange: true })
+  const appFocused = useAppFocused()
+  const { data } = useLastBlocksQuery(26, { pollingInterval: appFocused ? 5000 : 0, refetchOnMountOrArgChange: true })
 
   return (
     <StyledCard {...rest}>
@@ -243,7 +245,12 @@ export const LatestBlocks = memo(({ ...rest }) => {
 })
 
 export const LatestTransactions = memo(({ ...rest }) => {
-  const { data } = useLastTransactionsQuery(25, { refetchOnMountOrArgChange: true })
+  const appFocused = useAppFocused()
+
+  const { data } = useLastTransactionsQuery(25, {
+    pollingInterval: appFocused ? 5000 : 0,
+    refetchOnMountOrArgChange: true,
+  })
 
   return (
     <StyledCard {...rest}>
