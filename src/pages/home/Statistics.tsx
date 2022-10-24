@@ -161,7 +161,7 @@ export const Statistics = ({ ...rest }) => {
                   value={stats?.total_supply}
                   fallback="--"
                 />
-                <InlineBox marginLeft="4px" color={vars.text.secondary}>
+                <InlineBox marginLeft="4px" color={vars.text.secondary} fontSize="14px">
                   (
                   <NumberFormat maximumFractionDigits={2} prefix="$" value={market?.quotes?.USD?.price} fallback="--" />
                   )
@@ -172,16 +172,37 @@ export const Statistics = ({ ...rest }) => {
             )}
             {renderStatistic(
               'Fully Diluted Valuation',
-              <NumberFormat
-                textTransform="uppercase"
-                abbr
-                forceAverage="million"
-                useGrouping
-                minimumFractionDigits={2}
-                prefix="$"
-                value={market?.quotes?.USD?.market_cap}
-                fallback="--"
-              />,
+              <InlineBox>
+                <NumberFormat
+                  textTransform="uppercase"
+                  abbr
+                  forceAverage="billion"
+                  useGrouping
+                  maximumFractionDigits={3}
+                  prefix="$"
+                  value={market?.quotes?.USD?.market_cap}
+                  fallback="--"
+                />
+                {market?.quotes?.USD?.percent_change_24h && (
+                  <InlineBox
+                    css={css`
+                      color: ${market?.quotes?.USD?.percent_change_24h < 0 ? vars.text.error : vars.text.success};
+                    `}
+                    fontSize="14px"
+                    marginLeft="4px"
+                  >
+                    (
+                    <NumberFormat
+                      prefix={market?.quotes?.USD?.percent_change_24h < 0 ? '-' : '+'}
+                      type="percent"
+                      maximumFractionDigits={2}
+                      value={market?.quotes?.USD?.percent_change_24h / 100}
+                      fallback="--"
+                    />
+                    )
+                  </InlineBox>
+                )}
+              </InlineBox>,
               'right'
             )}
           </StatisticItem>

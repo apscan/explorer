@@ -54,7 +54,14 @@ const Price = () => {
           marginLeft="4px"
         >
           (
-          <NumberFormat type="percent" maximumFractionDigits={2} value={change / 100} fallback="--" />)
+          <NumberFormat
+            prefix={isDown ? '-' : '+'}
+            type="percent"
+            maximumFractionDigits={2}
+            value={change / 100}
+            fallback="--"
+          />
+          )
         </InlineBox>
       )}
     </>

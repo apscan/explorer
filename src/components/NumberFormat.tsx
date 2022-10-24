@@ -90,7 +90,7 @@ export const NumberFormat = memo(
                   average: true,
                   thousandSeparated: useGrouping,
                   forceAverage,
-                  mantissa: 2,
+                  mantissa: maximumFractionDigits,
                   spaceSeparated: true,
                 }),
                 symbolDisplay,
