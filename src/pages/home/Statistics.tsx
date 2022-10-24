@@ -171,7 +171,7 @@ export const Statistics = ({ ...rest }) => {
               <StatsIcon src={MarketCapIcon} alt="marketcap" />
             )}
             {renderStatistic(
-              'Fully Diluted Valuation',
+              'Fully Diluted VAL.',
               <InlineBox>
                 <NumberFormat
                   textTransform="uppercase"
