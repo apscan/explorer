@@ -443,7 +443,7 @@ export const CurrentValidators = memo(({ ...rest }) => {
           border-bottom: none;
         `}
       >
-        <StyledCardTitle as="h2">Current Validators (Top 25)</StyledCardTitle>
+        <StyledCardTitle>Current Validators (Top 25)</StyledCardTitle>
       </StyledCardHead>
       <Box
         css={css`
