@@ -20,8 +20,8 @@ import { usePageSize } from 'state/application/hooks'
 import { toFixedNumber } from 'utils/number'
 
 const StatsNumberFormat = styled(NumberFormat)`
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 3.5px;
+  margin-right: 3.5px;
 `
 
 const helper = createColumnHelper<any>()
@@ -159,7 +159,7 @@ export const Accounts = () => {
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>
-              A total of <StatsNumberFormat useGrouping fallback="--" value={addressCount} /> accounts found
+              Total of <StatsNumberFormat useGrouping fallback="--" value={addressCount} /> accounts
             </Box>
             {addressCount && addressCount > 10000 && (
               <Box

@@ -23,8 +23,8 @@ import { usePageSize } from 'state/application/hooks'
 import { vars } from 'theme/theme.css'
 
 const StatsNumberFormat = styled(NumberFormat)`
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 3.5px;
+  margin-right: 3.5px;
 `
 
 const helper = createColumnHelper<any>()
