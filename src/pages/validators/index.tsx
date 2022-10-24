@@ -59,7 +59,7 @@ const columns = [
     header: 'Pending Active',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <Dot marginRight="4px" background="#44403c" />
+        <Dot marginRight="4px" background="#777169" />
         <AmountFormat postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
