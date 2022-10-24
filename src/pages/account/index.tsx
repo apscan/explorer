@@ -66,7 +66,7 @@ export const Account = () => {
 
   return (
     <Container>
-      <DocumentTitle value={`Address ${address != null ? address : '-'} | Apscan`} />
+      <DocumentTitle value={`Aptos Account ${address != null ? address : '-'} | Apscan`} />
       <PageTitle
         value={
           <InlineBox
