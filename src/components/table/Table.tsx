@@ -48,21 +48,18 @@ export const DataTable = memo(
     return (
       <StyledWrapper {...props}>
         <Table>
-          <colgroup>
+          {/* <colgroup>
             {table.getAllColumns().map((column) => {
               return (
                 <col
                   key={column.id}
                   css={css`
-                    ${(column.columnDef.meta as any)?.isExpandButton &&
-                    `
-                    width: 48px;
-                  `}
+                    
                   `}
                 />
               )
             })}
-          </colgroup>
+          </colgroup> */}
           <Thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>
@@ -73,6 +70,11 @@ export const DataTable = memo(
                         ${(header.column.columnDef.meta as any)?.nowrap &&
                         css`
                           white-space: nowrap;
+                        `}
+
+                        ${(header.column.columnDef.meta as any)?.isExpandButton &&
+                        css`
+                          width: 48px;
                         `}
                       `}
                       key={header.id}
