@@ -138,7 +138,7 @@ const getTimeDeltaMs = (time1: string | number, time2: string | number) => {
 
 export const LatestBlocks = memo(({ ...rest }) => {
   const appFocused = useAppFocused()
-  const { data } = useLastBlocksQuery(26, { pollingInterval: appFocused ? 5000 : 0, refetchOnMountOrArgChange: true })
+  const { data } = useLastBlocksQuery(26, { pollingInterval: appFocused ? 3000 : 0, refetchOnMountOrArgChange: true })
 
   return (
     <StyledCard {...rest}>
@@ -247,7 +247,7 @@ export const LatestTransactions = memo(({ ...rest }) => {
   const appFocused = useAppFocused()
 
   const { data } = useLastTransactionsQuery(25, {
-    pollingInterval: appFocused ? 5000 : 0,
+    pollingInterval: appFocused ? 3000 : 0,
     refetchOnMountOrArgChange: true,
   })
 

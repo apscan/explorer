@@ -13,7 +13,7 @@ export const useAppStatsPolling = () => {
   const appFocused = useAppFocused()
 
   const { data } = useStatsQuery(undefined, {
-    pollingInterval: appFocused ? 5000 : 0,
+    pollingInterval: appFocused ? 3000 : 0,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
