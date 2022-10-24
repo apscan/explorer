@@ -15,7 +15,7 @@ export const navConfig: INavItem[] = [
   { name: 'Accounts', path: '/accounts', activePaths: ['/accounts', '/account'] },
   {
     name: 'Blockchain',
-    activePaths: ['/blocks', '/tx', '/block', '/tx'],
+    activePaths: ['/blocks', '/txs', '/block', '/tx'],
     sub: [
       {
         name: 'Blocks',
@@ -23,7 +23,7 @@ export const navConfig: INavItem[] = [
       },
       {
         name: 'Transactions',
-        path: '/tx',
+        path: '/txs',
       },
     ],
   },

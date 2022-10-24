@@ -111,7 +111,7 @@ const TransactionsCountUp = ({ value }: { value: number }) => {
   }, [value, update])
 
   return (
-    <Link to="/tx">
+    <Link to="/txs">
       <span ref={countUpRef} />
     </Link>
   )

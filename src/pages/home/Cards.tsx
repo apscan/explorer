@@ -369,7 +369,7 @@ export const LatestTransactions = memo(({ ...rest }) => {
         })}
       </StyledCardContent>
 
-      <StyledButton as={Link} to="/tx">
+      <StyledButton as={Link} to="/txs">
         View all transactions
       </StyledButton>
     </StyledCard>

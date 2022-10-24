@@ -38,7 +38,7 @@ const routes = [
     ),
   },
   {
-    path: '/tx',
+    path: '/txs',
     element: (
       <Layout>
         <Transactions />
