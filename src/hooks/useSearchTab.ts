@@ -15,7 +15,7 @@ export const useSearchTab = (tabs?: TabItem[]) => {
   const [activeKey, setActiveKey] = useState<string>()
 
   useEffect(() => {
-    if (!activeKey && tabs) {
+    if (tabs) {
       const tabParam = searchParams.get('tab')
 
       const tab = tabs?.find((t) => tabParam === t?.key)
@@ -32,8 +32,6 @@ export const useSearchTab = (tabs?: TabItem[]) => {
       } else {
         setSearchParams({ tab: tab.key }, { replace: true })
       }
-
-      setActiveKey(tab?.key || tabs?.[0]?.key)
     },
     [tabs, setSearchParams]
   )

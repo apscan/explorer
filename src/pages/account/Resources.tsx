@@ -1,5 +1,6 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountResourcesQuery } from 'api'
+import { Address } from 'components/Address'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
 import { Hash } from 'components/Hash'
@@ -18,7 +19,7 @@ const helper = createColumnHelper<any>()
 const columns = [
   helper.accessor('move_resource_address', {
     header: 'Module Address',
-    cell: (info) => <Hash value={info.getValue()} size="short" />,
+    cell: (info) => <Address value={info.getValue()} size="short" />,
   }),
   helper.accessor('move_resource_module', {
     header: 'Module Name',
