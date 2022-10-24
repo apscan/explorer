@@ -215,7 +215,7 @@ export const LatestBlocks = memo(({ ...rest }) => {
                         `}
                         to={`/block/${item.height}?tab=tx`}
                         value={item.transactions_count}
-                        postfix=" tx"
+                        postfix=" transactions"
                       />
                       in <NumberFormat maximumFractionDigits={4} value={blockTime} /> ms
                     </Box>
