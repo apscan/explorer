@@ -167,7 +167,7 @@ export const Accounts = () => {
                   margin-left: 4px;
                 `}
               >
-                (Showing the last 10,000 top accounts only)
+                (showing the top 10,000 only)
               </Box>
             )}
           </CardHeadStats>
