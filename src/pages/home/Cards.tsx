@@ -431,10 +431,6 @@ const columns = [
       </InlineBox>
     ),
   }),
-  helper.accessor('rewards_stats', {
-    header: 'Reward (APT)',
-    cell: (info) => <AmountFormat postfix={false} maximumFractionDigits={3} value={info.getValue()?.total_rewards} />,
-  }),
 ]
 
 export const CurrentValidators = memo(({ ...rest }) => {
