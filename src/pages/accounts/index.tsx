@@ -32,12 +32,15 @@ export const Accounts = () => {
   const [pageSize, setPageSize] = usePageSize()
   const [offset, setOffset] = useState<number | undefined>(0)
 
-  const { data: { data, page } = {}, refetch } = useAccountsQuery({
-    pageSize,
-    offset,
-  })
-
-  useEffect(() => refetch(), [refetch])
+  const { data: { data, page } = {}, isLoading } = useAccountsQuery(
+    {
+      pageSize,
+      offset,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  )
 
   const columns = useMemo(
     () => [
@@ -152,7 +155,7 @@ export const Accounts = () => {
     <Container>
       <DocumentTitle value="Aptos Accounts | Apscan" />
       <PageTitle value="Accounts" />
-      <Card variant="table">
+      <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>

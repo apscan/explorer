@@ -23,10 +23,15 @@ export const Transactions = () => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(latestVersion)
 
-  const { data } = useTransactionsQuery({
-    pageSize,
-    start,
-  })
+  const { data, isLoading } = useTransactionsQuery(
+    {
+      pageSize,
+      start,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  )
 
   const [currentMin, currentMax] = useMemo(() => {
     if (!data) return []
@@ -42,9 +47,12 @@ export const Transactions = () => {
     return []
   }, [latestVersion, currentMax, pageSize])
 
-  const onSelectPageSize = useCallback((pageSize: number) => {
-    setPageSize(pageSize)
-  }, [setPageSize])
+  const onSelectPageSize = useCallback(
+    (pageSize: number) => {
+      setPageSize(pageSize)
+    },
+    [setPageSize]
+  )
 
   const onNextPage = useCallback(() => {
     if (currentMin) setStart(currentMin - 1)
@@ -64,7 +72,7 @@ export const Transactions = () => {
     <Container>
       <DocumentTitle value="Aptos Transactions | Apscan" />
       <PageTitle value="Transactions" />
-      <Card variant="table">
+      <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
             Transactions <StatsNumberFormat fallback="--" prefix="#" value={currentMin} /> to{' '}
