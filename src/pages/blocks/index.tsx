@@ -29,7 +29,7 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Block',
+    header: 'Height',
     cell: (info) => <BlockHeight value={info.getValue()} />,
   }),
   helper.accessor('time_microseconds', {
