@@ -101,7 +101,14 @@ export const JsonView = ({ src, fallback, ellipsis, withContainer, ...props }: J
           }
         `}
       >
-        <ReactJson name={false} enableClipboard={false} displayDataTypes={false} src={src} {...props} />
+        <ReactJson
+          collapsed={false}
+          name={false}
+          enableClipboard={false}
+          displayDataTypes={false}
+          src={src}
+          {...props}
+        />
       </Box>
     </JsonViewContainer>
   )
