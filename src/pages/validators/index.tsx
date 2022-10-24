@@ -43,70 +43,35 @@ const columns = [
     header: 'Voting Power (APT)',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.row.original?.voting_power} />
-        <Tooltip
-          label={
-            <>
-              <AmountFormat prefix="Active: " value={info.row.original?.voting_power_detail?.active} />
-              <AmountFormat
-                prefix="Pending Inactive: "
-                value={info.row.original?.voting_power_detail?.pending_inactive}
-              />
-            </>
-          }
-        >
-          <InlineBox color={vars.text.secondary} fontSize="80%" marginLeft="4px" alignItems="center">
-            (
-            <Dot marginLeft="4px" background="#3b82f6" />
-            <AmountFormat
-              postfix={false}
-              maximumFractionDigits={0}
-              value={info.row.original?.voting_power_detail?.active}
-            />
-            <Dot marginLeft="8px" background="#bfdbfe" />
-            <AmountFormat
-              postfix={false}
-              marginRight="4px"
-              maximumFractionDigits={0}
-              value={info.row.original?.voting_power_detail?.pending_inactive}
-            />
-            )
-          </InlineBox>
-        </Tooltip>
+        <Dot marginRight="4px" background="#3b82f6" />
+        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
   }),
-  helper.accessor('non_voting_power', {
-    header: 'Non-voting Power (APT)',
+  helper.accessor('voting_power_detail.pending_inactive', {
+    header: 'Pending Inactive',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.row.original?.non_voting_power} />
-        <Tooltip
-          label={
-            <>
-              <AmountFormat prefix="Pending Active: " value={info.row.original?.voting_power_detail?.pending_active} />
-              <AmountFormat prefix="Inactive: " value={info.row.original?.voting_power_detail?.inactive} />
-            </>
-          }
-        >
-          <InlineBox color={vars.text.secondary} fontSize="80%" marginLeft="4px" alignItems="center">
-            (
-            <Dot marginLeft="4px" background="#44403c" />
-            <AmountFormat
-              postfix={false}
-              maximumFractionDigits={0}
-              value={info.row.original?.voting_power_detail?.pending_active}
-            />
-            <Dot marginLeft="8px" background="#a8a29e" />
-            <AmountFormat
-              postfix={false}
-              marginRight="4px"
-              maximumFractionDigits={0}
-              value={info.row.original?.voting_power_detail?.inactive}
-            />
-            )
-          </InlineBox>
-        </Tooltip>
+        <Dot marginRight="4px" background="#bfdbfe" />
+        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.getValue()} />
+      </InlineBox>
+    ),
+  }),
+  helper.accessor('voting_power_detail.pending_active', {
+    header: 'Pending Active',
+    cell: (info) => (
+      <InlineBox alignItems="center">
+        <Dot marginRight="4px" background="#44403c" />
+        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.getValue()} />
+      </InlineBox>
+    ),
+  }),
+  helper.accessor('voting_power_detail.inactive', {
+    header: 'Inactive',
+    cell: (info) => (
+      <InlineBox alignItems="center">
+        <Dot marginRight="4px" background="#a8a29e" />
+        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
   }),
