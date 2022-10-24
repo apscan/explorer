@@ -427,7 +427,7 @@ const columns = [
     cell: (info) => (
       <InlineBox alignItems="center">
         <Dot marginRight="4px" background="#a8a29e" />
-        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.getValue()} />
+        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
   }),
