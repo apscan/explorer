@@ -110,7 +110,7 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
   })
 
   return (
-    <CardBody isLoading={isLoading}>
+    <CardBody isLoading={isLoading || id == null || !count}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> changes
@@ -118,6 +118,7 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable
+        page={pageProps.page}
         renderSubComponent={renderSubComponent}
         getRowCanExpand={getRowCanExpand}
         dataSource={data}

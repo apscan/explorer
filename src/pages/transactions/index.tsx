@@ -89,7 +89,7 @@ export const Transactions = () => {
             onPrePage={onPrePage}
           />
         </CardHead>
-        <TransactionsTable data={data} />
+        <TransactionsTable page={showPage} data={data} />
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={onSelectPageSize} />
           <Pagination

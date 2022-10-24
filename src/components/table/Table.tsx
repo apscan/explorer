@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { ColumnDef, flexRender, getCoreRowModel, getExpandedRowModel, Row, useReactTable } from '@tanstack/react-table'
-import { Fragment, memo } from 'react'
+import { Fragment, memo, useEffect, useRef } from 'react'
 import { Box, BoxProps } from '../container/Box'
 import { Table, Tbody, Td, Th, Thead, Tr } from './TableComponents'
 
@@ -10,6 +10,7 @@ interface DataTableProps<TData extends object = {}> extends BoxProps {
   columnVisibility?: Record<string, boolean>
   renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
   getRowCanExpand?: (row: Row<TData>) => boolean
+  page?: number
 }
 
 const StyledWrapper = styled(Box)`
@@ -20,17 +21,28 @@ const rowModel = getCoreRowModel()
 const expandedRowModel = getExpandedRowModel()
 
 export const DataTable = memo(
-  ({ dataSource, columns, columnVisibility, renderSubComponent, getRowCanExpand, ...props }: DataTableProps) => {
+  ({ dataSource, page, columns, columnVisibility, renderSubComponent, getRowCanExpand, ...props }: DataTableProps) => {
     const table = useReactTable({
       data: dataSource || [],
       columns: columns,
       state: {
         columnVisibility,
       },
+      autoResetExpanded: true,
       getCoreRowModel: rowModel as any,
       getExpandedRowModel: expandedRowModel as any,
       getRowCanExpand: getRowCanExpand as any,
     })
+
+    const tableRef = useRef(table)
+
+    tableRef.current = table
+
+    useEffect(() => {
+      if (tableRef.current && tableRef.current?.getIsSomeRowsExpanded()) {
+        tableRef.current.resetExpanded()
+      }
+    }, [page])
 
     return (
       <StyledWrapper {...props}>

@@ -92,6 +92,7 @@ const columns = [
       )
     },
     cell: (info) => {
+      console.count('render')
       if (info.row.original.type !== 'user_transaction') return ''
       return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
     },
@@ -101,6 +102,7 @@ const columns = [
 type TransactionsTableProps = {
   data?: any
   variant?: 'block' | 'account'
+  page?: number
 }
 
 const renderSubComponent = ({ row }: { row: Row<any> }) => {
@@ -111,7 +113,7 @@ const getRowCanExpand = (row: any) => {
   return row.original.type === 'user_transaction'
 }
 
-export const TransactionsTable = memo(({ data, variant }: TransactionsTableProps) => {
+export const TransactionsTable = memo(({ data, variant, page }: TransactionsTableProps) => {
   const columnVisibility = useMemo(() => {
     if (variant === 'block') {
       return { block_height: false } as Record<string, boolean>
@@ -126,6 +128,7 @@ export const TransactionsTable = memo(({ data, variant }: TransactionsTableProps
 
   return (
     <DataTable
+      page={page}
       renderSubComponent={renderSubComponent}
       columnVisibility={columnVisibility}
       dataSource={data}

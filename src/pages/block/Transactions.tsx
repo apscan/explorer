@@ -50,7 +50,7 @@ export const BlockTransactions = ({ id, count }: { id?: string; count: number })
         </CardHeadStats>
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
-      <TransactionsTable variant="block" data={data} />
+      <TransactionsTable page={pageProps.page} variant="block" data={data} />
       {pageProps?.total && pageProps.total > 1 && (
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />

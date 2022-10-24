@@ -107,6 +107,7 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable
+        page={pageProps.page}
         renderSubComponent={renderSubComponent}
         getRowCanExpand={getRowCanExpand}
         dataSource={data}
