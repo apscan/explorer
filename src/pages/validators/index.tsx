@@ -41,7 +41,7 @@ const columns = [
     header: 'Voting Power (APT)',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <Dot marginRight="4px" background="#0950C3" />
+        <Dot marginRight="4px" background="#3b82f6" />
         <AmountFormat postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
@@ -50,7 +50,7 @@ const columns = [
     header: 'Pending Inactive',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <Dot marginRight="4px" background="#bfdbfe" />
+        <Dot marginRight="4px" background="#8BB5F9" />
         <AmountFormat postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
