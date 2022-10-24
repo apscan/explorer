@@ -75,10 +75,7 @@ export const Transactions = () => {
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Transactions <StatsNumberFormat fallback="--" prefix="#" value={currentMin} /> to{' '}
-            <StatsNumberFormat fallback="--" prefix="#" value={currentMax} /> (Total of
-            <StatsNumberFormat fallback="--" useGrouping value={latestVersion ? latestVersion + 1 : undefined} />{' '}
-            transactions)
+            Total of <StatsNumberFormat fallback="--" useGrouping value={latestVersion} /> transactions
           </CardHeadStats>
           <Pagination
             page={showPage}
