@@ -92,10 +92,15 @@ export const Blocks = () => {
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number | undefined>(latestBlockHeight)
 
-  const { data } = useBlocksQuery({
-    pageSize,
-    start,
-  })
+  const { data, isLoading } = useBlocksQuery(
+    {
+      pageSize,
+      start,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  )
 
   const [currentMinBlock, currentMaxBlock] = useMemo(() => {
     if (!data) return []
@@ -139,7 +144,7 @@ export const Blocks = () => {
     <Container>
       <DocumentTitle value="Aptos Blocks | Apscan" />
       <PageTitle value="Blocks" />
-      <Card variant="table">
+      <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
             Block <StatsNumberFormat fallback="--" prefix="#" value={currentMinBlock} /> to{' '}

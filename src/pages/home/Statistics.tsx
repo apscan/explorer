@@ -192,7 +192,7 @@ export const Statistics = ({ ...rest }) => {
                   >
                     (
                     <NumberFormat
-                      prefix={market?.quotes?.USD?.percent_change_24h < 0 ? '-' : '+'}
+                      prefix={market?.quotes?.USD?.percent_change_24h < 0 ? '' : '+'}
                       type="percent"
                       maximumFractionDigits={2}
                       value={market?.quotes?.USD?.percent_change_24h / 100}

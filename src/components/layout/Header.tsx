@@ -55,7 +55,7 @@ const Price = () => {
         >
           (
           <NumberFormat
-            prefix={isDown ? '-' : '+'}
+            prefix={isDown ? '' : '+'}
             type="percent"
             maximumFractionDigits={2}
             value={change / 100}

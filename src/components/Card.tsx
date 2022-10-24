@@ -1,9 +1,11 @@
+import { BoxProps } from '@chakra-ui/react'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { vars } from 'theme/theme.css'
 import { Box } from './container/Box'
+import { Spinner } from './Spinner'
 
-export const Card = styled(Box)`
+const card = css`
   border-radius: 8px;
   border: 1px solid ${vars.colors.border1};
   word-wrap: break-word;
@@ -13,8 +15,55 @@ export const Card = styled(Box)`
   background-color: ${vars.colors.backgroundMain};
   box-shadow: ${vars.shadows.shadow3};
   position: relative;
-  padding: ${(props) => (props.variant === 'table' ? '12px' : 0)};
 `
+
+export const Card = ({ variant, isLoading, ...props }: BoxProps & { isLoading?: boolean; variant?: string }) => {
+  if (isLoading)
+    return (
+      <Box
+        css={[
+          card,
+          css`
+            padding: ${variant === 'table' ? '12px' : 0};
+          `,
+        ]}
+        {...props}
+      >
+        <Box
+          css={css`
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            min-height: 500px;
+          `}
+        >
+          <Spinner
+            css={css`
+              --spinner-size: 40px;
+            `}
+            speed="0.65s"
+            thickness="3px"
+            size="lg"
+            color={vars.colors.link}
+            emptyColor={vars.colors.buttonBg1}
+          />
+        </Box>
+      </Box>
+    )
+
+  return (
+    <Box
+      css={[
+        card,
+        css`
+          padding: ${variant === 'table' ? '12px' : 0};
+        `,
+      ]}
+      {...props}
+    />
+  )
+}
 
 export const CardHead = styled(Box)`
   ${(props) =>
