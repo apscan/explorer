@@ -42,23 +42,25 @@ export const DateTime = memo(
         return _format || dateFormat
       }, [dateFormat, _format])
 
-      const { age, local } = useMemo(() => {
+      const { age, local, localFull } = useMemo(() => {
         if (!value) {
           return {
             age: null,
             local: null,
             utc: null,
+            localFull: null,
           }
         }
 
         return formatDate(value, {
           withUTCPostfix: withUTCPostfix !== undefined ? withUTCPostfix : format === DateFormat.FULL,
+          full: format === DateFormat.FULL,
         })
       }, [value, withUTCPostfix, format])
 
       const tip = useMemo(() => {
         if (format === DateFormat.AGE) {
-          return local
+          return localFull
         } else if (format === DateFormat.LOCAL || format === DateFormat.UTC) {
           return age
         }

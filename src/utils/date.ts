@@ -60,11 +60,14 @@ export const formatDate = (
   value?: string | number | dayjs.Dayjs | Date,
   {
     withUTCPostfix = true,
+    full = false,
   }: {
+    full?: boolean
     withUTCPostfix?: boolean
   } = {}
 ) => {
   const age = fromNow(value)
+  const formatString = full ? 'YYYY-MM-DD HH:mm:ss.SSS' : 'YYYY-MM-DD HH:mm:ss'
 
   // Microseconds
   if (typeof value === 'string' && /^\d{16}$/.test(value)) {
@@ -76,11 +79,12 @@ export const formatDate = (
   }
 
   let time = dayjs(value)
-  let local = time.format('YYYY-MM-DD HH:mm:ss.SSS')
+  let local = time.format(formatString)
+  let localFull = time.format('YYYY-MM-DD HH:mm:ss.SSS')
 
   time = time.utc()
 
-  let utc = time.format('YYYY-MM-DD HH:mm:ss.SSS')
+  let utc = time.format(formatString)
 
   if (withUTCPostfix) {
     local += ` UTC${getUTC()}`
@@ -91,5 +95,6 @@ export const formatDate = (
     age,
     local,
     utc,
+    localFull,
   }
 }

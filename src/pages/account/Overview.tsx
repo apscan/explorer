@@ -35,8 +35,8 @@ export const Overview = ({ data }: { data: any | undefined }) => {
               <AmountFormat value={data?.aptos_coin_total_balance} />
               <InlineBox marginLeft="4px">
                 (
-                <AmountFormat prefix="Available: " value={data?.aptos_coin_balance} />,
-                <AmountFormat marginLeft="4px" prefix="Staked: " value={data?.aptos_coin_staked} />)
+                <AmountFormat postfix={false} prefix="Available | " value={data?.aptos_coin_balance} />,
+                <AmountFormat postfix={false} marginLeft="4px" prefix="Staked | " value={data?.aptos_coin_staked} />)
               </InlineBox>
             </>
           )
