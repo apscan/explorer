@@ -2,13 +2,16 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountModulesQuery } from 'api'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
+import { CopyButton } from 'components/CopyButton'
 import { Hash } from 'components/Hash'
-import { JsonView } from 'components/JsonView'
+import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
+import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
+import numbro from 'numbro'
 import { useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
 
@@ -19,31 +22,72 @@ const columns = [
     header: 'Name',
     cell: (info) => <Box>{info.getValue()}</Box>,
   }),
-  helper.accessor('move_module_abi.structs', {
-    header: 'Friends',
-    cell: (info) => <JsonView collapsed={0} src={info.getValue()} />,
-  }),
   helper.accessor('move_module_abi.friends', {
+    header: 'Friends',
+    cell: (info) => info.getValue().length,
+  }),
+  helper.accessor('move_module_abi.structs', {
     header: 'Structs',
-    cell: (info) => <JsonView collapsed={0} src={info.getValue()} />,
+    cell: (info) => info.getValue().length,
   }),
   helper.accessor('move_module_abi.exposed_functions', {
     header: 'Exposed Functions',
-    cell: (info) => <JsonView collapsed={0} src={info.getValue()} />,
+    cell: (info) => info.getValue().length,
   }),
-  helper.accessor('move_module_abi', {
-    header: 'ABI',
-    cell: (info) => <JsonView enableClipboard={true} collapsed={0} src={info.getValue()} />,
-  }),
-  helper.accessor('move_module_bytecode', {
+
+  helper.accessor('move_module_bytecode_length', {
     header: 'Bytecode',
-    cell: (info) => <Hash copyable={true} value={info.getValue()} size="short" />,
+    cell: (info) => {
+      const str = numbro(info.getValue() as number)
+        .format({
+          output: 'byte',
+          base: 'decimal',
+          spaceSeparated: true,
+        })
+        .replace('i', '')
+
+      return (
+        <Box>
+          {str}
+          <CopyButton text={info.row.original?.move_module_bytecode} />
+        </Box>
+      )
+    },
   }),
   helper.accessor('Source_Code', {
     header: 'Source Code',
-    cell: (info) => <NumberFormat value={info.getValue()} />,
+    cell: (info) => <NumberFormat fallback="-" value={info.getValue()} />,
+  }),
+  helper.accessor('move_module_abi', {
+    header: 'ABI',
+    cell: (info) => <JsonViewEllipsis src={info.getValue()} />,
+  }),
+  helper.accessor('expand', {
+    meta: {
+      isExpandButton: true,
+    },
+    header: (header) => {
+      return (
+        <ExpandButton
+          expandAll
+          expanded={header.table.getIsSomeRowsExpanded()}
+          onClick={() => header.table.toggleAllRowsExpanded()}
+        />
+      )
+    },
+    cell: (info) => {
+      return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+    },
   }),
 ]
+
+const renderSubComponent = ({ row }: { row: any }) => {
+  return <JsonView src={row.original?.move_module_abi} withContainer />
+}
+
+const getRowCanExpand = (row: any) => {
+  return Boolean(row?.original?.move_module_abi)
+}
 
 export const Modules = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize] = usePageSize()
@@ -74,7 +118,12 @@ export const Modules = ({ id, count }: { id: any; count: number }) => {
         </CardHeadStats>
         {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
-      <DataTable dataSource={data} columns={columns} />
+      <DataTable
+        renderSubComponent={renderSubComponent}
+        getRowCanExpand={getRowCanExpand}
+        dataSource={data}
+        columns={columns}
+      />
       {pageProps?.total && pageProps.total > 1 && (
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
