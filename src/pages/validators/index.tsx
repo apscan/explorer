@@ -43,7 +43,7 @@ const columns = [
     header: 'Voting Power (APT)',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <AmountFormat postfix={false} maximumFractionDigits={3} value={info.row.original?.voting_power} />
+        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.row.original?.voting_power} />
         <Tooltip
           label={
             <>
@@ -60,14 +60,14 @@ const columns = [
             <Dot marginLeft="4px" background="#3b82f6" />
             <AmountFormat
               postfix={false}
-              maximumFractionDigits={3}
+              maximumFractionDigits={0}
               value={info.row.original?.voting_power_detail?.active}
             />
             <Dot marginLeft="8px" background="#bfdbfe" />
             <AmountFormat
               postfix={false}
               marginRight="4px"
-              maximumFractionDigits={3}
+              maximumFractionDigits={0}
               value={info.row.original?.voting_power_detail?.pending_inactive}
             />
             )
@@ -80,7 +80,7 @@ const columns = [
     header: 'Non-voting Power (APT)',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <AmountFormat postfix={false} maximumFractionDigits={3} value={info.row.original?.non_voting_power} />
+        <AmountFormat postfix={false} maximumFractionDigits={0} value={info.row.original?.non_voting_power} />
         <Tooltip
           label={
             <>
@@ -94,14 +94,14 @@ const columns = [
             <Dot marginLeft="4px" background="#44403c" />
             <AmountFormat
               postfix={false}
-              maximumFractionDigits={3}
+              maximumFractionDigits={0}
               value={info.row.original?.voting_power_detail?.pending_active}
             />
             <Dot marginLeft="8px" background="#a8a29e" />
             <AmountFormat
               postfix={false}
               marginRight="4px"
-              maximumFractionDigits={3}
+              maximumFractionDigits={0}
               value={info.row.original?.voting_power_detail?.inactive}
             />
             )
