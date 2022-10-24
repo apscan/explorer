@@ -92,7 +92,6 @@ const columns = [
       )
     },
     cell: (info) => {
-      console.count('render')
       if (info.row.original.type !== 'user_transaction') return ''
       return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
     },
