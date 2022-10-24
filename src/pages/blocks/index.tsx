@@ -147,10 +147,7 @@ export const Blocks = () => {
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Block <StatsNumberFormat fallback="--" prefix="#" value={currentMinBlock} /> to{' '}
-            <StatsNumberFormat fallback="--" prefix="#" value={currentMaxBlock} /> (Total of
-            <StatsNumberFormat fallback="--" useGrouping value={latestBlockHeight ? latestBlockHeight + 1 : '-'} />{' '}
-            blocks)
+            Total of <StatsNumberFormat useGrouping fallback="--" value={latestBlockHeight} /> blocks
           </CardHeadStats>
           <Pagination
             page={showPage}
