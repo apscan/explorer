@@ -22,13 +22,22 @@ const helper = createColumnHelper<any>()
 const columns = [
   helper.accessor('transaction_version', {
     header: 'Tx Version',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => <Version value={info.getValue()} />,
   }),
   helper.accessor('time_microseconds', {
+    meta: {
+      nowrap: true,
+    },
     header: () => <SwitchDateFormat />,
     cell: (info) => <DateTime value={info.getValue()} />,
   }),
   helper.accessor('asset', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Asset',
     cell: (info) => 'Aptos Coin',
   }),
@@ -45,6 +54,9 @@ const columns = [
   //   ),
   // }),
   helper.accessor('sender', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Sender',
     cell: (info) =>
       info.getValue() ? (
@@ -54,6 +66,9 @@ const columns = [
       ),
   }),
   helper.accessor('in_out', {
+    meta: {
+      nowrap: true,
+    },
     header: '',
     cell: (info) => {
       const type =
@@ -98,6 +113,9 @@ const columns = [
       return parseUserTransfer(data?.payload)?.receiver
     },
     {
+      meta: {
+        nowrap: true,
+      },
       header: 'Receiver',
       cell: (info) =>
         info.getValue() ? (
@@ -108,6 +126,9 @@ const columns = [
     }
   ),
   helper.accessor('data.amount', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Amount (APT)',
     cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
   }),

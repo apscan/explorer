@@ -20,22 +20,37 @@ const helper = createColumnHelper<any>()
 
 const columns = [
   helper.accessor('transaction_version', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Tx Version',
     cell: (info) => <Version value={info.getValue()} />,
   }),
   helper.accessor('time_microseconds', {
+    meta: {
+      nowrap: true,
+    },
     header: () => <SwitchDateFormat />,
     cell: (info) => <DateTime value={info.getValue()} />,
   }),
   helper.accessor('creation_number', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Creation Number',
     cell: (info) => <NumberFormat value={info.getValue()} />,
   }),
   helper.accessor('sequence_number', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Sequence Number',
     cell: (info) => <NumberFormat value={info.getValue()} />,
   }),
   helper.accessor('type', {
+    // meta: {
+    //   nowrap: true,
+    // },
     header: 'Type',
     cell: (info) => (
       <Box
@@ -49,6 +64,9 @@ const columns = [
   }),
 
   helper.accessor('data', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Data',
     cell: (info) => <JsonViewEllipsis src={info.getValue()} />,
   }),
@@ -56,6 +74,7 @@ const columns = [
   helper.accessor('expand', {
     meta: {
       isExpandButton: true,
+      nowrap: true,
     },
     header: (header) => {
       return (

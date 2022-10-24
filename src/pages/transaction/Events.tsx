@@ -18,6 +18,9 @@ const helper = createColumnHelper<any>()
 
 const columns = [
   helper.accessor('address', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Address',
     cell: (info) => <Address size="short" value={info.getValue()} />,
   }),
@@ -26,10 +29,16 @@ const columns = [
   //   cell: (info) => <DateTime value={info.getValue()} />,
   // }),
   helper.accessor('creation_number', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Creation Number',
     cell: (info) => <NumberFormat value={info.getValue()} />,
   }),
   helper.accessor('sequence_number', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Sequence Number',
     cell: (info) => <NumberFormat value={info.getValue()} />,
   }),
@@ -47,12 +56,16 @@ const columns = [
   }),
 
   helper.accessor('data', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Data',
     cell: (info) => <JsonViewEllipsis maxWidth="320px" src={info.getValue()} />,
   }),
 
   helper.accessor('expand', {
     meta: {
+      nowrap: true,
       isExpandButton: true,
     },
     header: (header) => {

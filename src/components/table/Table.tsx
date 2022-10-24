@@ -16,6 +16,12 @@ interface DataTableProps<TData extends object = {}> extends BoxProps {
 
 const StyledWrapper = styled(Box)`
   position: relative;
+  width: 100%;
+  overflow-x: auto;
+
+  ${Table} {
+    width: 100%;
+  }
 `
 
 const rowModel = getCoreRowModel()
@@ -99,6 +105,8 @@ export const DataTable = memo(
                           ${(cell.column.columnDef.meta as any)?.nowrap &&
                           css`
                             white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
                           `}
                         `}
                         key={cell.id}

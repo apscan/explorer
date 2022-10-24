@@ -18,18 +18,30 @@ const helper = createColumnHelper<any>()
 
 const columns = [
   helper.accessor('move_resource_address', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Module Address',
     cell: (info) => <Address value={info.getValue()} size="short" />,
   }),
   helper.accessor('move_resource_module', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Module Name',
     cell: (info) => <Box>{info.getValue()}</Box>,
   }),
   helper.accessor('move_resource_name', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Resource Name',
     cell: (info) => <Box>{info.getValue()}</Box>,
   }),
   helper.accessor('move_resource_data', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Data',
     cell: (info) => <JsonViewEllipsis src={info.getValue()} />,
   }),
@@ -37,6 +49,7 @@ const columns = [
   helper.accessor('expand', {
     meta: {
       isExpandButton: true,
+      nowrap: true,
     },
     header: (header) => {
       return (

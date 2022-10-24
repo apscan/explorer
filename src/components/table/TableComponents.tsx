@@ -28,6 +28,7 @@ export const Td = styled(ChakraTd)`
 export const Th = styled(ChakraTh)`
   letter-spacing: inherit;
   padding: 10px;
+  white-space: nowrap;
   color: ${vars.text.header};
   background-color: ${vars.colors.theadBg};
   border-bottom: 2px solid ${vars.colors.border1};

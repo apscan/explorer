@@ -19,23 +19,38 @@ const helper = createColumnHelper<any>()
 
 const columns = [
   helper.accessor('move_module_name', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Name',
     cell: (info) => <Box>{info.getValue()}</Box>,
   }),
   helper.accessor('move_module_abi.friends', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Friends',
     cell: (info) => info.getValue().length,
   }),
   helper.accessor('move_module_abi.structs', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Structs',
     cell: (info) => info.getValue().length,
   }),
   helper.accessor('move_module_abi.exposed_functions', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Exposed Functions',
     cell: (info) => info.getValue().length,
   }),
 
   helper.accessor('move_module_bytecode_length', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Bytecode',
     cell: (info) => {
       const str = numbro(info.getValue() as number)
@@ -55,6 +70,9 @@ const columns = [
     },
   }),
   helper.accessor('Source_Code', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Source Code',
     cell: (info) => <NumberFormat fallback="-" value={info.getValue()} />,
   }),
@@ -64,6 +82,7 @@ const columns = [
   }),
   helper.accessor('expand', {
     meta: {
+      nowrap: true,
       isExpandButton: true,
     },
     header: (header) => {

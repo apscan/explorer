@@ -34,11 +34,17 @@ const helper = createColumnHelper<any>()
 
 const columns = [
   helper.accessor('type', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Type',
     cell: (info) => <Badge>{info.getValue()}</Badge>,
   }),
 
   helper.accessor('data.address', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Address',
     cell: (info) => {
       if (info.row.original.type === 'WriteTableItem' || info.row.original.type === 'DeleteTableItem') {
@@ -49,11 +55,17 @@ const columns = [
   }),
 
   helper.accessor('data.state_key_hash', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Stake Key Hash',
     cell: (info) => <Hash value={info.getValue()} size="short" />,
   }),
 
   helper.accessor('data.move_resource_data', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Data',
     cell: (info) => {
       const data = info.getValue()
@@ -64,6 +76,7 @@ const columns = [
 
   helper.accessor('expand', {
     meta: {
+      nowrap: true,
       isExpandButton: true,
     },
     header: (header) => {

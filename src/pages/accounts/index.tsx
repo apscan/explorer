@@ -40,14 +40,23 @@ export const Accounts = () => {
   const columns = useMemo(
     () => [
       helper.accessor('balance_rank', {
+        meta: {
+          nowrap: true,
+        },
         header: 'Rank',
         cell: (info) => <NumberFormat value={info.getValue()} />,
       }),
       helper.accessor('address', {
+        meta: {
+          nowrap: true,
+        },
         header: 'Address',
         cell: (info) => <Address value={info.getValue()} size="short" />,
       }),
       helper.accessor('created_at_timestamp', {
+        meta: {
+          nowrap: true,
+        },
         header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Creation Age" />,
         cell: (info) => <DateTime value={info.getValue()} />,
       }),
@@ -56,18 +65,30 @@ export const Accounts = () => {
       //   cell: (info) => <Hash value={info.getValue()} size="short" />,
       // }),
       helper.accessor('aptos_coin_balance', {
+        meta: {
+          nowrap: true,
+        },
         header: 'Available (APT)',
         cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_staked', {
+        meta: {
+          nowrap: true,
+        },
         header: 'Staked (APT)',
         cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_total_balance', {
+        meta: {
+          nowrap: true,
+        },
         header: 'Balance (APT)',
         cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('percentage', {
+        meta: {
+          nowrap: true,
+        },
         header: 'Percentage',
         cell: (info) => {
           if (!totalSupply || info.row.original?.aptos_coin_total_balance === undefined) return '--'
@@ -86,6 +107,9 @@ export const Accounts = () => {
         },
       }),
       helper.accessor('transactions_count', {
+        meta: {
+          nowrap: true,
+        },
         header: 'Transactions',
         cell: (info) => <NumberFormat to={`/account/${info.row.original.address}?tab=tx`} value={info.getValue()} />,
       }),
