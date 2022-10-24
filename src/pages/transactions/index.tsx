@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useTransactionsQuery } from 'api'
 import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Container } from 'components/container'
+import { Box, Container } from 'components/container'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -11,11 +11,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { useAppStats } from 'state/api/hooks'
 import { usePageSize } from 'state/application/hooks'
 import { TransactionsTable } from './TransactionsTable'
-
-const StatsNumberFormat = styled(NumberFormat)`
-  margin-left: 3.5px;
-  margin-right: 3.5px;
-`
 
 export const Transactions = () => {
   const { latest_transaction_version: latestVersion } = useAppStats()
@@ -75,7 +70,9 @@ export const Transactions = () => {
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Total of <StatsNumberFormat fallback="--" useGrouping value={latestVersion} /> transactions
+            <Box>
+              Total of <NumberFormat fallback="--" useGrouping value={latestVersion} /> transactions
+            </Box>
           </CardHeadStats>
           <Pagination
             page={showPage}

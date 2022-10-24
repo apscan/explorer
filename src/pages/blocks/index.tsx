@@ -22,11 +22,6 @@ import { useAppStats } from 'state/api/hooks'
 import { usePageSize } from 'state/application/hooks'
 import { vars } from 'theme/theme.css'
 
-const StatsNumberFormat = styled(NumberFormat)`
-  margin-left: 3.5px;
-  margin-right: 3.5px;
-`
-
 const helper = createColumnHelper<any>()
 
 const columns = [
@@ -147,7 +142,9 @@ export const Blocks = () => {
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Total of <StatsNumberFormat useGrouping fallback="--" value={latestBlockHeight} /> blocks
+            <Box>
+              Total of <NumberFormat useGrouping fallback="--" value={latestBlockHeight} /> blocks
+            </Box>
           </CardHeadStats>
           <Pagination
             page={showPage}
