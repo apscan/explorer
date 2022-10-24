@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { useMarketInfoQuery } from 'api'
-import AccountIcon from 'assets/home/Account.svg'
+import AccountsIcon from 'assets/home/Accounts.svg'
 import TotalSupplyIcon from 'assets/home/TotalSupply.svg'
 import StakedIcon from 'assets/home/Staked.svg'
 import TransactionsIcon from 'assets/home/Transactions.svg'
@@ -286,7 +286,7 @@ export const Statistics = ({ ...rest }) => {
               'Accounts',
               <NumberFormat useGrouping to="/accounts" value={stats?.address_count} fallback="--" />,
               'left',
-              <StatsIcon src={AccountIcon} alt="accounts" />
+              <StatsIcon src={AccountsIcon} alt="accounts" />
             )}
             {renderStatistic(
               'Validators',

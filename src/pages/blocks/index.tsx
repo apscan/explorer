@@ -1,5 +1,4 @@
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useBlocksQuery } from 'api'
 import { Address } from 'components/Address'
