@@ -225,7 +225,7 @@ export const LatestBlocks = memo(({ ...rest }) => {
                   `}
                 >
                   <StyledAmountWrapper>
-                    <AmountFormat prefix="🔥 " postfix={false} value={item.gas_fees} />
+                    <AmountFormat postfix={false} value={item.gas_fees} /> 🔥
                   </StyledAmountWrapper>
                 </StyledItemInner>
               </Box>
@@ -358,7 +358,7 @@ export const LatestTransactions = memo(({ ...rest }) => {
                   `}
                 >
                   <StyledAmountWrapper>
-                    <AmountFormat prefix="🔥 " postfix={false} value={gasFee} />
+                    <AmountFormat value={gasFee} /> 🔥
                   </StyledAmountWrapper>
                 </StyledItemInner>
               </Box>
