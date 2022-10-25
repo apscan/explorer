@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { useMarketInfoQuery } from 'api'
@@ -6,14 +7,11 @@ import { Box, InlineBox } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { renderRow } from 'components/helpers'
 import { NumberFormat } from 'components/NumberFormat'
-import { Tooltip } from 'components/Tooltip'
+import { Poptip } from 'components/PopTip'
 import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
-import { toFixedNumber } from 'utils/number'
-import { Icon } from 'components/Icon'
-import { css } from '@emotion/react'
 import { vars } from 'theme/theme.css'
-import { Poptip } from 'components/PopTip'
+import { toFixedNumber } from 'utils/number'
 
 const Wrapper = styled(Box)`
   padding: 0 12px;
