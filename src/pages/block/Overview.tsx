@@ -71,7 +71,7 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
           { border: true }
         )}
 
-        {renderRow('Fees', <AmountFormat symbol={undefined} postfix="APT 🔥" value={data?.gas_fees} />, {
+        {renderRow('Fees', <AmountFormat symbol={undefined} postfix=" APT 🔥" value={data?.gas_fees} />, {
           border: true,
         })}
         {data && (
