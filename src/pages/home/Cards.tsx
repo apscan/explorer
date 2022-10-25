@@ -1,19 +1,17 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { createColumnHelper } from '@tanstack/react-table'
 import { useActiveValidatorsQuery, useLastBlocksQuery, useLastTransactionsQuery } from 'api'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { BlockHeight } from 'components/block/BlockHeight'
 import { BaseButton } from 'components/buttons'
 import { Card } from 'components/Card'
-import { Box, InlineBox } from 'components/container'
+import { Box } from 'components/container'
 import { DateTime } from 'components/DateTime'
-import { Dot } from 'components/Dot'
 import { Link } from 'components/link'
 import { NumberFormat } from 'components/NumberFormat'
-import { DataTable } from 'components/table'
 import { Version } from 'components/transaction/Version'
+import { ValidatorsTable } from 'pages/validators/ValidatorsTable'
 import { memo } from 'react'
 import SimpleBar from 'simplebar-react'
 import { useAppFocused } from 'state/api/hooks'
@@ -376,63 +374,6 @@ export const LatestTransactions = memo(({ ...rest }) => {
   )
 })
 
-const helper = createColumnHelper<any>()
-
-const columns = [
-  helper.accessor('validator_index', {
-    header: 'Type',
-    cell: (info) => (
-      <Box>
-        {info.row.original.validator_status} #{info.row.original.validator_index}
-      </Box>
-    ),
-  }),
-  helper.accessor('address', {
-    header: 'Owner',
-    cell: (info) => <Address size="short" value={info.getValue()} />,
-  }),
-  helper.accessor('operator_address', {
-    header: 'Operator',
-    cell: (info) => <Address size="short" value={info.getValue()} />,
-  }),
-  helper.accessor('voting_power', {
-    header: 'Voting Power (APT)',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        <Dot marginRight="4px" background="#3b82f6" />
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
-  }),
-  helper.accessor('voting_power_detail.pending_inactive', {
-    header: 'Pending Inactive',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        <Dot marginRight="4px" background="#8BB5F9" />
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
-  }),
-  helper.accessor('voting_power_detail.pending_active', {
-    header: 'Pending Active',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        <Dot marginRight="4px" background="#777169" />
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
-  }),
-  helper.accessor('voting_power_detail.inactive', {
-    header: 'Inactive',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        <Dot marginRight="4px" background="#a8a29e" />
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
-  }),
-]
-
 export const CurrentValidators = memo(({ ...rest }) => {
   const { data } = useActiveValidatorsQuery(undefined, { refetchOnMountOrArgChange: true })
 
@@ -452,7 +393,7 @@ export const CurrentValidators = memo(({ ...rest }) => {
           max-height: auto;
         `}
       >
-        <DataTable dataSource={data} columns={columns} />
+        <ValidatorsTable data={data} />
       </Box>
       <StyledButton as={Link} to="/validators">
         View all validators
