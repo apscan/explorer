@@ -169,11 +169,18 @@ export const Statistics = ({ ...rest }) => {
                   value={stats?.total_supply}
                   fallback="--"
                 />
-                <InlineBox marginLeft="4px" color={vars.text.secondary} fontSize="14px">
-                  (
-                  <NumberFormat maximumFractionDigits={2} prefix="$" value={market?.quotes?.USD?.price} fallback="--" />
-                  )
-                </InlineBox>
+                {market?.quotes?.USD?.price && (
+                  <InlineBox marginLeft="4px" color={vars.text.secondary} fontSize="14px">
+                    (
+                    <NumberFormat
+                      maximumFractionDigits={2}
+                      prefix="$"
+                      value={market?.quotes?.USD?.price}
+                      fallback="--"
+                    />
+                    )
+                  </InlineBox>
+                )}
               </InlineBox>,
               'left',
               <StatsIcon src={TotalSupplyIcon} alt="totalSupply" />
@@ -227,10 +234,12 @@ export const Statistics = ({ ...rest }) => {
                   value={stats?.actively_staked}
                   fallback="--"
                 />
-                <HelpText>
-                  (
-                  <NumberFormat fixed={1} value={stats?.staked_percent} type="percent" />)
-                </HelpText>
+                {stats?.staked_percent && (
+                  <HelpText>
+                    (
+                    <NumberFormat fixed={1} value={stats?.staked_percent} type="percent" />)
+                  </HelpText>
+                )}
               </>,
               'left',
               <StatsIcon src={StakedIcon} alt="staked" />
@@ -238,12 +247,20 @@ export const Statistics = ({ ...rest }) => {
             {renderStatistic(
               'Epoch & Round',
               <InlineBox alignItems="center">
-                <NumberFormat prefix="#" value={stats?.epoch} fallback="--" />
-                -
-                <NumberFormat value={stats?.round} fallback="--" />
-                <HelpText>
-                  (<NumberFormat value={epochPercent} fixed={1} fallback="--" type="percent" />)
-                </HelpText>
+                {stats?.epoch && stats?.round ? (
+                  <>
+                    <NumberFormat prefix="#" value={stats?.epoch} fallback="--" />
+                    -
+                    <NumberFormat value={stats?.round} fallback="--" />
+                  </>
+                ) : (
+                  '--'
+                )}
+                {epochPercent && (
+                  <HelpText>
+                    (<NumberFormat value={epochPercent} fixed={1} fallback="--" type="percent" />)
+                  </HelpText>
+                )}
               </InlineBox>,
               'right'
             )}
@@ -260,9 +277,11 @@ export const Statistics = ({ ...rest }) => {
                 ) : (
                   '--'
                 )}
-                <HelpText>
-                  (<NumberFormat marginRight="2px" value={stats?.tps} fallback="--" /> TPS)
-                </HelpText>
+                {stats?.tps && (
+                  <HelpText>
+                    (<NumberFormat marginRight="2px" value={stats?.tps} fallback="--" /> TPS)
+                  </HelpText>
+                )}
               </>,
               'left',
               <StatsIcon src={TransactionsIcon} alt="transactions" />
