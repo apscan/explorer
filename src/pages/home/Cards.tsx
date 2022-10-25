@@ -133,7 +133,7 @@ export const LatestBlocks = memo(({ ...rest }) => {
   return (
     <StyledCard {...rest}>
       <StyledCardHead>
-        <StyledCardTitle as="h2">Latest Blocks</StyledCardTitle>
+        <StyledCardTitle>Latest Blocks</StyledCardTitle>
       </StyledCardHead>
       <StyledCardContent autoHide={true}>
         {data?.map((item: any, index: number) => {
@@ -246,7 +246,7 @@ export const LatestTransactions = memo(({ ...rest }) => {
   return (
     <StyledCard {...rest}>
       <StyledCardHead>
-        <StyledCardTitle as="h2">Latest User Transactions</StyledCardTitle>
+        <StyledCardTitle>Latest User Transactions</StyledCardTitle>
       </StyledCardHead>
       <StyledCardContent autoHide={true}>
         {data?.map((item: any, index: number) => {
