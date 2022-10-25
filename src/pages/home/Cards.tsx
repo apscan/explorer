@@ -59,6 +59,7 @@ const StyledItemInner = styled(Box)`
 const StyledAmountWrapper = styled(Box)`
   position: relative;
   padding: 4px 8px;
+  border-radius: 4px;
   background: ${vars.colors.badgeBg1};
   color: ${vars.text.secondary};
   font-size: 12px;
