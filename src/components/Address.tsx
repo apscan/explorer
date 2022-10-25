@@ -16,12 +16,13 @@ export interface AddressProps extends BoxProps {
   value?: string
   fallback?: React.ReactNode
   tooltip?: React.ReactNode
+  hideTooltip?: boolean
   size?: 'full' | 'short' | 'long'
   copyable?: boolean
 }
 
 export const Address = memo(
-  ({ as = Link, copyable, tooltip, value, size = 'long', fallback, ...props }: AddressProps) => {
+  ({ as = Link, copyable, tooltip: _tooltip, hideTooltip, value, size = 'long', fallback, ...props }: AddressProps) => {
     const text = useMemo(() => {
       if (!value) return
 
@@ -37,6 +38,14 @@ export const Address = memo(
     }, [value, size])
 
     const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
+
+    const tooltip = useMemo(() => {
+      if (hideTooltip) return undefined
+
+      if (size === 'full') return undefined
+
+      return _tooltip || value
+    }, [hideTooltip, size, _tooltip, value])
 
     if (!text) return <>{fallback}</>
 

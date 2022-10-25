@@ -166,7 +166,6 @@ export const LatestBlocks = memo(({ ...rest }) => {
                   </StyledItemTitle>
                   <StyledItemContent>
                     <DateTime
-                      tooltip
                       css={css`
                         color: ${vars.text.header};
                       `}
@@ -187,7 +186,7 @@ export const LatestBlocks = memo(({ ...rest }) => {
                 <StyledItemInner>
                   <StyledItemTitle>
                     <StyledTag>Proposer</StyledTag>
-                    <Address size="long" value={item.proposer} />
+                    <Address hideTooltip size="long" value={item.proposer} />
                   </StyledItemTitle>
                   <StyledItemContent>
                     <Box
@@ -284,7 +283,6 @@ export const LatestTransactions = memo(({ ...rest }) => {
                   </StyledItemTitle>
                   <StyledItemContent>
                     <DateTime
-                      tooltip
                       css={css`
                         color: ${vars.text.header};
                       `}
@@ -309,7 +307,7 @@ export const LatestTransactions = memo(({ ...rest }) => {
                 >
                   <StyledItemTitle>
                     <StyledTag>Sender</StyledTag>
-                    <Address size="long" value={item.sender} />
+                    <Address hideTooltip size="long" value={item.sender} />
                   </StyledItemTitle>
                   <StyledItemContent>
                     <Box

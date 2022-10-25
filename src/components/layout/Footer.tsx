@@ -34,9 +34,10 @@ const Title = styled(Box)`
   color: #fff;
 `
 
-const Brand = styled(({ title, url, children, ...rest }: React.PropsWithChildren<{ title: string; url: string }>) => {
+const Brand = ({ title, url, children, ...rest }: React.PropsWithChildren<{ title: string; url: string }>) => {
   return (
     <Link
+      tooltip={title}
       to={url}
       isExternal
       title={title}
@@ -44,9 +45,12 @@ const Brand = styled(({ title, url, children, ...rest }: React.PropsWithChildren
         display: flex;
         margin-right: 32px;
         color: #fff;
-
+        margin-right: 32px;
         :hover {
           color: #fff;
+        }
+        :last-of-type {
+          margin-right: 0;
         }
       `}
       {...rest}
@@ -54,19 +58,12 @@ const Brand = styled(({ title, url, children, ...rest }: React.PropsWithChildren
       {children}
     </Link>
   )
-})``
+}
 
 const BrandWrap = styled(Box)`
   display: flex;
   align-items: center;
   color: #fff;
-  ${Brand} {
-    margin-right: 32px;
-  }
-
-  ${Brand}:last-of-type {
-    margin-right: 0;
-  }
 `
 
 const BrandIcon = styled(Icon)`
@@ -82,15 +79,19 @@ export const Footer = ({ isHome }: { isHome?: boolean }) => {
           <Brand title="Email" url="mailto:contact@apscan.io">
             <BrandIcon as={Email} />
           </Brand>
+
           <Brand title="Twitter" url="https://twitter.com/apscan_io">
             <BrandIcon as={Twitter} />
           </Brand>
+
           <Brand title="Github" url="https://github.com/Apscan">
             <BrandIcon as={Github} />
           </Brand>
+
           <Brand title="Discord" url="https://discord.gg/SJYuzTPMyz">
             <BrandIcon as={Discord} />
           </Brand>
+
           <Brand title="Medium" url="https://medium.com/@Apscan">
             <BrandIcon as={Medium} />
           </Brand>

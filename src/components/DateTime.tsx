@@ -9,7 +9,7 @@ import { Tooltip } from './Tooltip'
 
 export interface DateTimeProps extends BoxProps {
   value?: string | number | dayjs.Dayjs | Date
-  tooltip?: boolean
+  hideTooltip?: boolean
   variant?: 'badge'
   size?: 'small' | 'medium' | 'large'
   fallback?: React.ReactNode
@@ -27,7 +27,7 @@ export const DateTime = memo(
         fallback = null,
         variant,
         size,
-        tooltip = false,
+        hideTooltip,
         countdown = null,
         format: _format,
         isTableColumn,
@@ -58,13 +58,16 @@ export const DateTime = memo(
         })
       }, [value, withUTCPostfix, format])
 
-      const tip = useMemo(() => {
+      const tooltip = useMemo(() => {
+        if (hideTooltip) return undefined
+        if (format === DateFormat.FULL) return undefined
+
         if (format === DateFormat.AGE) {
           return localFull
         } else if (format === DateFormat.LOCAL || format === DateFormat.UTC) {
           return age
         }
-      }, [age, format, localFull])
+      }, [age, format, localFull, hideTooltip])
 
       if (value == null || value === '0' || value === 0)
         return (
@@ -74,7 +77,7 @@ export const DateTime = memo(
         )
 
       return (
-        <Tooltip openDelay={50} isDisabled={!tooltip} label={tip}>
+        <Tooltip openDelay={50} isDisabled={!tooltip} label={tooltip}>
           <Box
             as="span"
             css={css`
