@@ -103,7 +103,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Fees (APT)',
-    cell: (info) => <AmountFormat prefix="🔥 " postfix={false} value={info.getValue()} />,
+    cell: (info) => (info.getValue() ? <AmountFormat prefix="🔥 " postfix={false} value={info.getValue()} /> : '-'),
   }),
 ]
 
