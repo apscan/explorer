@@ -28,8 +28,7 @@ const StyledCardHead = styled(Box)`
   border-bottom: ${vars.colors.border1} 1px solid;
 `
 
-const StyledCardContent = styled(Box)`
-  overflow-y: auto;
+const StyledCardContent = styled(SimpleBar)`
   padding: 0 16px;
   min-height: 324px;
   max-height: 324px;
