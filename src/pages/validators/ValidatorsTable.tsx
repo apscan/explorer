@@ -1,16 +1,13 @@
-import { Address } from 'components/Address'
+import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
+import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { Box, InlineBox } from 'components/container'
 import { Dot } from 'components/Dot'
-import { DataTable } from 'components/table'
-import { css } from '@emotion/react'
-import { ReactComponent as CheckIcon } from 'assets/icons/check.svg'
-import { ReactComponent as CloseIcon } from 'assets/icons/close.svg'
-import { Icon } from 'components/Icon'
-import { vars } from 'theme/theme.css'
 import { NumberFormat } from 'components/NumberFormat'
+import { DataTable } from 'components/table'
 import { Tooltip } from 'components/Tooltip'
+import { vars } from 'theme/theme.css'
 
 const helper = createColumnHelper<any>()
 
@@ -125,63 +122,19 @@ const columns = [
         }
       >
         <InlineBox alignItems="center">
-          <Icon
-            as={CheckIcon}
-            css={css`
-              color: ${vars.text.success};
-              margin-right: 4px;
-              height: 14px;
-              width: 14px;
-            `}
-          />
           <NumberFormat value={info.row.original?.successful_proposals_count} />
 
-          {/* <Box>
-            <Icon
-              as={CloseIcon}
+          {info.row.original?.failed_proposals_count && info.row.original?.failed_proposals_count !== '0' && (
+            <InlineBox
               css={css`
-                margin-right: 4px;
+                margin-left: 2px;
                 color: ${vars.text.error};
-                height: 14px;
-                width: 14px;
               `}
-            />
-            <NumberFormat value={info.row.original?.failed_proposals_count} />
-          </Box> */}
-        </InlineBox>
-      </Tooltip>
-    ),
-  }),
-  helper.accessor('failed_proposals_count', {
-    meta: {
-      nowrap: true,
-      width: '42px',
-    },
-    header: '',
-    cell: (info) => (
-      <Tooltip
-        label={
-          <Box>
-            <Box>
-              Proposed: <NumberFormat value={info.row.original?.successful_proposals_count} />
-            </Box>
-            <Box>
-              Failed: <NumberFormat value={info.row.original?.failed_proposals_count} />
-            </Box>
-          </Box>
-        }
-      >
-        <InlineBox alignItems="center">
-          <Icon
-            as={CloseIcon}
-            css={css`
-              margin-right: 4px;
-              color: ${vars.text.error};
-              height: 14px;
-              width: 14px;
-            `}
-          />
-          <NumberFormat value={info.row.original?.failed_proposals_count} />
+            >
+              (
+              <NumberFormat value={info.row.original?.failed_proposals_count} />)
+            </InlineBox>
+          )}
         </InlineBox>
       </Tooltip>
     ),
