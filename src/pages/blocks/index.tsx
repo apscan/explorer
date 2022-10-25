@@ -66,17 +66,17 @@ const columns = [
           </Box>
         </Tooltip>
 
-        <Address value={info.getValue()} size="short" />
+        <Address value={info.getValue()} size="long" />
       </InlineBox>
     ),
   }),
-  helper.accessor('votes', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Votes',
-    cell: (info) => null,
-  }),
+  // helper.accessor('votes', {
+  //   meta: {
+  //     nowrap: true,
+  //   },
+  //   header: 'Votes',
+  //   cell: (info) => null,
+  // }),
   helper.accessor('epoch', {
     meta: {
       nowrap: true,
