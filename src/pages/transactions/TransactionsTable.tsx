@@ -76,8 +76,7 @@ const columns = [
       return (
         info.row.original?.user_transaction_detail?.gas_unit_price && (
           <AmountFormat
-            prefix="🔥 "
-            postfix={false}
+            postfix=" 🔥"
             value={info.row.original.gas_used * info.row.original.user_transaction_detail.gas_unit_price}
           />
         )
