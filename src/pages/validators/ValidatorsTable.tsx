@@ -40,13 +40,6 @@ const columns = [
     header: 'Validator',
     cell: (info) => <Address size="short" value={info.getValue()} />,
   }),
-  helper.accessor('operator_address', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Operator',
-    cell: (info) => <Address size="short" value={info.getValue()} />,
-  }),
   helper.accessor('voting_power_detail.active', {
     meta: {
       nowrap: true,
