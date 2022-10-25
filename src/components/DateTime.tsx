@@ -5,7 +5,7 @@ import { DateFormat, DateFormat as Format } from 'state/application/slice'
 import { useAppSelector } from 'state/hooks'
 import { formatDate } from 'utils/date'
 import { Box, BoxProps } from './container/Box'
-import { PopTip } from './PopTip'
+import { Tooltip } from './Tooltip'
 
 export interface DateTimeProps extends BoxProps {
   value?: string | number | dayjs.Dayjs | Date
@@ -74,7 +74,7 @@ export const DateTime = memo(
         )
 
       return (
-        <PopTip isDisabled={!tooltip} label={tip}>
+        <Tooltip openDelay={50} isDisabled={!tooltip} label={tip}>
           <Box
             as="span"
             css={css`
@@ -96,7 +96,7 @@ export const DateTime = memo(
               </>
             )}
           </Box>
-        </PopTip>
+        </Tooltip>
       )
     }
   )

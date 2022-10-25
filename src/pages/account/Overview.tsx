@@ -10,10 +10,10 @@ import { Tooltip } from 'components/Tooltip'
 import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
 import { toFixedNumber } from 'utils/number'
-import { ReactComponent as QuestionCircleIcon } from 'assets/icons/question-circle.svg'
 import { Icon } from 'components/Icon'
 import { css } from '@emotion/react'
 import { vars } from 'theme/theme.css'
+import { Poptip } from 'components/PopTip'
 
 const Wrapper = styled(Box)`
   padding: 0 12px;
@@ -39,22 +39,56 @@ export const Overview = ({ data }: { data: any | undefined }) => {
             <InlineBox alignItems="center">
               <AmountFormat value={data?.aptos_coin_total_balance} />
 
-              {/* <Tooltip value={12312}>
-                <Icon
-                  as={QuestionCircleIcon}
+              <Poptip>
+                <Box
                   css={css`
-                    margin-left: 4px;
-                    color: ${vars.text.secondary};
-                    width: 16px;
-                    height: 16px;
+                    padding: 0 16px;
+                    min-width: 256px;
                   `}
-                />
-              </Tooltip> */}
-              <InlineBox marginLeft="4px">
-                (
-                <AmountFormat postfix={false} prefix="Available | " value={data?.aptos_coin_balance} />,
-                <AmountFormat postfix={false} marginLeft="4px" prefix="Staked | " value={data?.aptos_coin_staked} />)
-              </InlineBox>
+                >
+                  {[
+                    ['Available', <AmountFormat value={data?.aptos_coin_balance} />],
+                    ['Staked', <AmountFormat value={data?.aptos_coin_staked} />],
+                  ].map(([label, value], index) => {
+                    return (
+                      <Box
+                        css={css`
+                          margin-top: 12px;
+                          border-bottom: 1px solid ${vars.colors.border1};
+                          &:first-child {
+                            margin-top: 16px;
+                          }
+                          &:last-child {
+                            border-bottom: none;
+                            margin-bottom: 16px;
+                          }
+                        `}
+                      >
+                        <Box
+                          css={css`
+                            font-size: 13px;
+                            font-weight: 700;
+                            color: ${vars.text.heading};
+                            margin-bottom: 4px;
+                          `}
+                        >
+                          {label}
+                        </Box>
+                        <Box
+                          css={css`
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: ${vars.text.body};
+                            margin-bottom: 12px;
+                          `}
+                        >
+                          {value}
+                        </Box>
+                      </Box>
+                    )
+                  })}
+                </Box>
+              </Poptip>
             </InlineBox>
           )
         )}
