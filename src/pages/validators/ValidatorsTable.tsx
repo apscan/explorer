@@ -3,20 +3,12 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { Box, InlineBox } from 'components/container'
-import { Dot } from 'components/Dot'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
 import { Tooltip } from 'components/Tooltip'
 import { vars } from 'theme/theme.css'
 
 const helper = createColumnHelper<any>()
-
-const dotBg = {
-  active: '#3b82f6',
-  pending_inactive: '#8BB5F9',
-  pending_active: '#777169',
-  inactive: '#a8a29e',
-}
 
 const columns = [
   helper.accessor('validator_status', {
