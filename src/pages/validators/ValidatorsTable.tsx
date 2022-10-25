@@ -15,7 +15,7 @@ import { Tooltip } from 'components/Tooltip'
 const helper = createColumnHelper<any>()
 
 const dotBg = {
-  active: '#5090F7',
+  active: '#3b82f6',
   pending_inactive: '#8BB5F9',
   pending_active: '#777169',
   inactive: '#a8a29e',
