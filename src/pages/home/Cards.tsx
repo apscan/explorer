@@ -28,7 +28,8 @@ const StyledCardHead = styled(Box)`
   border-bottom: ${vars.colors.border1} 1px solid;
 `
 
-const StyledCardContent = styled(SimpleBar)`
+const StyledCardContent = styled(Box)`
+  overflow-y: auto;
   padding: 0 16px;
   min-height: 324px;
   max-height: 324px;
@@ -144,7 +145,7 @@ export const LatestBlocks = memo(({ ...rest }) => {
           const blockTime = getTimeDeltaMs(item.time_microseconds, prev.time_microseconds)
 
           return (
-            <StyledItem key={item.height}>
+            <StyledItem key={index}>
               <StyledItemInner
                 css={css`
                   flex: 1;
@@ -254,7 +255,7 @@ export const LatestTransactions = memo(({ ...rest }) => {
               : undefined
 
           return (
-            <StyledItem key={item.version}>
+            <StyledItem key={index}>
               <StyledItemInner
                 css={css`
                   flex: 1;
@@ -381,7 +382,7 @@ export const CurrentValidators = memo(({ ...rest }) => {
       <Box
         css={css`
           padding: 0;
-          min-height: 324px;
+          min-height: 824px;
           max-height: auto;
         `}
       >
