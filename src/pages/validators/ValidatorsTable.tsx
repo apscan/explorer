@@ -25,15 +25,29 @@ const columns = [
     },
     header: 'Type & Index',
     cell: (info) => (
-      <InlineBox
-        css={css`
-          text-transform: capitalize;
-          align-items: center;
-        `}
+      <Tooltip
+        label={
+          <InlineBox
+            alignItems="center"
+            css={css`
+              text-transform: capitalize;
+            `}
+          >
+            <Dot marginRight="4px" background={(dotBg as any)[info.row.original?.validator_status as any]} />
+            {info.row.original.validator_status} {`#${info.row.original.validator_index}`}
+          </InlineBox>
+        }
       >
-        <Dot marginRight="4px" background={(dotBg as any)[info.row.original?.validator_status as any]} />
-        {info.row.original.validator_status} #{info.row.original.validator_index}
-      </InlineBox>
+        <InlineBox
+          css={css`
+            text-transform: capitalize;
+            align-items: center;
+          `}
+        >
+          <Dot marginRight="4px" background={(dotBg as any)[info.row.original?.validator_status as any]} />
+          {`#${info.row.original.validator_index}`}
+        </InlineBox>
+      </Tooltip>
     ),
   }),
   helper.accessor('address', {
@@ -95,10 +109,18 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Voting Power',
+    header: 'Voting Power (APT)',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <AmountFormat fixed={3} maximumFractionDigits={0} value={info.getValue()} />
+        <Dot
+          css={css`
+            width: 8px;
+            height: 8px;
+          `}
+          marginRight="4px"
+          background={dotBg.active}
+        />
+        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
   }),
