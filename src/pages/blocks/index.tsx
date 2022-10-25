@@ -51,6 +51,9 @@ const columns = [
               cursor: pointer;
               margin-right: 8px;
               background: ${vars.colors.link};
+              opacity: ${!info.row.original?.failed_proposers_count || info.row.original?.failed_proposers_count === '0'
+                ? '0.56'
+                : 1};
               color: #fff;
               padding: 0 6px;
               font-size: 12px;
