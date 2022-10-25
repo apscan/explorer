@@ -58,20 +58,11 @@ const StyledItemInner = styled(Box)`
 
 const StyledAmountWrapper = styled(Box)`
   position: relative;
-  padding: 4px 8px 4px 20px;
+  padding: 4px 8px;
   background: ${vars.colors.badgeBg1};
   color: ${vars.text.secondary};
   font-size: 12px;
   font-weight: 500;
-  &:after {
-    position: absolute;
-    left: 0;
-    top: 0;
-    content: '';
-    border-top: 13px solid transparent;
-    border-bottom: 13px solid transparent;
-    border-left: 13px solid #fff;
-  }
 `
 
 const StyledItemTitle = styled(Box)`
