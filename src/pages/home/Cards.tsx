@@ -383,6 +383,7 @@ export const CurrentValidators = memo(({ ...rest }) => {
           padding: 0;
           min-height: 824px;
           max-height: auto;
+          padding: 0 12px;
         `}
       >
         <ValidatorsTable data={data} />
