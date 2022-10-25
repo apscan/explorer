@@ -19,36 +19,27 @@ const dotBg = {
 }
 
 const columns = [
+  helper.accessor('validator_status', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Type',
+    cell: (info) => (
+      <Box
+        css={css`
+          text-transform: capitalize;
+        `}
+      >
+        {info.getValue()}
+      </Box>
+    ),
+  }),
   helper.accessor('validator_index', {
     meta: {
       nowrap: true,
     },
-    header: 'Type & Index',
-    cell: (info) => (
-      <Tooltip
-        label={
-          <InlineBox
-            alignItems="center"
-            css={css`
-              text-transform: capitalize;
-            `}
-          >
-            <Dot marginRight="4px" background={(dotBg as any)[info.row.original?.validator_status as any]} />
-            {info.row.original.validator_status} {`#${info.row.original.validator_index}`}
-          </InlineBox>
-        }
-      >
-        <InlineBox
-          css={css`
-            text-transform: capitalize;
-            align-items: center;
-          `}
-        >
-          <Dot marginRight="4px" background={(dotBg as any)[info.row.original?.validator_status as any]} />
-          {`#${info.row.original.validator_index}`}
-        </InlineBox>
-      </Tooltip>
-    ),
+    header: 'Index',
+    cell: (info) => <Box>{`#${info.getValue()}`}</Box>,
   }),
   helper.accessor('address', {
     meta: {
@@ -64,7 +55,7 @@ const columns = [
     header: 'Active',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <Dot marginRight="4px" background={dotBg.active} />
+        {/* <Dot marginRight="4px" background={dotBg.active} /> */}
         <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
@@ -76,7 +67,7 @@ const columns = [
     header: 'Pending Inactive',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <Dot marginRight="4px" background={dotBg.pending_inactive} />
+        {/* <Dot marginRight="4px" background={dotBg.pending_inactive} /> */}
         <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
@@ -88,7 +79,7 @@ const columns = [
     header: 'Pending Active',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <Dot marginRight="4px" background={dotBg.pending_active} />
+        {/* <Dot marginRight="4px" background={dotBg.pending_active} /> */}
         <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
@@ -100,7 +91,7 @@ const columns = [
     header: 'Inactive',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <Dot marginRight="4px" background={dotBg.inactive} />
+        {/* <Dot marginRight="4px" background={dotBg.inactive} /> */}
         <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
@@ -112,14 +103,6 @@ const columns = [
     header: 'Voting Power (APT)',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <Dot
-          css={css`
-            width: 8px;
-            height: 8px;
-          `}
-          marginRight="4px"
-          background={dotBg.active}
-        />
         <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
@@ -149,7 +132,7 @@ const columns = [
           {info.row.original?.failed_proposals_count && info.row.original?.failed_proposals_count !== '0' && (
             <InlineBox
               css={css`
-                margin-left: 2px;
+                margin-left: 4px;
                 color: ${vars.text.error};
               `}
             >
