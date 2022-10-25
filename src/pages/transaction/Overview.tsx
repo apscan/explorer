@@ -64,7 +64,7 @@ const renderUserTransactionSection = (data: any) => {
       {renderRow(
         'Gas Fees & Gas Price',
         <InlineBox>
-          <AmountFormat postfix=" APT 🔥" fallback="--" value={gasFee} />
+          <AmountFormat postfix=" 🔥" fallback="--" value={gasFee} />
           <InlineBox
             css={css`
               margin-left: 4px;
