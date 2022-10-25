@@ -5,6 +5,12 @@ import { Box, InlineBox } from 'components/container'
 import { Dot } from 'components/Dot'
 import { DataTable } from 'components/table'
 import { css } from '@emotion/react'
+import { ReactComponent as CheckIcon } from 'assets/icons/check.svg'
+import { ReactComponent as CloseIcon } from 'assets/icons/close.svg'
+import { Icon } from 'components/Icon'
+import { vars } from 'theme/theme.css'
+import { NumberFormat } from 'components/NumberFormat'
+import { Tooltip } from 'components/Tooltip'
 
 const helper = createColumnHelper<any>()
 
@@ -97,6 +103,50 @@ const columns = [
       <InlineBox alignItems="center">
         <AmountFormat fixed={0} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
+    ),
+  }),
+  helper.accessor('blocks', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Blocks',
+    cell: (info) => (
+      <Tooltip
+        label={
+          <Box>
+            <Box>
+              Proposed: <NumberFormat value={info.row.original?.successful_proposals_count} />
+            </Box>
+            <Box>
+              Failed: <NumberFormat value={info.row.original?.failed_proposals_count} />
+            </Box>
+          </Box>
+        }
+      >
+        <InlineBox alignItems="center">
+          <Icon
+            as={CheckIcon}
+            css={css`
+              color: ${vars.text.success};
+              margin-right: 4px;
+              height: 14px;
+              width: 14px;
+            `}
+          />
+          <NumberFormat value={info.row.original?.successful_proposals_count} />
+          <Icon
+            as={CloseIcon}
+            css={css`
+              margin-left: 16px;
+              margin-right: 4px;
+              color: ${vars.text.error};
+              height: 14px;
+              width: 14px;
+            `}
+          />
+          <NumberFormat value={info.row.original?.failed_proposals_count} />
+        </InlineBox>
+      </Tooltip>
     ),
   }),
 ]
