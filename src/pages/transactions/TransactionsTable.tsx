@@ -65,7 +65,7 @@ const columns = [
     ),
   }),
   helper.accessor('gas_fees', {
-    header: 'Tx Fee (APT)',
+    header: 'Fee (APT)',
     meta: {
       nowrap: true,
     },
