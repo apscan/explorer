@@ -82,6 +82,11 @@ export const DataTable = memo(
                         css`
                           width: 48px;
                         `}
+
+                        ${(header.column.columnDef.meta as any)?.width &&
+                        css`
+                          width: ${(header.column.columnDef.meta as any).width};
+                        `}
                       `}
                       key={header.id}
                       colSpan={header.colSpan}

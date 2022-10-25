@@ -26,7 +26,7 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Type',
+    header: 'Type & Index',
     cell: (info) => (
       <InlineBox
         css={css`
@@ -50,7 +50,7 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Active (APT)',
+    header: 'Active',
     cell: (info) => (
       <InlineBox alignItems="center">
         <Dot marginRight="4px" background={dotBg.active} />
@@ -101,13 +101,14 @@ const columns = [
     header: 'Voting Power',
     cell: (info) => (
       <InlineBox alignItems="center">
-        <AmountFormat fixed={0} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
+        <AmountFormat fixed={3} maximumFractionDigits={0} value={info.getValue()} />
       </InlineBox>
     ),
   }),
   helper.accessor('blocks', {
     meta: {
       nowrap: true,
+      width: '45px',
     },
     header: 'Blocks',
     cell: (info) => (
@@ -134,10 +135,46 @@ const columns = [
             `}
           />
           <NumberFormat value={info.row.original?.successful_proposals_count} />
+
+          {/* <Box>
+            <Icon
+              as={CloseIcon}
+              css={css`
+                margin-right: 4px;
+                color: ${vars.text.error};
+                height: 14px;
+                width: 14px;
+              `}
+            />
+            <NumberFormat value={info.row.original?.failed_proposals_count} />
+          </Box> */}
+        </InlineBox>
+      </Tooltip>
+    ),
+  }),
+  helper.accessor('failed_proposals_count', {
+    meta: {
+      nowrap: true,
+      width: '42px',
+    },
+    header: '',
+    cell: (info) => (
+      <Tooltip
+        label={
+          <Box>
+            <Box>
+              Proposed: <NumberFormat value={info.row.original?.successful_proposals_count} />
+            </Box>
+            <Box>
+              Failed: <NumberFormat value={info.row.original?.failed_proposals_count} />
+            </Box>
+          </Box>
+        }
+      >
+        <InlineBox alignItems="center">
           <Icon
             as={CloseIcon}
             css={css`
-              margin-left: 16px;
               margin-right: 4px;
               color: ${vars.text.error};
               height: 14px;
