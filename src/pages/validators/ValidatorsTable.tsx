@@ -17,6 +17,9 @@ const dotBg = {
 
 const columns = [
   helper.accessor('validator_index', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Type',
     cell: (info) => (
       <InlineBox
@@ -31,14 +34,23 @@ const columns = [
     ),
   }),
   helper.accessor('address', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Validator',
     cell: (info) => <Address size="short" value={info.getValue()} />,
   }),
   helper.accessor('operator_address', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Operator',
     cell: (info) => <Address size="short" value={info.getValue()} />,
   }),
   helper.accessor('voting_power_detail.active', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Active (APT)',
     cell: (info) => (
       <InlineBox alignItems="center">
@@ -48,6 +60,9 @@ const columns = [
     ),
   }),
   helper.accessor('voting_power_detail.pending_inactive', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Pending Inactive',
     cell: (info) => (
       <InlineBox alignItems="center">
@@ -57,6 +72,9 @@ const columns = [
     ),
   }),
   helper.accessor('voting_power_detail.pending_active', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Pending Active',
     cell: (info) => (
       <InlineBox alignItems="center">
@@ -66,6 +84,9 @@ const columns = [
     ),
   }),
   helper.accessor('voting_power_detail.inactive', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Inactive',
     cell: (info) => (
       <InlineBox alignItems="center">
@@ -75,6 +96,9 @@ const columns = [
     ),
   }),
   helper.accessor('voting_power', {
+    meta: {
+      nowrap: true,
+    },
     header: 'Voting Power',
     cell: (info) => (
       <InlineBox alignItems="center">
