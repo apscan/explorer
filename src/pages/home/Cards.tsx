@@ -216,9 +216,11 @@ export const LatestBlocks = memo(({ ...rest }) => {
                     justify-content: center;
                   `}
                 >
-                  <StyledAmountWrapper>
-                    <AmountFormat symbol={undefined} postfix=" 🔥" value={item.gas_fees} />
-                  </StyledAmountWrapper>
+                  {item.gas_fees ? (
+                    <StyledAmountWrapper>
+                      <AmountFormat symbol={undefined} postfix=" 🔥" value={item.gas_fees} />
+                    </StyledAmountWrapper>
+                  ) : null}
                 </StyledItemInner>
               </Box>
             </StyledItem>
@@ -349,9 +351,11 @@ export const LatestTransactions = memo(({ ...rest }) => {
                     justify-content: center;
                   `}
                 >
-                  <StyledAmountWrapper>
-                    <AmountFormat symbol={undefined} postfix=" 🔥" value={gasFee} />
-                  </StyledAmountWrapper>
+                  {gasFee ? (
+                    <StyledAmountWrapper>
+                      <AmountFormat symbol={undefined} postfix=" 🔥" value={gasFee} />
+                    </StyledAmountWrapper>
+                  ) : null}
                 </StyledItemInner>
               </Box>
             </StyledItem>
