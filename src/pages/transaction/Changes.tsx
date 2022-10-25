@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTransactionChangesQuery } from 'api'
@@ -55,11 +56,16 @@ const columns = [
   }),
 
   helper.accessor('data.state_key_hash', {
-    meta: {
-      nowrap: true,
-    },
     header: 'Stake Key Hash',
-    cell: (info) => <Hash value={info.getValue()} size="short" />,
+    cell: (info) => (
+      <Hash
+        css={css`
+          white-space: normal;
+        `}
+        value={info.getValue()}
+        size="full"
+      />
+    ),
   }),
 
   helper.accessor('data.move_resource_data', {
