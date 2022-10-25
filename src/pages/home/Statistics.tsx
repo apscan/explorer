@@ -238,15 +238,8 @@ export const Statistics = ({ ...rest }) => {
             {renderStatistic(
               'Epoch & Round',
               <InlineBox alignItems="center">
-                <NumberFormat value={stats?.epoch} fallback="--" />
-                <Divider
-                  type="vertical"
-                  color={vars.text.body}
-                  css={css`
-                    height: 12px;
-                    margin: 0 8px;
-                  `}
-                />
+                <NumberFormat prefix="#" value={stats?.epoch} fallback="--" />
+                -
                 <NumberFormat value={stats?.round} fallback="--" />
                 <HelpText>
                   (<NumberFormat value={epochPercent} fixed={1} fallback="--" type="percent" />)
