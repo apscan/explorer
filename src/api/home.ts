@@ -67,8 +67,6 @@ export const homeApi = emptySplitApi.injectEndpoints({
       query: () => ({ url: `/active_validators?limit=25` }),
       transformResponse: (response: any[]) => {
         return response?.map((item) => {
-          console.log(deserializeNetworkAddress(item.network_addresses))
-
           return {
             ...item,
             network_addresses: deserializeNetworkAddress(item.network_addresses),
