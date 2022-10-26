@@ -1,15 +1,14 @@
-import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTransactionEventsQuery } from 'api'
 import { Address } from 'components/Address'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box } from 'components/container'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
 import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
@@ -44,15 +43,7 @@ const columns = [
   }),
   helper.accessor('type', {
     header: 'Type',
-    cell: (info) => (
-      <Box
-        css={css`
-          word-break: break-all;
-        `}
-      >
-        {info.getValue()}
-      </Box>
-    ),
+    cell: (info) => <TypeParam value={info.getValue()} />,
   }),
 
   helper.accessor('data', {

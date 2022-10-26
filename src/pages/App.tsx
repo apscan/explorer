@@ -6,6 +6,7 @@ import { Account } from './account'
 import { Accounts } from './accounts'
 import { Block } from './block'
 import { Blocks } from './blocks'
+import { Coins } from './coins'
 import { Home } from './home'
 import { NotFound } from './NotFound'
 import { Transaction } from './transaction'
@@ -77,7 +78,16 @@ const routes = [
       </Layout>
     ),
   },
-]
+  process.env.NODE_ENV !== 'production' &&
+    ({
+      path: '/coins',
+      element: (
+        <Layout>
+          <Coins />
+        </Layout>
+      ),
+    } as any),
+].filter(Boolean)
 
 function App() {
   return (

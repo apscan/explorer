@@ -30,6 +30,7 @@
     "i18next": "^21.9.1",
     "i18next-browser-languagedetector": "^6.1.5",
     "inter-ui": "^3.19.3",
+    "ipaddr.js": "^2.0.1",
     "memoize-one": "^6.0.0",
     "numbro": "^2.3.6",
     "react": "^18.2.0",
@@ -64,7 +65,7 @@
   "scripts": {
     "start": "craco start --port 3080",
     "build": "craco build",
-    "test": "craco test",
+    "test": "react-scripts test",
     "lint": "pnpm eslint .",
     "prepare": "husky install"
   },

@@ -1,7 +1,9 @@
 import { SearchOption } from 'components/search-group/types'
 import { toFixedNumber } from 'utils/number'
 import { emptySplitApi } from './api'
-
+import { AptosClient, AptosAccount, FaucetClient, BCS, TxnBuilderTypes, HexString } from 'aptos'
+import { Deserializer } from 'v8'
+import { deserializeNetworkAddress } from 'utils/deserializeNetworkAddress'
 export const homeApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     lastTransactions: builder.query<any, number | void>({
@@ -65,8 +67,11 @@ export const homeApi = emptySplitApi.injectEndpoints({
       query: () => ({ url: `/active_validators?limit=25` }),
       transformResponse: (response: any[]) => {
         return response?.map((item) => {
+          console.log(deserializeNetworkAddress(item.network_addresses))
+
           return {
             ...item,
+            network_addresses: deserializeNetworkAddress(item.network_addresses),
             non_voting_power: (
               BigInt(item.voting_power_detail.pending_active) + BigInt(item.voting_power_detail.inactive)
             ).toString(),

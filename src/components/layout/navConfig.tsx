@@ -55,7 +55,7 @@ export const navConfig: INavItem[] = [
   },
   {
     name: 'Assets',
-    activePaths: ['/apt', '/tokens'],
+    activePaths: ['/apt', '/coins'],
     sub: [
       {
         name: 'APT',
@@ -63,9 +63,8 @@ export const navConfig: INavItem[] = [
         path: '/apt',
       },
       {
-        name: 'Tokens',
-        isDisabled: true,
-        path: '/tokens',
+        name: 'Coins',
+        path: '/coins',
       },
     ],
   },
