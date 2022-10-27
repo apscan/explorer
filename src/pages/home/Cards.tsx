@@ -377,17 +377,16 @@ export const CurrentValidators = memo(({ ...rest }) => {
       >
         <StyledCardTitle>Top Validators</StyledCardTitle>
       </StyledCardHead>
-      <StyledCardContent
-        autoHide={true}
+      <Box
+        // autoHide={true}
         css={css`
-          padding: 0;
           min-height: 448px;
           max-height: 448px;
           padding: 0 12px;
         `}
       >
         <ValidatorsTable data={data} />
-      </StyledCardContent>
+      </Box>
       <StyledButton as={Link} to="/validators">
         View all validators
       </StyledButton>

@@ -62,7 +62,7 @@ export const homeApi = emptySplitApi.injectEndpoints({
     }),
 
     activeValidators: builder.query<any, void>({
-      query: () => ({ url: `/active_validators?limit=25` }),
+      query: () => ({ url: `/active_validators?limit=10` }),
       transformResponse: (response: any[]) => {
         return response?.map((item) => {
           return {
