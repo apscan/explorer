@@ -45,12 +45,15 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
   return (
     <Wrapper>
       <Box>
+        {renderRow('Hash', <BlockHash as="span" value={data?.hash} size="full" />, { border: false })}
         {renderRow('Timestamp', <DateTime format={DateFormat.FULL} value={data?.time_microseconds} />, {
-          border: true,
+          border: false,
         })}
-        {renderRow('Proposer', <Address size="full" value={data?.proposer} />, { border: true })}
-        {renderRow('Epoch', <NumberFormat value={data?.epoch} />, { border: true })}
+        {renderRow('Epoch', <NumberFormat value={data?.epoch} />, { border: false })}
         {renderRow('Round', <NumberFormat value={data?.round} />, { border: true })}
+        {renderRow('Proposer', <Address size="full" value={data?.proposer} />, { border: false })}
+        {renderRow('Failed Proposers', data?.failed_proposers?.length, { border: false })}
+        {renderRow('Validators', <BlockVotesBitvec id={data?.height} />, { border: true })}
         {renderRow(
           'Transactions',
           data?.transactions_count ? (
@@ -68,40 +71,32 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
               </>
             )
           ) : null,
-          { border: true }
+          { border: false }
         )}
-
         {renderRow('Fees', <AmountFormat symbol={undefined} postfix=" APT 🔥" value={data?.gas_fees} />, {
           border: true,
         })}
-        {data && (
-          <SeeMore>
-            {renderRow('ID', <BlockHash as="span" value={data?.hash} size="full" />, { border: true })}
-            {renderRow('Failed Proposers', data?.failed_proposers?.length, { border: true })}
-            {renderRow('Validators', <BlockVotesBitvec id={data?.height} />, { border: true })}
-            {renderRow(
-              'More Hashes',
-              blockMeta && (
-                <HashesTable
-                  value={[
-                    {
-                      label: 'Event Root Hash',
-                      content: <Hash value={blockMeta?.event_root_hash} size="full" />,
-                    },
-                    {
-                      label: 'Accumulator Root Hash',
-                      content: <Hash value={blockMeta?.accumulator_root_hash} size="full" />,
-                    },
-                    {
-                      label: 'State Change Hash',
-                      content: <Hash value={blockMeta?.state_change_hash} size="full" />,
-                    },
-                  ]}
-                />
-              ),
-              { border: true }
-            )}
-          </SeeMore>
+        {renderRow(
+          'More Hashes',
+          blockMeta && (
+            <HashesTable
+              value={[
+                {
+                  label: 'Event Root Hash',
+                  content: <Hash value={blockMeta?.event_root_hash} size="full" />,
+                },
+                {
+                  label: 'Accumulator Root Hash',
+                  content: <Hash value={blockMeta?.accumulator_root_hash} size="full" />,
+                },
+                {
+                  label: 'State Change Hash',
+                  content: <Hash value={blockMeta?.state_change_hash} size="full" />,
+                },
+              ]}
+            />
+          ),
+          { border: true }
         )}
       </Box>
     </Wrapper>
