@@ -1,4 +1,4 @@
-import { useStatsQuery } from 'api'
+import { useLatestStatsQuery, useStatsQuery } from 'api'
 import { useEffect, useMemo, useRef } from 'react'
 import { AppState } from 'state'
 import { useAppSelector } from 'state/hooks'
@@ -23,6 +23,14 @@ export const useAppStatsPolling = () => {
 
 export const useAppStats = () => {
   const { data } = useStatsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  })
+
+  return useMemo(() => data || {}, [data])
+}
+
+export const useLatestStats = () => {
+  const { data } = useLatestStatsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   })
 

@@ -15,8 +15,8 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import { useMaxValue } from 'hooks/useMaxValue'
 import { useCallback, useMemo, useState } from 'react'
-import { useAppStats } from 'state/api/hooks'
 import { usePageSize } from 'state/application/hooks'
 
 const helper = createColumnHelper<any>()
@@ -95,12 +95,14 @@ const columns = [
 ]
 
 export const Blocks = () => {
-  const { latest_block_height: latestBlockHeight } = useAppStats()
-
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number>()
 
-  const { data, isLoading } = useBlocksQuery(
+  const {
+    data: { data, page = {} } = {},
+    isLoading,
+    isFetching,
+  } = useBlocksQuery(
     {
       pageSize,
       start,
@@ -109,6 +111,13 @@ export const Blocks = () => {
       refetchOnMountOrArgChange: true,
     }
   )
+
+  const isInitialLoading = useMemo(() => {
+    if (start === undefined && isFetching) return true
+    return isLoading
+  }, [start, isLoading, isFetching])
+
+  const latestBlockHeight = useMaxValue(page?.max)
 
   const [currentMinBlock, currentMaxBlock] = useMemo(() => {
     if (!data) return []
@@ -152,7 +161,7 @@ export const Blocks = () => {
     <Container>
       <DocumentTitle value="Aptos Blocks | Apscan" />
       <PageTitle value="Blocks" />
-      <Card variant="table" isLoading={isLoading}>
+      <Card variant="table" isLoading={isInitialLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>

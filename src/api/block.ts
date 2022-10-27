@@ -47,11 +47,13 @@ export const blockApi = emptySplitApi.injectEndpoints({
         start: number | undefined
       }
     >({
-      keepUnusedDataFor: 600, // keep for 10 minutes
       query: ({ pageSize, start }) => {
         return {
           url: `/blocks?limit=${pageSize}${start ? `&height=lte.${start}` : ''}`,
         }
+      },
+      transformResponse(result: any[]) {
+        return { data: result, page: { max: result?.[0]?.height }, min: result?.[result.length - 1]?.height }
       },
     }),
     blockDetail: builder.query<any, string | void>({

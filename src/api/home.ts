@@ -43,6 +43,15 @@ export const homeApi = emptySplitApi.injectEndpoints({
       },
     }),
 
+    latestStats: builder.query<any, void>({
+      keepUnusedDataFor: 0,
+      query: () => ({ url: `/blockchain_stats` }),
+      transformResponse: (response: any[]) => {
+        if (!response?.[0]) return null
+        return response[0]
+      },
+    }),
+
     lastBlocks: builder.query<any, number | void>({
       query: (limit = 10) => ({ url: `/blocks?limit=${limit}` }),
     }),
@@ -162,6 +171,7 @@ export const {
   useMarketInfoQuery,
   useLastTransactionsQuery,
   useStatsQuery,
+  useLatestStatsQuery,
   useLastVersionQuery,
   useActiveValidatorsQuery,
   useTransactionsHistoryQuery,

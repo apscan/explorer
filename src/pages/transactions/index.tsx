@@ -6,18 +6,20 @@ import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import { useMaxValue } from 'hooks/useMaxValue'
 import { useCallback, useMemo, useState } from 'react'
-import { useAppStats } from 'state/api/hooks'
 import { usePageSize } from 'state/application/hooks'
 import { TransactionsTable } from './TransactionsTable'
 
 export const Transactions = () => {
-  const { latest_transaction_version: latestVersion } = useAppStats()
-
   const [pageSize, setPageSize] = usePageSize()
   const [start, setStart] = useState<number>()
 
-  const { data, isLoading } = useTransactionsQuery(
+  const {
+    data: { data, page = {} } = {},
+    isLoading,
+    isFetching,
+  } = useTransactionsQuery(
     {
       pageSize,
       start,
@@ -26,6 +28,13 @@ export const Transactions = () => {
       refetchOnMountOrArgChange: true,
     }
   )
+
+  const isInitialLoading = useMemo(() => {
+    if (start === undefined && isFetching) return true
+    return isLoading
+  }, [start, isLoading, isFetching])
+
+  const latestVersion = useMaxValue(page?.max)
 
   const [currentMin, currentMax] = useMemo(() => {
     if (!data) return []
@@ -66,7 +75,7 @@ export const Transactions = () => {
     <Container>
       <DocumentTitle value="Aptos Transactions | Apscan" />
       <PageTitle value="Transactions" />
-      <Card variant="table" isLoading={isLoading}>
+      <Card variant="table" isLoading={isInitialLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>

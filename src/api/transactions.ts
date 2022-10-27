@@ -10,11 +10,13 @@ export const txApi = emptySplitApi.injectEndpoints({
         start: number | undefined
       }
     >({
-      keepUnusedDataFor: 600, // keep for 10 minutes
       query: ({ pageSize, start }) => {
         return {
           url: `/transactions?limit=${pageSize}${start ? `&version=lte.${start}` : ''}`,
         }
+      },
+      transformResponse(result: any[]) {
+        return { data: result, page: { max: result?.[0]?.version }, min: result?.[result.length - 1]?.version }
       },
     }),
     transactionDetail: builder.query<any, string | void>({
