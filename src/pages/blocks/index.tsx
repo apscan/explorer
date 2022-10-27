@@ -117,7 +117,7 @@ export const Blocks = () => {
     return isLoading
   }, [start, isLoading, isFetching])
 
-  const latestBlockHeight = useMaxValue(page?.max)
+  const latestBlockHeight = useMaxValue(isInitialLoading ? undefined : page?.max)
 
   const [currentMinBlock, currentMaxBlock] = useMemo(() => {
     if (!data) return []

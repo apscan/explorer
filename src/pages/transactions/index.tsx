@@ -34,7 +34,7 @@ export const Transactions = () => {
     return isLoading
   }, [start, isLoading, isFetching])
 
-  const latestVersion = useMaxValue(page?.max)
+  const latestVersion = useMaxValue(isInitialLoading ? undefined : page?.max)
 
   const [currentMin, currentMax] = useMemo(() => {
     if (!data) return []

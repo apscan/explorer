@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export const useMaxValue = (value?: number) => {
-  const [max, setMax] = useState<number>()
+  const [max, setMax] = useState<number | undefined>(value)
 
   useEffect(() => {
     if (value) {
