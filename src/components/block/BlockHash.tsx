@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import { CopyButton } from 'components/CopyButton'
+import { Tooltip } from 'components/Tooltip'
 import { memo, useMemo } from 'react'
 import { truncatedWithSize } from 'utils/truncated'
 import { Box, BoxProps } from '../container/Box'
@@ -37,12 +38,14 @@ export const BlockHash = memo(
     if (!hash) return <>{fallback}</>
 
     return (
-      <Box css={container} {...props}>
-        <Box as={as} to={`/block/${value}`} css={[container, ellipsis ? ellipsisStyle : false]}>
-          {hash}
+      <Tooltip label={value} isDisabled={size === 'full'}>
+        <Box css={container} {...props}>
+          <Box as={as} to={`/block/${value}`} css={[container, ellipsis ? ellipsisStyle : false]}>
+            {hash}
+          </Box>
+          {copy && value && <CopyButton text={value} />}
         </Box>
-        {copy && value && <CopyButton text={value} />}
-      </Box>
+      </Tooltip>
     )
   }
 )
