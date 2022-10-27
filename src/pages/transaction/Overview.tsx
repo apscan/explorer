@@ -11,7 +11,6 @@ import { HashesTable } from 'components/HashesTable'
 import { renderRow } from 'components/helpers'
 import { JsonView } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
-import { SeeMore } from 'components/SeeMore'
 import { TxHash } from 'components/transaction/TxHash'
 import { TxType } from 'components/transaction/TxType'
 import { VmStatus } from 'components/VmStatus'
@@ -73,7 +72,8 @@ const renderUserTransactionSection = (data: any) => {
             (
             <NumberFormat postfix=" Octa" fallback="--" value={data?.user_transaction?.gas_unit_price} />)
           </InlineBox>
-        </InlineBox>
+        </InlineBox>,
+        { border: true }
       )}
       {renderRow('Signature', <JsonView withContainer src={data?.user_transaction?.signature} />)}
       {renderRow('Payload', <JsonView withContainer src={data?.payload} />)}
@@ -117,8 +117,7 @@ const renderBlockMetadataTransactionSection = (data: any) => {
 
 const renderMore = (data: any) => {
   return (
-    <SeeMore>
-      {renderRow(<InlineBox>VM Status</InlineBox>, data?.vm_status && <Box>{data?.vm_status}</Box>)}
+    <>
       {renderRow(
         'More Hashes',
         <HashesTable
@@ -132,10 +131,9 @@ const renderMore = (data: any) => {
                 content: <Hash value={data?.state_checkpoint_hash} size="full" />,
               } as any),
           ]}
-        />,
-        { border: true }
+        />
       )}
-    </SeeMore>
+    </>
   )
 }
 
@@ -160,6 +158,8 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           </InlineBox>,
           <VmStatus value={data?.vm_status} />
         )}
+
+        {renderRow(<InlineBox>VM Status</InlineBox>, data?.vm_status && <Box>{data?.vm_status}</Box>)}
 
         {renderRow(
           'Sender',

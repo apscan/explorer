@@ -9,7 +9,6 @@ import { Hash } from 'components/Hash'
 import { HashesTable } from 'components/HashesTable'
 import { renderRow } from 'components/helpers'
 import { NumberFormat } from 'components/NumberFormat'
-import { SeeMore } from 'components/SeeMore'
 import { Version } from 'components/transaction/Version'
 import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
@@ -45,7 +44,9 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
   return (
     <Wrapper>
       <Box>
-        {renderRow('Hash', <BlockHash as="span" value={data?.hash} size="full" />, { border: false })}
+        {renderRow('Hash', data ? <BlockHash fallback="-" as="span" value={data?.hash} size="full" /> : '', {
+          border: false,
+        })}
         {renderRow('Timestamp', <DateTime format={DateFormat.FULL} value={data?.time_microseconds} />, {
           border: false,
         })}

@@ -24,5 +24,5 @@ export const parseHeaders = (
 }
 
 export const tabNameWithCount = (name: React.ReactNode, count?: number | undefined) => {
-  return count != null ? `${name}(${count})` : name
+  return count != null ? `${name} (${count})` : name
 }
