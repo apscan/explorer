@@ -16,6 +16,13 @@ import { usePageSize } from 'state/application/hooks'
 const helper = createColumnHelper<any>()
 
 const columns = [
+  helper.accessor('transaction_index', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Index',
+    cell: (info) => info.getValue(),
+  }),
   helper.accessor('address', {
     meta: {
       nowrap: true,

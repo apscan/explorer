@@ -20,6 +20,7 @@ const container = css`
 export const Hash = memo(({ copyable, value, size, fallback, ...props }: HashProps) => {
   const hash = useMemo(() => truncatedWithSize(value, size), [value, size])
   const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
+
   if (!hash) return <>{fallback}</>
 
   return (

@@ -1,11 +1,11 @@
-import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useBlocksQuery } from 'api'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
+import { BlockHash } from 'components/block/BlockHash'
 import { BlockHeight } from 'components/block/BlockHeight'
 import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box, Container, InlineBox } from 'components/container'
+import { Box, Container } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { Link } from 'components/link'
@@ -15,11 +15,9 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
-import { Tooltip } from 'components/Tooltip'
 import { useCallback, useMemo, useState } from 'react'
 import { useAppStats } from 'state/api/hooks'
 import { usePageSize } from 'state/application/hooks'
-import { vars } from 'theme/theme.css'
 
 const helper = createColumnHelper<any>()
 
@@ -30,6 +28,13 @@ const columns = [
     },
     header: 'Height',
     cell: (info) => <BlockHeight value={info.getValue()} />,
+  }),
+  helper.accessor('hash', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Hash',
+    cell: (info) => <BlockHash ellipsis value={info.getValue()} />,
   }),
   helper.accessor('time_microseconds', {
     meta: {
@@ -43,32 +48,14 @@ const columns = [
       nowrap: true,
     },
     header: 'Proposer',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        <Tooltip>
-          <Box
-            css={css`
-              cursor: pointer;
-              margin-right: 8px;
-              background: ${vars.colors.link};
-              opacity: ${!info.row.original?.failed_proposers_count || info.row.original?.failed_proposers_count === '0'
-                ? '0.56'
-                : 1};
-              color: #fff;
-              padding: 0 6px;
-              font-size: 12px;
-              font-weight: 500;
-              user-select: none;
-              border-radius: 4px;
-            `}
-          >
-            {info.row.original.failed_proposers_count}
-          </Box>
-        </Tooltip>
-
-        <Address value={info.getValue()} size="long" />
-      </InlineBox>
-    ),
+    cell: (info) => <Address value={info.getValue()} size="short" />,
+  }),
+  helper.accessor('failed_proposers_count', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Failed Proposers',
+    cell: (info) => <Box>{info.getValue() || '-'}</Box>,
   }),
   // helper.accessor('votes', {
   //   meta: {

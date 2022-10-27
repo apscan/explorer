@@ -11,25 +11,34 @@ const container = css`
   white-space: nowrap;
 `
 
+const ellipsisStyle = css`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 120px;
+`
+
 export interface BlockHashProps extends BoxProps {
   value?: string
   timestamp?: number
   size?: 'full' | 'short' | 'long'
+  ellipsis?: boolean
   success?: boolean
   fallback?: React.ReactNode
   copyable?: boolean
 }
 
 export const BlockHash = memo(
-  ({ value, copyable, size, timestamp, success, fallback, as = Link, ...props }: BlockHashProps) => {
-    const hash = useMemo(() => truncatedWithSize(value, size), [value, size])
+  ({ value, copyable, size, timestamp, success, ellipsis, fallback, as = Link, ...props }: BlockHashProps) => {
+    const hash = useMemo(() => (ellipsis ? value : truncatedWithSize(value, size)), [value, ellipsis, size])
     const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
 
     if (!hash) return <>{fallback}</>
 
     return (
       <Box css={container} {...props}>
-        <Box as={as} to={`/block/${value}`} css={container}>
+        <Box as={as} to={`/block/${value}`} css={[container, ellipsis ? ellipsisStyle : false]}>
           {hash}
         </Box>
         {copy && value && <CopyButton text={value} />}
