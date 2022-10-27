@@ -98,7 +98,7 @@ export const Blocks = () => {
   const { latest_block_height: latestBlockHeight } = useAppStats()
 
   const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number | undefined>(latestBlockHeight)
+  const [start, setStart] = useState<number>()
 
   const { data, isLoading } = useBlocksQuery(
     {

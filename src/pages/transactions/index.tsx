@@ -15,7 +15,7 @@ export const Transactions = () => {
   const { latest_transaction_version: latestVersion } = useAppStats()
 
   const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number | undefined>(latestVersion)
+  const [start, setStart] = useState<number>()
 
   const { data, isLoading } = useTransactionsQuery(
     {
