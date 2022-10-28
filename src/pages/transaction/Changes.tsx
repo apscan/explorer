@@ -34,6 +34,14 @@ const Badge = styled(Box)`
 const helper = createColumnHelper<any>()
 
 const columns = [
+  helper.accessor('transaction_index', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Index',
+    cell: (info) => <NumberFormat prefix="#" value={info.getValue()} />,
+  }),
+
   helper.accessor('type', {
     meta: {
       nowrap: true,
