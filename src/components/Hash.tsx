@@ -29,7 +29,7 @@ const ellipsisStyle = css`
 `
 
 export const Hash = memo(({ copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
-  const hash = useMemo(() => truncatedWithSize(value, size), [value, size])
+  const hash = useMemo(() => (ellipsis ? value : truncatedWithSize(value, size)), [value, size, ellipsis])
   const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
 
   if (!hash) return <>{fallback}</>
