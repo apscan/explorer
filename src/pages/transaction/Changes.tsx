@@ -65,7 +65,16 @@ const columns = [
 
   helper.accessor('data.state_key_hash', {
     header: 'Stake Key Hash',
-    cell: (info) => <Hash ellipsis value={info.getValue()} copyable />,
+    cell: (info) => (
+      <Hash
+        css={css`
+          max-width: 120px;
+        `}
+        ellipsis
+        value={info.getValue()}
+        copyable
+      />
+    ),
   }),
 
   helper.accessor('data.move_module_name', {
