@@ -88,8 +88,23 @@ export const txApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
-        return { data, page: parseHeaders(meta?.response?.headers) }
+      transformResponse(data: any[], meta) {
+        return {
+          data: data.map((item) => {
+            if (item.type === 'table_item_changes') {
+              item.tx_type = item?.data?.is_write ? 'WriteTableItem' : 'DeleteTableItem'
+            }
+            if (item.type === 'resource_changes') {
+              item.tx_type = item?.data?.is_write ? 'WriteResource' : 'DeleteResource'
+            }
+            if (item.type === 'module_changes') {
+              item.tx_type = item?.data?.is_write ? 'WriteModule' : 'DeleteModule'
+            }
+
+            return item
+          }),
+          page: parseHeaders(meta?.response?.headers),
+        }
       },
     }),
   }),

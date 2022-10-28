@@ -42,12 +42,12 @@ const columns = [
     cell: (info) => <NumberFormat prefix="#" value={info.getValue()} />,
   }),
 
-  helper.accessor('type', {
+  helper.accessor('tx_type', {
     meta: {
       nowrap: true,
     },
     header: 'Type',
-    cell: (info) => <Badge>{info.getValue()}</Badge>,
+    cell: (info) => <Box>{info.getValue()}</Box>,
   }),
 
   helper.accessor('data.address', {
