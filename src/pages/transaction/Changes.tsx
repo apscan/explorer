@@ -65,15 +65,17 @@ const columns = [
 
   helper.accessor('data.state_key_hash', {
     header: 'Stake Key Hash',
-    cell: (info) => (
-      <Hash
-        css={css`
-          white-space: normal;
-        `}
-        value={info.getValue()}
-        size="full"
-      />
-    ),
+    cell: (info) => <Hash ellipsis value={info.getValue()} copyable />,
+  }),
+
+  helper.accessor('data.move_module_name', {
+    header: 'Module',
+    cell: (info) => info.getValue() || '-',
+  }),
+
+  helper.accessor('data.move_resource_name', {
+    header: 'Resource',
+    cell: (info) => info.getValue() || '-',
   }),
 
   helper.accessor('data.move_resource_data', {
