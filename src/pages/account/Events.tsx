@@ -1,9 +1,8 @@
-import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountEventsQuery } from 'api'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box } from 'components/container'
 import { DateTime } from 'components/DateTime'
+import { Hash } from 'components/Hash'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
@@ -52,15 +51,7 @@ const columns = [
     //   nowrap: true,
     // },
     header: 'Type',
-    cell: (info) => (
-      <Box
-        css={css`
-          word-break: break-all;
-        `}
-      >
-        {info.getValue()}
-      </Box>
-    ),
+    cell: (info) => <Hash tooltip ellipsis fallback="-" value={info.getValue()} />,
   }),
 
   helper.accessor('data', {

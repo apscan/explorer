@@ -12,6 +12,7 @@ export interface HashProps extends BoxProps {
   fallback?: React.ReactNode
   copyable?: boolean
   ellipsis?: boolean
+  tooltip?: boolean
 }
 
 const container = css`
@@ -29,14 +30,14 @@ const ellipsisStyle = css`
   vertical-align: bottom;
 `
 
-export const Hash = memo(({ copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
+export const Hash = memo(({ tooltip, copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
   const hash = useMemo(() => (ellipsis ? value : truncatedWithSize(value, size)), [value, size, ellipsis])
   const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
 
   if (!hash) return <>{fallback}</>
 
   return (
-    <Tooltip label={value} isDisabled={true}>
+    <Tooltip label={value} isDisabled={!tooltip}>
       <Box css={[container, ellipsis ? ellipsisStyle : false]} {...props}>
         {hash}
         {copy && value && <CopyButton text={value} />}
