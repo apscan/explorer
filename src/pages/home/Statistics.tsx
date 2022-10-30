@@ -288,7 +288,7 @@ export const Statistics = ({ ...rest }) => {
             )}
             {renderStatistic(
               'Gas Price',
-              <NumberFormat separate={false} postfix=" Octa" fallback="--" value={stats?.latest_gas_fee} />,
+              <NumberFormat separate={false} postfix=" Octa 🔥" fallback="--" value={stats?.latest_gas_fee} />,
               'right'
             )}
           </StatisticItem>

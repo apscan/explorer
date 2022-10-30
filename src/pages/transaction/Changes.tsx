@@ -77,9 +77,27 @@ const columns = [
     ),
   }),
 
-  helper.accessor('data.move_module_name', {
+  helper.accessor('type', {
     header: 'Module',
-    cell: (info) => info.getValue() || '-',
+    cell: (info) =>
+      info.getValue() ? (
+        <Hash
+          css={css`
+            max-width: 180px;
+          `}
+          ellipsis
+          fallback="-"
+          value={
+            info.getValue() === 'resource_changes'
+              ? `${info.row.original?.data?.move_resource_address}:${info.row.original?.data?.move_resource_module}`
+              : info.getValue() === 'module_changes'
+              ? `${info.row.original?.data?.move_module_address}:${info.row.original?.data?.move_module_name}`
+              : ''
+          }
+        />
+      ) : (
+        '-'
+      ),
   }),
 
   helper.accessor('data.move_resource_name', {
@@ -95,7 +113,7 @@ const columns = [
     cell: (info) => {
       const data = info.getValue()
       if (!data) return '-'
-      return <JsonViewEllipsis maxWidth="320px" src={info.getValue()} />
+      return <JsonViewEllipsis src={info.getValue()} />
     },
   }),
 

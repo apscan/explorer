@@ -43,7 +43,7 @@ export const VmStatus = ({ value, fallback, ...props }: { value: string; fallbac
       {...props}
     >
       <Icon css={icon} as={isSuccess ? CheckIcon : CloseIcon} />
-      {isSuccess ? 'Success' : `Fail with error '${value}'`}
+      {isSuccess ? 'Success' : `Error`}
     </Box>
   )
 }

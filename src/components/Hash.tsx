@@ -26,6 +26,7 @@ const ellipsisStyle = css`
   white-space: nowrap;
   display: inline-block;
   max-width: 192px;
+  vertical-align: bottom;
 `
 
 export const Hash = memo(({ copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
@@ -35,7 +36,7 @@ export const Hash = memo(({ copyable, value, ellipsis, size, fallback, ...props 
   if (!hash) return <>{fallback}</>
 
   return (
-    <Tooltip label={value} isDisabled={!ellipsis}>
+    <Tooltip label={value} isDisabled={true}>
       <Box css={[container, ellipsis ? ellipsisStyle : false]} {...props}>
         {hash}
         {copy && value && <CopyButton text={value} />}
