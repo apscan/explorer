@@ -1,7 +1,9 @@
+import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTransactionEventsQuery } from 'api'
 import { Address } from 'components/Address'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { Hash } from 'components/Hash'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
@@ -50,7 +52,16 @@ const columns = [
   }),
   helper.accessor('type', {
     header: 'Type',
-    cell: (info) => <TypeParam value={info.getValue()} />,
+    cell: (info) => (
+      <Hash
+        css={css`
+          max-width: 220px;
+        `}
+        ellipsis
+        fallback="-"
+        value={info.getValue()}
+      />
+    ),
   }),
 
   helper.accessor('data', {
@@ -58,7 +69,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Data',
-    cell: (info) => <JsonViewEllipsis maxWidth="320px" src={info.getValue()} />,
+    cell: (info) => <JsonViewEllipsis src={info.getValue()} />,
   }),
 
   helper.accessor('expand', {
