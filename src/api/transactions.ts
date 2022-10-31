@@ -63,7 +63,7 @@ export const txApi = emptySplitApi.injectEndpoints({
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
-          url: `/events?transaction_version=eq.${id}`,
+          url: `/events?order=transaction_index.asc&transaction_version=eq.${id}`,
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
