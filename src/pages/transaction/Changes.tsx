@@ -79,25 +79,22 @@ const columns = [
 
   helper.accessor('type', {
     header: 'Module',
-    cell: (info) =>
-      info.getValue() ? (
-        <Hash
-          css={css`
-            max-width: 180px;
-          `}
-          ellipsis
-          fallback="-"
-          value={
-            info.getValue() === 'resource_changes'
-              ? `${info.row.original?.data?.move_resource_address}:${info.row.original?.data?.move_resource_module}`
-              : info.getValue() === 'module_changes'
-              ? `${info.row.original?.data?.move_module_address}:${info.row.original?.data?.move_module_name}`
-              : ''
-          }
-        />
-      ) : (
-        '-'
-      ),
+    cell: (info) => {
+      const [address, module] =
+        info.getValue() === 'resource_changes'
+          ? [info.row.original?.data?.move_resource_address, info.row.original?.data?.move_resource_module]
+          : info.getValue() === 'module_changes'
+          ? [info.row.original?.data?.move_module_address, info.row.original?.data?.move_module_name]
+          : []
+
+      if (!address || !module) return '-'
+
+      return (
+        <>
+          <Address size="short" value={address} />:{module}
+        </>
+      )
+    },
   }),
 
   helper.accessor('data.move_resource_name', {

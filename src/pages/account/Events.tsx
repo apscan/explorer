@@ -11,6 +11,7 @@ import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { Version } from 'components/transaction/Version'
+import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
@@ -51,7 +52,7 @@ const columns = [
     //   nowrap: true,
     // },
     header: 'Type',
-    cell: (info) => <Hash tooltip ellipsis fallback="-" value={info.getValue()} />,
+    cell: (info) => <TypeParam ellipsis fallback="-" value={info.getValue()} />,
   }),
 
   helper.accessor('data', {
