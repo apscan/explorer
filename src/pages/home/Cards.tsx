@@ -366,7 +366,11 @@ export const LatestTransactions = memo(({ ...rest }) => {
 })
 
 export const CurrentValidators = memo(({ ...rest }) => {
-  const { data } = useActiveValidatorsQuery(undefined, { refetchOnMountOrArgChange: true })
+  const appFocused = useAppFocused()
+  const { data } = useActiveValidatorsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: appFocused ? 3000 : 0,
+  })
 
   return (
     <StyledCard {...rest}>
