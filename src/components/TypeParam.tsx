@@ -38,7 +38,7 @@ export const TypeParam = ({
 
   return (
     <Tooltip label={value} isDisabled>
-      <Box css={ellipsis ? ellipsisStyle : undefined} as="span" {...props}>
+      <Box css={false} as="span" {...props}>
         {parts?.map((item, index) => {
           return (
             <React.Fragment key={index}>
