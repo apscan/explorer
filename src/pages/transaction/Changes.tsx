@@ -91,7 +91,8 @@ const columns = [
 
       return (
         <>
-          <Address size="short" value={address} />:{module}
+          <Address size="short" value={address} />
+          ::{module}
         </>
       )
     },
