@@ -25,7 +25,7 @@ export const TypeParam = ({
   const parts = useMemo(() => {
     if (typeof value !== 'string') return
 
-    return value.split(/(::|<)/g).map((str) => {
+    return value.split(/(::|<|,\W)/g).map((str) => {
       if (/^0x[0-9a-f]+$/.test(str)) {
         return <Address size="short" value={str} />
       }
