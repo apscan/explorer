@@ -60,9 +60,11 @@ export const Transactions = () => {
   const onNextPage = useCallback(() => {
     if (currentMin) setStart(currentMin - 1)
   }, [currentMin])
+
   const onPrePage = useCallback(() => {
     if (currentMax) setStart(currentMax + pageSize)
   }, [currentMax, pageSize])
+
   const onFirstPage = useCallback(() => {
     setStart(latestVersion)
   }, [latestVersion])

@@ -12,6 +12,7 @@ import { Version } from 'components/transaction/Version'
 import { memo, useMemo } from 'react'
 
 import { ExpandButton } from 'components/table/ExpandButton'
+import { getTransactionCounterparty } from 'utils/getTransactionCounterparty'
 
 const helper = createColumnHelper<any>()
 
@@ -52,6 +53,17 @@ const columns = [
       }
     },
   }),
+  helper.accessor(
+    (data) => {
+      return getTransactionCounterparty(data)
+    },
+    {
+      header: 'Sent To',
+      cell: (info) => {
+        return <Address fallback="-" value={info.getValue()?.address} size="short" />
+      },
+    }
+  ),
   helper.accessor('changes_count', {
     header: 'Changes',
     cell: (info) => (
