@@ -133,7 +133,7 @@ export const Accounts = () => {
 
   const queryCount = useMemo(() => {
     if (addressCount === undefined) return undefined
-    return addressCount > 10000 ? 10000 : addressCount
+    return addressCount > 1000 ? 1000 : addressCount
   }, [addressCount])
 
   const [showPage, totalPage] = useMemo(() => {
@@ -179,7 +179,7 @@ export const Accounts = () => {
             <Box>
               Total of <NumberFormat useGrouping fallback="--" value={addressCount} /> accounts
             </Box>
-            {addressCount && addressCount > 10000 && (
+            {addressCount && addressCount > 1000 && (
               <Box
                 css={css`
                   margin-left: 4px;
