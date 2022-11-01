@@ -13,6 +13,7 @@ import { memo, useMemo } from 'react'
 
 import { ExpandButton } from 'components/table/ExpandButton'
 import { getTransactionCounterparty } from 'utils/getTransactionCounterparty'
+import { TransactionFunction } from 'components/TransactionFunction'
 
 const helper = createColumnHelper<any>()
 
@@ -101,6 +102,10 @@ const columns = [
       if (info.row.original.type !== 'user_transaction') {
         return '-'
       } else {
+        if (info.row.original?.payload?.entry_function_payload !== 'user_transaction') {
+          return <TransactionFunction value={info.row.original} />
+        }
+
         return <JsonViewEllipsis src={info.getValue()} />
       }
     },
