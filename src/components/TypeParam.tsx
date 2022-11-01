@@ -25,7 +25,7 @@ export const TypeParam = ({
   const parts = useMemo(() => {
     if (typeof value !== 'string') return
 
-    return value.split('::').map((str) => {
+    return value.split(/(::|<)/g).map((str) => {
       if (/^0x[0-9a-f]+$/.test(str)) {
         return <Address size="short" value={str} />
       }
@@ -40,12 +40,7 @@ export const TypeParam = ({
     <Tooltip label={value} isDisabled>
       <Box css={false} as="span" {...props}>
         {parts?.map((item, index) => {
-          return (
-            <React.Fragment key={index}>
-              {item}
-              {index !== parts?.length - 1 ? '::' : ''}
-            </React.Fragment>
-          )
+          return <React.Fragment key={index}>{item}</React.Fragment>
         })}
       </Box>
     </Tooltip>
