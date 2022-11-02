@@ -1,16 +1,15 @@
-import { css } from '@emotion/react'
 import React, { useMemo } from 'react'
 import { Address } from './Address'
 import { Box } from './container'
 import { Tooltip } from './Tooltip'
 
-const ellipsisStyle = css`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  display: inline-block;
-  max-width: 192px;
-`
+// const ellipsisStyle = css`
+//   text-overflow: ellipsis;
+//   overflow: hidden;
+//   white-space: nowrap;
+//   display: inline-block;
+//   max-width: 192px;
+// `
 
 export const TypeParam = ({
   fallback,

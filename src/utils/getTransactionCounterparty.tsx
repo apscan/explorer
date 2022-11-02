@@ -30,9 +30,9 @@ export function getTransactionCounterparty(transaction: Types.Transaction): Tran
   // In both scenarios, the first item in arguments is the receiver's address, and the second item is the amount.
 
   const payload = transaction.payload as Types.TransactionPayload_EntryFunctionPayload
-  const typeArgument = payload.type_arguments.length > 0 ? payload.type_arguments[0] : undefined
-  const isAptCoinTransfer = payload.function === '0x1::coin::transfer' && typeArgument === '0x1::aptos_coin::AptosCoin'
-  const isAptCoinInitialTransfer = payload.function === '0x1::aptos_account::transfer'
+  // const typeArgument = payload.type_arguments.length > 0 ? payload.type_arguments[0] : undefined
+  // const isAptCoinTransfer = payload.function === '0x1::coin::transfer' && typeArgument === '0x1::aptos_coin::AptosCoin'
+  // const isAptCoinInitialTransfer = payload.function === '0x1::aptos_account::transfer'
 
   // if ((isAptCoinTransfer || isAptCoinInitialTransfer) && payload.arguments.length === 2) {
   //   return {

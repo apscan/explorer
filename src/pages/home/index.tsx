@@ -5,6 +5,10 @@ import { CurrentValidators, LatestBlocks, LatestTransactions } from './Cards'
 import { Statistics } from './Statistics'
 import { vars } from 'theme/theme.css'
 
+import { lazy, Suspense } from 'react'
+
+const ValidatorMap = lazy(() => import('components/validator-map/ValidatorMap'))
+
 export const Home = () => {
   return (
     <>
@@ -33,6 +37,9 @@ export const Home = () => {
         </Box>
         <Box>
           <CurrentValidators />
+          <Suspense fallback={null}>
+            <ValidatorMap />
+          </Suspense>
         </Box>
       </Container>
     </>
