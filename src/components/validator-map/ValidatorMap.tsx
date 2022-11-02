@@ -1,12 +1,12 @@
 import { css } from '@emotion/react'
+import { useGeoQuery } from 'api'
 import { Box } from 'components/container'
 import 'leaflet/dist/leaflet.css'
 import { useMemo } from 'react'
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
 import { vars } from 'theme/theme.css'
-import data from './data.json'
 
-export default function ValidatorMap() {
+const Map = ({ data }: { data: any }) => {
   const { mapData, centerLat, centerLon, bufferLat, bufferLon, minLat, maxLat, minLon, maxLon } = useMemo(() => {
     let minLat = 0
     let maxLat = 0
@@ -33,8 +33,8 @@ export default function ValidatorMap() {
       distanceLat,
       bufferLat: distanceLat * 0.1,
       bufferLon: distanceLon * 0.1,
-      mapData: data.reduce((result, current) => {
-        const findCurrent = result.find((item) => item.city === current.city)
+      mapData: (data as any).reduce((result: any, current: any) => {
+        const findCurrent = result.find((item: any) => item.city === current.city)
         if (!findCurrent) {
           result.push({
             city: current.city,
@@ -49,7 +49,56 @@ export default function ValidatorMap() {
         return result
       }, [] as { city: string; lat: number; lon: number; count: number }[]),
     }
-  }, [])
+  }, [data])
+
+  return (
+    <MapContainer
+      style={{ height: '480px', width: '100%', borderRadius: '8px' }}
+      // @ts-ignore
+      doubleClickZoom={false}
+      touchZoom={false}
+      scrollWheelZoom={false}
+      zoom={2}
+      center={[centerLat, centerLon]}
+      bounds={[
+        [minLat - bufferLat, minLon - bufferLon],
+        [maxLat + bufferLat, maxLon + bufferLon],
+      ]}
+    >
+      <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+      {mapData.map((item: any, k: any) => {
+        return (
+          <CircleMarker
+            key={k}
+            center={[item.lat, item.lon]}
+            //@ts-ignore
+            radius={item.count + 3}
+            fillOpacity={0.5}
+            stroke={false}
+          >
+            <Tooltip>
+              <Box>Nodes: {item.count}</Box>
+              <Box
+                css={css`
+                  border-bottom: 1px solid ${vars.colors.border1};
+                  margin-bottom: 8px;
+                  margin: 4px 0;
+                `}
+              />
+              <Box>{item.city}</Box>
+            </Tooltip>
+          </CircleMarker>
+        )
+      })}
+    </MapContainer>
+  )
+}
+
+export default function ValidatorMap() {
+  const { data } = useGeoQuery()
+
+  if (!data) return null
 
   return (
     <Box
@@ -58,46 +107,7 @@ export default function ValidatorMap() {
         border-radius: 8px;
       `}
     >
-      <MapContainer
-        style={{ height: '480px', width: '100%', borderRadius: '8px' }}
-        // @ts-ignore
-        doubleClickZoom={false}
-        touchZoom={false}
-        scrollWheelZoom={false}
-        zoom={2}
-        center={[centerLat, centerLon]}
-        bounds={[
-          [minLat - bufferLat, minLon - bufferLon],
-          [maxLat + bufferLat, maxLon + bufferLon],
-        ]}
-      >
-        <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-        {mapData.map((item, k) => {
-          return (
-            <CircleMarker
-              key={k}
-              center={[item.lat, item.lon]}
-              //@ts-ignore
-              radius={item.count + 3}
-              fillOpacity={0.5}
-              stroke={false}
-            >
-              <Tooltip>
-                <Box>Nodes: {item.count}</Box>
-                <Box
-                  css={css`
-                    border-bottom: 1px solid ${vars.colors.border1};
-                    margin-bottom: 8px;
-                    margin: 4px 0;
-                  `}
-                />
-                <Box>{item.city}</Box>
-              </Tooltip>
-            </CircleMarker>
-          )
-        })}
-      </MapContainer>
+      <Map data={data} />
     </Box>
   )
 }

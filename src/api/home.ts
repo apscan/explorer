@@ -85,6 +85,10 @@ export const homeApi = emptySplitApi.injectEndpoints({
       },
     }),
 
+    geo: builder.query<any, void>({
+      query: () => ({ url: `https://www.apscan.io/api/geo` }),
+    }),
+
     search: builder.query<
       {
         transaction: null | string
@@ -178,4 +182,5 @@ export const {
   useLastBlockHeightQuery,
   useSearchQuery,
   useChainConfigQuery,
+  useGeoQuery,
 } = homeApi
