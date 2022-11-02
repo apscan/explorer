@@ -65,7 +65,7 @@ const Map = ({ data }: { data: any }) => {
         [maxLat + bufferLat, maxLon + bufferLon],
       ]}
     >
-      <TileLayer url="https://{s}.basemaps.cartocdn.com/{style}/{z}/{x}/{y}{scale}.png" />
+      <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
       {mapData.map((item: any, k: any) => {
         return (
