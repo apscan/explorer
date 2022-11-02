@@ -1,14 +1,14 @@
 import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import { useGeoQuery } from 'api'
 import { Box } from 'components/container'
+import * as L from 'leaflet'
 import { GestureHandling } from 'leaflet-gesture-handling'
+import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css'
 import 'leaflet/dist/leaflet.css'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
 import { vars } from 'theme/theme.css'
-
-import styled from '@emotion/styled'
-import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css'
 
 const LegendControlItem = styled(Box)`
   display: flex;
@@ -24,13 +24,15 @@ const LegendIcon = styled(Box)`
 
 export const ValidatorMap = () => {
   const { data } = useGeoQuery()
+  const [map, setMap] = useState(null)
 
   useEffect(() => {
     try {
-      // @ts-ignore
-      // window.L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling)
-    } catch {}
-  }, [])
+      L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [map])
 
   const {
     mapData,
@@ -99,6 +101,7 @@ export const ValidatorMap = () => {
       <MapContainer
         style={{ height: '340px', width: '100%', borderRadius: '8px' }}
         // @ts-ignore
+        whenCreated={setMap}
         gestureHandling={true}
         scrollWheelZoom={false}
         attributionControl={false}
