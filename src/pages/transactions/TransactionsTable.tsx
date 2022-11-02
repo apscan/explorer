@@ -102,7 +102,7 @@ const columns = [
       if (info.row.original.type !== 'user_transaction') {
         return '-'
       } else {
-        if (info.row.original?.payload?.entry_function_payload !== 'user_transaction') {
+        if (info.row.original?.payload?.type === 'entry_function_payload') {
           return <TransactionFunction value={info.row.original} />
         }
 
