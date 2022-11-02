@@ -28,7 +28,7 @@ export const ValidatorMap = () => {
   useEffect(() => {
     try {
       // @ts-ignore
-      window.L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling)
+      // window.L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling)
     } catch {}
   }, [])
 
