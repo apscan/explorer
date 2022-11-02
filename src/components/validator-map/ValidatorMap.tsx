@@ -102,7 +102,6 @@ export const ValidatorMap = () => {
         // @ts-ignore
         gestureHandling={true}
         scrollWheelZoom={false}
-        zoomControl={false}
         attributionControl={false}
         center={[centerLat, centerLon]}
         bounds={[
