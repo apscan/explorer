@@ -1,15 +1,14 @@
 import { css } from '@emotion/react'
 import { useGeoQuery } from 'api'
 import { Box } from 'components/container'
+import { GestureHandling } from 'leaflet-gesture-handling'
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useMemo } from 'react'
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
 import { vars } from 'theme/theme.css'
-import data from './data.json'
-import { GestureHandling } from 'leaflet-gesture-handling'
 
-import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css'
 import styled from '@emotion/styled'
+import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css'
 
 const LegendControlItem = styled(Box)`
   display: flex;
