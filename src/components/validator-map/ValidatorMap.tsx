@@ -66,8 +66,6 @@ const Map = ({ data }: { data: any }) => {
     <MapContainer
       style={{ height: '480px', width: '100%', borderRadius: '8px' }}
       // @ts-ignore
-      // doubleClickZoom={false}
-      touchZoom={false}
       gestureHandling={true}
       scrollWheelZoom={false}
       zoom={2}
