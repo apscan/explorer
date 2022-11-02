@@ -112,7 +112,6 @@ export const ValidatorMap = () => {
       >
         <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" />
         {mapData?.map((item: any, k: any) => {
-          console.log(item)
           return (
             <CircleMarker
               key={k}

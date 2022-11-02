@@ -46,7 +46,6 @@ describe('deserializeNetworkAddress', () => {
         result += `/handshake/${deserializer.deserializeU8()}`
       }
     }
-    console.log(result)
     // const address0 = TxnBuilderTypes.AccountAddress.fromHex('0x1')
     // const address1 = TxnBuilderTypes.AccountAddress.fromHex('0x2')
 
