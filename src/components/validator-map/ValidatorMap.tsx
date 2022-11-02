@@ -2,11 +2,22 @@ import { css } from '@emotion/react'
 import { useGeoQuery } from 'api'
 import { Box } from 'components/container'
 import 'leaflet/dist/leaflet.css'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
 import { vars } from 'theme/theme.css'
+import data from './data.json'
+import { GestureHandling } from 'leaflet-gesture-handling'
+
+import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css'
 
 const Map = ({ data }: { data: any }) => {
+  useEffect(() => {
+    try {
+      // @ts-ignore
+      window.L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling)
+    } catch {}
+  }, [])
+
   const { mapData, centerLat, centerLon, bufferLat, bufferLon, minLat, maxLat, minLon, maxLon } = useMemo(() => {
     let minLat = 0
     let maxLat = 0
@@ -55,8 +66,9 @@ const Map = ({ data }: { data: any }) => {
     <MapContainer
       style={{ height: '480px', width: '100%', borderRadius: '8px' }}
       // @ts-ignore
-      doubleClickZoom={false}
+      // doubleClickZoom={false}
       touchZoom={false}
+      gestureHandling={true}
       scrollWheelZoom={false}
       zoom={2}
       center={[centerLat, centerLon]}
@@ -65,7 +77,7 @@ const Map = ({ data }: { data: any }) => {
         [maxLat + bufferLat, maxLon + bufferLon],
       ]}
     >
-      <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" />
 
       {mapData.map((item: any, k: any) => {
         return (
@@ -96,14 +108,14 @@ const Map = ({ data }: { data: any }) => {
 }
 
 export default function ValidatorMap() {
-  const { data } = useGeoQuery()
+  // const { data } = useGeoQuery()
 
-  if (!data) return null
+  // if (!data) return null
 
   return (
     <Box
       css={css`
-        margin-top: 24px;
+        margin-bottom: 24px;
         border-radius: 8px;
       `}
     >

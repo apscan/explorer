@@ -36,10 +36,10 @@ export const Home = () => {
           <LatestTransactions />
         </Box>
         <Box>
-          <CurrentValidators />
           <Suspense fallback={null}>
             <ValidatorMap />
           </Suspense>
+          <CurrentValidators />
         </Box>
       </Container>
     </>

@@ -42,6 +42,7 @@ specifiers:
   inter-ui: ^3.19.3
   ipaddr.js: ^2.0.1
   leaflet: ^1.9.2
+  leaflet-gesture-handling: ^1.2.2
   memoize-one: ^6.0.0
   numbro: ^2.3.6
   prettier: ^2.7.1
@@ -104,6 +105,7 @@ dependencies:
   inter-ui: 3.19.3
   ipaddr.js: 2.0.1
   leaflet: 1.9.2
+  leaflet-gesture-handling: 1.2.2
   memoize-one: 6.0.0
   numbro: 2.3.6
   react: 18.2.0
@@ -9759,6 +9761,11 @@ packages:
       { integrity: sha512-qJhlO9cGXi6hBGKoxEG/sKZDAHD5Hnu9Hs4WbOY3pCWXDhw0N8x1NenNzm2EnNLkLkk7J2SdxAkDSbb6ftT+UQ== }
     dependencies:
       language-subtag-registry: 0.3.22
+
+  /leaflet-gesture-handling/1.2.2:
+    resolution:
+      { integrity: sha512-Blf5V4PoNphWkzL7Y1qge+Spkd4OCQ2atjwUNhMhLIcjKzPcBH++x/lwOinaR9jSqLWqJ6oKYO8d0XdTffy4hQ== }
+    dev: false
 
   /leaflet/1.9.2:
     resolution:
