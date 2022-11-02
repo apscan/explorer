@@ -34,16 +34,16 @@ export function getTransactionCounterparty(transaction: Types.Transaction): Tran
   const isAptCoinTransfer = payload.function === '0x1::coin::transfer' && typeArgument === '0x1::aptos_coin::AptosCoin'
   const isAptCoinInitialTransfer = payload.function === '0x1::aptos_account::transfer'
 
-  if ((isAptCoinTransfer || isAptCoinInitialTransfer) && payload.arguments.length === 2) {
-    return {
-      address: payload.arguments[0],
-      role: 'receiver',
-    }
-  } else {
-    const smartContractAddr = payload.function.split('::')[0]
-    return {
-      address: smartContractAddr,
-      role: 'smartContract',
-    }
+  // if ((isAptCoinTransfer || isAptCoinInitialTransfer) && payload.arguments.length === 2) {
+  //   return {
+  //     address: payload.arguments[0],
+  //     role: 'receiver',
+  //   }
+  // } else {
+  const smartContractAddr = payload.function.split('::')[0]
+  return {
+    address: smartContractAddr,
+    role: 'smartContract',
   }
+  // }
 }
