@@ -87,38 +87,51 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     .flat()
     .map((v) => {
       const network = deserializeNetworkAddress(v.network_addresses)
+      const fullnode = v.fullnode_addresses !== '0x00' ? deserializeNetworkAddress(v.fullnode_addresses) : null
 
       return {
         ...v,
         network,
-        ip: network!.match(/^\/(ip4|dns)\/(.*?)\//)?.[2],
+        fullnode,
+        networkIp: network!.match(/^\/(ip4|dns)\/(.*?)\//)?.[2],
+        fullnodeIp: fullnode?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2],
       }
     })
 
-  res.setHeader('Cache-Control', 'public,max-age=300')
-
   const validatorWithIp = await Promise.all([
     ...validators.map((o) => {
-      return dns.promises
-        .lookup(o.ip, {
+      return Promise.all([
+        dns.promises.lookup(o.networkIp, {
           family: 4,
-        })
-        .then((r) => {
-          return {
-            ...o,
-            ip: r.address,
-          }
-        })
+        }),
+        o.fullnodeIp
+          ? dns.promises.lookup(o.fullnodeIp, {
+              family: 4,
+            })
+          : Promise.resolve(null),
+      ]).then(([network, fullnode]) => {
+        return {
+          ...o,
+          networkIp: network.address,
+          fullnodeIp: fullnode?.address,
+        }
+      })
     }),
   ])
 
+  let ips = [] as string[]
+
+  for (const item of validatorWithIp) {
+    ips.push(item.networkIp)
+    item.fullnodeIp && ips.push(item.fullnodeIp)
+  }
+
+  const ipsUni = [...new Set(ips)]
+
   const geoResponses = await Promise.all(
-    [...new Array(Math.ceil(validatorWithIp.length / 100))].map((_, page) => {
+    [...new Array(Math.ceil(ipsUni.length / 100))].map((_, page) => {
       return axios
-        .post(
-          'http://ip-api.com/batch?fields=57553',
-          validatorWithIp.map((i) => i.ip).slice(page * 100, (page + 1) * 100)
-        )
+        .post('http://ip-api.com/batch?fields=57553', ipsUni.slice(page * 100, (page + 1) * 100))
         .then((r) => r.data)
     })
   )
@@ -128,12 +141,29 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     return r
   }, {})
 
-  const validatorWithGeo = validatorWithIp.map((o) => {
-    return {
-      validator_index: o.validator_index,
-      ...geoMap[o.ip],
-    }
-  })
+  let result = [] as any[]
 
-  res.json(validatorWithGeo)
+  for (const item of validatorWithIp) {
+    const data = {
+      validator_index: item.validator_index,
+      network: item.network,
+      networkIp: item.networkIp,
+      fullnode: item.fullnode,
+      fullnodeIp: item.fullnodeIp,
+    }
+    result.push({
+      ...data,
+      type: 'network',
+      ...geoMap[item.networkIp],
+    })
+    item.fullnodeIp &&
+      result.push({
+        ...data,
+        type: 'fullnode',
+        ...geoMap[item.fullnodeIp],
+      })
+  }
+
+  res.setHeader('Cache-Control', 'public,max-age=300')
+  res.json(result)
 }

@@ -1,13 +1,10 @@
 import { css } from '@emotion/react'
 import { Box, Container } from 'components/container'
-import { Head } from './Head'
-import { CurrentValidators, LatestBlocks, LatestTransactions } from './Cards'
-import { Statistics } from './Statistics'
+import { ValidatorMap } from 'components/validator-map/ValidatorMap'
 import { vars } from 'theme/theme.css'
-
-import { lazy, Suspense } from 'react'
-
-const ValidatorMap = lazy(() => import('components/validator-map/ValidatorMap'))
+import { CurrentValidators, LatestBlocks, LatestTransactions } from './Cards'
+import { Head } from './Head'
+import { Statistics } from './Statistics'
 
 export const Home = () => {
   return (
@@ -36,9 +33,7 @@ export const Home = () => {
           <LatestTransactions />
         </Box>
         <Box>
-          <Suspense fallback={null}>
-            <ValidatorMap />
-          </Suspense>
+          <ValidatorMap />
           <CurrentValidators />
         </Box>
       </Container>
