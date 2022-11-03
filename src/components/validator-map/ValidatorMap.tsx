@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css'
 import { useEffect, useMemo, useState } from 'react'
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet'
 import { vars } from 'theme/theme.css'
+import data from './data.json'
 
 const LegendControlItem = styled(Box)`
   display: flex;
@@ -23,7 +24,7 @@ const LegendIcon = styled(Box)`
 `
 
 export const ValidatorMap = () => {
-  const { data } = useGeoQuery()
+  // const { data } = useGeoQuery()
   const [map, setMap] = useState(null)
 
   useEffect(() => {
@@ -38,8 +39,8 @@ export const ValidatorMap = () => {
     mapData,
     centerLat = 13.3652,
     centerLon = 19.7165,
-    bufferLat = 9.3628,
-    bufferLon = 24.0023,
+    bufferLat = 1.87256,
+    bufferLon = 4.8004,
     minLat = -33.4488,
     maxLat = 60.1792,
     minLon = -100.2951,
