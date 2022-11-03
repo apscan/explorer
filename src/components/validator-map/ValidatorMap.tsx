@@ -36,14 +36,14 @@ export const ValidatorMap = () => {
 
   const {
     mapData,
-    centerLat = 30.729645,
-    centerLon = 21.9156,
-    bufferLat = 5.8899,
-    bufferLon = 23.5552,
-    minLat = 1.28,
+    centerLat = 13.3652,
+    centerLon = 19.7165,
+    bufferLat = 9.3628,
+    bufferLon = 24.0023,
+    minLat = -33.4488,
     maxLat = 60.1792,
-    minLon = -95.8608,
-    maxLon = 139.692,
+    minLon = -100.2951,
+    maxLon = 139.7283,
   } = useMemo(() => {
     if (!data) return {}
 
@@ -70,8 +70,8 @@ export const ValidatorMap = () => {
       maxLon,
       distanceLon,
       distanceLat,
-      bufferLat: distanceLat * 0.1,
-      bufferLon: distanceLon * 0.1,
+      bufferLat: distanceLat * 0.02,
+      bufferLon: distanceLon * 0.02,
       mapData: (data as any).reduce((result: any, current: any) => {
         const findCurrent = result.find((item: any) => item.city === current.city && item.type === current.type)
         if (!findCurrent) {

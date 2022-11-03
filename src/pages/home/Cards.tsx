@@ -379,7 +379,7 @@ export const CurrentValidators = memo(({ ...rest }) => {
           border-bottom: none;
         `}
       >
-        <StyledCardTitle>Top Validators</StyledCardTitle>
+        <StyledCardTitle>Current Validators</StyledCardTitle>
       </StyledCardHead>
       <Box
         // autoHide={true}

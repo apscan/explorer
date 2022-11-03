@@ -47,7 +47,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Network Address',
-    cell: (info) => <Hash tooltip ellipsis value={info.getValue()} />,
+    cell: (info) => <Hash tooltip ellipsis value={info.getValue()?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2]} />,
   }),
   helper.accessor('location', {
     meta: {
@@ -64,11 +64,11 @@ const columns = [
       meta: {
         nowrap: true,
       },
-      header: 'Joining Power (APT)',
+      header: 'Joining Power',
       cell: (info) => (
         <InlineBox alignItems="center">
           {/* <Dot marginRight="4px" background={dotBg.pending_active} /> */}
-          <AmountFormat fixed={0} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
+          <AmountFormat fixed={0} maximumFractionDigits={0} value={info.getValue()} />
         </InlineBox>
       ),
     }
@@ -81,10 +81,10 @@ const columns = [
       meta: {
         nowrap: true,
       },
-      header: 'Voting Power (APT)',
+      header: 'Voting Power',
       cell: (info) => (
         <InlineBox alignItems="center">
-          <AmountFormat fixed={0} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
+          <AmountFormat fixed={0} maximumFractionDigits={0} value={info.getValue()} />
         </InlineBox>
       ),
     }
