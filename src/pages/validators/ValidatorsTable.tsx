@@ -3,10 +3,13 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { Box, InlineBox } from 'components/container'
+import { GeoLocation } from 'components/GeoLocation'
+import { Hash } from 'components/Hash'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
 import { Tooltip } from 'components/Tooltip'
 import { vars } from 'theme/theme.css'
+import { deserializeNetworkAddress } from 'utils/deserializeNetworkAddress'
 
 const helper = createColumnHelper<any>()
 
@@ -40,65 +43,53 @@ const columns = [
     header: 'Validator',
     cell: (info) => <Address size="short" value={info.getValue()} />,
   }),
-  helper.accessor('voting_power_detail.active', {
+  helper.accessor('network_addresses', {
     meta: {
       nowrap: true,
     },
-    header: 'Active',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        {/* <Dot marginRight="4px" background={dotBg.active} /> */}
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
+    header: 'Network Address',
+    cell: (info) => <Hash tooltip ellipsis value={info.getValue()} />,
   }),
-  helper.accessor('voting_power_detail.pending_inactive', {
+  helper.accessor(
+    (data) => {
+      return BigInt(data.voting_power_detail.pending_active) + BigInt(data.voting_power_detail.inactive)
+    },
+    {
+      meta: {
+        nowrap: true,
+      },
+      header: 'Joining Power (APT)',
+      cell: (info) => (
+        <InlineBox alignItems="center">
+          {/* <Dot marginRight="4px" background={dotBg.pending_active} /> */}
+          <AmountFormat fixed={0} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
+        </InlineBox>
+      ),
+    }
+  ),
+  helper.accessor('location', {
     meta: {
       nowrap: true,
     },
-    header: 'Pending Inactive',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        {/* <Dot marginRight="4px" background={dotBg.pending_inactive} /> */}
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
+    header: 'Network Address',
+    cell: (info) => <GeoLocation value={info.row.original.validator_index} />,
   }),
-  helper.accessor('voting_power_detail.pending_active', {
-    meta: {
-      nowrap: true,
+  helper.accessor(
+    (data) => {
+      return BigInt(data.voting_power_detail.active) + BigInt(data.voting_power_detail.pending_inactive)
     },
-    header: 'Pending Active',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        {/* <Dot marginRight="4px" background={dotBg.pending_active} /> */}
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
-  }),
-  helper.accessor('voting_power_detail.inactive', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Inactive',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        {/* <Dot marginRight="4px" background={dotBg.inactive} /> */}
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
-  }),
-  helper.accessor('voting_power', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Voting Power (APT)',
-    cell: (info) => (
-      <InlineBox alignItems="center">
-        <AmountFormat fixed={3} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
-      </InlineBox>
-    ),
-  }),
+    {
+      meta: {
+        nowrap: true,
+      },
+      header: 'Voting Power (APT)',
+      cell: (info) => (
+        <InlineBox alignItems="center">
+          <AmountFormat fixed={0} postfix={false} maximumFractionDigits={0} value={info.getValue()} />
+        </InlineBox>
+      ),
+    }
+  ),
   helper.accessor('blocks', {
     meta: {
       nowrap: true,
