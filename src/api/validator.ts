@@ -1,5 +1,6 @@
 import { parseHeaders } from 'utils'
 import { emptySplitApi } from './api'
+import { deserializeNetworkAddress } from 'utils/deserializeNetworkAddress'
 
 export const validatorApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,7 +17,18 @@ export const validatorApi = emptySplitApi.injectEndpoints({
         }
       },
       transformResponse(data, meta) {
-        return { data, page: parseHeaders(meta?.response?.headers) }
+        return {
+          data: (data as any[])?.map((item) => {
+            return {
+              ...item,
+              network_addresses: deserializeNetworkAddress(item.network_addresses),
+              non_voting_power: (
+                BigInt(item.voting_power_detail.pending_active) + BigInt(item.voting_power_detail.inactive)
+              ).toString(),
+            }
+          }),
+          page: parseHeaders(meta?.response?.headers),
+        }
       },
     }),
   }),
