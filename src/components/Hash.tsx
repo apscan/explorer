@@ -30,7 +30,7 @@ const ellipsisStyle = css`
   vertical-align: bottom;
 `
 
-export const Hash = memo(({ tooltip = , copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
+export const Hash = memo(({ tooltip, copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
   const hash = useMemo(() => (ellipsis ? value : truncatedWithSize(value, size)), [value, size, ellipsis])
   const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
 
