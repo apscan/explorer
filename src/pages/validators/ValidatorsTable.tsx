@@ -9,7 +9,6 @@ import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
 import { Tooltip } from 'components/Tooltip'
 import { vars } from 'theme/theme.css'
-import { deserializeNetworkAddress } from 'utils/deserializeNetworkAddress'
 
 const helper = createColumnHelper<any>()
 
@@ -54,7 +53,7 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Network Address',
+    header: 'Location',
     cell: (info) => <GeoLocation value={info.row.original.validator_index} />,
   }),
   helper.accessor(
