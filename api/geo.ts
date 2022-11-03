@@ -76,7 +76,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
       return axios.get('https://api.apscan.io/active_validators', {
         headers: {
           'Range-Unit': 'items',
-          Range: [0, 49].map((i) => page + i).join('-'),
+          Range: [0, 49].map((i) => page * 50 + i).join('-'),
         },
       })
     })
