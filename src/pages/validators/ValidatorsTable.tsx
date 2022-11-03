@@ -50,6 +50,13 @@ const columns = [
     header: 'Network Address',
     cell: (info) => <Hash tooltip ellipsis value={info.getValue()} />,
   }),
+  helper.accessor('location', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Network Address',
+    cell: (info) => <GeoLocation value={info.row.original.validator_index} />,
+  }),
   helper.accessor(
     (data) => {
       return BigInt(data.voting_power_detail.pending_active) + BigInt(data.voting_power_detail.inactive)
@@ -67,13 +74,6 @@ const columns = [
       ),
     }
   ),
-  helper.accessor('location', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Network Address',
-    cell: (info) => <GeoLocation value={info.row.original.validator_index} />,
-  }),
   helper.accessor(
     (data) => {
       return BigInt(data.voting_power_detail.active) + BigInt(data.voting_power_detail.pending_inactive)
