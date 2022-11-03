@@ -5,6 +5,7 @@ import { AmountFormat } from 'components/AmountFormat'
 import { Box, InlineBox } from 'components/container'
 import { GeoLocation } from 'components/GeoLocation'
 import { Hash } from 'components/Hash'
+import { Link } from 'components/link'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
 import { Tooltip } from 'components/Tooltip'
@@ -47,7 +48,9 @@ const columns = [
       nowrap: true,
     },
     header: 'Network Address',
-    cell: (info) => <Hash tooltip ellipsis value={info.getValue()?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2]} />,
+    cell: (info) => (
+      <Hash tooltip={info.getValue()} ellipsis value={info.getValue()?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2]} />
+    ),
   }),
   helper.accessor('location', {
     meta: {
