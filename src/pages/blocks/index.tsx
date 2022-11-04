@@ -2,7 +2,6 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { useBlocksQuery } from 'api'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
-import { BlockHash } from 'components/block/BlockHash'
 import { BlockHeight } from 'components/block/BlockHeight'
 import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box, Container } from 'components/container'
@@ -16,8 +15,9 @@ import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useMaxValue } from 'hooks/useMaxValue'
-import { useCallback, useMemo, useState } from 'react'
+import { Fragment, useCallback, useMemo, useState } from 'react'
 import { usePageSize } from 'state/application/hooks'
+import { Tooltip } from '../../components/Tooltip'
 
 const helper = createColumnHelper<any>()
 
@@ -29,13 +29,13 @@ const columns = [
     header: 'Height',
     cell: (info) => <BlockHeight value={info.getValue()} />,
   }),
-  helper.accessor('hash', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Hash',
-    cell: (info) => <BlockHash ellipsis value={info.getValue()} />,
-  }),
+  // helper.accessor('hash', {
+  //   meta: {
+  //     nowrap: true,
+  //   },
+  //   header: 'Hash',
+  //   cell: (info) => <BlockHash ellipsis value={info.getValue()} />,
+  // }),
   helper.accessor('time_microseconds', {
     meta: {
       nowrap: true,
@@ -48,15 +48,26 @@ const columns = [
       nowrap: true,
     },
     header: 'Proposer',
-    cell: (info) => <Address value={info.getValue()} size="short" />,
-  }),
-  helper.accessor('failed_proposers_count', {
-    meta: {
-      nowrap: true,
+    cell: (info) => {
+      const failed_proposers_count = info.row.original.failed_proposers_count
+      const failed_proposers = failed_proposers_count > 0 ? ` (${failed_proposers_count})` : null
+      return (
+        <Fragment>
+          <Address value={info.getValue()} size="short" />
+          <Tooltip label={`failed proposers`}>
+            <span>{failed_proposers}</span>
+          </Tooltip>
+        </Fragment>
+      )
     },
-    header: 'Failed Proposers',
-    cell: (info) => <Box>{info.getValue() || '-'}</Box>,
   }),
+  // helper.accessor('failed_proposers_count', {
+  //   meta: {
+  //     nowrap: true,
+  //   },
+  //   header: 'Failed Proposers',
+  //   cell: (info) => <Box>{info.getValue() || '-'}</Box>,
+  // }),
   // helper.accessor('votes', {
   //   meta: {
   //     nowrap: true,
@@ -77,6 +88,23 @@ const columns = [
     },
     header: 'Round',
     cell: (info) => <NumberFormat value={info.getValue()} />,
+  }),
+  helper.accessor('transaction_version', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'First Tx',
+    cell: (info) => <Link as={NumberFormat} to={`/tx/${info.getValue()}`} value={info.getValue()} />,
+  }),
+  helper.accessor('', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Last Tx',
+    cell: (info) => {
+      const lastTxVersion = info.row.original.transaction_version + info.row.original.transactions_count - 1
+      return <Link as={NumberFormat} to={`/tx/${lastTxVersion}`} value={lastTxVersion} />
+    },
   }),
   helper.accessor('transactions_count', {
     meta: {
