@@ -15,7 +15,7 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useCallback, useMemo, useState } from 'react'
 import { useAppStats, useTotalSupply } from 'state/api/hooks'
-import { usePageSize } from 'state/application/hooks'
+import { usePageNumberFromUrl, usePageSize } from 'state/application/hooks'
 import { toFixedNumber } from 'utils/number'
 
 const helper = createColumnHelper<any>()
@@ -23,8 +23,9 @@ const helper = createColumnHelper<any>()
 export const Accounts = () => {
   const { address_count: addressCount } = useAppStats()
   const totalSupply = useTotalSupply(false)
+  const pageNumber = usePageNumberFromUrl()
   const [pageSize, setPageSize] = usePageSize()
-  const [offset, setOffset] = useState<number | undefined>(0)
+  const [offset, setOffset] = useState<number | undefined>((pageNumber - 1) * pageSize)
 
   const { data: { data, page } = {}, isLoading } = useAccountsQuery(
     {
@@ -208,6 +209,7 @@ export const Accounts = () => {
             onFirstPage={onFirstPage}
             onPrePage={onPrePage}
             onLastPage={onLastPage}
+            syncUrl
           />
         </CardFooter>
       </Card>

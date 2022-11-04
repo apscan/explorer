@@ -7,6 +7,7 @@ import { ReactComponent as ChevronLeft } from 'assets/icons/chevron-left.svg'
 import { ReactComponent as ChevronRight } from 'assets/icons/chevron-right.svg'
 import { Icon } from 'components/Icon'
 import { memo } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Wrapper = styled(Box)`
   display: inline-flex;
@@ -64,6 +65,7 @@ export const Pagination = memo(
     onPrePage,
     onFirstPage,
     onLastPage,
+    syncUrl,
     ...props
   }: BoxProps & {
     page?: number
@@ -72,16 +74,33 @@ export const Pagination = memo(
     onPrePage: () => void
     onFirstPage: () => void
     onLastPage?: () => void
+    syncUrl?: boolean
   }) => {
+    const navigate = useNavigate()
+
+    const setPageToUrlParams = (page: number) => syncUrl && navigate({ search: `?page=${page}` })
+
     return (
       <Wrapper {...props}>
         <StyledButtonWrapper>
-          <StyledButton disabled={page === 1} onClick={() => onFirstPage()}>
+          <StyledButton
+            disabled={page === 1}
+            onClick={() => {
+              setPageToUrlParams(1)
+              onFirstPage()
+            }}
+          >
             First
           </StyledButton>
         </StyledButtonWrapper>
         <StyledButtonWrapper>
-          <StyledButton disabled={page === 1} onClick={() => onPrePage()}>
+          <StyledButton
+            disabled={page === 1}
+            onClick={() => {
+              page && setPageToUrlParams(page - 1)
+              onPrePage()
+            }}
+          >
             <Icon height="16px" as={ChevronLeft} />
           </StyledButton>
         </StyledButtonWrapper>
@@ -91,13 +110,25 @@ export const Pagination = memo(
           </StyledButton>
         </StyledButtonWrapper>
         <StyledButtonWrapper>
-          <StyledButton disabled={page === total} onClick={() => onNextPage()}>
+          <StyledButton
+            disabled={page === total}
+            onClick={() => {
+              page && setPageToUrlParams(page + 1)
+              onNextPage()
+            }}
+          >
             <Icon height="16px" as={ChevronRight} />
           </StyledButton>
         </StyledButtonWrapper>
         {onLastPage && (
           <StyledButtonWrapper>
-            <StyledButton disabled={page === total} onClick={() => onLastPage()}>
+            <StyledButton
+              disabled={page === total}
+              onClick={() => {
+                total && setPageToUrlParams(total)
+                onLastPage()
+              }}
+            >
               Last
             </StyledButton>
           </StyledButtonWrapper>

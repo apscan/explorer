@@ -9,13 +9,14 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useState } from 'react'
 import { useAppStats } from 'state/api/hooks'
-import { usePageSize } from 'state/application/hooks'
+import { usePageNumberFromUrl, usePageSize } from 'state/application/hooks'
 import { ValidatorsTable } from './ValidatorsTable'
 
 export const Validators = () => {
   const stats = useAppStats()
+  const pageNumber = usePageNumberFromUrl()
   const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number | undefined>(0)
+  const [start, setStart] = useState<number | undefined>((pageNumber - 1) * pageSize)
 
   const { data: { data, page } = {}, isLoading } = useValidatorsQuery({
     start,
@@ -43,7 +44,7 @@ export const Validators = () => {
         <ValidatorsTable data={data} />
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
-          <Pagination {...pageProps} />
+          <Pagination {...pageProps} syncUrl />
         </CardFooter>
       </Card>
     </Container>
