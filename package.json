@@ -36,6 +36,7 @@
     "leaflet-gesture-handling": "^1.2.2",
     "memoize-one": "^6.0.0",
     "numbro": "^2.3.6",
+    "query-string": "^7.1.1",
     "react": "^18.2.0",
     "react-countup": "^6.3.2",
     "react-dom": "^18.2.0",
