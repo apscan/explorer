@@ -30,7 +30,8 @@ export const useRangePagination = (
   }, [setStart])
 
   const onLastPage = useCallback(() => {
-    if (page.count != null && pageSize != null && page.count > pageSize) setStart(page.count - pageSize + 1)
+    if (page.count != null && pageSize != null && page.count > pageSize)
+      setStart((Math.ceil(page.count / pageSize) - 1) * pageSize)
   }, [page.count, pageSize, setStart])
 
   return {
