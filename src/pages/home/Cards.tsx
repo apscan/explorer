@@ -385,7 +385,6 @@ export const CurrentValidators = memo(({ ...rest }) => {
         // autoHide={true}
         css={css`
           min-height: 448px;
-          max-height: auto;
           padding: 0 12px;
         `}
       >
