@@ -70,7 +70,7 @@ const columns = [
       cell: (info) => (
         <InlineBox alignItems="center">
           {/* <Dot marginRight="4px" background={dotBg.pending_active} /> */}
-          <AmountFormat fixed={0} maximumFractionDigits={0} value={info.getValue()} />
+          <AmountFormat fixed={1} maximumFractionDigits={1} value={info.getValue()} />
         </InlineBox>
       ),
     }
@@ -86,7 +86,7 @@ const columns = [
       header: 'Voting Power',
       cell: (info) => (
         <InlineBox alignItems="center">
-          <AmountFormat fixed={0} maximumFractionDigits={0} value={info.getValue()} />
+          <AmountFormat fixed={1} maximumFractionDigits={1} value={info.getValue()} />
         </InlineBox>
       ),
     }
