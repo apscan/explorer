@@ -40,7 +40,7 @@ export const TransactionFunction = ({
       `}
     >
       <Address value={address} size="short" />
-      ::s{functionStr}({value?.payload?.arguments.join(', ')})
+      ::{functionStr}({value?.payload?.arguments.join(', ')})
     </Box>
   )
 }
