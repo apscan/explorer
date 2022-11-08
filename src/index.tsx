@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { HelmetProvider } from 'react-helmet-async'
+import { HelmetProvider, Helmet } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import 'simplebar-react/dist/simplebar.min.css'
@@ -32,6 +32,9 @@ root.render(
         <Updaters />
         <ThemeProvider>
           <HelmetProvider>
+            <Helmet>
+              <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+            </Helmet>
             <App />
           </HelmetProvider>
         </ThemeProvider>
