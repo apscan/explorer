@@ -91,7 +91,7 @@ export const Block = () => {
   }, [data])
 
   const items = useMemo(() => {
-    let result = [
+    return [
       {
         label: tabs.overview.name,
         key: tabs.overview.key,
@@ -103,9 +103,7 @@ export const Block = () => {
         children: <BlockTransactions id={blockHeight} count={data?.transactions_count} />,
       },
     ].filter(Boolean) as any
-
-    return result
-  }, [data, id, blockHeight, blockMetadata])
+  }, [data, id, blockHeight, blockMetadata, failedProposers])
 
   const defaultActiveKey = useTabActiveKey(tabs, searchParams)
 
