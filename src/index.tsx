@@ -13,6 +13,7 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import store from './state'
 import { ThemeProvider } from './theme'
 import reportWebVitals from './utils/reportWebVitals'
+import './index.css'
 
 function Updaters() {
   return (

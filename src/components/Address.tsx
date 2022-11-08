@@ -10,6 +10,7 @@ const container = css`
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
+  font-family: SF Mono, sans-serif;
 `
 
 export interface AddressProps extends BoxProps {
