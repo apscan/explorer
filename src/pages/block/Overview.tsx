@@ -62,7 +62,7 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
                 content: <Address size="full" value={data?.proposer} />,
                 suffix: 'Success',
               },
-              ...data?.failedProposers?.map((failedProposer: any) => ({
+              ...(data?.failedProposers ?? [])?.map((failedProposer: any) => ({
                 content: <Address size="full" value={failedProposer?.proposer_address} />,
                 suffix: 'Failed',
               })),
