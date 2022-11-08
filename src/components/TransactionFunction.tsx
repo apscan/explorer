@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { Types } from 'aptos'
 import { Box } from './container'
+import { Address } from './Address'
 
 const BLOCK_MODULE_NAME = 'candy_machine_v2'
 
@@ -22,6 +23,7 @@ export const TransactionFunction = ({
   const functionFullStr = value.payload.function
 
   const functionStrStartIdx = functionFullStr.indexOf('::') + 2
+  const address = functionFullStr.substring(0, functionStrStartIdx - 2)
   let functionStr = functionFullStr.substring(functionStrStartIdx)
 
   if (functionStr.startsWith(BLOCK_MODULE_NAME)) {
@@ -37,7 +39,8 @@ export const TransactionFunction = ({
         max-width: ${maxWidth || '200px'};
       `}
     >
-      {functionStr}({value?.payload?.arguments.join(', ')})
+      <Address value={address} size="short" />
+      ::s{functionStr}({value?.payload?.arguments.join(', ')})
     </Box>
   )
 }
