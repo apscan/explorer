@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useBlockDetailQuery, useBlockMetadataQuery } from 'api'
+import { useBlockDetailQuery, useBlockMetadataQuery, useFailedProposersQuery } from 'api'
 import { Card } from 'components/Card'
 import { Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -80,6 +80,7 @@ export const Block = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const { data } = useBlockDetailQuery(id)
+  const { data: failedProposers } = useFailedProposersQuery(id)
 
   const { data: blockMetadata } = useBlockMetadataQuery({
     id: id!,
@@ -94,7 +95,7 @@ export const Block = () => {
       {
         label: tabs.overview.name,
         key: tabs.overview.key,
-        children: <Overview blockMeta={blockMetadata} data={data} />,
+        children: <Overview blockMeta={blockMetadata} data={{ ...data, failedProposers }} />,
       },
       id && {
         label: tabNameWithCount(tabs.tx.name, data?.transactions_count),
