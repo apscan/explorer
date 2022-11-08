@@ -10,7 +10,7 @@ import { DataTable } from 'components/table'
 import { TxType } from 'components/transaction/TxType'
 import { Version } from 'components/transaction/Version'
 import { memo, useMemo } from 'react'
-
+import { TransactionFunction } from 'components/TransactionFunction'
 import { ExpandButton } from 'components/table/ExpandButton'
 
 const helper = createColumnHelper<any>()
@@ -89,6 +89,9 @@ const columns = [
       if (info.row.original.type !== 'user_transaction') {
         return '-'
       } else {
+        if (info.row.original?.payload?.type === 'entry_function_payload') {
+          return <TransactionFunction value={info.row.original} />
+        }
         return <JsonViewEllipsis src={info.getValue()} />
       }
     },
