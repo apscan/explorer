@@ -3,6 +3,7 @@ import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { emptySplitApi } from 'api'
 import applicationReducer, { applicationSlice } from './application/slice'
 import { save, load } from 'redux-localstorage-simple'
+import toastReducer from './toast/toastSlice'
 
 const STORAGE_NAMEPLACE = 'APSCAN'
 
@@ -13,12 +14,14 @@ const preloadedState = load({
     application: {
       ...applicationSlice.getInitialState(),
     },
+    toast: { toasts: [] },
   },
 })
 
 export function makeStore() {
   return configureStore({
     reducer: {
+      toast: toastReducer,
       application: applicationReducer,
       api: emptySplitApi.reducer,
     },

@@ -52,6 +52,7 @@
     "recharts": "^2.1.14",
     "redux-localstorage-simple": "^2.5.1",
     "simplebar-react": "^2.4.1",
+    "styled-components": "^5.3.6",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4",
     "workbox-background-sync": "^6.5.4",

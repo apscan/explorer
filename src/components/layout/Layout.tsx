@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import { Footer } from './Footer'
 import { Header } from './Header'
+import Toast from '../toast'
 
 export const Main = styled.div`
   width: 100%;
@@ -27,6 +28,7 @@ export const Layout = ({
         {children}
       </Main>
       <Footer isHome={isHome} />
+      <Toast />
     </>
   )
 }
