@@ -4,7 +4,7 @@ import { truncated } from 'utils/truncated'
 import { Box, BoxProps } from './container'
 import { CopyButton } from './CopyButton'
 import { Link } from './link'
-import { Tooltip } from './Tooltip'
+import Tooltip from './tooltipWithCopy'
 
 const container = css`
   display: inline-flex;
@@ -50,7 +50,7 @@ export const Address = memo(
     if (!text) return <>{fallback}</>
 
     return (
-      <Tooltip label={tooltip} isDisabled={!tooltip}>
+      <Tooltip label={tooltip} isDisabled={!tooltip} closeDelay={500000}>
         <Box {...props} css={container}>
           <Box as={as} css={container} to={`/account/${value}`}>
             {text}
