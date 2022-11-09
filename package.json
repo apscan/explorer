@@ -87,6 +87,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/react-table": "^7.7.12",
+    "@types/styled-components": "^5.1.26",
     "@vanilla-extract/dynamic": "^2.0.2",
     "@vercel/node": "^2.5.26",
     "customize-cra": "^1.0.0",
