@@ -7,6 +7,7 @@ const tooltipSlice = createSlice({
     text: '',
     position: { left: 0, top: 0 },
     timerId: 0,
+    copied: false,
   },
   reducers: {
     toggleTooltip(state, { payload }) {
@@ -20,16 +21,21 @@ const tooltipSlice = createSlice({
     },
     clearTimer(state) {
       if (state.timerId) {
-        // console.log('clear:', state.timerId)
         clearTimeout(state.timerId)
+        state.copied = false
       }
     },
     setTimerId(state, { payload }) {
       if (state.timerId) {
-        // console.log('crear:', state.timerId)
         clearTimeout(state.timerId)
       }
       state.timerId = payload
+    },
+    setCopied(state, { payload }) {
+      if (state.timerId) {
+        clearTimeout(state.timerId)
+      }
+      state.copied = payload
     },
   },
 })
@@ -37,7 +43,8 @@ const tooltipSlice = createSlice({
 export const tooltipShowSelector = (state) => state.tooltip.showTip
 export const tooltipContentSelector = (state) => state.tooltip.text
 export const tooltipPositionSelector = (state) => state.tooltip.position
+export const tooltipCopiedSelector = (state) => state.tooltip.copied
 
-export const { setText, setPosition, toggleTooltip, clearTimer, setTimerId } = tooltipSlice.actions
+export const { setText, setPosition, toggleTooltip, clearTimer, setTimerId, setCopied } = tooltipSlice.actions
 
 export default tooltipSlice.reducer
