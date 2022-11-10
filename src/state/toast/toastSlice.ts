@@ -33,6 +33,9 @@ const toastSlice = createSlice({
     removeToast(state, { payload }) {
       state.toasts = state.toasts.filter((item: any) => item.id !== payload)
     },
+    removeAllToast(state) {
+      state.toasts = []
+    },
     updateToast(state, { payload }) {
       state.toasts = state.toasts.map((t) => {
         if (t.id === payload.id) {
@@ -48,7 +51,7 @@ export const toastsSelector = (state: any) => {
   return state.toast.toasts
 }
 
-export const { addToast, removeToast, updateToast } = toastSlice.actions
+export const { addToast, removeToast, updateToast, removeAllToast } = toastSlice.actions
 
 export const newToastId = () => count++
 
@@ -72,10 +75,11 @@ export const newSuccessToast = (message: string) =>
     message,
   })
 
-export const newErrorToast = (message: string) => {
+export const newErrorToast = (message: string, sticky?: boolean) => {
   return addToast({
     type: 'error',
     message,
+    sticky: sticky ?? false,
   })
 }
 

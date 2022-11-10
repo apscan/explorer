@@ -27,7 +27,11 @@ export const Accounts = () => {
   const [pageSize, setPageSize] = usePageSize()
   const [offset, setOffset] = useState<number | undefined>((pageNumber - 1) * pageSize)
 
-  const { data: { data, page } = {}, isLoading } = useAccountsQuery(
+  const {
+    data: { data, page } = {},
+    isLoading,
+    error,
+  } = useAccountsQuery(
     {
       pageSize,
       offset,
