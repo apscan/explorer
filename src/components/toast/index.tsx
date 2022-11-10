@@ -40,7 +40,7 @@ const Toast = memo(() => {
     if (typeof window !== 'undefined') {
       window.onmessage = ({ data: message }) => {
         if (message === 'toast:error:403') {
-          dispatch(newErrorToast('Reached the maximum number of requests. Please try again later.', true))
+          dispatch(newErrorToast('Access Limited, Wait for 30 Seconds', true))
         }
         if (message === 'toast:error:clear') {
           dispatch(removeAllToast())
