@@ -73,6 +73,7 @@ const columns = [
         ellipsis
         value={info.getValue()}
         copyable
+        tooltip
       />
     ),
   }),
