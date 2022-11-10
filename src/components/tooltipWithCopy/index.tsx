@@ -23,7 +23,7 @@ export default function TooltipWithCopy({ children, label = '', pullRight = fals
 
   useEffect(() => {
     if (ref?.current) {
-      ref?.current?.addEventListener('mouseover', () => {
+      ref?.current?.addEventListener('mouseenter', () => {
         const position = ref?.current?.getBoundingClientRect()
         dispatch(clearTimer())
         dispatch(toggleTooltip(true))
