@@ -52,7 +52,14 @@ export default function Tip({ children }: any) {
   const show = useSelector(tooltipShowSelector)
   const position = useSelector(tooltipPositionSelector)
   const [rect, setRect] = useState({ width: 0 })
+  const [copied, setCopied] = useState(false)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (ref.current) {
+      setRect({ width: ref.current.getBoundingClientRect().width })
+    }
+  }, [copied])
 
   useEffect(() => {
     if (ref.current) {
@@ -61,6 +68,7 @@ export default function Tip({ children }: any) {
         dispatch(clearTimer())
       })
       ref.current.addEventListener('mouseout', () => {
+        setCopied(false)
         const timer = setTimeout(() => {
           dispatch(toggleTooltip(false))
         }, 500)
@@ -74,15 +82,15 @@ export default function Tip({ children }: any) {
   }
 
   return (
-    <Wrapper position={{ ...position, left: position.left - rect.width / 2 }} ref={ref}>
+    <Wrapper position={{ ...position, left: position.left - (copied ? 27 : rect.width / 2) }} ref={ref}>
       <TipWrapper
         showTip
         onClick={() => {
           copy(children)
-          dispatch(newSuccessToast('Copied to clipboard'))
+          setCopied(true)
         }}
       >
-        {children}
+        {copied ? 'Copied' : children}
         <Triangle />
       </TipWrapper>
     </Wrapper>
