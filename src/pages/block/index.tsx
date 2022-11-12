@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
-import { useBlockDetailQuery, useBlockMetadataQuery } from 'api'
+import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
+import { useBlockDetailQuery, useBlockMetadataQuery, useFailedProposersQuery } from 'api'
 import { Card } from 'components/Card'
 import { Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -8,7 +9,7 @@ import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
 import { useTabActiveKey } from 'hooks/useTabActiveKey'
-import { useCallback, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { useAppStats } from 'state/api/hooks'
 import { vars } from 'theme/theme.css'
@@ -80,6 +81,7 @@ export const Block = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const { data } = useBlockDetailQuery(id)
+  const { data: failedProposers } = useFailedProposersQuery(id)
 
   const { data: blockMetadata } = useBlockMetadataQuery({
     id: id!,
@@ -89,22 +91,26 @@ export const Block = () => {
     return data?.height == null ? undefined : String(data?.height)
   }, [data])
 
-  const items = useMemo(() => {
-    let result = [
-      {
-        label: tabs.overview.name,
-        key: tabs.overview.key,
-        children: <Overview blockMeta={blockMetadata} data={data} />,
-      },
-      id && {
-        label: tabNameWithCount(tabs.tx.name, data?.transactions_count),
-        key: tabs.tx.key,
-        children: <BlockTransactions id={blockHeight} count={data?.transactions_count} />,
-      },
-    ].filter(Boolean) as any
-
-    return result
-  }, [data, id, blockHeight, blockMetadata])
+  const items = useMemo(
+    () =>
+      [
+        {
+          label: tabs.overview.name,
+          key: tabs.overview.key,
+          children: <Overview blockMeta={blockMetadata} data={{ ...data, failedProposers }} />,
+        },
+        id && {
+          label: tabNameWithCount(tabs.tx.name, data?.transactions_count),
+          key: tabs.tx.key,
+          children: <BlockTransactions id={blockHeight} count={data?.transactions_count} />,
+        },
+      ].filter(Boolean) as {
+        label: ReactNode
+        key: string
+        children: EmotionJSX.Element
+      }[],
+    [data, id, blockHeight, blockMetadata, failedProposers]
+  )
 
   const defaultActiveKey = useTabActiveKey(tabs, searchParams)
 
