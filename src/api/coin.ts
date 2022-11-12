@@ -16,7 +16,7 @@ export const coinApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         const page = parseHeaders(meta?.response?.headers)
 
         return {
