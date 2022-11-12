@@ -25,7 +25,7 @@ export const blockApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),

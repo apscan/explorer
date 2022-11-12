@@ -70,7 +70,7 @@ export const txApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
@@ -88,7 +88,7 @@ export const txApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data: any[], meta) {
+      transformResponse(data: any[], meta: any) {
         return {
           data: data.map((item) => {
             if (item.type === 'table_item_changes') {

@@ -24,7 +24,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
@@ -41,7 +41,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
@@ -58,7 +58,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
@@ -75,7 +75,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
@@ -92,7 +92,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
@@ -144,7 +144,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
           url: `/accounts_with_rank?limit=${pageSize}${offset ? `&offset=${offset}` : ''}`,
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return {
           data: (data as any[]).map((item) => {
             return {
