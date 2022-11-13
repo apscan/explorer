@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { CopyButton } from 'components/CopyButton'
-import { Tooltip } from 'components/Tooltip'
+import Tooltip from 'components/tooltipWithCopy'
 import { memo, useMemo } from 'react'
 import { truncatedWithSize } from 'utils/truncated'
 import { Box, BoxProps } from '../container/Box'
