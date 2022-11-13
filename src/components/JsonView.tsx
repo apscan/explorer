@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import ReactJson, { ReactJsonViewProps } from 'react-json-view'
 import { Box, BoxProps } from './container'
 import { CopyButton } from './CopyButton'
+import { isLargeObject } from '../utils'
 
 const JsonViewContainer = ({
   children,
@@ -101,14 +102,18 @@ export const JsonView = ({ src, fallback, ellipsis, withContainer, ...props }: J
           }
         `}
       >
-        <ReactJson
-          collapsed={false}
-          name={false}
-          enableClipboard={false}
-          displayDataTypes={false}
-          src={src}
-          {...props}
-        />
+        {isLargeObject(src) ? (
+          <pre>{JSON.stringify(src, null, 4)}</pre>
+        ) : (
+          <ReactJson
+            collapsed={false}
+            name={false}
+            enableClipboard={false}
+            displayDataTypes={false}
+            src={src}
+            {...props}
+          />
+        )}
       </Box>
     </JsonViewContainer>
   )
