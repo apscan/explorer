@@ -93,19 +93,19 @@ export const Transaction = () => {
   const items = useMemo(() => {
     let result = [{ label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> }]
 
-    if (data?.resource_changes || searchParams.get('tab') === 'changes') {
+    if (data?.changes_count > 0 || searchParams.get('tab') === 'changes') {
       result.push({
-        label: tabNameWithCount(tabs.changes.name, data?.changes?.length) as any,
+        label: tabNameWithCount(tabs.changes.name, data?.changes_count) as any,
         key: tabs.changes.key,
-        children: <Changes id={version} count={data?.changes?.length} />,
+        children: <Changes id={version} count={data?.changes_count} />,
       })
     }
 
-    if (data?.events || searchParams.get('tab') === 'events') {
+    if (data?.events_count || searchParams.get('tab') === 'events') {
       result.push({
-        label: tabNameWithCount(tabs.events.name, data?.events?.length) as any,
+        label: tabNameWithCount(tabs.events.name, data?.events_count) as any,
         key: tabs.events.key,
-        children: <Events id={version} count={data?.events?.length} />,
+        children: <Events id={version} count={data?.events_count} />,
       })
     }
 

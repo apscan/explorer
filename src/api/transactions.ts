@@ -26,7 +26,7 @@ export const txApi = emptySplitApi.injectEndpoints({
 
         const queryString = /^\d+$/.test(id) ? `?version=eq.${id}` : `?hash=eq.${id}`
 
-        return { url: `/transaction_details${queryString}` }
+        return { url: `/transactions${queryString}` }
       },
       transformResponse: (response: any[]) => {
         const result = response?.[0] || null
