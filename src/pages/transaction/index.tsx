@@ -93,7 +93,7 @@ export const Transaction = () => {
   const items = useMemo(() => {
     let result = [{ label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> }]
 
-    if (data?.changes_count > 0 || searchParams.get('tab') === 'changes') {
+    if (data?.changes_count > 0) {
       result.push({
         label: tabNameWithCount(tabs.changes.name, data?.changes_count) as any,
         key: tabs.changes.key,
@@ -101,7 +101,7 @@ export const Transaction = () => {
       })
     }
 
-    if (data?.events_count || searchParams.get('tab') === 'events') {
+    if (data?.events_count > 0) {
       result.push({
         label: tabNameWithCount(tabs.events.name, data?.events_count) as any,
         key: tabs.events.key,
@@ -110,7 +110,7 @@ export const Transaction = () => {
     }
 
     return result
-  }, [data, searchParams, version])
+  }, [data, version])
 
   const defaultActiveKey = useTabActiveKey(tabs, searchParams)
 
