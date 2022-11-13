@@ -33,7 +33,6 @@ export const isLargeObject = (object: any): boolean => {
   let bytes = 0
 
   while (stack.length) {
-    console.log(bytes)
     let value = stack.pop()
 
     if (typeof value === 'boolean') {

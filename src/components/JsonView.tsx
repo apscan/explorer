@@ -26,7 +26,7 @@ const JsonViewContainer = ({
     >
       <Box
         css={css`
-          padding: 16px 32px 16px 16px;
+          padding: 16px 40px 16px 16px;
           border-radius: 8px;
           border: 1px solid #e7eaf3;
           background-color: #f8f9fa;
@@ -39,7 +39,7 @@ const JsonViewContainer = ({
           <Box
             css={css`
               position: absolute;
-              right: 16px;
+              right: 22px;
               top: 16px;
               font-size: 16px;
               z-index: 1;
