@@ -26,7 +26,7 @@ const JsonViewContainer = ({
     >
       <Box
         css={css`
-          padding: 16px;
+          padding: 16px 32px 16px 16px;
           border-radius: 8px;
           border: 1px solid #e7eaf3;
           background-color: #f8f9fa;
@@ -39,8 +39,8 @@ const JsonViewContainer = ({
           <Box
             css={css`
               position: absolute;
-              right: 12px;
-              top: 8px;
+              right: 16px;
+              top: 16px;
               font-size: 16px;
               z-index: 1;
             `}
@@ -89,7 +89,6 @@ export const JsonView = ({ src, fallback, ellipsis, withContainer, ...props }: J
     <JsonViewContainer data={src} isDisabled={!withContainer}>
       <Box
         css={css`
-          word-break: break-all;
           font-size: 12px;
           line-height: 1.25;
           font-weight: 400;
@@ -99,6 +98,10 @@ export const JsonView = ({ src, fallback, ellipsis, withContainer, ...props }: J
             align-items: center;
             position: relative;
             top: 1.8px;
+          }
+          & > pre {
+            word-wrap: break-word;
+            white-space: pre-wrap;
           }
         `}
       >
