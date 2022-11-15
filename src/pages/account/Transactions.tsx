@@ -5,28 +5,22 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { TransactionsTable } from 'pages/transactions/TransactionsTable'
-import { useState } from 'react'
-import { usePageSize } from 'state/application/hooks'
+import { usePageParams } from 'state/application/hooks'
 
 export const AccountTransactions = ({ id, count }: { id: string; count: number }) => {
-  const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number | undefined>(0)
+  const [pageSize, setPageSize, page, setPage] = usePageParams()
 
-  const { data: { data, page } = {}, isLoading } = useAccountTransactionsQuery(
+  const { data: { data } = {}, isLoading } = useAccountTransactionsQuery(
     {
       id: id!,
-      start,
+      start: (page - 1) * pageSize,
       pageSize,
     },
     {
       skip: id == null || !count,
     }
   )
-  const pageProps = useRangePagination(start, setStart, pageSize, {
-    min: page?.min,
-    max: page?.max,
-    count: count,
-  })
+  const pageProps = useRangePagination(page, pageSize, count, setPage)
 
   return (
     <CardBody isLoading={isLoading}>
@@ -34,10 +28,10 @@ export const AccountTransactions = ({ id, count }: { id: string; count: number }
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> transactions
         </CardHeadStats>
-        {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
+        {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <TransactionsTable page={pageProps.page} variant="account" data={data} />
-      {pageProps?.total && pageProps.total > 1 && (
+      {pageProps.total > 1 && (
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
           <Pagination {...pageProps} />

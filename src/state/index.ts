@@ -33,7 +33,7 @@ export function makeStore() {
         .concat(
           save({
             namespace: STORAGE_NAMEPLACE,
-            states: ['application.dateFormat', 'application.pageSize'],
+            states: ['application.dateFormat'],
             debounce: 1000,
           })
         ),

@@ -7,27 +7,18 @@ import { PageTitle } from 'components/PageTitle'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { useState } from 'react'
 import { useAppStats } from 'state/api/hooks'
-import { usePageNumberFromUrl, usePageSize } from 'state/application/hooks'
+import { usePageParams } from 'state/application/hooks'
 import { ValidatorsTable } from './ValidatorsTable'
 
 export const Validators = () => {
   const stats = useAppStats()
-  const pageNumber = usePageNumberFromUrl()
-  const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number | undefined>((pageNumber - 1) * pageSize)
-
-  const { data: { data, page } = {}, isLoading } = useValidatorsQuery({
-    start,
+  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const { data: { data } = {}, isLoading } = useValidatorsQuery({
+    start: (page - 1) * pageSize,
     pageSize,
   })
-
-  const pageProps = useRangePagination(start, setStart, pageSize, {
-    min: page?.min,
-    max: page?.max,
-    count: stats?.validators_count,
-  })
+  const pageProps = useRangePagination(page, pageSize, stats?.validators_count, setPage)
 
   return (
     <Container>

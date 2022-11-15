@@ -13,9 +13,10 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
-import { useCallback, useMemo, useState } from 'react'
+import { useRangePagination } from 'hooks/useRangePagination'
+import { useMemo } from 'react'
 import { useAppStats, useTotalSupply } from 'state/api/hooks'
-import { usePageNumberFromUrl, usePageSize } from 'state/application/hooks'
+import { usePageParams } from 'state/application/hooks'
 import { toFixedNumber } from 'utils/number'
 
 const helper = createColumnHelper<any>()
@@ -23,23 +24,26 @@ const helper = createColumnHelper<any>()
 export const Accounts = () => {
   const { address_count: addressCount } = useAppStats()
   const totalSupply = useTotalSupply(false)
-  const pageNumber = usePageNumberFromUrl()
-  const [pageSize, setPageSize] = usePageSize()
-  const [offset, setOffset] = useState<number | undefined>((pageNumber - 1) * pageSize)
+  const [pageSize, setPageSize, page, setPage] = usePageParams()
 
   const {
-    data: { data, page } = {},
+    data: { data } = {},
     isLoading,
     error,
   } = useAccountsQuery(
     {
       pageSize,
-      offset,
+      offset: (page - 1) * pageSize,
     },
     {
       refetchOnMountOrArgChange: true,
     }
   )
+
+  console.log('data', data, {
+    pageSize,
+    offset: (page - 1) * pageSize,
+  })
 
   const columns = useMemo(
     () => [
@@ -141,38 +145,7 @@ export const Accounts = () => {
     return addressCount > 1000 ? 1000 : addressCount
   }, [addressCount])
 
-  const [showPage, totalPage] = useMemo(() => {
-    if (queryCount && pageSize && page?.max) {
-      return [Math.floor(page.max / pageSize) + 1, Math.floor(queryCount / pageSize)]
-    }
-
-    return []
-  }, [queryCount, page?.max, pageSize])
-
-  const onSelectPageSize = useCallback(
-    (pageSize: number) => {
-      setPageSize(pageSize)
-    },
-    [setPageSize]
-  )
-
-  const onNextPage = useCallback(() => {
-    if (page?.max) setOffset(page?.max + 1)
-  }, [page?.max])
-
-  const onPrePage = useCallback(() => {
-    if (page?.min) setOffset(page.min > pageSize ? page.min - pageSize : 0)
-  }, [page?.min, pageSize])
-
-  const onFirstPage = useCallback(() => {
-    setOffset(0)
-  }, [])
-
-  const onLastPage = useCallback(() => {
-    if (queryCount !== undefined) {
-      setOffset(queryCount - pageSize)
-    }
-  }, [queryCount, pageSize])
+  const pageProps = useRangePagination(page, pageSize, queryCount, setPage)
 
   return (
     <Container>
@@ -194,27 +167,12 @@ export const Accounts = () => {
               </Box>
             )}
           </CardHeadStats>
-          <Pagination
-            page={showPage}
-            total={totalPage}
-            onNextPage={onNextPage}
-            onFirstPage={onFirstPage}
-            onPrePage={onPrePage}
-            onLastPage={onLastPage}
-          />
+          <Pagination {...pageProps} />
         </CardHead>
         <DataTable dataSource={data} columns={columns} />
         <CardFooter variant="table">
-          <ShowRecords pageSize={pageSize} onSelect={onSelectPageSize} />
-          <Pagination
-            page={showPage}
-            total={totalPage}
-            onNextPage={onNextPage}
-            onFirstPage={onFirstPage}
-            onPrePage={onPrePage}
-            onLastPage={onLastPage}
-            syncUrl
-          />
+          <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
+          <Pagination {...pageProps} />
         </CardFooter>
       </Card>
     </Container>
