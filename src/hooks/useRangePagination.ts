@@ -1,45 +1,34 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
-export const useRangePagination = (
-  start: undefined | number,
-  setStart: (start?: number) => void,
-  pageSize?: number,
-  page: { min?: number; max?: number; count?: number } = {}
-) => {
-  const [showPage, totalPage] = useMemo(() => {
-    if (page.count != null && page.max != null && pageSize) {
-      const totalPage = Math.floor(page.count / pageSize) + 1
-      const showPage = Math.floor(page.max / pageSize) + 1
-
-      return [showPage, totalPage]
-    }
-
-    return []
-  }, [page.count, page.max, pageSize])
-
+export const useRangePagination = (page: number, pageSize: number, count: number, setPage: (page: number) => void) => {
   const onNextPage = useCallback(() => {
-    if (page.max != null) setStart(page.max + 1)
-  }, [page.max, setStart])
+    if (page * pageSize < count) {
+      setPage(page + 1)
+    }
+  }, [count, page, pageSize, setPage])
 
   const onPrePage = useCallback(() => {
-    if (page.min != null && pageSize != null && page.min >= pageSize) setStart(page.min - pageSize)
-  }, [page.min, pageSize, setStart])
+    if (page > 0) {
+      setPage(page - 1)
+    }
+  }, [page, setPage])
 
   const onFirstPage = useCallback(() => {
-    setStart(0)
-  }, [setStart])
+    setPage(0)
+  }, [setPage])
 
   const onLastPage = useCallback(() => {
-    if (page.count != null && pageSize != null && page.count > pageSize)
-      setStart((Math.ceil(page.count / pageSize) - 1) * pageSize)
-  }, [page.count, pageSize, setStart])
+    if (page < Math.ceil(count / pageSize)) {
+      setPage(Math.ceil(count / pageSize))
+    }
+  }, [count, page, pageSize, setPage])
 
   return {
     onNextPage,
     onPrePage,
     onFirstPage,
     onLastPage,
-    page: showPage,
-    total: totalPage,
+    total: Math.ceil(count / pageSize),
+    page,
   }
 }

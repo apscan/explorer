@@ -7,7 +7,7 @@ import { ReactComponent as ChevronLeft } from 'assets/icons/chevron-left.svg'
 import { ReactComponent as ChevronRight } from 'assets/icons/chevron-right.svg'
 import { Icon } from 'components/Icon'
 import { memo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useCustomSearchParams } from 'hooks/useCustomSearchParams'
 
 const Wrapper = styled(Box)`
   display: inline-flex;
@@ -65,7 +65,7 @@ export const Pagination = memo(
     onPrePage,
     onFirstPage,
     onLastPage,
-    syncUrl,
+    syncUrl = true,
     ...props
   }: BoxProps & {
     page?: number
@@ -76,9 +76,8 @@ export const Pagination = memo(
     onLastPage?: () => void
     syncUrl?: boolean
   }) => {
-    const navigate = useNavigate()
-
-    const setPageToUrlParams = (page: number) => syncUrl && navigate({ search: `?page=${page}` })
+    const [search, setSearch] = useCustomSearchParams()
+    const setPageToUrlParams = (page: number) => setSearch({ ...search, page: `${page}` })
 
     return (
       <Wrapper {...props}>
@@ -86,7 +85,7 @@ export const Pagination = memo(
           <StyledButton
             disabled={page === 1}
             onClick={() => {
-              setPageToUrlParams(1)
+              syncUrl && setPageToUrlParams(1)
               onFirstPage()
             }}
           >
@@ -97,7 +96,7 @@ export const Pagination = memo(
           <StyledButton
             disabled={page === 1}
             onClick={() => {
-              page && setPageToUrlParams(page - 1)
+              syncUrl && page && setPageToUrlParams(page - 1)
               onPrePage()
             }}
           >
@@ -113,7 +112,7 @@ export const Pagination = memo(
           <StyledButton
             disabled={page === total}
             onClick={() => {
-              page && setPageToUrlParams(page + 1)
+              syncUrl && page && setPageToUrlParams(page + 1)
               onNextPage()
             }}
           >
@@ -125,7 +124,7 @@ export const Pagination = memo(
             <StyledButton
               disabled={page === total}
               onClick={() => {
-                total && setPageToUrlParams(total)
+                syncUrl && total && setPageToUrlParams(total)
                 onLastPage()
               }}
             >

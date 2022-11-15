@@ -50,6 +50,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
                   ].map(([label, value], index) => {
                     return (
                       <Box
+                        key={index}
                         css={css`
                           margin-top: 12px;
                           border-bottom: 1px solid ${vars.colors.border1};

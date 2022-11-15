@@ -7,7 +7,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { TransactionsTable } from 'pages/transactions/TransactionsTable'
 import { useMemo, useState } from 'react'
-import { usePageSize } from 'state/application/hooks'
+import { usePageParams } from 'state/application/hooks'
 
 const StatsNumberFormat = styled(NumberFormat)`
   margin-left: 4px;
@@ -15,25 +15,18 @@ const StatsNumberFormat = styled(NumberFormat)`
 `
 
 export const BlockTransactions = ({ id, count }: { id?: string; count: number }) => {
-  const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number | undefined>(0)
-
-  const { data: { data, page } = {}, isLoading } = useBlockTransactionsQuery(
+  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const { data: { data } = {}, isLoading } = useBlockTransactionsQuery(
     {
       id: id!,
-      start,
+      start: (page - 1) * pageSize,
       pageSize,
     },
     {
       skip: id == null || !count,
     }
   )
-
-  const pageProps = useRangePagination(start, setStart, pageSize, {
-    min: page?.min,
-    max: page?.max,
-    count: count,
-  })
+  const pageProps = useRangePagination(page, pageSize, count, setPage)
 
   const [minVersion, maxVersion] = useMemo(() => {
     if (!data) return []
@@ -48,10 +41,10 @@ export const BlockTransactions = ({ id, count }: { id?: string; count: number })
           <StatsNumberFormat fallback="--" prefix="#" value={maxVersion} /> (Total of
           <StatsNumberFormat fallback="--" useGrouping value={count} /> transactions)
         </CardHeadStats>
-        {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
+        {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <TransactionsTable page={pageProps.page} variant="block" data={data} />
-      {pageProps?.total && pageProps.total > 1 && (
+      {pageProps.total > 1 && (
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
           <Pagination {...pageProps} />

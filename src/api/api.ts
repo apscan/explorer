@@ -1,6 +1,6 @@
 import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 
-const BASE_URL = process.env.REACT_APP_API_HOST || 'https://api.apscan.io/'
+const BASE_URL = process.env.REACT_APP_API_HOST
 
 const baseQuery = fetchBaseQuery({ baseUrl: BASE_URL })
 const baseQueryWithErrorHandle: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
