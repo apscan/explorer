@@ -1,3 +1,5 @@
+import { Popover, PopoverArrow, PopoverContent, PopoverTrigger, Text } from '@chakra-ui/react'
+import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useBlocksQuery } from 'api'
 import { Address } from 'components/Address'
@@ -17,9 +19,9 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useCustomSearchParams } from 'hooks/useCustomSearchParams'
 import { useMaxValue } from 'hooks/useMaxValue'
 import { usePageStartLimit } from 'hooks/usePageStartLimit'
+import React from 'react'
 import { Fragment, useCallback, useMemo } from 'react'
 import { useLatestStats } from 'state/api/hooks'
-import { Tooltip } from '../../components/Tooltip'
 
 const helper = createColumnHelper<any>()
 
@@ -53,12 +55,50 @@ const columns = [
     cell: (info) => {
       const failed_proposers_count = info.row.original.failed_proposers_count
       const failed_proposers = failed_proposers_count > 0 ? ` (${failed_proposers_count})` : null
+      const failedproposers = info.row.original.failed_proposers
+
       return (
         <Fragment>
           <Address value={info.getValue()} size="short" />
-          <Tooltip label={`failed proposers`}>
-            <span>{failed_proposers}</span>
-          </Tooltip>
+          {failedproposers && (
+            <Popover trigger="hover">
+              <PopoverTrigger>
+                <span style={{ color: '#de4437' }}>{failed_proposers}</span>
+              </PopoverTrigger>
+              <PopoverContent
+                css={css`
+                  border: none;
+                  box-shadow: 0 0.5rem 1.2rem rgb(189 197 209 / 70%);
+                  padding: 0.75em;
+                  width: auto;
+                `}
+              >
+                <PopoverArrow />
+                <Box>
+                  <Text
+                    sx={{
+                      fontWeight: 700,
+                      color: '#4a4f55',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Failed Proposers:
+                  </Text>
+                  {failedproposers.map((proposer: string) => (
+                    <Box
+                      sx={{
+                        color: '#1e2022',
+                        fontSize: '12px',
+                      }}
+                      key={proposer}
+                    >
+                      {proposer}
+                    </Box>
+                  ))}
+                </Box>
+              </PopoverContent>
+            </Popover>
+          )}
         </Fragment>
       )
     },
