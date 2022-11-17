@@ -29,20 +29,20 @@ import { DateFormat } from 'state/application/slice'
 // }
 
 const renderUserTransactionSection = (data: any) => {
-  const gasFee = BigInt(data?.gas_used || 0) * BigInt(data?.user_transaction?.gas_unit_price || 0)
+  const gasFee = BigInt(data?.gas_used || 0) * BigInt(data?.user_transaction_detail?.gas_unit_price || 0)
 
-  const gasUsedPercentage = data?.user_transaction
-    ? Number(data?.gas_used) / Number(data?.user_transaction?.max_gas_amount)
+  const gasUsedPercentage = data?.user_transaction_detail
+    ? Number(data?.gas_used) / Number(data?.user_transaction_detail?.max_gas_amount)
     : undefined
 
   return (
     <>
       <Divider />
       {/* {renderUserTransfer(data)} */}
-      {renderRow('Sequence Number', <NumberFormat value={data?.user_transaction?.sequence_number} />)}
+      {renderRow('Sequence Number', <NumberFormat value={data?.user_transaction_detail?.sequence_number} />)}
       {renderRow(
         'Expiration Timestamp',
-        <DateTime format={DateFormat.FULL} value={data?.user_transaction?.expiration_timestamp_secs} />
+        <DateTime format={DateFormat.FULL} value={data?.user_transaction_detail?.expiration_timestamp_secs} />
       )}
       {renderRow(
         'Max Gas & Gas Used',
@@ -51,7 +51,7 @@ const renderUserTransactionSection = (data: any) => {
             align-items: center;
           `}
         >
-          <NumberFormat fallback="--" value={data?.user_transaction?.max_gas_amount} />
+          <NumberFormat fallback="--" value={data?.user_transaction_detail?.max_gas_amount} />
           <Divider type="vertical" color="#8c98a4" margin="0 16px" />
           <NumberFormat fallback="--" value={data?.gas_used} />
           <InlineBox marginLeft="4px">
@@ -70,12 +70,12 @@ const renderUserTransactionSection = (data: any) => {
             `}
           >
             (
-            <NumberFormat postfix=" Octa" fallback="--" value={data?.user_transaction?.gas_unit_price} />)
+            <NumberFormat postfix=" Octa" fallback="--" value={data?.user_transaction_detail?.gas_unit_price} />)
           </InlineBox>
         </InlineBox>,
         { border: true }
       )}
-      {renderRow('Signature', <JsonView withContainer src={data?.user_transaction?.signature} />)}
+      {renderRow('Signature', <JsonView withContainer src={data?.user_transaction_detail?.signature} />)}
       {renderRow('Payload', <JsonView withContainer src={data?.payload} />)}
     </>
   )
@@ -163,8 +163,8 @@ export const Overview = ({ data }: { data: any | undefined }) => {
 
         {renderRow(
           'Sender',
-          data?.user_transaction?.sender ? (
-            <Address size="full" value={data?.user_transaction?.sender} />
+          data?.user_transaction_detail?.sender ? (
+            <Address size="full" value={data?.user_transaction_detail?.sender} />
           ) : (
             data?.type && <TxType value={data?.type} />
           )
