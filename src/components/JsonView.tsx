@@ -22,6 +22,7 @@ const JsonViewContainer = ({
     <Box
       css={css`
         position: relative;
+        max-width: 950px;
       `}
     >
       <Box
