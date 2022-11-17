@@ -6,7 +6,7 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { TransactionsTable } from 'pages/transactions/TransactionsTable'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { usePageParams } from 'state/application/hooks'
 
 const StatsNumberFormat = styled(NumberFormat)`
