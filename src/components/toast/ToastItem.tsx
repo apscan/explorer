@@ -5,6 +5,7 @@ import { removeToast } from '../../state/toast/toastSlice'
 import useIsMounted from '../../utils/hooks'
 import { ReactComponent as ToastSuccessIcon } from '../../assets/icons/toast-success.svg'
 import { ReactComponent as ToastErrorIcon } from '../../assets/icons/toast-error.svg'
+import ToastReject from '../../assets/icons/ToastReject'
 
 export const shadow_200 = css`
   box-shadow: 0 6px 22px rgba(30, 33, 52, 0.11), 0 1.34018px 4.91399px rgba(30, 33, 52, 0.0655718),
@@ -36,7 +37,7 @@ const Wrapper = styled(Flex)`
     margin-right: 8px;
     flex: 0 0 auto;
   }
-  > img:last-child {
+  > svg:last-child {
     width: 16px;
     height: 16px;
     margin-left: 8px;
@@ -99,12 +100,10 @@ const ToastItem = ({ type, message, id, sticky }: any) => {
         {type === 'success' ? <ToastSuccessIcon /> : type === 'error' ? <ToastErrorIcon /> : null}
       </IconWrapper>
       <div>{message}</div>
-      <img
-        src={`/imgs/icons/toast-reject.svg`}
+      <ToastReject
         onClick={() => {
           dispatch(removeToast(id))
         }}
-        alt=""
       />
     </Wrapper>
   )
