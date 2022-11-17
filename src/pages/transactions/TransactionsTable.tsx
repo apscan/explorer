@@ -136,8 +136,6 @@ const renderSubComponent = ({ row }: { row: Row<any> }) => {
     return <JsonView src={row.original?.payload} withContainer />
   }
 
-  row.original.version === 0 && console.log('row.original', row.original)
-
   return <JsonView src={row.original} withContainer />
 }
 

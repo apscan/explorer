@@ -61,7 +61,7 @@ const columns = [
         <Fragment>
           <Address value={info.getValue()} size="short" />
           {failedproposers && (
-            <Popover trigger="hover">
+            <Popover trigger="hover" placement="right">
               <PopoverTrigger>
                 <span style={{ color: '#de4437' }}>{failed_proposers}</span>
               </PopoverTrigger>
