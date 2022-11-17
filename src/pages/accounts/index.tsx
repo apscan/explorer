@@ -40,6 +40,11 @@ export const Accounts = () => {
     }
   )
 
+  console.log('data', data, {
+    pageSize,
+    offset: (page - 1) * pageSize,
+  })
+
   const columns = useMemo(
     () => [
       helper.accessor('balance_rank', {
