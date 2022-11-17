@@ -1,4 +1,4 @@
-import { useTransactionsQuery } from 'api'
+import { useLastVersionQuery, useTransactionsQuery } from 'api'
 import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box, Container } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -6,15 +6,17 @@ import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import { useCustomSearchParams } from 'hooks/useCustomSearchParams'
 import { useMaxValue } from 'hooks/useMaxValue'
-import { useCallback, useMemo, useState } from 'react'
-import { usePageSize } from 'state/application/hooks'
+import { usePageStartLimit } from 'hooks/usePageStartLimit'
+import { useCallback, useMemo } from 'react'
 import { TransactionsTable } from './TransactionsTable'
 
 export const Transactions = () => {
-  const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number>()
+  const { limit: pageSize, setLimit: setPageSize, start, setStart } = usePageStartLimit()
+  const [search, setSearch] = useCustomSearchParams()
 
+  const { data: _latestVersion } = useLastVersionQuery()
   const {
     data: { data, page = {} } = {},
     isLoading,
@@ -34,7 +36,7 @@ export const Transactions = () => {
     return isLoading
   }, [start, isLoading, isFetching])
 
-  const latestVersion = useMaxValue(isInitialLoading ? undefined : page?.max)
+  const latestVersion = useMaxValue(_latestVersion > (page?.max ?? 0) ? _latestVersion : page?.max)
 
   const [currentMin, currentMax] = useMemo(() => {
     if (!data) return []
@@ -52,26 +54,49 @@ export const Transactions = () => {
 
   const onSelectPageSize = useCallback(
     (pageSize: number) => {
+      delete search.start
+      setSearch({ ...search, limit: `${pageSize}` })
+      setStart(undefined)
       setPageSize(pageSize)
     },
-    [setPageSize]
+    [search, setPageSize, setSearch, setStart]
   )
 
   const onNextPage = useCallback(() => {
-    if (currentMin) setStart(currentMin - 1)
-  }, [currentMin])
+    if (currentMin) {
+      const start: number = currentMin - 1
+      setSearch({ ...search, start: `${start}` })
+      setStart(start)
+    }
+  }, [currentMin, search, setSearch, setStart])
 
   const onPrePage = useCallback(() => {
-    if (currentMax) setStart(currentMax + pageSize)
-  }, [currentMax, pageSize])
+    if (!currentMax) {
+      return
+    }
+    if (showPage === 2) {
+      delete search.start
+      setSearch({ ...search })
+      setStart(undefined)
+    } else {
+      const start: number = currentMax + pageSize
+      setSearch({ ...search, start: `${start}` })
+      setStart(start)
+    }
+  }, [currentMax, pageSize, search, setSearch, setStart, showPage])
 
   const onFirstPage = useCallback(() => {
-    setStart(latestVersion)
-  }, [latestVersion])
+    delete search.start
+    setSearch({ ...search })
+    setStart(undefined)
+  }, [search, setSearch, setStart])
 
   const onLastPage = useCallback(() => {
-    if (pageSize) setStart(pageSize - 1)
-  }, [pageSize])
+    if (pageSize) {
+      setSearch({ ...search, start: `${pageSize - 1}` })
+      setStart(pageSize - 1)
+    }
+  }, [pageSize, search, setSearch, setStart])
 
   return (
     <Container>
@@ -85,6 +110,7 @@ export const Transactions = () => {
             </Box>
           </CardHeadStats>
           <Pagination
+            syncUrl={false}
             page={showPage}
             total={totalPage}
             onNextPage={onNextPage}
@@ -95,8 +121,9 @@ export const Transactions = () => {
         </CardHead>
         <TransactionsTable page={showPage} data={data} />
         <CardFooter variant="table">
-          <ShowRecords pageSize={pageSize} onSelect={onSelectPageSize} />
+          <ShowRecords syncUrl={false} pageSize={pageSize} onSelect={onSelectPageSize} />
           <Pagination
+            syncUrl={false}
             page={showPage}
             total={totalPage}
             onNextPage={onNextPage}

@@ -17,7 +17,15 @@ const StyledSelect = styled(Select)`
   padding: 4px 8px;
 `
 
-export const ShowRecords = ({ onSelect, pageSize }: { onSelect?: (pageSize: number) => void; pageSize: number }) => {
+export const ShowRecords = ({
+  onSelect,
+  pageSize,
+  syncUrl = true,
+}: {
+  syncUrl?: boolean
+  onSelect?: (pageSize: number) => void
+  pageSize: number
+}) => {
   const [search, setSearch] = useCustomSearchParams()
   const setPageToUrlParams = (pageSize: number) => setSearch({ ...search, pageSize: `${pageSize}`, page: '1' })
 
@@ -33,7 +41,7 @@ export const ShowRecords = ({ onSelect, pageSize }: { onSelect?: (pageSize: numb
 
           const newPageSize = Number(e.target.value)
 
-          setPageToUrlParams(newPageSize)
+          syncUrl && setPageToUrlParams(newPageSize)
           onSelect(newPageSize)
         }}
       >
