@@ -95,21 +95,24 @@ const renderBlockMetadataTransactionSection = (data: any) => {
   return (
     <>
       <Divider />
-      {renderRow('ID', <Hash fallback="--" value={data?.block_metadata_transaction?.id} size="full" />)}
-      {renderRow('Epoch', <NumberFormat fallback="--" value={data?.block_metadata_transaction?.epoch} />)}
-      {renderRow('Round', <NumberFormat fallback="--" value={data?.block_metadata_transaction?.round} />)}
-      {renderRow('Proposer', <Address size="full" fallback="--" value={data?.block_metadata_transaction?.proposer} />)}
+      {renderRow('ID', <Hash fallback="--" value={data?.block_metadata_transaction_detail?.id} size="full" />)}
+      {renderRow('Epoch', <NumberFormat fallback="--" value={data?.block_metadata_transaction_detail?.epoch} />)}
+      {renderRow('Round', <NumberFormat fallback="--" value={data?.block_metadata_transaction_detail?.round} />)}
+      {renderRow(
+        'Proposer',
+        <Address size="full" fallback="--" value={data?.block_metadata_transaction_detail?.proposer} />
+      )}
       {renderRow(
         'Failed Proposers',
-        data?.block_metadata_transaction?.failed_proposer_indices
-          ? JSON.stringify(data?.block_metadata_transaction?.failed_proposer_indices)
-          : ''
+        data?.block_metadata_transaction_detail?.failed_proposer_indices
+          ? JSON.stringify(data?.block_metadata_transaction_detail?.failed_proposer_indices)
+          : '-'
       )}
       {renderRow(
         'Previous Block Votes Bitvec',
-        data?.block_metadata_transaction?.previous_block_votes_bitvec
-          ? JSON.stringify(data?.block_metadata_transaction?.previous_block_votes_bitvec)
-          : ''
+        data?.block_metadata_transaction_detail?.previous_block_votes_bitvec
+          ? JSON.stringify(data?.block_metadata_transaction_detail?.previous_block_votes_bitvec)
+          : '-'
       )}
     </>
   )
