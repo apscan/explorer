@@ -63,8 +63,6 @@ const parseSenderReceiver = (
     }
   })
 
-  console.log('in', amountIn.toString(), 'out', amountOut.toString())
-
   return [
     [
       ...senders,
@@ -198,8 +196,7 @@ const columns = [
     cell: (info) => {
       const self = info.row.original?.address
       const event = info.row.original?.events.find((event: any) => event.address === self)
-      const type =
-        event?.type.indexOf('DepositEvent') > -1 ? 'IN' : event.type.indexOf('WithdrawEvent') > -1 ? 'OUT' : ''
+      const type = isIn(event?.type) ? 'IN' : isOut(event?.type) ? 'OUT' : ''
 
       return (
         type && (

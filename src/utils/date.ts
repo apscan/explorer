@@ -27,10 +27,19 @@ export const fromNow = (value: string | number | dayjs.Dayjs | Date = 0): string
     value = Number(BigInt(value) / 1000n)
   }
 
-  const now = dayjs()
-  const target = dayjs(value)
-  const diff = dayjs(now).diff(target, 'seconds')
-  const diffDate = dayjs.unix(diff).utc()
+  let now = dayjs()
+  let target = dayjs(value)
+  let diff = dayjs(now).diff(target, 'seconds')
+  let diffDate = dayjs.unix(diff).utc()
+  let age = 'ago'
+
+  if (now.unix() < target.unix()) {
+    age = 'later'
+    now = dayjs.unix(0)
+    target = diffDate
+    diff = dayjs(now).diff(target, 'seconds')
+    diffDate = dayjs.unix(diff).utc()
+  }
 
   const minutes = dayjs(now).diff(target, 'minutes')
   const hours = dayjs(now).diff(target, 'hours')
@@ -42,18 +51,18 @@ export const fromNow = (value: string | number | dayjs.Dayjs | Date = 0): string
   const dayStr = `${days}d`
 
   if (days) {
-    return `${dayStr} ${hourStr} ${minuteStr} ${secondStr} ago`
+    return `${dayStr} ${hourStr} ${minuteStr} ${secondStr} ${age}`
   }
 
   if (hours) {
-    return `${hourStr} ${minuteStr} ${secondStr} ago`
+    return `${hourStr} ${minuteStr} ${secondStr} ${age}`
   }
 
   if (minutes) {
-    return `${minuteStr} ${secondStr} ago`
+    return `${minuteStr} ${secondStr} ${age}`
   }
 
-  return `${secondStr} ago`
+  return `${secondStr} ${age}`
 }
 
 export const formatDate = (
