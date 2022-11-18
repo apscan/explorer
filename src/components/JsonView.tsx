@@ -9,6 +9,7 @@ const JsonViewContainer = ({
   children,
   isDisabled,
   data,
+  maxWidth,
   ...props
 }: BoxProps & {
   data: object
@@ -22,7 +23,7 @@ const JsonViewContainer = ({
     <Box
       css={css`
         position: relative;
-        max-width: 950px;
+        max-width: ${maxWidth || 'none'};
       `}
     >
       <Box
@@ -59,6 +60,7 @@ type JsonViewProps = ReactJsonViewProps & {
   fallback?: React.ReactNode
   withContainer?: boolean
   ellipsis?: boolean
+  maxWidth?: string
 }
 
 export const JsonViewEllipsis = ({ src, maxWidth, ...props }: { src: object } & BoxProps) => {
@@ -78,16 +80,16 @@ export const JsonViewEllipsis = ({ src, maxWidth, ...props }: { src: object } & 
       `}
       {...props}
     >
-      {text}
+      {text || '-'}
     </Box>
   )
 }
 
-export const JsonView = ({ src, fallback, ellipsis, withContainer, ...props }: JsonViewProps) => {
+export const JsonView = ({ src, fallback, ellipsis, withContainer, maxWidth, ...props }: JsonViewProps) => {
   if (src == null) return <>{fallback}</>
 
   return (
-    <JsonViewContainer data={src} isDisabled={!withContainer}>
+    <JsonViewContainer data={src} isDisabled={!withContainer} maxWidth={maxWidth}>
       <Box
         css={css`
           font-size: 12px;
