@@ -109,11 +109,11 @@ const renderBlockMetadataTransactionSection = (data: any) => {
           value={[
             {
               content: <Address size="full" fallback="--" value={data?.block_metadata_transaction_detail?.proposer} />,
-              suffix: 'Success',
+              label: <VmStatus withPadding={false} withBg={false} value="Executed successfully" />,
             },
             ...(data?.block_metadata_transaction_detail?.failed_proposers?.map((failedProposer: any) => ({
               content: <Address size="full" fallback="-" value={failedProposer} />,
-              suffix: 'Failed',
+              label: <VmStatus withPadding={false} withBg={false} value="" failedText="Failed" />,
             })) || []),
           ]}
         />,
