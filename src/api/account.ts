@@ -51,7 +51,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
-          url: `/aptos_coin_transfers?address=eq.${id}`,
+          url: `/coin_transfers_address?address=eq.${id}`,
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
