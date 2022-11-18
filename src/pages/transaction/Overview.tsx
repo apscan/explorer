@@ -36,6 +36,14 @@ const renderUserTransactionSection = (data: any) => {
     ? Number(data?.gas_used) / Number(data?.user_transaction_detail?.max_gas_amount)
     : undefined
 
+  console.log(
+    'data?.user_transaction_detail?.expiration_timestamp_secs',
+    data?.user_transaction_detail?.expiration_timestamp_secs,
+    data?.user_transaction_detail?.expiration_timestamp_secs
+      ? data.user_transaction_detail.expiration_timestamp_secs + '000000'
+      : undefined
+  )
+
   return (
     <>
       <Divider />
@@ -43,7 +51,14 @@ const renderUserTransactionSection = (data: any) => {
       {renderRow('Sequence Number', <NumberFormat value={data?.user_transaction_detail?.sequence_number} />)}
       {renderRow(
         'Expiration Timestamp',
-        <DateTime format={DateFormat.FULL} value={data?.user_transaction_detail?.expiration_timestamp_secs} />
+        <DateTime
+          format={DateFormat.FULL}
+          value={
+            data?.user_transaction_detail?.expiration_timestamp_secs
+              ? data.user_transaction_detail.expiration_timestamp_secs + '000000'
+              : undefined
+          }
+        />
       )}
       {renderRow(
         'Max Gas & Gas Used',
