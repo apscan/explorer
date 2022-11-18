@@ -60,11 +60,11 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
             value={[
               {
                 content: <Address size="full" value={data?.proposer} />,
-                suffix: 'Success',
+                label: 'Success',
               },
               ...(data?.failedProposers?.map((failedProposer: any) => ({
                 content: <Address size="full" value={failedProposer?.proposer_address} />,
-                suffix: 'Failed',
+                label: 'Failed',
               })) || []),
             ]}
           />,

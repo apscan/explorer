@@ -22,7 +22,22 @@ const icon = css`
   margin-right: 6px;
 `
 
-export const VmStatus = ({ value, fallback, ...props }: { value: string; fallback?: React.ReactNode }) => {
+export const VmStatus = ({
+  value,
+  fallback,
+  successText,
+  failedText,
+  withBg = true,
+  withPadding = true,
+  ...props
+}: {
+  value: string
+  fallback?: React.ReactNode
+  successText?: string
+  failedText?: string
+  withBg?: boolean
+  withPadding?: boolean
+}) => {
   const isSuccess = useMemo(() => {
     if (value == null) return
 
@@ -37,13 +52,14 @@ export const VmStatus = ({ value, fallback, ...props }: { value: string; fallbac
         container,
         css`
           color: ${isSuccess ? vars.text.success : vars.text.error};
-          background: ${isSuccess ? vars.colors.bgSuccess : vars.colors.bgError};
+          background: ${withBg && (isSuccess ? vars.colors.bgSuccess : vars.colors.bgError)};
+          ${withPadding ? '' : 'padding: 0px;'}
         `,
       ]}
       {...props}
     >
       <Icon css={icon} as={isSuccess ? CheckIcon : CloseIcon} />
-      {isSuccess ? 'Success' : `Error`}
+      {isSuccess ? successText || 'Success' : failedText || `Error`}
     </Box>
   )
 }
