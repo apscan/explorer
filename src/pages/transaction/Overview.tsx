@@ -75,8 +75,11 @@ const renderUserTransactionSection = (data: any) => {
         </InlineBox>,
         { border: true }
       )}
-      {renderRow('Signature', <JsonView withContainer src={data?.user_transaction_detail?.signature} />)}
-      {renderRow('Payload', <JsonView withContainer src={data?.payload} />)}
+      {renderRow(
+        'Signature',
+        <JsonView maxWidth="950px" withContainer src={data?.user_transaction_detail?.signature} />
+      )}
+      {renderRow('Payload', <JsonView maxWidth="950px" withContainer src={data?.payload} />)}
     </>
   )
 }
@@ -86,7 +89,7 @@ const renderGenesisTransactionSection = (data: any) => {
     <>
       <Divider />
       {renderRow('Epoch', null)}
-      {renderRow('Payload', <JsonView withContainer src={data?.payload} />)}
+      {renderRow('Payload', <JsonView maxWidth="950px" withContainer src={data?.payload} />)}
     </>
   )
 }

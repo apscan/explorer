@@ -90,7 +90,7 @@ const columns = [
         info.row.original.type === 'user_transaction' &&
         info.row.original?.payload?.type === 'entry_function_payload'
       ) {
-        return <TransactionFunction value={info.row.original} />
+        return <TransactionFunction fallback="-" value={info.row.original} />
       }
       return <JsonViewEllipsis src={info.getValue()} />
     },
