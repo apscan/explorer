@@ -52,7 +52,7 @@ const Wrapper = styled(Flex)`
   transform: translateX(200%);
   transition: all 0.25s ease-out;
   &.tran {
-    transform: translateX(min(calc((1248px - 100vw) / 2), 0px)) !important;
+    transform: translateX(min(calc((1080px - 100vw) / 2), 0px)) !important;
     @media screen and (max-width: 768px) {
       transform: translateX(32px) !important;
     }

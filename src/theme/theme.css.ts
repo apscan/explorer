@@ -78,7 +78,7 @@ export const lightTheme: Theme = {
 
 export const vars = createGlobalTheme(':root', {
   breakpoints: {
-    sm: '960px',
+    sm: '1080px',
     lg: '1400px',
   },
   sizes: {

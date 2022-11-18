@@ -40,7 +40,6 @@ const tooltipSlice = createSlice({
     },
     setTimerId(state, { payload }) {
       if (state.timerId) {
-        // console.log('crear:', state.timerId)
         clearTimeout(state.timerId)
       }
       state.timerId = payload

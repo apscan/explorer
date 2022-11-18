@@ -1,6 +1,6 @@
 import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 
-const BASE_URL = process.env.REACT_APP_API_HOST
+const BASE_URL = process.env.REACT_APP_API_HOST || ''
 
 const baseQuery = fetchBaseQuery({ baseUrl: BASE_URL })
 const baseQueryWithErrorHandle: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
@@ -9,11 +9,14 @@ const baseQueryWithErrorHandle: BaseQueryFn<string | FetchArgs, unknown, FetchBa
   extraOptions
 ) => {
   let result = await baseQuery(args, api, extraOptions)
-  if (result.error && result.error.status === 'FETCH_ERROR') {
-    window.postMessage('toast:error:403')
-  }
-  if (!result.error) {
-    window.postMessage('toast:error:clear')
+  const isApscanAPi = (result.meta?.request.url ?? '').indexOf(BASE_URL) > -1
+
+  if (isApscanAPi) {
+    if (!result.error) {
+      window.postMessage('toast:error:clear')
+    } else if (result.error.status === 'FETCH_ERROR') {
+      window.postMessage('toast:error:403')
+    }
   }
   return result
 }

@@ -1,7 +1,8 @@
+import { ApiStateProvider } from 'providers/ApiStateProvider'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
-import { Provider } from 'react-redux'
+import { Provider as ReduxProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import 'simplebar-react/dist/simplebar.min.css'
 import { AppUpdater } from 'state/application/updater'
@@ -26,16 +27,18 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Updaters />
-        <ThemeProvider>
-          <HelmetProvider>
-            <App />
-          </HelmetProvider>
-        </ThemeProvider>
-      </BrowserRouter>
-    </Provider>
+    <ReduxProvider store={store}>
+      <ApiStateProvider>
+        <BrowserRouter>
+          <Updaters />
+          <ThemeProvider>
+            <HelmetProvider>
+              <App />
+            </HelmetProvider>
+          </ThemeProvider>
+        </BrowserRouter>
+      </ApiStateProvider>
+    </ReduxProvider>
   </React.StrictMode>
 )
 
