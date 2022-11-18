@@ -27,7 +27,7 @@ export const ApiStateProvider = React.memo(({ children }: { children: React.Reac
         timerRef.current = window.setTimeout(() => {
           dispatch(removeAllToast())
           window.location.reload()
-        }, 300000)
+        }, 30000)
       } else if (message === 'toast:error:clear') {
         setBlocked(false)
         blockedRef.current = false
