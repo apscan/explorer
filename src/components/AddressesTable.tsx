@@ -13,7 +13,7 @@ export const AddressesTable = ({ value = [] }: AddressesTableProps) => {
   return (
     <table
       css={css`
-        font-size: 12px;
+        font-size: 14px;
       `}
     >
       <tbody>
