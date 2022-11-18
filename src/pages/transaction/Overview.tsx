@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Address } from 'components/Address'
+import { AddressesTable } from 'components/AddressesTable'
 import { AmountFormat } from 'components/AmountFormat'
 import { BlockHeight } from 'components/block/BlockHeight'
 import { Box, InlineBox } from 'components/container'
@@ -103,13 +104,20 @@ const renderBlockMetadataTransactionSection = (data: any) => {
       {renderRow('Round', <NumberFormat fallback="--" value={data?.block_metadata_transaction_detail?.round} />)}
       {renderRow(
         'Proposer',
-        <Address size="full" fallback="--" value={data?.block_metadata_transaction_detail?.proposer} />
-      )}
-      {renderRow(
-        'Failed Proposers',
-        data?.block_metadata_transaction_detail?.failed_proposer_indices
-          ? JSON.stringify(data?.block_metadata_transaction_detail?.failed_proposer_indices)
-          : '-'
+        <AddressesTable
+          key="Proposer"
+          value={[
+            {
+              content: <Address size="full" fallback="--" value={data?.block_metadata_transaction_detail?.proposer} />,
+              suffix: 'Success',
+            },
+            ...(data?.block_metadata_transaction_detail?.failed_proposers?.map((failedProposer: any) => ({
+              content: <Address size="full" fallback="-" value={failedProposer} />,
+              suffix: 'Failed',
+            })) || []),
+          ]}
+        />,
+        { border: false }
       )}
       {renderRow(
         'Previous Block Votes Bitvec',
