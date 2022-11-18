@@ -10,6 +10,7 @@ import { HashesTable } from 'components/HashesTable'
 import { renderRow } from 'components/helpers'
 import { NumberFormat } from 'components/NumberFormat'
 import { Version } from 'components/transaction/Version'
+import { VmStatus } from 'components/VmStatus'
 import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
 import { AddressesTable } from '../../components/AddressesTable'
@@ -60,11 +61,11 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
             value={[
               {
                 content: <Address size="full" value={data?.proposer} />,
-                label: 'Success',
+                label: <VmStatus withPadding={false} withBg={false} value="Executed successfully" />,
               },
               ...(data?.failedProposers?.map((failedProposer: any) => ({
                 content: <Address size="full" value={failedProposer?.proposer_address} />,
-                label: 'Failed',
+                label: <VmStatus withPadding={false} withBg={false} value="" failedText="Failed" />,
               })) || []),
             ]}
           />,
