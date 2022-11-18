@@ -132,15 +132,14 @@ type TransactionsTableProps = {
 }
 
 const renderSubComponent = ({ row }: { row: Row<any> }) => {
-  if (row.original.type === 'user_transaction' && row.original?.payload?.type === 'entry_function_payload') {
-    return <JsonView src={row.original?.payload} withContainer />
-  }
-
-  return <JsonView src={row.original} withContainer />
+  return <JsonView src={row.original?.payload} withContainer />
 }
 
 const getRowCanExpand = (row: any) => {
-  return true
+  return (
+    (row.original?.type === 'user_transaction' || row.original?.type === 'genesis_transaction') &&
+    !!row.original?.payload
+  )
 }
 
 export const TransactionsTable = memo(({ data, variant, page }: TransactionsTableProps) => {
