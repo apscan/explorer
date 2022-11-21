@@ -37,14 +37,14 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Creation Num',
+    header: 'Creation',
     cell: (info) => <NumberFormat prefix="#" value={info.getValue()} />,
   }),
   helper.accessor('sequence_number', {
     meta: {
       nowrap: true,
     },
-    header: 'Sequence Num',
+    header: 'Sequence',
     cell: (info) => <NumberFormat prefix="#" value={info.getValue()} />,
   }),
   helper.accessor('type', {

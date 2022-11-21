@@ -11,7 +11,7 @@ const Wrapper = styled.div<{ pull?: number }>`
   ${({ pull }) => 'margin-' + pull + ': 0;'}
 `
 
-export default function TooltipWithCopy({ children, label = '', pullRight = false, ...restProps }: any) {
+export default function TooltipWithCopy({ children, label = '', pullRight = false, style, ...restProps }: any) {
   const ref = useRef<HTMLDivElement | null>()
   const dispatch = useDispatch()
 
@@ -47,7 +47,7 @@ export default function TooltipWithCopy({ children, label = '', pullRight = fals
   if (!label) return children
 
   return (
-    <Wrapper ref={ref} pull={pullRight ? 'right' : 'left'} {...restProps}>
+    <Wrapper style={style} ref={ref} pull={pullRight ? 'right' : 'left'} {...restProps}>
       {children}
     </Wrapper>
   )
