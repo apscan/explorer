@@ -208,6 +208,25 @@ const parseSenderAndReceiver = (
   }
 }
 
+const parseType = (data: {
+  address: string
+  counter_party: {
+    address: string
+    data: { amount: string }
+  } | null
+  type: string
+}) => {
+  if (data.address === data.counter_party?.address) {
+    return 'SELF'
+  }
+
+  if (isIn(data.type)) {
+    return 'IN'
+  }
+
+  return 'OUT'
+}
+
 const columns = [
   helper.accessor('transaction_version', {
     header: 'Tx Version',
@@ -238,25 +257,13 @@ const columns = [
     },
     header: 'Sender',
     cell: (info) => {
-      const self = info.row.original?.address || ''
-      const { transfers } = parseSenderAndReceiver(info.row.original?.events || [], self)
-
-      return transfers.map((transfer) => (
-        <Box
-          sx={{
-            height: '45.5px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-          key={transfer.sender || '-'}
-        >
-          {!transfer.sender ? (
-            '-'
-          ) : (
-            <Address size="short" as={transfer.sender === self ? 'span' : undefined} value={transfer.sender} />
-          )}
-        </Box>
-      ))
+      if (isOut(info.row.original.type)) {
+        return <Address size="short" as="span" value={info.row.original?.address} />
+      }
+      if (!info.row.original?.counter_party) {
+        return '-'
+      }
+      return <Address size="short" value={info.row.original?.counter_party.address} />
     },
   }),
   helper.accessor('in_out', {
@@ -265,54 +272,38 @@ const columns = [
     },
     header: '',
     cell: (info) => {
-      const self = info.row.original?.address
-      const { transfers } = parseSenderAndReceiver(info.row.original?.events || [], self)
+      const type = parseType(info.row.original)
 
       return (
-        <>
-          {transfers.map(({ type, sender }) => (
-            <Box
-              key={sender}
-              sx={{
-                display: 'flex',
-                height: '45.5px',
-                alignItems: 'center',
-              }}
-            >
-              {type && (
-                <InlineBox
-                  css={css`
-                    font-size: 12px;
-                    font-weight: 700;
-                    border-radius: 6px;
-                    user-select: none;
-                    width: 42px;
-                    justify-content: center;
-                    align-items: center;
-                    ${type === 'IN' &&
-                    css`
-                      background: rgba(0, 201, 167, 0.2);
-                      color: #02977e;
-                    `}
-                    ${type === 'OUT' &&
-                    css`
-                      background: rgba(219, 154, 4, 0.2);
-                      color: #b47d00;
-                    `}
-                        ${type === 'SELF' &&
-                    css`
-                      color: #77838f;
-                      background-color: rgba(119, 131, 143, 0.1);
-                    `}
-                        padding: 2px 8px;
-                  `}
-                >
-                  {type}
-                </InlineBox>
-              )}
-            </Box>
-          ))}
-        </>
+        <InlineBox
+          css={css`
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            user-select: none;
+            width: 42px;
+            justify-content: center;
+            align-items: center;
+            ${type === 'IN' &&
+            css`
+              background: rgba(0, 201, 167, 0.2);
+              color: #02977e;
+            `}
+            ${type === 'OUT' &&
+            css`
+              background: rgba(219, 154, 4, 0.2);
+              color: #b47d00;
+            `}
+                ${type === 'SELF' &&
+            css`
+              color: #77838f;
+              background-color: rgba(119, 131, 143, 0.1);
+            `}
+                padding: 2px 8px;
+          `}
+        >
+          {type}
+        </InlineBox>
       )
     },
   }),
@@ -326,25 +317,15 @@ const columns = [
       },
       header: 'Receiver',
       cell: (info) => {
-        const self = info.row.original?.address || ''
-        const { transfers } = parseSenderAndReceiver(info.row.original?.events || [], self)
+        if (isIn(info.row.original.type)) {
+          return <Address size="short" as="span" value={info.row.original?.address} />
+        }
 
-        return transfers.map((transfer) => (
-          <Box
-            sx={{
-              height: '45.5px',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            key={transfer.receiver || '-'}
-          >
-            {!transfer.receiver ? (
-              '-'
-            ) : (
-              <Address size="short" as={transfer.receiver === self ? 'span' : undefined} value={transfer.receiver} />
-            )}
-          </Box>
-        ))
+        if (!info.row.original?.counter_party) {
+          return '-'
+        }
+
+        return <Address size="short" value={info.row.original?.counter_party.address} />
       },
     }
   ),
@@ -367,26 +348,14 @@ const columns = [
     },
     header: 'Amount',
     cell: (info) => {
-      const { transfers } = parseSenderAndReceiver(info.row.original?.events || [], info.row.original?.address)
-
-      return transfers.map(({ amount }, index) => (
-        <Box
-          key={index}
-          sx={{
-            height: '45.5px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-          display="flex"
-        >
-          <AmountFormat
-            minimumFractionDigits={0}
-            decimals={info.row.original?.coin_info.decimals}
-            postfix={` ${info.row.original?.coin_info.symbol}`}
-            value={amount}
-          />
-        </Box>
-      ))
+      return (
+        <AmountFormat
+          minimumFractionDigits={0}
+          decimals={info.row.original?.coin_info.decimals}
+          postfix={` ${info.row.original?.coin_info.symbol}`}
+          value={info.row.original?.data.amount}
+        />
+      )
     },
   }),
   // helper.accessor('expand', {
