@@ -16,7 +16,7 @@ export const validatorApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return {
           data: (data as any[])?.map((item) => {
             return {

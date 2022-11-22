@@ -122,7 +122,7 @@ export const homeApi = emptySplitApi.injectEndpoints({
         if (!isHex && !isNumber) return { data: result }
 
         const queryUrls = {
-          transaction: `/transaction_details?${
+          transaction: `/transactions?${
             isNumber ? `version=eq.${value}` : `hash=eq.${value}`
           }&limit=1&select=version,hash`,
           account: `/accounts?address=eq.${value}&limit=1&select=address`,

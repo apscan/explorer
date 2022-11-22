@@ -3,6 +3,8 @@ import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { emptySplitApi } from 'api'
 import applicationReducer, { applicationSlice } from './application/slice'
 import { save, load } from 'redux-localstorage-simple'
+import toastReducer from './toast/toastSlice'
+import tooltipReducer from './tooltip/tooltipSlice'
 
 const STORAGE_NAMEPLACE = 'APSCAN'
 
@@ -13,12 +15,15 @@ const preloadedState = load({
     application: {
       ...applicationSlice.getInitialState(),
     },
+    toast: { toasts: [] },
   },
 })
 
 export function makeStore() {
   return configureStore({
     reducer: {
+      toast: toastReducer,
+      tooltip: tooltipReducer,
       application: applicationReducer,
       api: emptySplitApi.reducer,
     },
@@ -28,7 +33,7 @@ export function makeStore() {
         .concat(
           save({
             namespace: STORAGE_NAMEPLACE,
-            states: ['application.dateFormat', 'application.pageSize'],
+            states: ['application.dateFormat'],
             debounce: 1000,
           })
         ),

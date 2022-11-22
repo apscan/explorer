@@ -1,5 +1,6 @@
+import { ApiStateContext } from './../../providers/ApiStateProvider'
 import { useLatestStatsQuery, useStatsQuery } from 'api'
-import { useEffect, useMemo, useRef } from 'react'
+import { useContext, useEffect, useMemo, useRef } from 'react'
 import { AppState } from 'state'
 import { useAppSelector } from 'state/hooks'
 
@@ -11,9 +12,10 @@ export const useAppFocused = (): boolean => {
 
 export const useAppStatsPolling = () => {
   const appFocused = useAppFocused()
+  const { blocked } = useContext(ApiStateContext)
 
   const { data } = useStatsQuery(undefined, {
-    pollingInterval: appFocused ? 3000 : 0,
+    pollingInterval: !blocked && appFocused ? 3000 : 0,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })

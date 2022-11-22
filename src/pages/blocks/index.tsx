@@ -1,3 +1,5 @@
+import { Popover, PopoverArrow, PopoverContent, PopoverTrigger, Text } from '@chakra-ui/react'
+import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useBlocksQuery } from 'api'
 import { Address } from 'components/Address'
@@ -14,10 +16,12 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import { useCustomSearchParams } from 'hooks/useCustomSearchParams'
 import { useMaxValue } from 'hooks/useMaxValue'
-import { Fragment, useCallback, useMemo, useState } from 'react'
-import { usePageSize } from 'state/application/hooks'
-import { Tooltip } from '../../components/Tooltip'
+import { usePageStartLimit } from 'hooks/usePageStartLimit'
+import React from 'react'
+import { Fragment, useCallback, useMemo } from 'react'
+import { useLatestStats } from 'state/api/hooks'
 
 const helper = createColumnHelper<any>()
 
@@ -51,12 +55,50 @@ const columns = [
     cell: (info) => {
       const failed_proposers_count = info.row.original.failed_proposers_count
       const failed_proposers = failed_proposers_count > 0 ? ` (${failed_proposers_count})` : null
+      const failedproposers = info.row.original.failed_proposers
+
       return (
         <Fragment>
           <Address value={info.getValue()} size="short" />
-          <Tooltip label={`failed proposers`}>
-            <span>{failed_proposers}</span>
-          </Tooltip>
+          {failedproposers && (
+            <Popover trigger="hover" placement="right">
+              <PopoverTrigger>
+                <span style={{ color: '#de4437' }}>{failed_proposers}</span>
+              </PopoverTrigger>
+              <PopoverContent
+                css={css`
+                  border: none;
+                  box-shadow: 0 0.5rem 1.2rem rgb(189 197 209 / 70%);
+                  padding: 0.75em;
+                  width: auto;
+                `}
+              >
+                <PopoverArrow />
+                <Box>
+                  <Text
+                    sx={{
+                      fontWeight: 700,
+                      color: '#4a4f55',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Failed Proposers:
+                  </Text>
+                  {failedproposers.map((proposer: string) => (
+                    <Box
+                      sx={{
+                        color: '#1e2022',
+                        fontSize: '12px',
+                      }}
+                      key={proposer}
+                    >
+                      {proposer}
+                    </Box>
+                  ))}
+                </Box>
+              </PopoverContent>
+            </Popover>
+          )}
         </Fragment>
       )
     },
@@ -123,8 +165,9 @@ const columns = [
 ]
 
 export const Blocks = () => {
-  const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number>()
+  const { limit: pageSize, setLimit: setPageSize, start, setStart } = usePageStartLimit()
+  const [search, setSearch] = useCustomSearchParams()
+  const { latest_block_height: lastBlockHeight } = useLatestStats()
 
   const {
     data: { data, page = {} } = {},
@@ -145,7 +188,7 @@ export const Blocks = () => {
     return isLoading
   }, [start, isLoading, isFetching])
 
-  const latestBlockHeight = useMaxValue(isInitialLoading ? undefined : page?.max)
+  const latestBlockHeight = useMaxValue(lastBlockHeight > (page?.max ?? 0) ? lastBlockHeight : page?.max)
 
   const [currentMinBlock, currentMaxBlock] = useMemo(() => {
     if (!data) return []
@@ -166,24 +209,47 @@ export const Blocks = () => {
 
   const onSelectPageSize = useCallback(
     (pageSize: number) => {
+      delete search.start
+      setSearch({ ...search, limit: `${pageSize}` })
+      setStart(undefined)
       setPageSize(pageSize)
     },
-    [setPageSize]
+    [search, setPageSize, setSearch, setStart]
   )
 
   const onNextPage = useCallback(() => {
-    if (currentMinBlock) setStart(currentMinBlock - 1)
-  }, [currentMinBlock])
+    if (currentMinBlock) {
+      const start: number = currentMinBlock - 1
+      setSearch({ ...search, start: `${start}` })
+      setStart(start)
+    }
+  }, [currentMinBlock, search, setSearch, setStart])
   const onPrePage = useCallback(() => {
-    if (currentMaxBlock) setStart(currentMaxBlock + pageSize)
-  }, [currentMaxBlock, pageSize])
+    if (!currentMaxBlock) {
+      return
+    }
+    if (showPage === 2) {
+      delete search.start
+      setSearch({ ...search })
+      setStart(undefined)
+    } else {
+      const start: number = currentMaxBlock + pageSize
+      setSearch({ ...search, start: `${start}` })
+      setStart(start)
+    }
+  }, [currentMaxBlock, showPage, search, setSearch, setStart, pageSize])
   const onFirstPage = useCallback(() => {
-    setStart(latestBlockHeight)
-  }, [latestBlockHeight])
+    delete search.start
+    setSearch({ ...search })
+    setStart(undefined)
+  }, [search, setSearch, setStart])
 
   const onLastPage = useCallback(() => {
-    if (pageSize) setStart(pageSize - 1)
-  }, [pageSize])
+    if (pageSize) {
+      setSearch({ ...search, start: `${pageSize - 1}` })
+      setStart(pageSize - 1)
+    }
+  }, [pageSize, search, setSearch, setStart])
 
   return (
     <Container>
@@ -197,6 +263,7 @@ export const Blocks = () => {
             </Box>
           </CardHeadStats>
           <Pagination
+            syncUrl={false}
             page={showPage}
             total={totalPage}
             onNextPage={onNextPage}
@@ -207,8 +274,9 @@ export const Blocks = () => {
         </CardHead>
         <DataTable dataSource={data} columns={columns} />
         <CardFooter variant="table">
-          <ShowRecords pageSize={pageSize} onSelect={onSelectPageSize} />
+          <ShowRecords syncUrl={false} pageSize={pageSize} onSelect={onSelectPageSize} />
           <Pagination
+            syncUrl={false}
             page={showPage}
             total={totalPage}
             onNextPage={onNextPage}

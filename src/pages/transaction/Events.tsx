@@ -10,8 +10,7 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { useState } from 'react'
-import { usePageSize } from 'state/application/hooks'
+import { usePageParams } from 'state/application/hooks'
 
 const helper = createColumnHelper<any>()
 
@@ -38,14 +37,14 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Creation Num',
+    header: 'Creation',
     cell: (info) => <NumberFormat prefix="#" value={info.getValue()} />,
   }),
   helper.accessor('sequence_number', {
     meta: {
       nowrap: true,
     },
-    header: 'Sequence Num',
+    header: 'Sequence',
     cell: (info) => <NumberFormat prefix="#" value={info.getValue()} />,
   }),
   helper.accessor('type', {
@@ -90,25 +89,18 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Events = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize] = usePageSize()
-  const [start, setStart] = useState<number | undefined>(0)
-
-  const { data: { data, page } = {}, isLoading } = useTransactionEventsQuery(
+  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const { data: { data } = {}, isLoading } = useTransactionEventsQuery(
     {
       id: id!,
-      start,
+      start: (page - 1) * pageSize,
       pageSize,
     },
     {
       skip: id == null,
     }
   )
-
-  const pageProps = useRangePagination(start, setStart, pageSize, {
-    min: page?.min,
-    max: page?.max,
-    count: count,
-  })
+  const pageProps = useRangePagination(page, pageSize, count, setPage)
 
   return (
     <CardBody isLoading={isLoading || id == null}>
@@ -116,7 +108,7 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> events
         </CardHeadStats>
-        {pageProps?.total && pageProps.total > 1 && <Pagination {...pageProps} />}
+        {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable
         page={pageProps.page}
@@ -125,7 +117,7 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
         dataSource={data}
         columns={columns}
       />
-      {pageProps?.total && pageProps.total > 1 && (
+      {pageProps.total > 1 && (
         <CardFooter variant="tabletab">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
           <Pagination {...pageProps} />

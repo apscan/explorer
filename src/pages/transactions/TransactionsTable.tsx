@@ -86,14 +86,13 @@ const columns = [
   helper.accessor('payload', {
     header: 'Payload',
     cell: (info) => {
-      if (info.row.original.type !== 'user_transaction') {
-        return '-'
-      } else {
-        if (info.row.original?.payload?.type === 'entry_function_payload') {
-          return <TransactionFunction value={info.row.original} />
-        }
-        return <JsonViewEllipsis src={info.getValue()} />
+      if (
+        info.row.original.type === 'user_transaction' &&
+        info.row.original?.payload?.type === 'entry_function_payload'
+      ) {
+        return <TransactionFunction fallback="-" value={info.row.original} />
       }
+      return <JsonViewEllipsis src={info.getValue()} />
     },
   }),
   helper.accessor('expand', {
@@ -110,8 +109,18 @@ const columns = [
       isExpandButton: true,
     },
     cell: (info) => {
-      if (info.row.original.type !== 'user_transaction') return ''
-      return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+      if (
+        info.row.original.type === 'user_transaction' &&
+        info.row.original?.payload?.type === 'entry_function_payload'
+      ) {
+        return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+      }
+
+      return (
+        info.row.original.payload && (
+          <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+        )
+      )
     },
   }),
 ]
@@ -127,7 +136,10 @@ const renderSubComponent = ({ row }: { row: Row<any> }) => {
 }
 
 const getRowCanExpand = (row: any) => {
-  return row.original.type === 'user_transaction'
+  return (
+    (row.original?.type === 'user_transaction' || row.original?.type === 'genesis_transaction') &&
+    !!row.original?.payload
+  )
 }
 
 export const TransactionsTable = memo(({ data, variant, page }: TransactionsTableProps) => {

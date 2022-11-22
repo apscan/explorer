@@ -25,7 +25,7 @@ export const blockApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta) {
+      transformResponse(data, meta: any) {
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
@@ -69,9 +69,28 @@ export const blockApi = emptySplitApi.injectEndpoints({
         return response?.[0] || null
       },
     }),
+    failedProposers: builder.query<any, string | void>({
+      keepUnusedDataFor: 86400, // keep for 24 hours
+      query: (id) => {
+        if (id === undefined || id === null || id === '') throw new Error('miss block id')
+
+        const queryString = `?height=eq.${id}&proposer_status=eq.failed`
+
+        return { url: `/block_proposers${queryString}` }
+      },
+      transformResponse: (response: any[]) => {
+        return response || null
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useBlocksQuery, useBlockMetadataQuery, useBlockDetailQuery, useBlockTransactionsQuery } = blockApi
+export const {
+  useBlocksQuery,
+  useBlockMetadataQuery,
+  useBlockDetailQuery,
+  useFailedProposersQuery,
+  useBlockTransactionsQuery,
+} = blockApi

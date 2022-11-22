@@ -10,8 +10,10 @@ import { HashesTable } from 'components/HashesTable'
 import { renderRow } from 'components/helpers'
 import { NumberFormat } from 'components/NumberFormat'
 import { Version } from 'components/transaction/Version'
+import { VmStatus } from 'components/VmStatus'
 import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
+import { AddressesTable } from '../../components/AddressesTable'
 
 const Wrapper = styled(Box)`
   padding: 0 12px;
@@ -52,8 +54,23 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
         })}
         {renderRow('Epoch', <NumberFormat value={data?.epoch} />, { border: false })}
         {renderRow('Round', <NumberFormat value={data?.round} />, { border: true })}
-        {renderRow('Proposer', <Address size="full" value={data?.proposer} />, { border: false })}
-        {renderRow('Failed Proposers', data?.failed_proposers?.length, { border: false })}
+        {renderRow(
+          'Proposer',
+          <AddressesTable
+            key="Proposer"
+            value={[
+              {
+                content: <Address size="full" value={data?.proposer} />,
+                label: <VmStatus withPadding={false} withBg={false} value="Executed successfully" />,
+              },
+              ...(data?.failedProposers?.map((failedProposer: any) => ({
+                content: <Address size="full" value={failedProposer?.proposer_address} />,
+                label: <VmStatus withPadding={false} withBg={false} value="" failedText="Failed" />,
+              })) || []),
+            ]}
+          />,
+          { border: false }
+        )}
         {renderRow('Validators', <BlockVotesBitvec id={data?.height} />, { border: true })}
         {renderRow(
           'Transactions',

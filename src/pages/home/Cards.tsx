@@ -12,7 +12,8 @@ import { Link } from 'components/link'
 import { NumberFormat } from 'components/NumberFormat'
 import { Version } from 'components/transaction/Version'
 import { ValidatorsTable } from 'pages/validators/ValidatorsTable'
-import { memo } from 'react'
+import { ApiStateContext } from 'providers/ApiStateProvider'
+import { memo, useContext } from 'react'
 import SimpleBar from 'simplebar-react'
 import { useAppFocused } from 'state/api/hooks'
 import { DateFormat } from 'state/application/slice'
@@ -128,8 +129,12 @@ const getTimeDeltaMs = (time1: string | number, time2: string | number) => {
 }
 
 export const LatestBlocks = memo(({ ...rest }) => {
+  const { blocked } = useContext(ApiStateContext)
   const appFocused = useAppFocused()
-  const { data } = useLastBlocksQuery(26, { pollingInterval: appFocused ? 3000 : 0, refetchOnMountOrArgChange: true })
+  const { data } = useLastBlocksQuery(26, {
+    pollingInterval: !blocked && appFocused ? 3000 : 0,
+    refetchOnMountOrArgChange: true,
+  })
 
   return (
     <StyledCard {...rest}>
@@ -235,9 +240,10 @@ export const LatestBlocks = memo(({ ...rest }) => {
 
 export const LatestTransactions = memo(({ ...rest }) => {
   const appFocused = useAppFocused()
+  const { blocked } = useContext(ApiStateContext)
 
   const { data } = useLastTransactionsQuery(25, {
-    pollingInterval: appFocused ? 3000 : 0,
+    pollingInterval: !blocked && appFocused ? 3000 : 0,
     refetchOnMountOrArgChange: true,
   })
 
@@ -367,9 +373,11 @@ export const LatestTransactions = memo(({ ...rest }) => {
 
 export const CurrentValidators = memo(({ ...rest }) => {
   const appFocused = useAppFocused()
+  const { blocked } = useContext(ApiStateContext)
+
   const { data } = useActiveValidatorsQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    pollingInterval: appFocused ? 3000 : 0,
+    pollingInterval: !blocked && appFocused ? 3000 : 0,
   })
 
   return (
@@ -385,7 +393,6 @@ export const CurrentValidators = memo(({ ...rest }) => {
         // autoHide={true}
         css={css`
           min-height: 448px;
-          max-height: auto;
           padding: 0 12px;
         `}
       >

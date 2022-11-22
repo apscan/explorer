@@ -3,11 +3,13 @@ import { useMemo } from 'react'
 import ReactJson, { ReactJsonViewProps } from 'react-json-view'
 import { Box, BoxProps } from './container'
 import { CopyButton } from './CopyButton'
+import { isLargeObject } from '../utils'
 
 const JsonViewContainer = ({
   children,
   isDisabled,
   data,
+  maxWidth,
   ...props
 }: BoxProps & {
   data: object
@@ -21,11 +23,12 @@ const JsonViewContainer = ({
     <Box
       css={css`
         position: relative;
+        max-width: ${maxWidth || 'none'};
       `}
     >
       <Box
         css={css`
-          padding: 16px;
+          padding: 16px 40px 16px 16px;
           border-radius: 8px;
           border: 1px solid #e7eaf3;
           background-color: #f8f9fa;
@@ -38,8 +41,8 @@ const JsonViewContainer = ({
           <Box
             css={css`
               position: absolute;
-              right: 12px;
-              top: 8px;
+              right: 22px;
+              top: 16px;
               font-size: 16px;
               z-index: 1;
             `}
@@ -57,6 +60,8 @@ type JsonViewProps = ReactJsonViewProps & {
   fallback?: React.ReactNode
   withContainer?: boolean
   ellipsis?: boolean
+  maxWidth?: string
+  forcePretty?: boolean
 }
 
 export const JsonViewEllipsis = ({ src, maxWidth, ...props }: { src: object } & BoxProps) => {
@@ -76,19 +81,26 @@ export const JsonViewEllipsis = ({ src, maxWidth, ...props }: { src: object } & 
       `}
       {...props}
     >
-      {text}
+      {text || '-'}
     </Box>
   )
 }
 
-export const JsonView = ({ src, fallback, ellipsis, withContainer, ...props }: JsonViewProps) => {
+export const JsonView = ({
+  src,
+  fallback,
+  ellipsis,
+  withContainer,
+  maxWidth,
+  forcePretty = false,
+  ...props
+}: JsonViewProps) => {
   if (src == null) return <>{fallback}</>
 
   return (
-    <JsonViewContainer data={src} isDisabled={!withContainer}>
+    <JsonViewContainer data={src} isDisabled={!withContainer} maxWidth={maxWidth}>
       <Box
         css={css`
-          word-break: break-all;
           font-size: 12px;
           line-height: 1.25;
           font-weight: 400;
@@ -99,16 +111,24 @@ export const JsonView = ({ src, fallback, ellipsis, withContainer, ...props }: J
             position: relative;
             top: 1.8px;
           }
+          & > pre {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+          }
         `}
       >
-        <ReactJson
-          collapsed={false}
-          name={false}
-          enableClipboard={false}
-          displayDataTypes={false}
-          src={src}
-          {...props}
-        />
+        {!forcePretty && isLargeObject(src) ? (
+          <pre>{JSON.stringify(src, null, 4)}</pre>
+        ) : (
+          <ReactJson
+            collapsed={false}
+            name={false}
+            enableClipboard={false}
+            displayDataTypes={false}
+            src={src}
+            {...props}
+          />
+        )}
       </Box>
     </JsonViewContainer>
   )

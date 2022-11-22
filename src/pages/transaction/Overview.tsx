@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Address } from 'components/Address'
+import { AddressesTable } from 'components/AddressesTable'
 import { AmountFormat } from 'components/AmountFormat'
 import { BlockHeight } from 'components/block/BlockHeight'
 import { Box, InlineBox } from 'components/container'
@@ -29,20 +30,27 @@ import { DateFormat } from 'state/application/slice'
 // }
 
 const renderUserTransactionSection = (data: any) => {
-  const gasFee = BigInt(data?.gas_used || 0) * BigInt(data?.user_transaction?.gas_unit_price || 0)
+  const gasFee = BigInt(data?.gas_used || 0) * BigInt(data?.user_transaction_detail?.gas_unit_price || 0)
 
-  const gasUsedPercentage = data?.user_transaction
-    ? Number(data?.gas_used) / Number(data?.user_transaction?.max_gas_amount)
+  const gasUsedPercentage = data?.user_transaction_detail
+    ? Number(data?.gas_used) / Number(data?.user_transaction_detail?.max_gas_amount)
     : undefined
 
   return (
     <>
       <Divider />
       {/* {renderUserTransfer(data)} */}
-      {renderRow('Sequence Number', <NumberFormat value={data?.user_transaction?.sequence_number} />)}
+      {renderRow('Sequence Number', <NumberFormat value={data?.user_transaction_detail?.sequence_number} />)}
       {renderRow(
         'Expiration Timestamp',
-        <DateTime format={DateFormat.FULL} value={data?.user_transaction?.expiration_timestamp_secs} />
+        <DateTime
+          format={DateFormat.FULL}
+          value={
+            data?.user_transaction_detail?.expiration_timestamp_secs
+              ? data.user_transaction_detail.expiration_timestamp_secs + '000000'
+              : undefined
+          }
+        />
       )}
       {renderRow(
         'Max Gas & Gas Used',
@@ -51,7 +59,7 @@ const renderUserTransactionSection = (data: any) => {
             align-items: center;
           `}
         >
-          <NumberFormat fallback="--" value={data?.user_transaction?.max_gas_amount} />
+          <NumberFormat fallback="--" value={data?.user_transaction_detail?.max_gas_amount} />
           <Divider type="vertical" color="#8c98a4" margin="0 16px" />
           <NumberFormat fallback="--" value={data?.gas_used} />
           <InlineBox marginLeft="4px">
@@ -70,13 +78,16 @@ const renderUserTransactionSection = (data: any) => {
             `}
           >
             (
-            <NumberFormat postfix=" Octa" fallback="--" value={data?.user_transaction?.gas_unit_price} />)
+            <NumberFormat postfix=" Octa" fallback="--" value={data?.user_transaction_detail?.gas_unit_price} />)
           </InlineBox>
         </InlineBox>,
         { border: true }
       )}
-      {renderRow('Signature', <JsonView withContainer src={data?.user_transaction?.signature} />)}
-      {renderRow('Payload', <JsonView withContainer src={data?.payload} />)}
+      {renderRow(
+        'Signature',
+        <JsonView maxWidth="950px" withContainer src={data?.user_transaction_detail?.signature} />
+      )}
+      {renderRow('Payload', <JsonView maxWidth="950px" withContainer src={data?.payload} />)}
     </>
   )
 }
@@ -86,7 +97,7 @@ const renderGenesisTransactionSection = (data: any) => {
     <>
       <Divider />
       {renderRow('Epoch', null)}
-      {renderRow('Payload', <JsonView withContainer src={data?.payload} />)}
+      {renderRow('Payload', <JsonView maxWidth="950px" withContainer src={data?.payload} />)}
     </>
   )
 }
@@ -95,21 +106,31 @@ const renderBlockMetadataTransactionSection = (data: any) => {
   return (
     <>
       <Divider />
-      {renderRow('ID', <Hash fallback="--" value={data?.block_metadata_transaction?.id} size="full" />)}
-      {renderRow('Epoch', <NumberFormat fallback="--" value={data?.block_metadata_transaction?.epoch} />)}
-      {renderRow('Round', <NumberFormat fallback="--" value={data?.block_metadata_transaction?.round} />)}
-      {renderRow('Proposer', <Address size="full" fallback="--" value={data?.block_metadata_transaction?.proposer} />)}
+      {renderRow('ID', <Hash fallback="--" value={data?.block_metadata_transaction_detail?.id} size="full" />)}
+      {renderRow('Epoch', <NumberFormat fallback="--" value={data?.block_metadata_transaction_detail?.epoch} />)}
+      {renderRow('Round', <NumberFormat fallback="--" value={data?.block_metadata_transaction_detail?.round} />)}
       {renderRow(
-        'Failed Proposers',
-        data?.block_metadata_transaction?.failed_proposer_indices
-          ? JSON.stringify(data?.block_metadata_transaction?.failed_proposer_indices)
-          : ''
+        'Proposer',
+        <AddressesTable
+          key="Proposer"
+          value={[
+            {
+              content: <Address size="full" fallback="--" value={data?.block_metadata_transaction_detail?.proposer} />,
+              label: <VmStatus withPadding={false} withBg={false} value="Executed successfully" />,
+            },
+            ...(data?.block_metadata_transaction_detail?.failed_proposers?.map((failedProposer: any) => ({
+              content: <Address size="full" fallback="-" value={failedProposer} />,
+              label: <VmStatus withPadding={false} withBg={false} value="" failedText="Failed" />,
+            })) || []),
+          ]}
+        />,
+        { border: false }
       )}
       {renderRow(
         'Previous Block Votes Bitvec',
-        data?.block_metadata_transaction?.previous_block_votes_bitvec
-          ? JSON.stringify(data?.block_metadata_transaction?.previous_block_votes_bitvec)
-          : ''
+        data?.block_metadata_transaction_detail?.previous_block_votes_bitvec
+          ? JSON.stringify(data?.block_metadata_transaction_detail?.previous_block_votes_bitvec)
+          : '-'
       )}
     </>
   )
@@ -163,11 +184,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
 
         {renderRow(
           'Sender',
-          data?.user_transaction?.sender ? (
-            <Address size="full" value={data?.user_transaction?.sender} />
-          ) : (
-            data?.type && <TxType value={data?.type} />
-          )
+          data?.sender ? <Address size="full" value={data?.sender} /> : data?.type && <TxType value={data?.type} />
         )}
 
         {data?.type === 'user_transaction' && renderUserTransactionSection(data)}

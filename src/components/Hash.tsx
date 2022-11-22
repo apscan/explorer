@@ -4,7 +4,7 @@ import { memo, useMemo } from 'react'
 import { truncatedWithSize } from 'utils/truncated'
 import { Box, BoxProps } from './container/Box'
 import { CopyButton } from './CopyButton'
-import { Tooltip } from './Tooltip'
+import Tooltip from './tooltipWithCopy'
 
 export interface HashProps extends BoxProps {
   value?: string

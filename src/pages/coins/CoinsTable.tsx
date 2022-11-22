@@ -24,11 +24,7 @@ const columns = [
     header: 'Creator',
     cell: (info) => <Address size="long" value={info.getValue()} />,
   }),
-  helper.accessor('move_resource_data.name', {
-    header: 'Name',
-    cell: (info) => info.getValue(),
-  }),
-  helper.accessor('move_resource_data.name', {
+  helper.accessor('move_resource_name', {
     header: 'Name',
     cell: (info) => info.getValue(),
   }),
