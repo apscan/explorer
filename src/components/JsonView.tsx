@@ -61,6 +61,7 @@ type JsonViewProps = ReactJsonViewProps & {
   withContainer?: boolean
   ellipsis?: boolean
   maxWidth?: string
+  forcePretty?: boolean
 }
 
 export const JsonViewEllipsis = ({ src, maxWidth, ...props }: { src: object } & BoxProps) => {
@@ -85,7 +86,15 @@ export const JsonViewEllipsis = ({ src, maxWidth, ...props }: { src: object } & 
   )
 }
 
-export const JsonView = ({ src, fallback, ellipsis, withContainer, maxWidth, ...props }: JsonViewProps) => {
+export const JsonView = ({
+  src,
+  fallback,
+  ellipsis,
+  withContainer,
+  maxWidth,
+  forcePretty = false,
+  ...props
+}: JsonViewProps) => {
   if (src == null) return <>{fallback}</>
 
   return (
@@ -108,7 +117,7 @@ export const JsonView = ({ src, fallback, ellipsis, withContainer, maxWidth, ...
           }
         `}
       >
-        {isLargeObject(src) ? (
+        {!forcePretty && isLargeObject(src) ? (
           <pre>{JSON.stringify(src, null, 4)}</pre>
         ) : (
           <ReactJson
