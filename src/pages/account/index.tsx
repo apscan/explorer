@@ -28,9 +28,10 @@ export const Account = () => {
   const tabs = useMemo(() => {
     if (!data || !address) return undefined
 
-    const coinTransferEventsCount = data?.coin_transfer_events_count[0]
-    const count =
-      coinTransferEventsCount['0x1::coin::DepositEvent'] + coinTransferEventsCount['0x1::coin::WithdrawEvent']
+    const count = data?.coin_transfer_events_count.reduce(
+      (all: any, curr: any) => all + curr['0x1::coin::DepositEvent'] + curr['0x1::coin::WithdrawEvent'],
+      0
+    )
 
     return [
       {

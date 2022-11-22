@@ -351,8 +351,8 @@ const columns = [
       return (
         <AmountFormat
           minimumFractionDigits={0}
-          decimals={info.row.original?.coin_info.decimals}
-          postfix={` ${info.row.original?.coin_info.symbol}`}
+          decimals={info.row.original?.coin_info?.decimals}
+          postfix={` ${info.row.original?.coin_info?.symbol}`}
           value={info.row.original?.data.amount}
         />
       )
