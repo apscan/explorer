@@ -28,16 +28,16 @@ export const Account = () => {
   const tabs = useMemo(() => {
     if (!data || !address) return undefined
 
-    const count = (data?.coin_transfers_count || [])
-      .map((coin: any) => coin.transactions_count)
-      .reduce((all: number, curr: number) => all + curr, 0)
+    const coinTransferEventsCount = data?.coin_transfer_events_count[0]
+    const count =
+      coinTransferEventsCount['0x1::coin::DepositEvent'] + coinTransferEventsCount['0x1::coin::WithdrawEvent']
 
     return [
       {
         label: tabNameWithCount('Coin Transfers', count),
         key: 'transfers',
         children: <Transfers key={address} id={address} count={count} />,
-        hide: !data?.coin_transfers_count?.length,
+        hide: !count,
       },
       {
         label: tabNameWithCount('Transactions', data?.transactions_count),
