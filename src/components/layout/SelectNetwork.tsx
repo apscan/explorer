@@ -31,7 +31,7 @@ export const SelectNetwork = memo(() => {
 
   return (
     <Popover trigger="hover" placement="bottom-end" offset={[0, 8]}>
-      {({ isOpen, onClose }) => (
+      {({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
         <>
           <PopoverTrigger>
             <Flex
