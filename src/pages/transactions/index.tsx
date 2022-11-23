@@ -106,7 +106,7 @@ export const Transactions = () => {
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>
-              Total of <NumberFormat fallback="--" useGrouping value={latestVersion} /> transactions
+              Total of <NumberFormat useGrouping fallback="--" value={latestVersion} /> transactions
             </Box>
           </CardHeadStats>
           <Pagination

@@ -14,7 +14,7 @@ const baseQueryWithErrorHandle: BaseQueryFn<string | FetchArgs, unknown, FetchBa
   if (isApscanAPi) {
     if (!result.error) {
       window.postMessage('toast:error:clear')
-    } else if (result.error.status === 'FETCH_ERROR') {
+    } else if (result.error.status === 403) {
       window.postMessage('toast:error:403')
     }
   }

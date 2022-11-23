@@ -112,8 +112,8 @@ export const Holders = ({
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> Holders (showing the
-          top 10,000 only)
+          Total of <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={count} /> Holders
+          (showing the top 10,000 only)
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

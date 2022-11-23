@@ -406,7 +406,7 @@ export const Transfers = ({ id, count }: { id: any; count: number }) => {
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> transfers
+          Total of <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={count} /> transfers
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
