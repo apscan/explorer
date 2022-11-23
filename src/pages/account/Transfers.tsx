@@ -70,60 +70,6 @@ const parseSenderReceiver = (events: TransferEvent[]): [senders: Transfer[], rec
   return [senders, receivers, amountIn.toString()]
 }
 
-// const parseTransfers = (
-//   self: string,
-//   senders: Transfer[],
-//   receivers: Transfer[],
-//   allAmount: string
-// ): {
-//   senders: Transfer[]
-//   receivers: Transfer[]
-//   amounts: string[]
-// } => {
-//   const selfType: 'sender' | 'receiver' = !!senders.find((sender) => sender.address === self) ? 'sender' : 'receiver'
-//   const selfTransfer = (senders.find((sender) => sender.address === self) ||
-//     receivers.find((receivers) => receivers.address === self)) as Transfer
-
-//   // m => n
-//   if (senders.length > 1 && receivers.length > 1) {
-//     return {
-//       senders,
-//       receivers,
-//       amounts: [allAmount],
-//     }
-//   }
-//   // 1 => n
-//   else if (senders.length === 1 && receivers.length > 1) {
-//     return {
-//       senders,
-//       receivers: selfType === 'sender' ? receivers : [selfTransfer],
-//       amounts: selfType === 'sender' ? receivers.map((receiver) => receiver.amount) : [selfTransfer.amount],
-//     }
-//   }
-//   // n => 1
-//   else if (senders.length > 1 && receivers.length === 1) {
-//     return {
-//       senders: selfType === 'sender' ? [selfTransfer] : senders,
-//       receivers,
-//       amounts: selfType === 'sender' ? [selfTransfer.amount] : senders.map((sender) => sender.amount),
-//     }
-//   }
-//   // 1 => 1
-//   else if (senders.length === 1 && receivers.length === 1) {
-//     return {
-//       senders,
-//       receivers,
-//       amounts: [selfTransfer.amount],
-//     }
-//   }
-
-//   return {
-//     senders: [],
-//     receivers: [],
-//     amounts: [],
-//   }
-// }
-
 const parseSenderAndReceiver = (
   events: TransferEvent[],
   self: string
@@ -241,22 +187,14 @@ const columns = [
     header: () => <SwitchDateFormat />,
     cell: (info) => <DateTime value={info.getValue()} />,
   }),
-  // helper.accessor('events', {
-  //   header: 'Events',
-  //   cell: (info) => {
-  //     const self = info.row.original?.address || ''
-  //     const { json } = parseSenderAndReceiver(info.row.original?.events || [], self)
-
-  //     return json.length
-  //   },
-  // }),
   helper.accessor('sender', {
     meta: {
       nowrap: true,
     },
     header: 'Sender',
     cell: (info) => {
-      if (isOut(info.row.original.type)) {
+      const type = parseType(info.row.original)
+      if (type === 'OUT' || type === 'SELF') {
         return <Address size="short" as="span" value={info.row.original?.address} />
       }
       if (!info.row.original?.counter_party) {
@@ -316,7 +254,8 @@ const columns = [
       },
       header: 'Receiver',
       cell: (info) => {
-        if (isIn(info.row.original.type)) {
+        const type = parseType(info.row.original)
+        if (type === 'IN' || type === 'SELF') {
           return <Address size="short" as="span" value={info.row.original?.address} />
         }
 
@@ -357,23 +296,6 @@ const columns = [
       )
     },
   }),
-  // helper.accessor('expand', {
-  //   meta: {
-  //     nowrap: true,
-  //     isExpandButton: true,
-  //   },
-  //   header: (header) => <ExpandButton
-  //       expandAll
-  //       expanded={header.table.getIsSomeRowsExpanded()}
-  //       onClick={() => header.table.toggleAllRowsExpanded()}
-  //     />,
-  //   cell: (info) => {
-  //     const self = info.row.original?.address || ''
-  //     const { json } = parseSenderAndReceiver(info.row.original?.events || [], self)
-
-  //     return json.length ? <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} /> : <></>
-  //   },
-  // }),
 ]
 
 const renderSubComponent = ({ row }: { row: any }) => {
