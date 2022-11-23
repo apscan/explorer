@@ -9,6 +9,7 @@ import { DataTable } from 'components/table'
 import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageParams } from 'state/application/hooks'
 
@@ -35,6 +36,13 @@ const columns = [
     },
     header: 'Resource Name',
     cell: (info) => <Box>{info.getValue()}</Box>,
+  }),
+  helper.accessor('move_resource_generic_type_params.0', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Resource Type',
+    cell: (info) => (info.getValue() ? <TypeParam value={info.getValue()} /> : '-'),
   }),
   helper.accessor('move_resource_data', {
     meta: {
