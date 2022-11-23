@@ -5,7 +5,7 @@ import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
-import { TypeParam } from 'components/TypeParam'
+import { TypeParamUnderLine } from 'components/TypeParamUnderLine'
 import { useMemo } from 'react'
 import { AptosCoin } from 'utils'
 import { toFixedNumber } from 'utils/number'
@@ -24,7 +24,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('move_resource_generic_type_params.0', {
         header: 'Type',
-        cell: (info) => <TypeParam raw={true} value={info.getValue()} />,
+        cell: (info) => <TypeParamUnderLine value={info.getValue()} />,
       }),
       helper.accessor('created_at.timestamp', {
         meta: {

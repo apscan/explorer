@@ -37,7 +37,8 @@ export const linkStyle = css`
     box-shadow: none;
   }
 `
-const linkStyleUnderLine = css`
+
+export const linkStyleUnderLine = css`
   text-decoration: underline;
 
   &:hover {
