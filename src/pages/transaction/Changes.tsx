@@ -13,8 +13,7 @@ import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { useState } from 'react'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 import { vars } from 'theme/theme.css'
 
 const Badge = styled(Box)`
@@ -147,7 +146,7 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Changes = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useTransactionChangesQuery(
     {
       id: id!,

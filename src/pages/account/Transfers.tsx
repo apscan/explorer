@@ -15,7 +15,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { Version } from 'components/transaction/Version'
 import { JsonView } from 'components/JsonView'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 import { parseUserTransfer } from 'utils/parseUserTransfer'
 import { TypeParam } from 'components/TypeParam'
 import { AptosCoin } from 'utils'
@@ -388,7 +388,7 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Transfers = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountTransferQuery(
     {
       id: id!,

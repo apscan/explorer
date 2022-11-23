@@ -7,7 +7,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { TransactionsTable } from 'pages/transactions/TransactionsTable'
 import { useMemo } from 'react'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 
 const StatsNumberFormat = styled(NumberFormat)`
   margin-left: 4px;
@@ -15,7 +15,7 @@ const StatsNumberFormat = styled(NumberFormat)`
 `
 
 export const BlockTransactions = ({ id, count }: { id?: string; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useBlockTransactionsQuery(
     {
       id: id!,
