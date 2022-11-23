@@ -12,6 +12,7 @@ export type LinkProps = Omit<CLinkProps, 'href'> &
     disabled?: boolean
     isExternal?: boolean
     to?: To
+    underline?: boolean
   }
 
 const isValidUrl = (str: any) => {
@@ -30,6 +31,17 @@ export const linkStyle = css`
   &:hover {
     color: ${vars.colors.linkHover};
     text-decoration: none;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+`
+const linkStyleUnderLine = css`
+  text-decoration: underline;
+
+  &:hover {
+    color: ${vars.colors.linkHover};
   }
 
   &:focus {
@@ -59,7 +71,7 @@ export const Link = memo(
             as={as}
             href={href}
             to={to}
-            css={[linkStyle]}
+            css={[props.underline ? linkStyleUnderLine : linkStyle]}
             ref={ref}
             rel={isExternal ? 'noopener noreferrer' : undefined}
             target={isExternal ? '_blank' : undefined}

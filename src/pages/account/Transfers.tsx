@@ -17,8 +17,7 @@ import { JsonView } from 'components/JsonView'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { parseUserTransfer } from 'utils/parseUserTransfer'
-import { TypeParam } from 'components/TypeParam'
-import { AptosCoin } from 'utils'
+import { Link } from 'components/link'
 
 const helper = createColumnHelper<any>()
 
@@ -271,13 +270,15 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Asset',
+    header: 'Coin',
     cell: (info) => {
       const params = info.row.original?.move_resource_generic_type_params || []
-      if (params[0] === AptosCoin) {
-        return 'Aptos Coin'
-      }
-      return <TypeParam value={params[0]} /> || '-'
+
+      return (
+        <Link underline={true} tooltip={params[0]} to={`/coin/${params[0]}`}>
+          {info.row.original?.name ?? 'Aptos Coin'}
+        </Link>
+      )
     },
   }),
   helper.accessor('data.amount', {
