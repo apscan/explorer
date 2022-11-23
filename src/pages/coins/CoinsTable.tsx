@@ -31,11 +31,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
           nowrap: true,
         },
         header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Creation Age" />,
-        cell: (info) => {
-          console.log('info', info)
-
-          return <DateTime value={info.row.original?.created_at.timestamp} />
-        },
+        cell: (info) => <DateTime value={info.row.original?.created_at.timestamp} />,
       }),
       helper.accessor('name', {
         header: 'Name',
@@ -56,7 +52,13 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('price', {
         header: 'Price',
-        cell: (info) => '-',
+        cell: (info) => {
+          if (info.row.original?.move_resource_generic_type_params[0] !== AptosCoin) {
+            return '-'
+          }
+
+          return <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
+        },
       }),
       helper.accessor('fdv', {
         header: 'Fully Diluted Val.',

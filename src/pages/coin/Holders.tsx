@@ -11,6 +11,8 @@ import { Pagination } from 'components/table/Pagination'
 import { AmountFormat } from 'components/AmountFormat'
 import { useMemo } from 'react'
 import RealBigNumber from 'bignumber.js'
+import { FixedNumber } from '@ethersproject/bignumber'
+import { toFixedNumber } from 'utils/number'
 
 const helper = createColumnHelper<any>()
 
@@ -20,12 +22,14 @@ export const Holders = ({
   decimals,
   symbol,
   totalSupply,
+  price,
 }: {
   type?: string
   count?: number
   decimals: number
   symbol: string
   totalSupply: string
+  price?: string
 }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useCoinHoldersQuery(
@@ -84,7 +88,25 @@ export const Holders = ({
           nowrap: true,
         },
         header: 'Value',
-        cell: (info) => '-',
+        cell: (info) => {
+          if (!price) {
+            return '-'
+          }
+          const value = FixedNumber.from(price.toString(), 'fixed128x18').mulUnsafe(
+            toFixedNumber(info.row.original?.balance).toFormat('fixed128x18')
+          )
+
+          return (
+            <NumberFormat
+              textTransform="uppercase"
+              useGrouping
+              maximumFractionDigits={3}
+              prefix="$"
+              value={value}
+              fallback="-"
+            />
+          )
+        },
       }),
       helper.accessor('deposit_events_count', {
         meta: {
