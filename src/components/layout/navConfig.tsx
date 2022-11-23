@@ -64,7 +64,6 @@ export const navConfig: INavItem[] = [
       },
       {
         name: 'Coins',
-        isDisabled: process.env.NODE_ENV === 'production',
         path: '/coins',
       },
     ],
