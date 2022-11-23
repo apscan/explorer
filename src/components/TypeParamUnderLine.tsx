@@ -7,11 +7,13 @@ export const TypeParamUnderLine = ({
   fallback,
   value,
   ellipsis,
+  to,
   ...props
 }: {
   fallback?: React.ReactNode
   value?: string
   ellipsis?: boolean
+  to?: string
 }) => {
   const rawValue = value
   const parts = useMemo(() => {
@@ -37,7 +39,7 @@ export const TypeParamUnderLine = ({
 
   return (
     <Tooltip label={rawValue}>
-      <Link underline={true} {...props}>
+      <Link underline={true} to={to} {...props}>
         {parts}
       </Link>
     </Tooltip>

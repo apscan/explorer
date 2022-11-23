@@ -24,7 +24,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('move_resource_generic_type_params.0', {
         header: 'Type',
-        cell: (info) => <TypeParamUnderLine value={info.getValue()} />,
+        cell: (info) => <TypeParamUnderLine to={`/coin/${info.getValue()}`} value={info.getValue()} />,
       }),
       helper.accessor('created_at.timestamp', {
         meta: {
