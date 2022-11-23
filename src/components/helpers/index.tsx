@@ -13,6 +13,7 @@ const KeyWrapper = styled(Box)`
 const ValueWrapper = styled(Box)`
   font-weight: 400;
   width: 75%;
+  font-size: 14px;
   color: ${vars.text.body};
 `
 
