@@ -32,6 +32,7 @@ specifiers:
   antd: ^4.23.0
   aptos: ^1.3.16
   axios: ^0.27.2
+  bignumber.js: ^9.1.0
   camelcase-keys: ^8.0.2
   copy-to-clipboard: ^3.3.2
   customize-cra: ^1.0.0
@@ -100,6 +101,7 @@ dependencies:
   antd: 4.23.0_biqbaboplfbrettd7655fr4n2y
   aptos: 1.3.16
   axios: 0.27.2
+  bignumber.js: 9.1.0
   camelcase-keys: 8.0.2
   copy-to-clipboard: 3.3.2
   dayjs: 1.11.5
@@ -5754,6 +5756,11 @@ packages:
   /bignumber.js/8.1.1:
     resolution:
       { integrity: sha512-QD46ppGintwPGuL1KqmwhR0O+N2cZUg8JG/VzwI2e28sM9TqHjQB10lI4QAaMHVbLzwVLLAwEglpKPViWX+5NQ== }
+    dev: false
+
+  /bignumber.js/9.1.0:
+    resolution:
+      { integrity: sha512-4LwHK4nfDOraBCtst+wOWIHbu1vhvAPJK8g8nROd4iuc3PSEjWif/qwbkh8jwCJz6yDBvtU4KPynETgrfh7y3A== }
     dev: false
 
   /binary-extensions/2.2.0:
@@ -12348,6 +12355,12 @@ packages:
     resolution:
       { integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ== }
     engines: { node: '>=14' }
+    peerDependencies:
+      typescript: '>=2.7'
+      webpack: '>=4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
       address: 1.2.0
@@ -12373,12 +12386,12 @@ packages:
       shell-quote: 1.7.3
       strip-ansi: 6.0.1
       text-table: 0.2.0
+      typescript: 4.7.4
+      webpack: 5.74.0
     transitivePeerDependencies:
       - eslint
       - supports-color
-      - typescript
       - vue-template-compiler
-      - webpack
 
   /react-dom/18.2.0_react@18.2.0:
     resolution:
