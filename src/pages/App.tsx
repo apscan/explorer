@@ -6,6 +6,7 @@ import { Account } from './account'
 import { Accounts } from './accounts'
 import { Block } from './block'
 import { Blocks } from './blocks'
+import { Coin } from './coin'
 import { Coins } from './coins'
 import { Home } from './home'
 import { NotFound } from './NotFound'
@@ -78,15 +79,22 @@ const routes = [
       </Layout>
     ),
   },
-  process.env.NODE_ENV !== 'production' &&
-    ({
-      path: '/coins',
-      element: (
-        <Layout>
-          <Coins />
-        </Layout>
-      ),
-    } as any),
+  {
+    path: '/coins',
+    element: (
+      <Layout>
+        <Coins />
+      </Layout>
+    ),
+  } as any,
+  {
+    path: '/coin/:type',
+    element: (
+      <Layout>
+        <Coin />
+      </Layout>
+    ),
+  } as any,
 ].filter(Boolean)
 
 function App() {

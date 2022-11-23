@@ -17,7 +17,7 @@ const NavDropdown = ({ nav, ...props }: { nav: INavItem }) => {
 
   return (
     <Popover trigger="hover" placement="bottom-start" offset={[0, 0]}>
-      {({ isOpen, onClose }) => (
+      {({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
         <>
           <PopoverTrigger>
             <Flex
