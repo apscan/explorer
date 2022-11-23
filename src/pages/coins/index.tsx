@@ -7,11 +7,11 @@ import { PageTitle } from 'components/PageTitle'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 import { CoinsTable } from './CoinsTable'
 
 export const Coins = () => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
 
   const { data: { data, page: pageParams = {} } = {}, isLoading } = useCoinsQuery({
     start: (page - 1) * pageSize,

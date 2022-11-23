@@ -5,10 +5,10 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { TransactionsTable } from 'pages/transactions/TransactionsTable'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 
 export const AccountTransactions = ({ id, count }: { id: string; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
 
   const { data: { data } = {}, isLoading } = useAccountTransactionsQuery(
     {

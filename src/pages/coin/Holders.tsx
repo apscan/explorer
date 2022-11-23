@@ -6,7 +6,7 @@ import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 import { Pagination } from 'components/table/Pagination'
 import { AmountFormat } from 'components/AmountFormat'
 import { useMemo } from 'react'
@@ -27,7 +27,7 @@ export const Holders = ({
   symbol: string
   totalSupply: string
 }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useCoinHoldersQuery(
     {
       id: id!,

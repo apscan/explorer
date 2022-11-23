@@ -11,8 +11,8 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { Version } from 'components/transaction/Version'
 import { TypeParam } from 'components/TypeParam'
+import { usePageSize } from 'hooks/usePageSize'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { usePageParams } from 'state/application/hooks'
 
 const helper = createColumnHelper<any>()
 
@@ -90,7 +90,7 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Events = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountEventsQuery(
     {
       id: id!,

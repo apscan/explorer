@@ -8,12 +8,12 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useAppStats } from 'state/api/hooks'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 import { ValidatorsTable } from './ValidatorsTable'
 
 export const Validators = () => {
   const stats = useAppStats()
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useValidatorsQuery({
     start: (page - 1) * pageSize,
     pageSize,
