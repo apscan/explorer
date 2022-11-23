@@ -27,7 +27,14 @@ export const Validators = () => {
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={stats?.validators_count} />{' '}
+            Total of{' '}
+            <NumberFormat
+              useGrouping
+              fallback="--"
+              marginLeft="4px"
+              marginRight="4px"
+              value={stats?.validators_count}
+            />{' '}
             validators
           </CardHeadStats>
           <Pagination {...pageProps} />

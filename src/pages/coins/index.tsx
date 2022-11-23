@@ -27,7 +27,8 @@ export const Coins = () => {
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={pageParams.count} /> coins
+            Total of{' '}
+            <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={pageParams.count} /> coins
           </CardHeadStats>
           <Pagination {...pageProps} />
         </CardHead>
