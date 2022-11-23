@@ -48,7 +48,7 @@ export const Holders = ({
         meta: {
           nowrap: true,
         },
-        cell: (info: any) => <NumberFormat value={info.getValue()} />,
+        cell: (info: any) => <NumberFormat value={info.row.index + 1 + (page - 1) * pageSize} />,
       }),
       helper.accessor('address', {
         meta: {
@@ -105,7 +105,7 @@ export const Holders = ({
         ),
       }),
     ],
-    [total]
+    [page, pageSize, total]
   )
 
   return (

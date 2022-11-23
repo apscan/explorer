@@ -1,4 +1,4 @@
-import { useCoinsQuery } from 'api'
+import { useCoinsQuery, useMarketInfoQuery } from 'api'
 import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Container } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -19,6 +19,7 @@ export const Coins = () => {
   })
 
   const pageProps = useRangePagination(page, pageSize, pageParams.count, setPage)
+  const { data: market } = useMarketInfoQuery()
 
   return (
     <Container>
@@ -28,11 +29,11 @@ export const Coins = () => {
         <CardHead variant="table">
           <CardHeadStats variant="table">
             Total of{' '}
-            <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={pageParams.count} /> coins
+            <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={pageParams.count} /> Coins
           </CardHeadStats>
           <Pagination {...pageProps} />
         </CardHead>
-        <CoinsTable data={data} />
+        <CoinsTable price={market?.quotes?.USD?.price} data={data} />
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
           <Pagination {...pageProps} />

@@ -18,8 +18,7 @@ import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageParams } from 'state/application/hooks'
 import { parseUserTransfer } from 'utils/parseUserTransfer'
 import { TypeParam } from 'components/TypeParam'
-
-const AptosCoin = '0x1::aptos_coin::AptosCoin'
+import { AptosCoin } from 'utils'
 
 const helper = createColumnHelper<any>()
 
