@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { createColumnHelper } from '@tanstack/react-table'
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useAccountTransferQuery } from 'api'
 import { Address } from 'components/Address'
@@ -18,6 +18,7 @@ import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { parseUserTransfer } from 'utils/parseUserTransfer'
 import { Link } from 'components/link'
+import { useMemo } from 'react'
 
 const helper = createColumnHelper<any>()
 
@@ -171,134 +172,6 @@ const parseType = (data: {
   return 'OUT'
 }
 
-const columns = [
-  helper.accessor('transaction_version', {
-    header: 'Tx Version',
-    meta: {
-      nowrap: true,
-    },
-    cell: (info) => <Version value={info.getValue()} />,
-  }),
-  helper.accessor('time_microseconds', {
-    meta: {
-      nowrap: true,
-    },
-    header: () => <SwitchDateFormat />,
-    cell: (info) => <DateTime value={info.getValue()} />,
-  }),
-  helper.accessor('sender', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Sender',
-    cell: (info) => {
-      const type = parseType(info.row.original)
-      if (type === 'OUT' || type === 'SELF') {
-        return <Address size="short" as="span" value={info.row.original?.address} />
-      }
-      if (!info.row.original?.counter_party) {
-        return '-'
-      }
-      return <Address size="short" value={info.row.original?.counter_party.address} />
-    },
-  }),
-  helper.accessor('in_out', {
-    meta: {
-      nowrap: true,
-    },
-    header: '',
-    cell: (info) => {
-      const type = parseType(info.row.original)
-
-      return (
-        <InlineBox
-          css={css`
-            font-size: 12px;
-            font-weight: 700;
-            border-radius: 6px;
-            user-select: none;
-            width: 42px;
-            justify-content: center;
-            align-items: center;
-            ${type === 'IN' &&
-            css`
-              background: rgba(0, 201, 167, 0.2);
-              color: #02977e;
-            `}
-            ${type === 'OUT' &&
-            css`
-              background: rgba(219, 154, 4, 0.2);
-              color: #b47d00;
-            `}
-                ${type === 'SELF' &&
-            css`
-              color: #77838f;
-              background-color: rgba(119, 131, 143, 0.1);
-            `}
-                padding: 2px 8px;
-          `}
-        >
-          {type}
-        </InlineBox>
-      )
-    },
-  }),
-  helper.accessor(
-    (data: any) => {
-      return parseUserTransfer(data?.payload)?.receiver
-    },
-    {
-      meta: {
-        nowrap: true,
-      },
-      header: 'Receiver',
-      cell: (info) => {
-        const type = parseType(info.row.original)
-        if (type === 'IN' || type === 'SELF') {
-          return <Address size="short" as="span" value={info.row.original?.address} />
-        }
-
-        if (!info.row.original?.counter_party) {
-          return '-'
-        }
-
-        return <Address size="short" value={info.row.original?.counter_party.address} />
-      },
-    }
-  ),
-  helper.accessor('asset', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Coin',
-    cell: (info) => {
-      const params = info.row.original?.move_resource_generic_type_params || []
-
-      return (
-        <Link underline={true} tooltip={params[0]} to={`/coin/${params[0]}`}>
-          {info.row.original?.name ?? 'Aptos Coin'}
-        </Link>
-      )
-    },
-  }),
-  helper.accessor('data.amount', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Amount',
-    cell: (info) => {
-      return (
-        <AmountFormat
-          minimumFractionDigits={0}
-          decimals={info.row.original?.coin_info?.decimals}
-          postfix={` ${info.row.original?.coin_info?.symbol}`}
-          value={info.row.original?.data.amount}
-        />
-      )
-    },
-  }),
-]
-
 const renderSubComponent = ({ row }: { row: any }) => {
   const self = row.original?.address || ''
   const { json } = parseSenderAndReceiver(row.original?.events || [], self)
@@ -310,20 +183,180 @@ const getRowCanExpand = (row: any) => {
   return true
 }
 
-export const Transfers = ({ id, count }: { id: any; count: number }) => {
+export const Transfers = ({ id, count, type }: { id?: string; count: number; type?: string }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountTransferQuery(
     {
-      id: id!,
+      id,
+      type,
       start: (page - 1) * pageSize,
       pageSize,
     },
     {
-      skip: id == null || !count,
+      skip: (!id && !type) || !count,
     }
   )
   const pageProps = useRangePagination(page, pageSize, count, setPage)
 
+  const columns = useMemo(
+    () =>
+      [
+        helper.accessor('transaction_version', {
+          header: 'Tx Version',
+          meta: {
+            nowrap: true,
+          },
+          cell: (info) => <Version value={info.getValue()} />,
+        }),
+        helper.accessor('time_microseconds', {
+          meta: {
+            nowrap: true,
+          },
+          header: () => <SwitchDateFormat />,
+          cell: (info) => <DateTime value={info.getValue()} />,
+        }),
+        helper.accessor('sender', {
+          meta: {
+            nowrap: true,
+          },
+          header: 'Sender',
+          cell: (info) => {
+            if (type !== undefined) {
+              let address = ''
+
+              if (isIn(info.row.original.type)) {
+                address = info.row.original?.counter_party?.address
+              } else {
+                address = info.row.original?.address
+              }
+              if (!address) {
+                return '-'
+              }
+              return <Address size="short" value={address} />
+            }
+
+            const transferType = parseType(info.row.original)
+            if (transferType === 'OUT' || transferType === 'SELF') {
+              return <Address size="short" as="span" value={info.row.original?.address} />
+            }
+            if (!info.row.original?.counter_party) {
+              return '-'
+            }
+            return <Address size="short" value={info.row.original?.counter_party.address} />
+          },
+        }),
+        helper.accessor('in_out', {
+          meta: {
+            nowrap: true,
+          },
+          header: '',
+          cell: (info) => {
+            const type = parseType(info.row.original)
+
+            return (
+              <InlineBox
+                css={css`
+                  font-size: 12px;
+                  font-weight: 700;
+                  border-radius: 6px;
+                  user-select: none;
+                  width: 42px;
+                  justify-content: center;
+                  align-items: center;
+                  ${type === 'IN' &&
+                  css`
+                    background: rgba(0, 201, 167, 0.2);
+                    color: #02977e;
+                  `}
+                  ${type === 'OUT' &&
+                  css`
+                    background: rgba(219, 154, 4, 0.2);
+                    color: #b47d00;
+                  `}
+                    ${type === 'SELF' &&
+                  css`
+                    color: #77838f;
+                    background-color: rgba(119, 131, 143, 0.1);
+                  `}
+                    padding: 2px 8px;
+                `}
+              >
+                {type}
+              </InlineBox>
+            )
+          },
+        }),
+        helper.accessor(
+          (data: any) => {
+            return parseUserTransfer(data?.payload)?.receiver
+          },
+          {
+            meta: {
+              nowrap: true,
+            },
+            header: 'Receiver',
+            cell: (info) => {
+              if (type !== undefined) {
+                let address = ''
+
+                if (isOut(info.row.original.type)) {
+                  address = info.row.original?.counter_party?.address
+                } else {
+                  address = info.row.original?.address
+                }
+                if (!address) {
+                  return '-'
+                }
+                return <Address size="short" value={address} />
+              }
+
+              const transferType = parseType(info.row.original)
+              if (transferType === 'IN' || transferType === 'SELF') {
+                return <Address size="short" as="span" value={info.row.original?.address} />
+              }
+
+              if (!info.row.original?.counter_party) {
+                return '-'
+              }
+
+              return <Address size="short" value={info.row.original?.counter_party.address} />
+            },
+          }
+        ),
+        helper.accessor('coin', {
+          meta: {
+            nowrap: true,
+          },
+          header: 'Coin',
+          cell: (info) => {
+            const params = info.row.original?.move_resource_generic_type_params || []
+
+            return (
+              <Link underline={true} tooltip={params[0]} to={`/coin/${params[0]}`}>
+                {info.row.original?.name ?? 'Aptos Coin'}
+              </Link>
+            )
+          },
+        }),
+        helper.accessor('data.amount', {
+          meta: {
+            nowrap: true,
+          },
+          header: 'Amount',
+          cell: (info) => {
+            return (
+              <AmountFormat
+                minimumFractionDigits={0}
+                decimals={info.row.original?.coin_info?.decimals}
+                postfix={` ${info.row.original?.coin_info?.symbol}`}
+                value={info.row.original?.data.amount}
+              />
+            )
+          },
+        }),
+      ].filter(Boolean) as ColumnDef<any, any>[],
+    [type]
+  )
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
