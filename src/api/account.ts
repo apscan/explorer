@@ -45,13 +45,18 @@ export const accountApi = emptySplitApi.injectEndpoints({
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
-    accountTransfer: builder.query<any, { id: string; start?: number; pageSize?: number }>({
-      query: ({ id, start = 0, pageSize }) => {
-        if (!id) throw new Error('miss account id')
+    accountTransfer: builder.query<any, { id?: string; type?: string; start?: number; pageSize?: number }>({
+      query: ({ id, type, start = 0, pageSize }) => {
+        if (!id && !type) throw new Error('miss account id or type')
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        const url = type
+          ? `/coin_transfers?move_resource_generic_type_params=eq.["${type}"]`
+          : id
+          ? `/coin_transfers_address?address=eq.${id}`
+          : ''
 
         return {
-          url: `/coin_transfers_address?address=eq.${id}`,
+          url,
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,

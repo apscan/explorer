@@ -53,7 +53,7 @@ export const linkStyleUnderLine = css`
 export const Link = memo(
   styled(
     forwardRef<LinkProps, 'a'>((props, ref) => {
-      const { tooltip, to: _to, href: _href, variant, isExternal, ...rest } = props
+      const { tooltip, to: _to, href: _href, variant, isExternal, underline, ...rest } = props
 
       const [as, to, href] = useMemo(() => {
         if (!_to) {
@@ -72,7 +72,7 @@ export const Link = memo(
             as={as}
             href={href}
             to={to}
-            css={[props.underline ? linkStyleUnderLine : linkStyle]}
+            css={[underline ? linkStyleUnderLine : linkStyle]}
             ref={ref}
             rel={isExternal ? 'noopener noreferrer' : undefined}
             target={isExternal ? '_blank' : undefined}

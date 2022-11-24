@@ -30,7 +30,7 @@ export const Coin = () => {
       {
         label: tabNameWithCount('Coin Transfers', count),
         key: 'transfers',
-        children: <Transfers key={type} id={type} count={count} />,
+        children: <Transfers key={type} type={type} count={count} />,
         hide: !count,
       },
       {
