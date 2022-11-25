@@ -220,6 +220,13 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
           },
           cell: (info) => <Version value={info.getValue()} />,
         }),
+        helper.accessor('time_microseconds', {
+          meta: {
+            nowrap: true,
+          },
+          header: () => <SwitchDateFormat />,
+          cell: (info) => <DateTime value={info.getValue()} />,
+        }),
         !type &&
           helper.accessor('type', {
             header: 'Type',
@@ -228,13 +235,6 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
             },
             cell: (info) => parseTypeText(info.row.original?.type),
           }),
-        helper.accessor('time_microseconds', {
-          meta: {
-            nowrap: true,
-          },
-          header: () => <SwitchDateFormat />,
-          cell: (info) => <DateTime value={info.getValue()} />,
-        }),
         helper.accessor('sender', {
           meta: {
             nowrap: true,
@@ -343,21 +343,22 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
             },
           }
         ),
-        helper.accessor('coin', {
-          meta: {
-            nowrap: true,
-          },
-          header: 'Coin',
-          cell: (info) => {
-            const params = info.row.original?.move_resource_generic_type_params || []
+        !type &&
+          helper.accessor('coin', {
+            meta: {
+              nowrap: true,
+            },
+            header: 'Coin',
+            cell: (info) => {
+              const params = info.row.original?.move_resource_generic_type_params || []
 
-            return (
-              <Link tooltip={params[0]} to={`/coin/${params[0]}`}>
-                {info.row.original?.coin_info.name ?? 'Aptos Coin'}
-              </Link>
-            )
-          },
-        }),
+              return (
+                <Link tooltip={params[0]} to={`/coin/${params[0]}`}>
+                  {info.row.original?.coin_info.name ?? 'Aptos Coin'}
+                </Link>
+              )
+            },
+          }),
         helper.accessor('data.amount', {
           meta: {
             nowrap: true,
