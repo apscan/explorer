@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { useCoinDetailQuery, useMarketInfoQuery } from 'api'
 import { Card } from 'components/Card'
-import { Container, InlineBox } from 'components/container'
+import { Container, Flex, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
@@ -64,16 +64,24 @@ export const Coin = () => {
               font-size: 16px;
             `}
           >
-            Coin
             <span
               style={{
-                margin: '0 0.5em',
+                fontSize: '20px',
+                fontWeight: '500',
+              }}
+            >
+              Coin
+            </span>
+            <span
+              style={{
                 color: '#77838f',
+                wordBreak: 'break-all',
+                padding: '0px 40px 0px 10px',
               }}
             >
               {type}
+              {type && <CopyButton text={type} />}
             </span>
-            {type && <CopyButton text={type} />}
           </InlineBox>
         }
       />
