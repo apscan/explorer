@@ -28,7 +28,7 @@ export const Coin = () => {
 
     return [
       {
-        label: tabNameWithCount('Coin Transfers', count),
+        label: tabNameWithCount('Events', count),
         key: 'transfers',
         children: <Transfers key={type} type={type} count={count} />,
         hide: !count,

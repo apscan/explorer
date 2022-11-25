@@ -19,6 +19,7 @@ import { usePageSize } from 'hooks/usePageSize'
 import { parseUserTransfer } from 'utils/parseUserTransfer'
 import { Link } from 'components/link'
 import { useMemo } from 'react'
+import { TypeParam } from 'components/TypeParam'
 
 const helper = createColumnHelper<any>()
 
@@ -227,14 +228,15 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
           header: () => <SwitchDateFormat />,
           cell: (info) => <DateTime value={info.getValue()} />,
         }),
-        !type &&
-          helper.accessor('type', {
-            header: 'Type',
-            meta: {
-              nowrap: true,
-            },
-            cell: (info) => parseTypeText(info.row.original?.type),
-          }),
+        helper.accessor('type', {
+          header: 'Event',
+          meta: {
+            nowrap: true,
+          },
+          cell: (info) => {
+            return <TypeParam value={info.row.original?.type} />
+          },
+        }),
         helper.accessor('sender', {
           meta: {
             nowrap: true,
@@ -265,47 +267,48 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
             return <Address size="short" value={info.row.original?.counter_party.address} />
           },
         }),
-        helper.accessor('in_out', {
-          meta: {
-            nowrap: true,
-          },
-          header: '',
-          cell: (info) => {
-            const type = parseType(info.row.original)
+        !type &&
+          helper.accessor('in_out', {
+            meta: {
+              nowrap: true,
+            },
+            header: '',
+            cell: (info) => {
+              const type = parseType(info.row.original)
 
-            return (
-              <InlineBox
-                css={css`
-                  font-size: 12px;
-                  font-weight: 700;
-                  border-radius: 6px;
-                  user-select: none;
-                  width: 42px;
-                  justify-content: center;
-                  align-items: center;
-                  ${type === 'IN' &&
-                  css`
-                    background: rgba(0, 201, 167, 0.2);
-                    color: #02977e;
+              return (
+                <InlineBox
+                  css={css`
+                    font-size: 12px;
+                    font-weight: 700;
+                    border-radius: 6px;
+                    user-select: none;
+                    width: 42px;
+                    justify-content: center;
+                    align-items: center;
+                    ${type === 'IN' &&
+                    css`
+                      background: rgba(0, 201, 167, 0.2);
+                      color: #02977e;
+                    `}
+                    ${type === 'OUT' &&
+                    css`
+                      background: rgba(219, 154, 4, 0.2);
+                      color: #b47d00;
+                    `}
+                      ${type === 'SELF' &&
+                    css`
+                      color: #77838f;
+                      background-color: rgba(119, 131, 143, 0.1);
+                    `}
+                      padding: 2px 8px;
                   `}
-                  ${type === 'OUT' &&
-                  css`
-                    background: rgba(219, 154, 4, 0.2);
-                    color: #b47d00;
-                  `}
-                    ${type === 'SELF' &&
-                  css`
-                    color: #77838f;
-                    background-color: rgba(119, 131, 143, 0.1);
-                  `}
-                    padding: 2px 8px;
-                `}
-              >
-                {type}
-              </InlineBox>
-            )
-          },
-        }),
+                >
+                  {type}
+                </InlineBox>
+              )
+            },
+          }),
         helper.accessor(
           (data: any) => {
             return parseUserTransfer(data?.payload)?.receiver
@@ -382,7 +385,9 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={count} /> transfers
+          Total of&nbsp;
+          <NumberFormat useGrouping fallback="--" value={count} />
+          &nbsp;{type ? 'events' : 'coin events'}
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

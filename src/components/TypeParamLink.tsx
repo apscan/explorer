@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
 import { truncated } from 'utils/truncated'
 import { Link } from './link'
-import Tooltip from './tooltipWithCopy'
 
-export const TypeParamUnderLine = ({
+export const TypeParamLink = ({
   fallback,
   value,
   ellipsis,
@@ -15,13 +14,8 @@ export const TypeParamUnderLine = ({
   ellipsis?: boolean
   to?: string
 }) => {
-  const rawValue = value
   const parts = useMemo(() => {
     if (typeof value !== 'string') return
-
-    if (value.lastIndexOf('>') === value.length - 1) {
-      value = value.slice(0, value.indexOf('<')) + '<...>'
-    }
 
     return value
       .split(/(::|<|,\W)/g)
@@ -38,10 +32,8 @@ export const TypeParamUnderLine = ({
   if (!value) return <>{fallback}</>
 
   return (
-    <Tooltip label={rawValue}>
-      <Link underline={true} to={to} {...props}>
-        {parts}
-      </Link>
-    </Tooltip>
+    <Link to={to} {...props}>
+      {parts}
+    </Link>
   )
 }

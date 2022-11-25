@@ -1,14 +1,13 @@
-import { FixedNumber } from '@ethersproject/bignumber'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AmountFormat } from 'components/AmountFormat'
+import { Box } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
-import { TypeParamUnderLine } from 'components/TypeParamUnderLine'
+import { TypeParamLink } from 'components/TypeParamLink'
 import { useMemo } from 'react'
 import { AptosCoin } from 'utils'
-import { toFixedNumber } from 'utils/number'
 
 const helper = createColumnHelper<any>()
 
@@ -24,7 +23,20 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('move_resource_generic_type_params.0', {
         header: 'Type',
-        cell: (info) => <TypeParamUnderLine to={`/coin/${info.getValue()}`} value={info.getValue()} />,
+        meta: {
+          nowrap: true,
+        },
+        cell: (info) => (
+          <Box
+            sx={{
+              maxWidth: '250px',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+            }}
+          >
+            <TypeParamLink to={`/coin/${info.getValue()}`} value={info.getValue()} />
+          </Box>
+        ),
       }),
       helper.accessor('created_at.timestamp', {
         meta: {
