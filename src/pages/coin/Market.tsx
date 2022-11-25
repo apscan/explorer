@@ -29,7 +29,7 @@ export const Market = ({ data, price, percentChange24h }: { data?: any; price?: 
         {renderRow(
           'Price',
           <InlineBox>
-            <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="--" />
+            <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
             {percentChange24h && (
               <InlineBox
                 css={css`
@@ -62,7 +62,7 @@ export const Market = ({ data, price, percentChange24h }: { data?: any; price?: 
             maximumFractionDigits={3}
             prefix="$"
             value={fully}
-            fallback="--"
+            fallback="-"
           />
         )}
         {renderRow(
