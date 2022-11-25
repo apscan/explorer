@@ -1,5 +1,5 @@
 import { useValidatorsQuery } from 'api/validator'
-import { Container } from 'components/container'
+import { Box, Container } from 'components/container'
 import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { NumberFormat } from 'components/NumberFormat'
@@ -27,15 +27,9 @@ export const Validators = () => {
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Total of{' '}
-            <NumberFormat
-              useGrouping
-              fallback="--"
-              marginLeft="4px"
-              marginRight="4px"
-              value={stats?.validators_count}
-            />{' '}
-            validators
+            <Box>
+              Total of <NumberFormat useGrouping fallback="-" value={stats?.validators_count} /> validators
+            </Box>
           </CardHeadStats>
           <Pagination {...pageProps} />
         </CardHead>

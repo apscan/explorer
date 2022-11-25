@@ -6,6 +6,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { TransactionsTable } from 'pages/transactions/TransactionsTable'
 import { usePageSize } from 'hooks/usePageSize'
+import { Box } from 'components/container'
 
 export const AccountTransactions = ({ id, count }: { id: string; count: number }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
@@ -26,8 +27,9 @@ export const AccountTransactions = ({ id, count }: { id: string; count: number }
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={count} />{' '}
-          transactions
+          <Box>
+            Total of <NumberFormat useGrouping fallback="-" value={count} /> transactions
+          </Box>
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

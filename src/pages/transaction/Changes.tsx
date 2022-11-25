@@ -163,7 +163,9 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
     <CardBody isLoading={isLoading || id == null || !count}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={count} /> changes
+          Total of&nbsp;
+          <NumberFormat useGrouping fallback="-" value={count} />
+          &nbsp;changes
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

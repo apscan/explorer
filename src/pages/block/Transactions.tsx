@@ -37,9 +37,9 @@ export const BlockTransactions = ({ id, count }: { id?: string; count: number })
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Transactions <StatsNumberFormat fallback="--" prefix="#" value={minVersion} /> to{' '}
-          <StatsNumberFormat fallback="--" prefix="#" value={maxVersion} /> (Total of
-          <StatsNumberFormat fallback="--" useGrouping value={count} /> transactions)
+          Transactions <StatsNumberFormat fallback="-" prefix="#" value={minVersion} /> to{' '}
+          <StatsNumberFormat fallback="-" prefix="#" value={maxVersion} /> (Total of
+          <StatsNumberFormat fallback="-" useGrouping value={count} /> transactions)
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

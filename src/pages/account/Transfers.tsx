@@ -5,7 +5,7 @@ import { useAccountTransferQuery } from 'api'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { InlineBox } from 'components/container'
+import { Box, InlineBox } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
@@ -385,9 +385,9 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of&nbsp;
-          <NumberFormat useGrouping fallback="--" value={count} />
-          &nbsp;{type ? 'events' : 'coin events'}
+          <Box>
+            Total of <NumberFormat useGrouping fallback="-" value={count} /> {type ? 'events' : 'coin events'}
+          </Box>
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

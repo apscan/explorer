@@ -138,7 +138,7 @@ export const Holders = ({
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of&nbsp;
-          <NumberFormat useGrouping fallback="--" value={count} />
+          <NumberFormat useGrouping fallback="-" value={count} />
           &nbsp;holders
           {count && count > maxCount && (
             <>

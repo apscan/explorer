@@ -167,7 +167,7 @@ export const Statistics = ({ ...rest }) => {
                   maximumFractionDigits={0}
                   useGrouping
                   value={stats?.total_supply}
-                  fallback="--"
+                  fallback="-"
                 />
                 {market?.quotes?.USD?.price && (
                   <InlineBox marginLeft="4px" color={vars.text.secondary} fontSize="14px">
@@ -176,7 +176,7 @@ export const Statistics = ({ ...rest }) => {
                       maximumFractionDigits={2}
                       prefix="$"
                       value={market?.quotes?.USD?.price}
-                      fallback="--"
+                      fallback="-"
                     />
                     )
                   </InlineBox>
@@ -196,7 +196,7 @@ export const Statistics = ({ ...rest }) => {
                   maximumFractionDigits={3}
                   prefix="$"
                   value={fully}
-                  fallback="--"
+                  fallback="-"
                 />
                 {market?.quotes?.USD?.percent_change_24h && (
                   <InlineBox
@@ -212,7 +212,7 @@ export const Statistics = ({ ...rest }) => {
                       type="percent"
                       maximumFractionDigits={2}
                       value={market?.quotes?.USD?.percent_change_24h / 100}
-                      fallback="--"
+                      fallback="-"
                     />
                     )
                   </InlineBox>
@@ -232,7 +232,7 @@ export const Statistics = ({ ...rest }) => {
                   maximumFractionDigits={0}
                   useGrouping
                   value={stats?.actively_staked}
-                  fallback="--"
+                  fallback="-"
                 />
                 {stats?.staked_percent && (
                   <HelpText>
@@ -249,16 +249,16 @@ export const Statistics = ({ ...rest }) => {
               <InlineBox alignItems="center">
                 {stats?.epoch && stats?.round ? (
                   <>
-                    <NumberFormat prefix="#" value={stats?.epoch} fallback="--" />
+                    <NumberFormat prefix="#" value={stats?.epoch} fallback="-" />
                     -
-                    <NumberFormat value={stats?.round} fallback="--" />
+                    <NumberFormat value={stats?.round} fallback="-" />
                   </>
                 ) : (
-                  '--'
+                  '-'
                 )}
                 {epochPercent && (
                   <HelpText>
-                    (<NumberFormat value={epochPercent} fixed={1} fallback="--" type="percent" />)
+                    (<NumberFormat value={epochPercent} fixed={1} fallback="-" type="percent" />)
                   </HelpText>
                 )}
               </InlineBox>,
@@ -275,11 +275,11 @@ export const Statistics = ({ ...rest }) => {
                 {stats?.latest_transaction_version ? (
                   <TransactionsCountUp value={stats.latest_transaction_version} />
                 ) : (
-                  '--'
+                  '-'
                 )}
                 {stats?.tps && (
                   <HelpText>
-                    (<NumberFormat marginRight="2px" value={stats?.tps} fallback="--" /> TPS)
+                    (<NumberFormat marginRight="2px" value={stats?.tps} fallback="-" /> TPS)
                   </HelpText>
                 )}
               </>,
@@ -288,7 +288,7 @@ export const Statistics = ({ ...rest }) => {
             )}
             {renderStatistic(
               'Gas Price',
-              <NumberFormat separate={false} postfix=" Octa 🔥" fallback="--" value={stats?.latest_gas_fee} />,
+              <NumberFormat separate={false} postfix=" Octa 🔥" fallback="-" value={stats?.latest_gas_fee} />,
               'right'
             )}
           </StatisticItem>
@@ -296,16 +296,16 @@ export const Statistics = ({ ...rest }) => {
           <StatisticItem>
             {renderStatistic(
               'Accounts',
-              <NumberFormat useGrouping to="/accounts" value={stats?.address_count} fallback="--" />,
+              <NumberFormat useGrouping to="/accounts" value={stats?.address_count} fallback="-" />,
               'left',
               <StatsIcon src={AccountsIcon} alt="accounts" />
             )}
             {renderStatistic(
               'Validators',
               <>
-                <NumberFormat to="/validators" useGrouping value={stats?.active_validators_count} fallback="--" />
+                <NumberFormat to="/validators" useGrouping value={stats?.active_validators_count} fallback="-" />
                 {/* <HelpText>
-                  (<NumberFormat value={stats?.pending_validators_count} fallback="--" />)
+                  (<NumberFormat value={stats?.pending_validators_count} fallback="-" />)
                 </HelpText> */}
               </>,
               'right'

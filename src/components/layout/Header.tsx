@@ -23,7 +23,7 @@ const GasPrice = () => {
       postfix=" Octa"
       color={vars.text.secondary}
       separate={false}
-      fallback="--"
+      fallback="-"
       value={stats?.latest_gas_fee}
     />
   )
@@ -44,7 +44,7 @@ const Price = () => {
         maximumFractionDigits={2}
         prefix="$"
         value={market?.quotes?.USD?.price}
-        fallback="--"
+        fallback="-"
       />
       {change && (
         <InlineBox
@@ -59,7 +59,7 @@ const Price = () => {
             type="percent"
             maximumFractionDigits={2}
             value={change / 100}
-            fallback="--"
+            fallback="-"
           />
           )
         </InlineBox>
