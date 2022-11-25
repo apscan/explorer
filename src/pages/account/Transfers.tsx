@@ -220,6 +220,13 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
           },
           cell: (info) => <Version value={info.getValue()} />,
         }),
+        helper.accessor('time_microseconds', {
+          meta: {
+            nowrap: true,
+          },
+          header: () => <SwitchDateFormat />,
+          cell: (info) => <DateTime value={info.getValue()} />,
+        }),
         !type &&
           helper.accessor('type', {
             header: 'Type',
@@ -228,13 +235,6 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
             },
             cell: (info) => parseTypeText(info.row.original?.type),
           }),
-        helper.accessor('time_microseconds', {
-          meta: {
-            nowrap: true,
-          },
-          header: () => <SwitchDateFormat />,
-          cell: (info) => <DateTime value={info.getValue()} />,
-        }),
         helper.accessor('sender', {
           meta: {
             nowrap: true,
