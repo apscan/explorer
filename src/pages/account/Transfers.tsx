@@ -343,21 +343,22 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
             },
           }
         ),
-        helper.accessor('coin', {
-          meta: {
-            nowrap: true,
-          },
-          header: 'Coin',
-          cell: (info) => {
-            const params = info.row.original?.move_resource_generic_type_params || []
+        !type &&
+          helper.accessor('coin', {
+            meta: {
+              nowrap: true,
+            },
+            header: 'Coin',
+            cell: (info) => {
+              const params = info.row.original?.move_resource_generic_type_params || []
 
-            return (
-              <Link tooltip={params[0]} to={`/coin/${params[0]}`}>
-                {info.row.original?.coin_info.name ?? 'Aptos Coin'}
-              </Link>
-            )
-          },
-        }),
+              return (
+                <Link tooltip={params[0]} to={`/coin/${params[0]}`}>
+                  {info.row.original?.coin_info.name ?? 'Aptos Coin'}
+                </Link>
+              )
+            },
+          }),
         helper.accessor('data.amount', {
           meta: {
             nowrap: true,
