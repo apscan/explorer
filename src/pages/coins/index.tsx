@@ -9,6 +9,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { CoinsTable } from './CoinsTable'
+import { maxCount } from 'utils'
 
 export const Coins = () => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
@@ -18,7 +19,12 @@ export const Coins = () => {
     pageSize,
   })
 
-  const pageProps = useRangePagination(page, pageSize, pageParams.count, setPage)
+  const pageProps = useRangePagination(
+    page,
+    pageSize,
+    pageParams.count > maxCount ? maxCount : pageParams.count,
+    setPage
+  )
   const { data: market } = useMarketInfoQuery()
 
   return (
@@ -29,8 +35,13 @@ export const Coins = () => {
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>
-              Total of <NumberFormat useGrouping fallback="-" value={pageParams.count} /> Coins
+              Total of <NumberFormat useGrouping fallback="-" value={pageParams.count} /> coins
             </Box>
+            {pageParams.count && pageParams.count > maxCount && (
+              <Box>
+                &nbsp;(showing the top <NumberFormat useGrouping value={maxCount} /> only)
+              </Box>
+            )}
           </CardHeadStats>
           <Pagination {...pageProps} />
         </CardHead>
