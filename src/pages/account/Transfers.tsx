@@ -22,9 +22,6 @@ import { useMemo } from 'react'
 
 const helper = createColumnHelper<any>()
 
-// const isEventsIn = (events: {type: string}[]) => events.find(event => isIn(event.type)) && !events.find(event => isOut(event.type))
-// const isEventsOut = (events: {type: string}[]) => !events.find(event => isIn(event.type)) && events.find(event => isOut(event.type))
-// const isEventsSelf = (events: {type: string}[]) => events.find(event => isIn(event.type)) && events.find(event => isOut(event.type))
 const isIn = (type: string) => type.indexOf('DepositEvent') > -1
 const isOut = (type: string) => type.indexOf('WithdrawEvent') > -1
 
@@ -172,6 +169,21 @@ const parseType = (data: {
   return 'OUT'
 }
 
+const parseTypeText = (type: string) => {
+  const textMap: Record<string, string> = {
+    '0x1::coin::DepositEvent': 'Coin Deposit',
+    '0x1::coin::WithdrawEvent': 'Coin Withdraw',
+    '0x1::stake::AddStakeEvent': 'Stake Add',
+    '0x1::stake::WithdrawStakeEvent': 'Stake Withdraw',
+    '0x1::stake::DistributeRewardsEvent': 'Stake Reward',
+    '0x1::staking_contract::DistributeEvent': 'Staking Reward',
+    '0x1::vesting::DistributeEvent': 'Vesting Distribute',
+    '0x1::vesting::AdminWithdrawEvent': 'Vesting Withdraw',
+  }
+
+  return textMap[type] || '-'
+}
+
 const renderSubComponent = ({ row }: { row: any }) => {
   const self = row.original?.address || ''
   const { json } = parseSenderAndReceiver(row.original?.events || [], self)
@@ -208,6 +220,14 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
           },
           cell: (info) => <Version value={info.getValue()} />,
         }),
+        !type &&
+          helper.accessor('type', {
+            header: 'Type',
+            meta: {
+              nowrap: true,
+            },
+            cell: (info) => parseTypeText(info.row.original?.type),
+          }),
         helper.accessor('time_microseconds', {
           meta: {
             nowrap: true,

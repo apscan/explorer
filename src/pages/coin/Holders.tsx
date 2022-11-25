@@ -142,7 +142,9 @@ export const Holders = ({
           &nbsp;holders
           {count && count > maxCount && (
             <>
-              &nbsp;(showing the top <NumberFormat useGrouping marginRight="4px" value={maxCount} /> only)
+              &nbsp;(showing the top&nbsp;
+              <NumberFormat useGrouping value={maxCount} />
+              &nbsp;only)
             </>
           )}
         </CardHeadStats>
