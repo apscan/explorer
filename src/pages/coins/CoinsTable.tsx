@@ -44,6 +44,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
         },
         cell: (info) => (
           <AmountFormat
+            fixed={0}
             value={info.getValue()}
             postfix={` ${info.row.original.symbol}`}
             decimals={info.row.original.decimals}
@@ -58,35 +59,6 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
           }
 
           return <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
-        },
-      }),
-      helper.accessor('fdv', {
-        header: 'Fully Diluted Val.',
-        cell: (info) => {
-          if (info.row.original?.move_resource_generic_type_params[0] !== AptosCoin) {
-            return '-'
-          }
-
-          if (!price || !info.row.original?.total_supply) {
-            return '-'
-          }
-
-          const fully = FixedNumber.from(price.toString(), 'fixed128x18').mulUnsafe(
-            toFixedNumber(info.row.original?.total_supply).toFormat('fixed128x18')
-          )
-
-          return (
-            <NumberFormat
-              textTransform="uppercase"
-              abbr
-              forceAverage="billion"
-              useGrouping
-              maximumFractionDigits={3}
-              prefix="$"
-              value={fully}
-              fallback="--"
-            />
-          )
         },
       }),
       helper.accessor('addresses_count', {

@@ -9,13 +9,10 @@ export const Overview = ({ data }: { data: any | undefined }) => {
   return (
     <Card>
       <Box padding="0 12px">
-        {renderRow('Decimals', data?.decimals)}
+        {renderRow('Decimal', data?.decimals)}
+        {renderRow('Symbol', data?.symbol)}
         {renderRow('Name', data?.name)}
         {renderRow('Creator', <Address value={data?.address} />)}
-        {renderRow(
-          'Creation',
-          data?.created_at ? <DateTime format={DateFormat.FULL} value={data?.created_at.timestamp} /> : '-'
-        )}
       </Box>
     </Card>
   )
