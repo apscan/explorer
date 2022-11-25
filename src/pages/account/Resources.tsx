@@ -96,7 +96,9 @@ export const Resources = ({ id, count }: { id: any; count: number }) => {
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={count} /> resources
+          <Box>
+            Total of <NumberFormat useGrouping fallback="-" value={count} /> resources
+          </Box>
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

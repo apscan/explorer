@@ -1,6 +1,6 @@
 import { useCoinsQuery, useMarketInfoQuery } from 'api'
 import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Container } from 'components/container'
+import { Box, Container } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
@@ -28,8 +28,9 @@ export const Coins = () => {
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <CardHeadStats variant="table">
-            Total of{' '}
-            <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={pageParams.count} /> Coins
+            <Box>
+              Total of <NumberFormat useGrouping fallback="-" value={pageParams.count} /> Coins
+            </Box>
           </CardHeadStats>
           <Pagination {...pageProps} />
         </CardHead>

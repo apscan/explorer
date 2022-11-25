@@ -44,7 +44,7 @@ export const Market = ({ data, price, percentChange24h }: { data?: any; price?: 
                   type="percent"
                   maximumFractionDigits={2}
                   value={percentChange24h / 100}
-                  fallback="--"
+                  fallback="-"
                 />
                 )
               </InlineBox>

@@ -64,10 +64,6 @@ export const Accounts = () => {
         header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Creation Age" />,
         cell: (info) => <DateTime value={info.getValue()} />,
       }),
-      // helper.accessor('authentication_key', {
-      //   header: 'Authentication Key',
-      //   cell: (info) => <Hash value={info.getValue()} size="short" />,
-      // }),
       helper.accessor('aptos_coin_balance', {
         meta: {
           nowrap: true,
@@ -95,7 +91,7 @@ export const Accounts = () => {
         },
         header: 'Percentage',
         cell: (info) => {
-          if (!totalSupply || info.row.original?.aptos_coin_total_balance === undefined) return '--'
+          if (!totalSupply || info.row.original?.aptos_coin_total_balance === undefined) return '-'
 
           const aptosCoinBalance = toFixedNumber(info.row.original?.aptos_coin_total_balance || 0, 'fixed128x18')
           const _totalSupply = toFixedNumber(totalSupply || 0, 'fixed128x18')
@@ -151,15 +147,11 @@ export const Accounts = () => {
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>
-              Total of <NumberFormat useGrouping fallback="--" value={addressCount} /> accounts
+              Total of <NumberFormat useGrouping fallback="-" value={addressCount} /> accounts
             </Box>
             {addressCount && addressCount > maxCount && (
-              <Box
-                css={css`
-                  margin-left: 4px;
-                `}
-              >
-                (showing the top <NumberFormat useGrouping marginLeft="4px" marginRight="4px" value={maxCount} /> only)
+              <Box>
+                &nbsp;(showing the top <NumberFormat useGrouping value={maxCount} /> only)
               </Box>
             )}
           </CardHeadStats>
