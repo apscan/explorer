@@ -332,8 +332,8 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
             const params = info.row.original?.move_resource_generic_type_params || []
 
             return (
-              <Link underline={true} tooltip={params[0]} to={`/coin/${params[0]}`}>
-                {info.row.original?.name ?? 'Aptos Coin'}
+              <Link tooltip={params[0]} to={`/coin/${params[0]}`}>
+                {info.row.original?.coin_info.name ?? 'Aptos Coin'}
               </Link>
             )
           },

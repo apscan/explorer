@@ -13,8 +13,10 @@ import { useMemo } from 'react'
 import RealBigNumber from 'bignumber.js'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { toFixedNumber } from 'utils/number'
+import { Box } from 'components/container'
 
 const helper = createColumnHelper<any>()
+const maxCount = 1000
 
 export const Holders = ({
   type: id,
@@ -42,7 +44,7 @@ export const Holders = ({
       skip: id == null || !count,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count > 10000 ? 10000 : count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   const total = useMemo(() => new RealBigNumber(totalSupply), [totalSupply])
   const columns = useMemo(
@@ -99,6 +101,7 @@ export const Holders = ({
           return (
             <NumberFormat
               textTransform="uppercase"
+              fixed={0}
               useGrouping
               maximumFractionDigits={3}
               prefix="$"
@@ -127,7 +130,7 @@ export const Holders = ({
         ),
       }),
     ],
-    [page, pageSize, total]
+    [page, pageSize, price, total]
   )
 
   return (
@@ -135,7 +138,11 @@ export const Holders = ({
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
           Total of <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={count} /> Holders
-          (showing the top 10,000 only)
+          {count && count > maxCount && (
+            <Box marginLeft="4px">
+              (showing the top <NumberFormat useGrouping marginRight="4px" value={maxCount} /> only)
+            </Box>
+          )}
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

@@ -20,6 +20,7 @@ import { usePageSize } from 'hooks/usePageSize'
 import { toFixedNumber } from 'utils/number'
 
 const helper = createColumnHelper<any>()
+const maxCount = 1000
 
 export const Accounts = () => {
   const { address_count: addressCount } = useAppStats()
@@ -137,7 +138,7 @@ export const Accounts = () => {
 
   const queryCount = useMemo(() => {
     if (addressCount === undefined) return undefined
-    return addressCount > 1000 ? 1000 : addressCount
+    return addressCount > maxCount ? maxCount : addressCount
   }, [addressCount])
 
   const pageProps = useRangePagination(page, pageSize, queryCount, setPage)
@@ -152,13 +153,13 @@ export const Accounts = () => {
             <Box>
               Total of <NumberFormat useGrouping fallback="--" value={addressCount} /> accounts
             </Box>
-            {addressCount && addressCount > 1000 && (
+            {addressCount && addressCount > maxCount && (
               <Box
                 css={css`
                   margin-left: 4px;
                 `}
               >
-                (showing the top 1,000 only)
+                (showing the top <NumberFormat useGrouping marginLeft="4px" marginRight="4px" value={maxCount} /> only)
               </Box>
             )}
           </CardHeadStats>

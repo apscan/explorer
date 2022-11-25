@@ -43,7 +43,7 @@ export const Coin = () => {
             decimals={data?.decimals}
             symbol={data?.symbol}
             totalSupply={data?.total_supply}
-            price={market?.quotes?.USD?.price}
+            price={data.move_resource_generic_type_params[0] === AptosCoin ? market?.quotes?.USD?.price : undefined}
           />
         ),
         hide: !data?.addresses_count,
@@ -89,6 +89,11 @@ export const Coin = () => {
         <Market
           data={data}
           price={data?.move_resource_generic_type_params[0] === AptosCoin ? market?.quotes?.USD?.price : undefined}
+          percentChange24h={
+            data?.move_resource_generic_type_params[0] === AptosCoin
+              ? market?.quotes?.USD?.percent_change_24h
+              : undefined
+          }
         />
       </Box>
       <Card>
