@@ -357,7 +357,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
 
               return (
                 <Link tooltip={params[0]} to={`/coin/${params[0]}`}>
-                  {info.row.original?.coin_info.name ?? 'Aptos Coin'}
+                  {info.row.original?.coin_info?.name ?? 'Aptos Coin'}
                 </Link>
               )
             },
