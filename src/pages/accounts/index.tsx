@@ -16,15 +16,16 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useMemo } from 'react'
 import { useAppStats, useTotalSupply } from 'state/api/hooks'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 import { toFixedNumber } from 'utils/number'
 
 const helper = createColumnHelper<any>()
+const maxCount = 1000
 
 export const Accounts = () => {
   const { address_count: addressCount } = useAppStats()
   const totalSupply = useTotalSupply(false)
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
 
   const {
     data: { data } = {},
@@ -63,10 +64,6 @@ export const Accounts = () => {
         header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Creation Age" />,
         cell: (info) => <DateTime value={info.getValue()} />,
       }),
-      // helper.accessor('authentication_key', {
-      //   header: 'Authentication Key',
-      //   cell: (info) => <Hash value={info.getValue()} size="short" />,
-      // }),
       helper.accessor('aptos_coin_balance', {
         meta: {
           nowrap: true,
@@ -94,7 +91,7 @@ export const Accounts = () => {
         },
         header: 'Percentage',
         cell: (info) => {
-          if (!totalSupply || info.row.original?.aptos_coin_total_balance === undefined) return '--'
+          if (!totalSupply || info.row.original?.aptos_coin_total_balance === undefined) return '-'
 
           const aptosCoinBalance = toFixedNumber(info.row.original?.aptos_coin_total_balance || 0, 'fixed128x18')
           const _totalSupply = toFixedNumber(totalSupply || 0, 'fixed128x18')
@@ -137,7 +134,7 @@ export const Accounts = () => {
 
   const queryCount = useMemo(() => {
     if (addressCount === undefined) return undefined
-    return addressCount > 1000 ? 1000 : addressCount
+    return addressCount > maxCount ? maxCount : addressCount
   }, [addressCount])
 
   const pageProps = useRangePagination(page, pageSize, queryCount, setPage)
@@ -150,15 +147,11 @@ export const Accounts = () => {
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>
-              Total of <NumberFormat useGrouping fallback="--" value={addressCount} /> accounts
+              Total of <NumberFormat useGrouping fallback="-" value={addressCount} /> accounts
             </Box>
-            {addressCount && addressCount > 1000 && (
-              <Box
-                css={css`
-                  margin-left: 4px;
-                `}
-              >
-                (showing the top 1,000 only)
+            {addressCount && addressCount > maxCount && (
+              <Box>
+                &nbsp;(showing the top <NumberFormat useGrouping value={maxCount} /> only)
               </Box>
             )}
           </CardHeadStats>

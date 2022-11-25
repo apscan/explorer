@@ -59,26 +59,26 @@ const renderUserTransactionSection = (data: any) => {
             align-items: center;
           `}
         >
-          <NumberFormat fallback="--" value={data?.user_transaction_detail?.max_gas_amount} />
+          <NumberFormat fallback="-" value={data?.user_transaction_detail?.max_gas_amount} />
           <Divider type="vertical" color="#8c98a4" margin="0 16px" />
-          <NumberFormat fallback="--" value={data?.gas_used} />
+          <NumberFormat fallback="-" value={data?.gas_used} />
           <InlineBox marginLeft="4px">
             (
-            <NumberFormat maximumFractionDigits={1} fallback="--" type="percent" value={gasUsedPercentage} />)
+            <NumberFormat maximumFractionDigits={1} fallback="-" type="percent" value={gasUsedPercentage} />)
           </InlineBox>
         </InlineBox>
       )}
       {renderRow(
         'Gas Fees & Gas Price',
         <InlineBox>
-          <AmountFormat postfix=" APT 🔥" fallback="--" value={gasFee} />
+          <AmountFormat postfix=" APT 🔥" fallback="-" value={gasFee} />
           <InlineBox
             css={css`
               margin-left: 4px;
             `}
           >
             (
-            <NumberFormat postfix=" Octa" fallback="--" value={data?.user_transaction_detail?.gas_unit_price} />)
+            <NumberFormat postfix=" Octa" fallback="-" value={data?.user_transaction_detail?.gas_unit_price} />)
           </InlineBox>
         </InlineBox>,
         { border: true }
@@ -106,16 +106,16 @@ const renderBlockMetadataTransactionSection = (data: any) => {
   return (
     <>
       <Divider />
-      {renderRow('ID', <Hash fallback="--" value={data?.block_metadata_transaction_detail?.id} size="full" />)}
-      {renderRow('Epoch', <NumberFormat fallback="--" value={data?.block_metadata_transaction_detail?.epoch} />)}
-      {renderRow('Round', <NumberFormat fallback="--" value={data?.block_metadata_transaction_detail?.round} />)}
+      {renderRow('ID', <Hash fallback="-" value={data?.block_metadata_transaction_detail?.id} size="full" />)}
+      {renderRow('Epoch', <NumberFormat fallback="-" value={data?.block_metadata_transaction_detail?.epoch} />)}
+      {renderRow('Round', <NumberFormat fallback="-" value={data?.block_metadata_transaction_detail?.round} />)}
       {renderRow(
         'Proposer',
         <AddressesTable
           key="Proposer"
           value={[
             {
-              content: <Address size="full" fallback="--" value={data?.block_metadata_transaction_detail?.proposer} />,
+              content: <Address size="full" fallback="-" value={data?.block_metadata_transaction_detail?.proposer} />,
               label: <VmStatus withPadding={false} withBg={false} value="Executed successfully" />,
             },
             ...(data?.block_metadata_transaction_detail?.failed_proposers?.map((failedProposer: any) => ({

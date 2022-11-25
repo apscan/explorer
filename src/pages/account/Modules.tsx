@@ -11,7 +11,7 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import numbro from 'numbro'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 
 const helper = createColumnHelper<any>()
 
@@ -107,7 +107,7 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Modules = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountModulesQuery(
     {
       id: id!,
@@ -125,7 +125,9 @@ export const Modules = ({ id, count }: { id: any; count: number }) => {
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> modules
+          Total of&nbsp;
+          <NumberFormat fallback="-" value={count} />
+          &nbsp;modules
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

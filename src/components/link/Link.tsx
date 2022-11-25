@@ -12,6 +12,7 @@ export type LinkProps = Omit<CLinkProps, 'href'> &
     disabled?: boolean
     isExternal?: boolean
     to?: To
+    underline?: boolean
   }
 
 const isValidUrl = (str: any) => {
@@ -37,10 +38,22 @@ export const linkStyle = css`
   }
 `
 
+export const linkStyleUnderLine = css`
+  text-decoration: underline;
+
+  &:hover {
+    color: ${vars.colors.linkHover};
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+`
+
 export const Link = memo(
   styled(
     forwardRef<LinkProps, 'a'>((props, ref) => {
-      const { tooltip, to: _to, href: _href, variant, isExternal, ...rest } = props
+      const { tooltip, to: _to, href: _href, variant, isExternal, underline, ...rest } = props
 
       const [as, to, href] = useMemo(() => {
         if (!_to) {
@@ -59,7 +72,7 @@ export const Link = memo(
             as={as}
             href={href}
             to={to}
-            css={[linkStyle]}
+            css={[underline ? linkStyleUnderLine : linkStyle]}
             ref={ref}
             rel={isExternal ? 'noopener noreferrer' : undefined}
             target={isExternal ? '_blank' : undefined}

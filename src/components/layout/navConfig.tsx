@@ -55,17 +55,16 @@ export const navConfig: INavItem[] = [
   },
   {
     name: 'Assets',
-    activePaths: ['/apt', '/coins'],
+    activePaths: ['/coins', '/collections'],
     sub: [
       {
-        name: 'APT',
-        isDisabled: true,
-        path: '/apt',
+        name: 'Coins',
+        path: '/coins',
       },
       {
-        name: 'Coins',
-        isDisabled: process.env.NODE_ENV === 'production',
-        path: '/coins',
+        name: 'Collections',
+        isDisabled: true,
+        path: '/apt',
       },
     ],
   },

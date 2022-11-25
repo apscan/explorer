@@ -259,7 +259,7 @@ export const Blocks = () => {
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>
-              Total of <NumberFormat useGrouping fallback="--" value={latestBlockHeight} /> blocks
+              Total of <NumberFormat useGrouping fallback="-" value={latestBlockHeight} /> blocks
             </Box>
           </CardHeadStats>
           <Pagination

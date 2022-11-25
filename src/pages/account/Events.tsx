@@ -1,6 +1,7 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountEventsQuery } from 'api'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { Box } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
@@ -11,8 +12,8 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { Version } from 'components/transaction/Version'
 import { TypeParam } from 'components/TypeParam'
+import { usePageSize } from 'hooks/usePageSize'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { usePageParams } from 'state/application/hooks'
 
 const helper = createColumnHelper<any>()
 
@@ -90,7 +91,7 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Events = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountEventsQuery(
     {
       id: id!,
@@ -108,7 +109,9 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> events
+          <Box>
+            Total of <NumberFormat fallback="-" value={count} /> events
+          </Box>
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

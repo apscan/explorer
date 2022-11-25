@@ -7,9 +7,9 @@ import { ForwardBackward } from 'components/ForwardBackward'
 import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
-import { useTabActiveKey } from 'hooks/useTabActiveKey'
-import { useCallback, useMemo } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchTab } from 'hooks/useSearchTab'
+import { useMemo } from 'react'
+import { useParams } from 'react-router-dom'
 import { useAppStats } from 'state/api/hooks'
 import { vars } from 'theme/theme.css'
 import { tabNameWithCount } from 'utils'
@@ -81,7 +81,6 @@ const TransactionTitle = ({ version, latestVersion }: { version?: string; latest
 
 export const Transaction = () => {
   const { id } = useParams<{ id: string }>()
-  const [searchParams, setSearchParams] = useSearchParams(undefined)
   const { latest_transaction_version: latestVersion } = useAppStats()
 
   const { data } = useTransactionDetailQuery(id)
@@ -111,27 +110,14 @@ export const Transaction = () => {
 
     return result
   }, [data, version])
-
-  const defaultActiveKey = useTabActiveKey(tabs, searchParams)
-
-  const onActiveKeyChange = useCallback(
-    (activeKey: string) => {
-      const index = items.findIndex(({ key }: { key: string }) => key === activeKey)
-      if (index <= 0) {
-        setSearchParams({}, { replace: true })
-      } else {
-        setSearchParams({ tab: items[index].key }, { replace: true })
-      }
-    },
-    [items, setSearchParams]
-  )
+  const [activeKey, onTabChange] = useSearchTab(items)
 
   return (
     <Container>
       <DocumentTitle value={`Aptos Trasaction ${data?.version !== undefined ? `#${data.version}` : '-'} | Apscan`} />
       <PageTitle value={<TransactionTitle latestVersion={String(latestVersion)} version={version} />} />
       <Card>
-        <Tabs onChange={onActiveKeyChange} defaultActiveKey={defaultActiveKey} size="large" items={items} />
+        <Tabs onChange={onTabChange} activeKey={activeKey} size="large" items={items} />
       </Card>
     </Container>
   )

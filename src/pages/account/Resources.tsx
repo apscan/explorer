@@ -9,8 +9,9 @@ import { DataTable } from 'components/table'
 import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 
 const helper = createColumnHelper<any>()
 
@@ -35,6 +36,10 @@ const columns = [
     },
     header: 'Resource Name',
     cell: (info) => <Box>{info.getValue()}</Box>,
+  }),
+  helper.accessor('move_resource_generic_type_params.0', {
+    header: 'Resource Type',
+    cell: (info) => (info.getValue() ? <TypeParam value={info.getValue()} /> : '-'),
   }),
   helper.accessor('move_resource_data', {
     meta: {
@@ -73,7 +78,7 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Resources = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountResourcesQuery(
     {
       id: id!,
@@ -91,7 +96,9 @@ export const Resources = ({ id, count }: { id: any; count: number }) => {
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> resources
+          <Box>
+            Total of <NumberFormat useGrouping fallback="-" value={count} /> resources
+          </Box>
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

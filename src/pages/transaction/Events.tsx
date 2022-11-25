@@ -10,7 +10,7 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { usePageParams } from 'state/application/hooks'
+import { usePageSize } from 'hooks/usePageSize'
 
 const helper = createColumnHelper<any>()
 
@@ -89,7 +89,7 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Events = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageParams()
+  const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useTransactionEventsQuery(
     {
       id: id!,
@@ -106,7 +106,9 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
     <CardBody isLoading={isLoading || id == null}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat fallback="--" marginLeft="4px" marginRight="4px" value={count} /> events
+          Total of&nbsp;
+          <NumberFormat useGrouping fallback="-" value={count} />
+          &nbsp;events
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>

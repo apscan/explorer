@@ -8,9 +8,9 @@ import { ForwardBackward } from 'components/ForwardBackward'
 import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
-import { useTabActiveKey } from 'hooks/useTabActiveKey'
-import { ReactNode, useCallback, useMemo } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchTab } from 'hooks/useSearchTab'
+import { ReactNode, useMemo } from 'react'
+import { useParams } from 'react-router-dom'
 import { useAppStats } from 'state/api/hooks'
 import { vars } from 'theme/theme.css'
 import { tabNameWithCount } from 'utils'
@@ -78,7 +78,6 @@ const BlockTitle = ({ blockHeight, latestBlockHeight }: { blockHeight?: string; 
 export const Block = () => {
   const { id } = useParams<{ id: string }>()
   const { latest_block_height: latestBlockHeight } = useAppStats()
-  const [searchParams, setSearchParams] = useSearchParams()
 
   const { data } = useBlockDetailQuery(id)
   const { data: failedProposers } = useFailedProposersQuery(id)
@@ -111,27 +110,14 @@ export const Block = () => {
       }[],
     [data, id, blockHeight, blockMetadata, failedProposers]
   )
-
-  const defaultActiveKey = useTabActiveKey(tabs, searchParams)
-
-  const onActiveKeyChange = useCallback(
-    (activeKey: string) => {
-      const index = items.findIndex(({ key }: { key: string }) => key === activeKey)
-      if (index <= 0) {
-        setSearchParams({}, { replace: true })
-      } else {
-        setSearchParams({ tab: items[index].key }, { replace: true })
-      }
-    },
-    [items, setSearchParams]
-  )
+  const [activeKey, onTabChange] = useSearchTab(items)
 
   return (
     <Container>
       <DocumentTitle value={`Aptos Block ${blockHeight !== undefined ? `#${data?.height}` : '-'} | Apscan`} />
       <PageTitle value={<BlockTitle latestBlockHeight={String(latestBlockHeight)} blockHeight={blockHeight} />} />
       <Card>
-        <Tabs onChange={onActiveKeyChange} defaultActiveKey={defaultActiveKey} size="large" items={items} />
+        <Tabs onChange={onTabChange} activeKey={activeKey} size="large" items={items} />
       </Card>
     </Container>
   )

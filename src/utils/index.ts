@@ -54,3 +54,7 @@ export const isLargeObject = (object: any): boolean => {
   }
   return false
 }
+
+export const AptosCoin = '0x1::aptos_coin::AptosCoin'
+
+export const maxCount = 1000
