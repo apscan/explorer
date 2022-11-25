@@ -99,7 +99,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           <NumberFormat fixed={0} separate useGrouping prefix="$" maximumFractionDigits={2} value={totalValue} />
         )}
         {renderRow(
-          'Creation',
+          'Creation Time',
           data?.created_at_timestamp && data?.created_at_timestamp !== '0' ? (
             <DateTime format={DateFormat.FULL} value={data?.created_at_timestamp} />
           ) : (

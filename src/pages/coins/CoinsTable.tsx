@@ -42,14 +42,17 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
         meta: {
           nowrap: true,
         },
-        cell: (info) => (
-          <AmountFormat
-            fixed={0}
-            value={info.getValue()}
-            postfix={` ${info.row.original.symbol}`}
-            decimals={info.row.original.decimals}
-          />
-        ),
+        cell: (info) =>
+          !info.getValue() ? (
+            '-'
+          ) : (
+            <AmountFormat
+              fixed={0}
+              value={info.getValue()}
+              postfix={` ${info.row.original.symbol}`}
+              decimals={info.row.original.decimals}
+            />
+          ),
       }),
       helper.accessor('price', {
         header: 'Price',
@@ -63,7 +66,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('addresses_count', {
         header: 'Holders',
-        cell: (info) => info.getValue(),
+        cell: (info) => <NumberFormat useGrouping fallback="-" value={info.getValue()} />,
       }),
     ],
     [price]
