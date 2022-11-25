@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 
 type TabItem = {
   key: string
-  name: string
+  name?: string
   label: React.ReactNode
   children: React.ReactNode
   hide?: boolean
