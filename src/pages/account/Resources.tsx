@@ -38,9 +38,6 @@ const columns = [
     cell: (info) => <Box>{info.getValue()}</Box>,
   }),
   helper.accessor('move_resource_generic_type_params.0', {
-    meta: {
-      nowrap: true,
-    },
     header: 'Resource Type',
     cell: (info) => (info.getValue() ? <TypeParam value={info.getValue()} /> : '-'),
   }),

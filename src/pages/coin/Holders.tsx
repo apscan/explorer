@@ -137,11 +137,13 @@ export const Holders = ({
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
         <CardHeadStats variant="tabletab">
-          Total of <NumberFormat useGrouping fallback="--" marginLeft="4px" marginRight="4px" value={count} /> Holders
+          Total of&nbsp;
+          <NumberFormat useGrouping fallback="--" value={count} />
+          &nbsp;holders
           {count && count > maxCount && (
-            <Box marginLeft="4px">
-              (showing the top <NumberFormat useGrouping marginRight="4px" value={maxCount} /> only)
-            </Box>
+            <>
+              &nbsp;(showing the top <NumberFormat useGrouping marginRight="4px" value={maxCount} /> only)
+            </>
           )}
         </CardHeadStats>
         {pageProps.total > 1 && <Pagination {...pageProps} />}

@@ -66,7 +66,7 @@ export const Market = ({ data, price, percentChange24h }: { data?: any; price?: 
           />
         )}
         {renderRow(
-          'Creation',
+          'Creation Time',
           data?.created_at ? <DateTime format={DateFormat.FULL} value={data?.created_at.timestamp} /> : '-'
         )}
       </Box>
