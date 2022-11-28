@@ -1,7 +1,6 @@
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import { createColumnHelper } from '@tanstack/react-table'
-import { useTransactionChangesQuery } from 'api'
+import { useAccountChangesQuery } from 'api'
 import { Address } from 'components/Address'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
@@ -17,9 +16,14 @@ import { usePageSize } from 'hooks/usePageSize'
 
 const helper = createColumnHelper<any>()
 
-const isTableType = (tx_type?: string) => tx_type?.includes('TableItem')
-
 const columns = [
+  helper.accessor('transaction_version', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Tx Version',
+    cell: (info) => <NumberFormat value={info.getValue()} />,
+  }),
   helper.accessor('transaction_index', {
     meta: {
       nowrap: true,
@@ -48,54 +52,20 @@ const columns = [
       nowrap: true,
     },
     header: 'Type',
-    cell: (info) => <Box>{info.getValue()}</Box>,
-  }),
-
-  helper.accessor('data.address', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Address/Handle',
     cell: (info) => {
-      if (info.row.original.tx_type === 'WriteTableItem' || info.row.original.type === 'DeleteTableItem') {
-        return (
-          <Hash
-            css={css`
-              max-width: 120px;
-            `}
-            ellipsis
-            value={info.row.original?.data?.handle}
-            copyable
-            tooltip
-          />
-        )
-      }
-      return <Address size="short" value={info.getValue()} />
+      console.log('info', info)
+
+      return <Box>{info.getValue()}</Box>
     },
   }),
 
   helper.accessor('type', {
-    header: 'Module/Key',
+    header: 'Module',
     cell: (info) => {
-      if (isTableType(info.row.original?.tx_type)) {
-        return (
-          <Hash
-            css={css`
-              max-width: 120px;
-            `}
-            ellipsis
-            value={info.row.original?.data?.key}
-            copyable
-            tooltip
-          />
-        )
-      }
-      const [address, module] =
-        info.getValue() === 'resource_changes'
-          ? [info.row.original?.data?.move_resource_address, info.row.original?.data?.move_resource_module]
-          : info.getValue() === 'module_changes'
-          ? [info.row.original?.data?.move_module_address, info.row.original?.data?.move_module_name]
-          : []
+      const [address, module] = [
+        info.row.original?.data?.move_resource_address,
+        info.row.original?.data?.move_resource_module,
+      ]
 
       if (!address || !module) return '-'
 
@@ -109,22 +79,8 @@ const columns = [
   }),
 
   helper.accessor('data.move_resource_name', {
-    header: 'Resource/Value',
+    header: 'Resource',
     cell: (info) => {
-      if (isTableType(info.row.original?.tx_type)) {
-        return (
-          <Hash
-            css={css`
-              max-width: 120px;
-            `}
-            ellipsis
-            value={info.row.original?.data?.value}
-            copyable
-            tooltip
-          />
-        )
-      }
-
       return info.getValue() || '-'
     },
   }),
@@ -197,8 +153,10 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Changes = ({ id, count }: { id: any; count: number }) => {
+  console.log('id', id)
+
   const [pageSize, setPageSize, page, setPage] = usePageSize()
-  const { data: { data } = {}, isLoading } = useTransactionChangesQuery(
+  const { data: { data } = {}, isLoading } = useAccountChangesQuery(
     {
       id: id!,
       start: (page - 1) * pageSize,

@@ -11,6 +11,7 @@ import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { vars } from 'theme/theme.css'
 import { tabNameWithCount } from 'utils'
+import { Changes } from './Changes'
 import { Events } from './Events'
 import { Modules } from './Modules'
 import { Overview } from './Overview'
@@ -46,6 +47,12 @@ export const Account = () => {
         key: 'tx',
         children: <AccountTransactions key={address} id={address} count={data?.transactions_count} />,
         hide: !data?.transactions_count,
+      },
+      {
+        label: tabNameWithCount('Changes', data?.changes_count),
+        key: 'changes',
+        children: <Changes id={data?.address} count={data.resource_changes_count} />,
+        hide: !data.resource_changes_count,
       },
       {
         label: tabNameWithCount('Events', data?.events_count),
