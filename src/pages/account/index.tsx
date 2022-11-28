@@ -49,10 +49,10 @@ export const Account = () => {
         hide: !data?.transactions_count,
       },
       {
-        label: tabNameWithCount('Changes', data?.changes_count),
+        label: tabNameWithCount('Changes', data?.resource_changes_count),
         key: 'changes',
-        children: <Changes id={data?.address} count={data.resource_changes_count} />,
-        hide: !data.resource_changes_count,
+        children: <Changes id={data?.address} count={data.resource_changes_count || 100} />,
+        hide: !(data.resource_changes_count || 100),
       },
       {
         label: tabNameWithCount('Events', data?.events_count),
