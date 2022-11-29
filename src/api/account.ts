@@ -111,7 +111,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
           url: `/resource_changes?address=eq.${id}&move_resource_address=eq.0x1&move_resource_module=eq.coin&move_resource_name=eq.CoinStore&move_resource_generic_type_params=eq.["0x1::aptos_coin::AptosCoin"]`,
           headers: {
             'Range-Unit': 'items',
-            Range: `0-*`,
+            Range: `0-${Number.MAX_SAFE_INTEGER}`,
           },
         }
       },

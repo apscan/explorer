@@ -1,14 +1,24 @@
 import * as echarts from 'echarts/core'
-import { useAccountBalanceHistoryQuery, useCoinDetailQuery, useMarketInfoQuery } from 'api'
 import { Card } from 'components/Card'
 import { Box } from 'components/container'
 import { useEffect, useRef, useState } from 'react'
 import RealBigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
+import { lightTheme, vars } from 'theme/theme.css'
 
-export const History = ({ address }: { address: string }) => {
-  const { data: coin } = useCoinDetailQuery({ type: '0x1::aptos_coin::AptosCoin' })
-  const { data: history = [] } = useAccountBalanceHistoryQuery({ id: address }, { skip: !address })
+export const History = ({
+  address,
+  coin,
+  history,
+}: {
+  address: string
+  coin: any
+  history: {
+    resourceType: string
+    timestamp: string
+    value: string
+  }[]
+}) => {
   const ref = useRef<HTMLDivElement>(null)
   const [inited, setInited] = useState(false)
 
@@ -18,6 +28,17 @@ export const History = ({ address }: { address: string }) => {
     }
 
     const decimals = new RealBigNumber(10).pow(coin.decimals)
+    const data = history.map((item) => {
+      const date = new Date(Number(item.timestamp.slice(0, item.timestamp.length - 3)))
+
+      return [dayjs(date).format('YYYY-MM-DD HH:mm:ss'), new RealBigNumber(item.value).div(decimals).toNumber()]
+    })
+
+    const current = [
+      dayjs(new Date()).format('YYYY-MM-DD/HH:mm:ss'),
+      new RealBigNumber(history[history.length - 1]?.value || '0').div(decimals).toNumber(),
+    ]
+    data.push(current)
 
     var myChart = echarts.init(ref.current)
     const option = {
@@ -56,7 +77,7 @@ export const History = ({ address }: { address: string }) => {
       xAxis: [
         {
           name: 'Time',
-          type: 'category',
+          type: 'time',
           boundaryGap: false,
           axisLine: { onZero: false },
         },
@@ -71,12 +92,14 @@ export const History = ({ address }: { address: string }) => {
         {
           name: 'APT',
           type: 'line',
-          areaStyle: {},
-          data: history.map((item) => {
-            const date = new Date(Number(item.timestamp.slice(0, item.timestamp.length - 3)))
-
-            return [dayjs(date).format('YYYY-MM-DD HH:mm:ss'), new RealBigNumber(item.value).div(decimals).toNumber()]
-          }),
+          data,
+          // showSymbol: false,
+          itemStyle: {
+            color: lightTheme.colors.link,
+          },
+          areaStyle: {
+            color: lightTheme.colors.link,
+          },
         },
       ],
       dataZoom: [

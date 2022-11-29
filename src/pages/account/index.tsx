@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useAccountDetailQuery } from 'api'
+import { useAccountBalanceHistoryQuery, useAccountDetailQuery, useCoinDetailQuery } from 'api'
 import { Address } from 'components/Address'
 import { Card } from 'components/Card'
 import { Box, Container, InlineBox } from 'components/container'
@@ -24,9 +24,10 @@ export const Account = () => {
   const { id } = useParams<{ id: string }>()
 
   const { data } = useAccountDetailQuery(id)
-
   const address = useMemo(() => data?.address, [data])
-
+  const { data: coin } = useCoinDetailQuery({ type: '0x1::aptos_coin::AptosCoin' })
+  const { data: history = [] } = useAccountBalanceHistoryQuery({ id: address }, { skip: !address })
+  const showHistory = useMemo(() => !!coin && !!history.length, [coin, history.length])
   const tabs = useMemo(() => {
     if (!data || !address) return undefined
 
@@ -108,13 +109,13 @@ export const Account = () => {
       <Box
         css={css`
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: ${showHistory ? '1fr 1fr' : '1fr'};
           grid-gap: 16px;
           margin-bottom: 24px;
         `}
       >
         <Overview data={data} />
-        <History address={data?.address} />
+        {showHistory && <History coin={coin} history={history} address={address} />}
       </Box>
       <Card>
         <Tabs onTabClick={onTabChange} activeKey={activeKey} size="large" items={tabs} />
