@@ -81,7 +81,7 @@ const columns = [
   helper.accessor('data.move_resource_name', {
     header: 'Resource',
     cell: (info) => {
-      return info.getValue() || '-'
+      return (info.row.original?.data?.move_resource_generic_type_params || [])[0] || '-'
     },
   }),
 

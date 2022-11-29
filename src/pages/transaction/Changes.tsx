@@ -18,6 +18,7 @@ import { usePageSize } from 'hooks/usePageSize'
 const helper = createColumnHelper<any>()
 
 const isTableType = (tx_type?: string) => tx_type?.includes('TableItem')
+const isResourceType = (tx_type?: string) => tx_type?.includes('Resource')
 
 const columns = [
   helper.accessor('transaction_index', {
@@ -112,17 +113,11 @@ const columns = [
     header: 'Resource/Value',
     cell: (info) => {
       if (isTableType(info.row.original?.tx_type)) {
-        return (
-          <Hash
-            css={css`
-              max-width: 120px;
-            `}
-            ellipsis
-            value={info.row.original?.data?.value}
-            copyable
-            tooltip
-          />
-        )
+        return <Hash ellipsis value={info.row.original?.data?.value} copyable tooltip />
+      }
+
+      if (isResourceType(info.row.original?.tx_type)) {
+        return (info.row.original?.data?.move_resource_generic_type_params || [])[0] || '-'
       }
 
       return info.getValue() || '-'
