@@ -1,22 +1,28 @@
 import { Popover, PopoverProps, PopoverTrigger, PopoverContent, PopoverArrow } from 'components/popover'
 import { Icon } from './Icon'
-import { ReactComponent as QuestionCircleIcon } from 'assets/icons/question-circle.svg'
 import { vars } from 'theme/theme.css'
 import { css } from '@emotion/react'
 import { BoxProps } from './container'
+import { ReactComponent as Eye } from 'assets/icons/eye.svg'
 
 export const Poptip = ({ children, ...props }: PopoverProps & BoxProps) => {
   return (
     <Popover trigger="hover" placement="end" {...props}>
       <PopoverTrigger>
         <Icon
-          as={QuestionCircleIcon}
-          css={css`
-            margin-left: 4px;
-            color: ${vars.text.secondary};
-            width: 16px;
-            height: 16px;
-          `}
+          as={Eye}
+          sx={{
+            cursor: 'pointer',
+            marginLeft: '4px',
+            width: '16px',
+            height: '16px',
+            borderRadius: '4px',
+            backgroundColor: 'rgba(119, 131, 143, 0.1)',
+            '&:hover': {
+              backgroundColor: vars.text.secondary,
+              fill: 'white',
+            },
+          }}
         />
       </PopoverTrigger>
       <PopoverContent
