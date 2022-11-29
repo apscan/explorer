@@ -13,7 +13,10 @@ const KeyWrapper = styled(Box)`
 const ValueWrapper = styled(Box)`
   font-weight: 400;
   width: 75%;
-  font-size: 14px;
+  font-size: 14px !important;
+  & > span {
+    font-size: 14px !important;
+  }
   color: ${vars.text.body};
 `
 
