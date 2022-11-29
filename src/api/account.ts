@@ -95,6 +95,35 @@ export const accountApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+    accountBalanceHistory: builder.query<
+      {
+        resourceType: string
+        timestamp: string
+        value: string
+      }[],
+      { id: string; start?: number; pageSize?: number }
+    >({
+      keepUnusedDataFor: 86400, // keep for 24 hours
+      query: ({ id, start = 0, pageSize }) => {
+        if (!id) throw new Error('miss transaction version')
+
+        return {
+          url: `/resource_changes?address=eq.${id}&move_resource_address=eq.0x1&move_resource_module=eq.coin&move_resource_name=eq.CoinStore&move_resource_generic_type_params=eq.["0x1::aptos_coin::AptosCoin"]`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `0-*`,
+          },
+        }
+      },
+      transformResponse(data: any[], meta: any) {
+        console.log('data')
+        return data.map((item) => ({
+          value: item.move_resource_data?.coin?.value,
+          timestamp: item.time_microseconds,
+          resourceType: (item.move_resource_generic_type_params || [])[0],
+        }))
+      },
+    }),
     accountModules: builder.query<any, { id: string; start?: number; pageSize?: number }>({
       query: ({ id, start = 0, pageSize }) => {
         if (!id) throw new Error('miss account id')
@@ -205,4 +234,5 @@ export const {
   useAccountModulesQuery,
   useAccountResourcesQuery,
   useAccountEventsQuery,
+  useAccountBalanceHistoryQuery,
 } = accountApi

@@ -114,7 +114,7 @@ export const Account = () => {
         `}
       >
         <Overview data={data} />
-        <History address={''} />
+        <History address={data?.address} />
       </Box>
       <Card>
         <Tabs onTabClick={onTabChange} activeKey={activeKey} size="large" items={tabs} />

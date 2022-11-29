@@ -1,30 +1,29 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import * as echarts from 'echarts/core'
-import { FixedNumber } from '@ethersproject/bignumber'
-import { useMarketInfoQuery } from 'api'
+import { useAccountBalanceHistoryQuery, useCoinDetailQuery, useMarketInfoQuery } from 'api'
 import { Card } from 'components/Card'
 import { Box } from 'components/container'
 import { useEffect, useRef, useState } from 'react'
-import { current } from '@reduxjs/toolkit'
+import RealBigNumber from 'bignumber.js'
+import dayjs from 'dayjs'
 
 export const History = ({ address }: { address: string }) => {
-  const { data: market } = useMarketInfoQuery()
+  const { data: coin } = useCoinDetailQuery({ type: '0x1::aptos_coin::AptosCoin' })
+  const { data: history = [] } = useAccountBalanceHistoryQuery({ id: address }, { skip: !address })
   const ref = useRef<HTMLDivElement>(null)
   const [inited, setInited] = useState(false)
 
   useEffect(() => {
-    console.log('init 1')
-    if (!ref.current || inited) {
+    if (!ref.current || !coin || !history.length) {
       return
     }
 
-    console.log('init 2', ref.current)
+    const decimals = new RealBigNumber(10).pow(coin.decimals)
 
     var myChart = echarts.init(ref.current)
     const option = {
       title: {
-        text: 'Balance Changes',
+        text: 'Coin Balance',
+        left: 'center',
       },
       tooltip: {
         trigger: 'axis',
@@ -37,6 +36,7 @@ export const History = ({ address }: { address: string }) => {
       },
       legend: {
         data: ['APT'],
+        left: 'left',
       },
       toolbox: {
         feature: {
@@ -44,6 +44,7 @@ export const History = ({ address }: { address: string }) => {
             yAxisIndex: 'none',
           },
           restore: {},
+          saveAsImage: {},
         },
       },
       grid: {
@@ -54,26 +55,28 @@ export const History = ({ address }: { address: string }) => {
       },
       xAxis: [
         {
+          name: 'Time',
           type: 'category',
           boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          axisLine: { onZero: false },
         },
       ],
       yAxis: [
         {
           type: 'value',
+          name: 'Balance',
         },
       ],
       series: [
         {
           name: 'APT',
           type: 'line',
-          stack: 'Total',
           areaStyle: {},
-          emphasis: {
-            focus: 'series',
-          },
-          data: [120, 132, 101, 134, 90, 230, 210],
+          data: history.map((item) => {
+            const date = new Date(Number(item.timestamp.slice(0, item.timestamp.length - 3)))
+
+            return [dayjs(date).format('YYYY-MM-DD HH:mm:ss'), new RealBigNumber(item.value).div(decimals).toNumber()]
+          }),
         },
       ],
       dataZoom: [
@@ -89,7 +92,7 @@ export const History = ({ address }: { address: string }) => {
 
     myChart.setOption(option)
     setInited(true)
-  }, [inited])
+  }, [history, inited, coin])
 
   return (
     <Card>

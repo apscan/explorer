@@ -13,7 +13,6 @@ import { useMemo } from 'react'
 import RealBigNumber from 'bignumber.js'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { toFixedNumber } from 'utils/number'
-import { Box } from 'components/container'
 
 const helper = createColumnHelper<any>()
 const maxCount = 1000
