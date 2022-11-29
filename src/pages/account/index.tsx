@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import { useAccountDetailQuery } from 'api'
 import { Address } from 'components/Address'
 import { Card } from 'components/Card'
-import { Container, InlineBox } from 'components/container'
+import { Box, Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
@@ -13,6 +13,7 @@ import { vars } from 'theme/theme.css'
 import { tabNameWithCount } from 'utils'
 import { Changes } from './Changes'
 import { Events } from './Events'
+import { History } from './History'
 import { Modules } from './Modules'
 import { Overview } from './Overview'
 import { Resources } from './Resources'
@@ -104,9 +105,17 @@ export const Account = () => {
           </InlineBox>
         }
       />
-      <Card marginBottom="20px">
+      <Box
+        css={css`
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 16px;
+          margin-bottom: 24px;
+        `}
+      >
         <Overview data={data} />
-      </Card>
+        <History address={''} />
+      </Box>
       <Card>
         <Tabs onTabClick={onTabChange} activeKey={activeKey} size="large" items={tabs} />
       </Card>

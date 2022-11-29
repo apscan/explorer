@@ -52,11 +52,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Type',
-    cell: (info) => {
-      console.log('info', info)
-
-      return <Box>{info.getValue()}</Box>
-    },
+    cell: (info) => <Box>{info.getValue()}</Box>,
   }),
 
   helper.accessor('type', {
@@ -137,8 +133,6 @@ const renderSubComponent = ({ row }: { row: any }) => {
       table_data_value_type: rawData.table_data_value_type,
     }
 
-    console.log('t data', data)
-
     return <JsonView fallback="-" src={data} />
   }
 
@@ -153,8 +147,6 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Changes = ({ id, count }: { id: any; count: number }) => {
-  console.log('id', id)
-
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountChangesQuery(
     {

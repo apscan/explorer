@@ -176,8 +176,6 @@ const renderSubComponent = ({ row }: { row: any }) => {
       table_data_value_type: rawData.table_data_value_type,
     }
 
-    console.log('t data', data)
-
     return <JsonView fallback="-" src={data} />
   }
 
