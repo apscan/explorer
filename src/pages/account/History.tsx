@@ -28,21 +28,33 @@ export const History = ({
     }
 
     const decimals = new RealBigNumber(10).pow(coin.decimals)
-    const data = history.map((item) => {
-      const date = new Date(Number(item.timestamp.slice(0, item.timestamp.length - 3)))
+    const data = [...history]
+      .sort((a, b) => {
+        if (a.value > b.value) {
+          return -1
+        }
+        if (a.value < b.value) {
+          return 1
+        }
+        return 0
+      })
+      .map((item) => {
+        const date = new Date(Number(item.timestamp.slice(0, item.timestamp.length - 3)))
 
-      return [dayjs(date).format('YYYY-MM-DD HH:mm:ss'), new RealBigNumber(item.value).div(decimals).toNumber()]
-    })
+        return [dayjs(date).format('YYYY-MM-DD HH:mm:ss'), new RealBigNumber(item.value).div(decimals).toNumber()]
+      })
 
-    const current = [
-      dayjs(new Date()).format('YYYY-MM-DD/HH:mm:ss'),
-      new RealBigNumber(history[history.length - 1]?.value || '0').div(decimals).toNumber(),
-    ]
+    const current = [dayjs(new Date()).format('YYYY-MM-DD/HH:mm:ss'), data[data.length - 1][1]]
     data.push(current)
 
     var myChart = echarts.init(ref.current)
     const option = {
       title: {
+        textStyle: {
+          color: lightTheme.text.body,
+          fontSize: '14px',
+          fontWeight: 400,
+        },
         text: 'Coin Balance',
         left: 'center',
       },
@@ -56,16 +68,18 @@ export const History = ({
         },
       },
       legend: {
+        itemHeight: 7,
+        itemWidth: 20,
+        itemStyle: {
+          color: vars.colors.primary,
+        },
         data: ['APT'],
-        left: 'left',
+        left: 'center',
+        top: '20px',
       },
       toolbox: {
         feature: {
-          dataZoom: {
-            yAxisIndex: 'none',
-          },
           restore: {},
-          saveAsImage: {},
         },
       },
       grid: {
@@ -77,7 +91,7 @@ export const History = ({
       xAxis: [
         {
           name: 'Time',
-          type: 'time',
+          type: 'category',
           boundaryGap: false,
           axisLine: { onZero: false },
         },
@@ -93,6 +107,7 @@ export const History = ({
           name: 'APT',
           type: 'line',
           data,
+          showSymbol: false,
           // showSymbol: false,
           itemStyle: {
             color: lightTheme.colors.link,

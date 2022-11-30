@@ -71,7 +71,7 @@ export const Holders = ({
           <AmountFormat
             minimumFractionDigits={0}
             postfix={false}
-            decimals={info.row.original?.decimals}
+            decimals={info.row.original?.coin_info?.decimals}
             value={info.getValue()}
           />
         ),
