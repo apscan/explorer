@@ -13,6 +13,8 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
+import { OneLineText } from 'components/OneLineText'
+import { Link } from 'components/link'
 
 const helper = createColumnHelper<any>()
 
@@ -22,7 +24,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Tx Version',
-    cell: (info) => <NumberFormat value={info.getValue()} />,
+    cell: (info) => <NumberFormat as={Link} to={`/tx/${info.getValue()}`} value={info.getValue()} />,
   }),
   helper.accessor('transaction_index', {
     meta: {
@@ -41,7 +43,6 @@ const columns = [
         `}
         ellipsis
         value={info.getValue()}
-        copyable
         tooltip
       />
     ),
@@ -77,7 +78,18 @@ const columns = [
   helper.accessor('data.move_resource_name', {
     header: 'Resource',
     cell: (info) => {
-      return (info.row.original?.data?.move_resource_generic_type_params || [])[0] || '-'
+      const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
+      const value = `${info.row.original?.data?.move_resource_name}<${resourceType}>`
+
+      if (!resourceType) {
+        return '-'
+      }
+
+      if (info.row.getIsExpanded()) {
+        return value
+      }
+
+      return <OneLineText tooltip size="long" value={value} />
     },
   }),
 
@@ -171,6 +183,11 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable
+        sx={{
+          '& > table td:nth-child(6)': {
+            maxWidth: '300px',
+          },
+        }}
         page={pageProps.page}
         renderSubComponent={renderSubComponent}
         getRowCanExpand={getRowCanExpand}

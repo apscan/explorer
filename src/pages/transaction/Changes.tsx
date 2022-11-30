@@ -1,5 +1,4 @@
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTransactionChangesQuery } from 'api'
 import { Address } from 'components/Address'
@@ -14,6 +13,7 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
+import { OneLineText } from 'components/OneLineText'
 
 const helper = createColumnHelper<any>()
 
@@ -38,7 +38,6 @@ const columns = [
         `}
         ellipsis
         value={info.getValue()}
-        copyable
         tooltip
       />
     ),
@@ -56,7 +55,7 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Address/Handle',
+    header: 'Address / Handle',
     cell: (info) => {
       if (info.row.original.tx_type === 'WriteTableItem' || info.row.original.type === 'DeleteTableItem') {
         return (
@@ -66,7 +65,6 @@ const columns = [
             `}
             ellipsis
             value={info.row.original?.data?.handle}
-            copyable
             tooltip
           />
         )
@@ -76,7 +74,7 @@ const columns = [
   }),
 
   helper.accessor('type', {
-    header: 'Module/Key',
+    header: 'Module / Key',
     cell: (info) => {
       if (isTableType(info.row.original?.tx_type)) {
         return (
@@ -86,7 +84,6 @@ const columns = [
             `}
             ellipsis
             value={info.row.original?.data?.key}
-            copyable
             tooltip
           />
         )
@@ -110,14 +107,27 @@ const columns = [
   }),
 
   helper.accessor('data.move_resource_name', {
-    header: 'Resource/Value',
+    header: 'Resource / Value',
     cell: (info) => {
       if (isTableType(info.row.original?.tx_type)) {
-        return <Hash ellipsis value={info.row.original?.data?.value} copyable tooltip />
+        return <Hash ellipsis value={info.row.original?.data?.value} tooltip />
       }
 
       if (isResourceType(info.row.original?.tx_type)) {
-        return (info.row.original?.data?.move_resource_generic_type_params || [])[0] || '-'
+        const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
+        const value = `${info.row.original?.data?.move_resource_name}<${resourceType}>`
+
+        if (!resourceType) {
+          return '-'
+        }
+
+        if (info.row.getIsExpanded()) {
+          return value
+        }
+
+        return (
+          <OneLineText tooltip size="long" value={`${info.row.original?.data?.move_resource_name}<${resourceType}>`} />
+        )
       }
 
       return info.getValue() || '-'
@@ -214,6 +224,11 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable
+        sx={{
+          '& > table td:nth-child(6)': {
+            maxWidth: '300px',
+          },
+        }}
         page={pageProps.page}
         renderSubComponent={renderSubComponent}
         getRowCanExpand={getRowCanExpand}
