@@ -39,6 +39,7 @@ specifiers:
   dayjs: ^1.11.5
   eslint-config-prettier: ^8.5.0
   framer-motion: ^7.5.3
+  highcharts: ^10.3.2
   husky: ^8.0.0
   i18next: ^21.9.1
   i18next-browser-languagedetector: ^6.1.5
@@ -106,6 +107,7 @@ dependencies:
   copy-to-clipboard: 3.3.2
   dayjs: 1.11.5
   framer-motion: 7.5.3_biqbaboplfbrettd7655fr4n2y
+  highcharts: 10.3.2
   i18next: 21.9.1
   i18next-browser-languagedetector: 6.1.5
   inter-ui: 3.19.3
@@ -8549,6 +8551,11 @@ packages:
   /hey-listen/1.0.8:
     resolution:
       { integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q== }
+    dev: false
+
+  /highcharts/10.3.2:
+    resolution:
+      { integrity: sha512-uDSuAOTKXOA90WUE38KKJawzMPjeIX/4UH3fMxZdoypbGVjsbuHO6jJSdeGf1LaDpu5wRg/xjO4QXzJqXfIrkA== }
     dev: false
 
   /history/5.3.0:

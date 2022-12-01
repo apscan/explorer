@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import { useTransactionChangesQuery } from 'api'
+import { useAccountChangesQuery } from 'api'
 import { Address } from 'components/Address'
 import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
 import { Box } from 'components/container'
@@ -14,13 +14,18 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { OneLineText } from 'components/OneLineText'
+import { Link } from 'components/link'
 
 const helper = createColumnHelper<any>()
 
-const isTableType = (tx_type?: string) => tx_type?.includes('TableItem')
-const isResourceType = (tx_type?: string) => tx_type?.includes('Resource')
-
 const columns = [
+  helper.accessor('transaction_version', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Tx Version',
+    cell: (info) => <NumberFormat as={Link} to={`/tx/${info.getValue()}`} value={info.getValue()} />,
+  }),
   helper.accessor('transaction_index', {
     meta: {
       nowrap: true,
@@ -51,49 +56,13 @@ const columns = [
     cell: (info) => <Box>{info.getValue()}</Box>,
   }),
 
-  helper.accessor('data.address', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Address / Handle',
-    cell: (info) => {
-      if (info.row.original.tx_type === 'WriteTableItem' || info.row.original.type === 'DeleteTableItem') {
-        return (
-          <Hash
-            css={css`
-              max-width: 120px;
-            `}
-            ellipsis
-            value={info.row.original?.data?.handle}
-            tooltip
-          />
-        )
-      }
-      return <Address size="short" value={info.getValue()} />
-    },
-  }),
-
   helper.accessor('type', {
-    header: 'Module / Key',
+    header: 'Module',
     cell: (info) => {
-      if (isTableType(info.row.original?.tx_type)) {
-        return (
-          <Hash
-            css={css`
-              max-width: 120px;
-            `}
-            ellipsis
-            value={info.row.original?.data?.key}
-            tooltip
-          />
-        )
-      }
-      const [address, module] =
-        info.getValue() === 'resource_changes'
-          ? [info.row.original?.data?.move_resource_address, info.row.original?.data?.move_resource_module]
-          : info.getValue() === 'module_changes'
-          ? [info.row.original?.data?.move_module_address, info.row.original?.data?.move_module_name]
-          : []
+      const [address, module] = [
+        info.row.original?.data?.move_resource_address,
+        info.row.original?.data?.move_resource_module,
+      ]
 
       if (!address || !module) return '-'
 
@@ -107,30 +76,20 @@ const columns = [
   }),
 
   helper.accessor('data.move_resource_name', {
-    header: 'Resource / Value',
+    header: 'Resource',
     cell: (info) => {
-      if (isTableType(info.row.original?.tx_type)) {
-        return <Hash ellipsis value={info.row.original?.data?.value} tooltip />
+      const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
+      const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
+
+      if (!resourceType) {
+        return '-'
       }
 
-      if (isResourceType(info.row.original?.tx_type)) {
-        const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
-        const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
-
-        if (!resourceType) {
-          return '-'
-        }
-
-        if (info.row.getIsExpanded()) {
-          return value
-        }
-
-        return (
-          <OneLineText tooltip size="long" value={`${info.row.original?.data?.move_resource_name}<${resourceType}>`} />
-        )
+      if (info.row.getIsExpanded()) {
+        return value
       }
 
-      return info.getValue() || '-'
+      return <OneLineText tooltip size="long" value={value} />
     },
   }),
 
@@ -201,7 +160,7 @@ const getRowCanExpand = (row: any) => {
 
 export const Changes = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
-  const { data: { data } = {}, isLoading } = useTransactionChangesQuery(
+  const { data: { data } = {}, isLoading } = useAccountChangesQuery(
     {
       id: id!,
       start: (page - 1) * pageSize,

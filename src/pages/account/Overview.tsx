@@ -1,8 +1,8 @@
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { useMarketInfoQuery } from 'api'
 import { AmountFormat } from 'components/AmountFormat'
+import { Card } from 'components/Card'
 import { Box, InlineBox } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { renderRow } from 'components/helpers'
@@ -12,10 +12,6 @@ import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
 import { vars } from 'theme/theme.css'
 import { toFixedNumber } from 'utils/number'
-
-const Wrapper = styled(Box)`
-  padding: 0 12px;
-`
 
 export const Overview = ({ data }: { data: any | undefined }) => {
   const { data: market } = useMarketInfoQuery()
@@ -29,8 +25,8 @@ export const Overview = ({ data }: { data: any | undefined }) => {
   }, [data, market])
 
   return (
-    <Wrapper>
-      <Box>
+    <Card>
+      <Box padding="0 12px">
         {renderRow(
           'Coins',
           data && (
@@ -107,6 +103,6 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           )
         )}
       </Box>
-    </Wrapper>
+    </Card>
   )
 }

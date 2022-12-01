@@ -13,7 +13,6 @@ import { useMemo } from 'react'
 import RealBigNumber from 'bignumber.js'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { toFixedNumber } from 'utils/number'
-import { Box } from 'components/container'
 
 const helper = createColumnHelper<any>()
 const maxCount = 1000
@@ -68,7 +67,14 @@ export const Holders = ({
           nowrap: true,
         },
         header: 'Balance',
-        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => (
+          <AmountFormat
+            minimumFractionDigits={0}
+            postfix={false}
+            decimals={info.row.original?.coin_info?.decimals}
+            value={info.getValue()}
+          />
+        ),
       }),
       helper.accessor('percentage', {
         meta: {

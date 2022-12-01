@@ -29,6 +29,7 @@
     "copy-to-clipboard": "^3.3.2",
     "dayjs": "^1.11.5",
     "framer-motion": "^7.5.3",
+    "highcharts": "^10.3.2",
     "i18next": "^21.9.1",
     "i18next-browser-languagedetector": "^6.1.5",
     "inter-ui": "^3.19.3",

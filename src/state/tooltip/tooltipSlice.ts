@@ -6,7 +6,7 @@ type Tooltip = {
   text: string
   position: {
     left: number
-    top: number
+    bottom: number
   }
   timerId: number
   copied: boolean
@@ -15,7 +15,7 @@ type Tooltip = {
 const initialState: Tooltip = {
   showTip: false,
   text: '',
-  position: { left: 0, top: 0 },
+  position: { left: 0, bottom: 0 },
   timerId: 0,
   copied: false,
 }

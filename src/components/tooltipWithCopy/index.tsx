@@ -31,7 +31,7 @@ export default function TooltipWithCopy({ children, label = '', pullRight = fals
         dispatch(
           setPosition({
             left: (position?.left ?? 0) + (position?.width ?? 0) / 2,
-            top: (position?.top ?? 0) - (position?.height ?? 0) - 10,
+            bottom: window.innerHeight - (position?.bottom ?? 0) + (position?.height ?? 0),
           })
         )
       })

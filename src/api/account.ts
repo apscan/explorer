@@ -67,6 +67,63 @@ export const accountApi = emptySplitApi.injectEndpoints({
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
+    accountChanges: builder.query<any, { id: string; start?: number; pageSize?: number }>({
+      keepUnusedDataFor: 86400, // keep for 24 hours
+      query: ({ id, start = 0, pageSize }) => {
+        console.log('asdfafd')
+
+        if (!id) throw new Error('miss transaction version')
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
+        return {
+          url: `/resource_changes?address=eq.${id}`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+          },
+        }
+      },
+      transformResponse(data: any[], meta: any) {
+        return {
+          data: data.map((item) => {
+            item.data = { ...item }
+            item.tx_type = item?.data?.is_write ? 'WriteResource' : 'DeleteResource'
+
+            return item
+          }),
+          page: parseHeaders(meta?.response?.headers),
+        }
+      },
+    }),
+    accountBalanceHistory: builder.query<
+      {
+        resourceType: string
+        timestamp: string
+        value: string
+      }[],
+      { id: string; start?: number; pageSize?: number }
+    >({
+      keepUnusedDataFor: 86400, // keep for 24 hours
+      query: ({ id, start = 0, pageSize }) => {
+        if (!id) throw new Error('miss transaction version')
+
+        return {
+          url: `/resource_changes?address=eq.${id}&move_resource_address=eq.0x1&move_resource_module=eq.coin&move_resource_name=eq.CoinStore&move_resource_generic_type_params=eq.["0x1::aptos_coin::AptosCoin"]`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `0-${Number.MAX_SAFE_INTEGER}`,
+          },
+        }
+      },
+      transformResponse(data: any[], meta: any) {
+        console.log('data')
+        return data.map((item) => ({
+          value: item.move_resource_data?.coin?.value,
+          timestamp: item.time_microseconds,
+          resourceType: (item.move_resource_generic_type_params || [])[0],
+        }))
+      },
+    }),
     accountModules: builder.query<any, { id: string; start?: number; pageSize?: number }>({
       query: ({ id, start = 0, pageSize }) => {
         if (!id) throw new Error('miss account id')
@@ -172,8 +229,10 @@ export const {
   useAccountsQuery,
   useAccountDetailQuery,
   useAccountTransferQuery,
+  useAccountChangesQuery,
   useAccountTransactionsQuery,
   useAccountModulesQuery,
   useAccountResourcesQuery,
   useAccountEventsQuery,
+  useAccountBalanceHistoryQuery,
 } = accountApi
