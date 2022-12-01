@@ -5,6 +5,13 @@ import { useEffect, useRef, useState } from 'react'
 import RealBigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
 import { lightTheme, vars } from 'theme/theme.css'
+var Highcharts = require('highcharts')
+// Alternatively, this is how to load Highcharts Stock. The Maps and Gantt
+// packages are similar.
+// var Highcharts = require('highcharts/highstock');
+
+// Load the exporting module, and initialize it.
+require('highcharts/modules/exporting')(Highcharts)
 
 export const History = ({
   address,
@@ -20,7 +27,6 @@ export const History = ({
   }[]
 }) => {
   const ref = useRef<HTMLDivElement>(null)
-  const [inited, setInited] = useState(false)
 
   useEffect(() => {
     if (!ref.current || !coin || !history.length) {
@@ -30,107 +36,87 @@ export const History = ({
     const decimals = new RealBigNumber(10).pow(coin.decimals)
     const data = [...history]
       .sort((a, b) => {
-        if (a.value > b.value) {
-          return -1
-        }
-        if (a.value < b.value) {
+        if (a.timestamp > b.timestamp) {
           return 1
+        }
+        if (a.timestamp < b.timestamp) {
+          return -1
         }
         return 0
       })
       .map((item) => {
         const date = new Date(Number(item.timestamp.slice(0, item.timestamp.length - 3)))
 
-        return [dayjs(date).format('YYYY-MM-DD HH:mm:ss'), new RealBigNumber(item.value).div(decimals).toNumber()]
+        return [date.getTime(), new RealBigNumber(item.value).div(decimals).toNumber()]
       })
 
-    const current = [dayjs(new Date()).format('YYYY-MM-DD/HH:mm:ss'), data[data.length - 1][1]]
+    const current = [Date.now(), data[data.length - 1][1]]
     data.push(current)
 
-    var myChart = echarts.init(ref.current)
-    const option = {
+    const chart = Highcharts.chart('balance-history-charts', {
+      credits: {
+        enabled: false,
+      },
+      chart: {
+        zoomType: 'x',
+      },
       title: {
-        textStyle: {
+        text: 'Coin Balance',
+        style: {
           color: lightTheme.text.body,
           fontSize: '14px',
           fontWeight: 400,
         },
-        text: 'Coin Balance',
-        left: 'center',
       },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985',
-          },
+      xAxis: {
+        type: 'datetime',
+        title: {
+          text: 'date',
+        },
+      },
+      yAxis: {
+        title: {
+          text: 'balance',
         },
       },
       legend: {
-        itemHeight: 7,
-        itemWidth: 20,
-        itemStyle: {
-          color: vars.colors.primary,
-        },
-        data: ['APT'],
-        left: 'center',
-        top: '20px',
+        enabled: false,
       },
-      toolbox: {
-        feature: {
-          restore: {},
+      plotOptions: {
+        area: {
+          fillColor: {
+            linearGradient: {
+              x1: 0,
+              y1: 0,
+              x2: 0,
+              y2: 1,
+            },
+            stops: [
+              [0, Highcharts.getOptions().colors[0]],
+              [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')],
+            ],
+          },
+          marker: {
+            radius: 2,
+          },
+          lineWidth: 1,
+          states: {
+            hover: {
+              lineWidth: 1,
+            },
+          },
         },
       },
-      grid: {
-        left: '3%',
-        right: '4%',
-        containLabel: true,
-        bottom: 60,
-      },
-      xAxis: [
-        {
-          name: 'Time',
-          type: 'category',
-          boundaryGap: false,
-          axisLine: { onZero: false },
-        },
-      ],
-      yAxis: [
-        {
-          type: 'value',
-          name: 'Balance',
-        },
-      ],
+
       series: [
         {
+          type: 'area',
           name: 'APT',
-          type: 'line',
-          data,
-          showSymbol: false,
-          // showSymbol: false,
-          itemStyle: {
-            color: lightTheme.colors.link,
-          },
-          areaStyle: {
-            color: lightTheme.colors.link,
-          },
+          data: data,
         },
       ],
-      dataZoom: [
-        {
-          show: true,
-          realtime: true,
-          start: 0,
-          end: 100,
-          xAxisIndex: [0, 1],
-        },
-      ],
-    }
-
-    myChart.setOption(option)
-    setInited(true)
-  }, [history, inited, coin])
+    })
+  }, [history, coin])
 
   return (
     <Card>
