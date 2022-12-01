@@ -115,7 +115,7 @@ const columns = [
 
       if (isResourceType(info.row.original?.tx_type)) {
         const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
-        const value = `${info.row.original?.data?.move_resource_name}<${resourceType}>`
+        const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
         if (!resourceType) {
           return '-'

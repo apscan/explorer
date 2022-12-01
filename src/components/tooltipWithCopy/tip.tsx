@@ -9,14 +9,22 @@ import {
   tooltipCopiedSelector,
   setCopied,
 } from '../../state/tooltip/tooltipSlice'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import copy from 'copy-to-clipboard'
 
-const Wrapper = styled.div<{ position: any; ref: any }>`
+const Wrapper = styled.div<{
+  position: {
+    left?: number
+    right?: number
+    bottom: number
+  }
+  ref: any
+}>`
   position: fixed;
   z-index: 1;
-  left: ${(p) => p?.position?.left ?? 0}px;
-  top: ${(p) => p?.position?.top ?? 0}px;
+  ${(p) => (p.position.left ? 'left: ' + p.position.left + 'px;' : '')}
+  ${(p) => (p.position.right ? 'right: ' + p.position.right + 'px;' : '')}
+  bottom: ${(p) => p?.position?.bottom ?? 0}px;
 `
 
 const TipWrapper = styled.div<{ showTip: boolean }>`
@@ -77,12 +85,32 @@ export default function Tip({ children }: any) {
     }
   }, [position, dispatch])
 
+  const reponsivePosition: {
+    bottom: number
+    left?: number
+    right?: number
+  } = useMemo(() => {
+    const minLeft = copied ? 27 : rect.width / 2
+
+    if (position.left >= minLeft) {
+      return {
+        left: position.left - minLeft,
+        bottom: position.bottom + 5,
+      }
+    }
+
+    return {
+      right: window.innerWidth - rect.width / 2 - position.left,
+      bottom: position.bottom + 5,
+    }
+  }, [copied, position.bottom, position.left, rect])
+
   if (!show) {
     return null
   }
 
   return (
-    <Wrapper position={{ ...position, left: position.left - (copied ? 27 : rect.width / 2) }} ref={ref}>
+    <Wrapper position={reponsivePosition} ref={ref}>
       <TipWrapper
         showTip={show}
         onClick={() => {
