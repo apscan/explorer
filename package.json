@@ -28,7 +28,6 @@
     "camelcase-keys": "^8.0.2",
     "copy-to-clipboard": "^3.3.2",
     "dayjs": "^1.11.5",
-    "echarts": "latest",
     "framer-motion": "^7.5.3",
     "highcharts": "^10.3.2",
     "i18next": "^21.9.1",
