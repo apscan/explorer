@@ -80,7 +80,7 @@ export const History = ({
         },
       },
       legend: {
-        enabled: false,
+        enabled: true,
       },
       plotOptions: {
         area: {
@@ -107,11 +107,10 @@ export const History = ({
           },
         },
       },
-
       series: [
         {
           type: 'area',
-          name: 'APT',
+          name: 'APT (Avaliable)',
           data: data,
         },
       ],
