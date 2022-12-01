@@ -14,18 +14,6 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import store from './state'
 import { ThemeProvider } from './theme'
 import reportWebVitals from './utils/reportWebVitals'
-import * as echarts from 'echarts/core'
-import {
-  TitleComponent,
-  ToolboxComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent,
-  DataZoomSliderComponent,
-} from 'echarts/components'
-import { LineChart } from 'echarts/charts'
-import { UniversalTransition } from 'echarts/features'
-import { CanvasRenderer } from 'echarts/renderers'
 
 function Updaters() {
   return (
@@ -34,18 +22,6 @@ function Updaters() {
     </>
   )
 }
-
-echarts.use([
-  TitleComponent,
-  ToolboxComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent,
-  LineChart,
-  CanvasRenderer,
-  UniversalTransition,
-  DataZoomSliderComponent,
-])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

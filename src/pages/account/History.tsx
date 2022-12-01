@@ -1,16 +1,10 @@
-import * as echarts from 'echarts/core'
 import { Card } from 'components/Card'
 import { Box } from 'components/container'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import RealBigNumber from 'bignumber.js'
-import dayjs from 'dayjs'
-import { lightTheme, vars } from 'theme/theme.css'
+import { lightTheme } from 'theme/theme.css'
 var Highcharts = require('highcharts')
-// Alternatively, this is how to load Highcharts Stock. The Maps and Gantt
-// packages are similar.
-// var Highcharts = require('highcharts/highstock');
 
-// Load the exporting module, and initialize it.
 require('highcharts/modules/exporting')(Highcharts)
 
 export const History = ({
@@ -53,7 +47,7 @@ export const History = ({
     const current = [Date.now(), data[data.length - 1][1]]
     data.push(current)
 
-    const chart = Highcharts.chart('balance-history-charts', {
+    Highcharts.chart('balance-history-charts', {
       credits: {
         enabled: false,
       },
