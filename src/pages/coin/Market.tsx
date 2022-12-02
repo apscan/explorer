@@ -53,7 +53,7 @@ export const Market = ({ data, price, percentChange24h }: { data?: any; price?: 
         )}
         {renderRow(
           'Total Supply',
-          <AmountFormat postfix={` ${data.symbol}`} value={data.total_supply} decimals={data.decimals} />
+          <AmountFormat fallback="-" postfix={` ${data.symbol}`} value={data.total_supply} decimals={data.decimals} />
         )}
         {renderRow(
           'Fully Diluted Val.',

@@ -55,7 +55,7 @@ export const History = ({
         zoomType: 'x',
       },
       title: {
-        text: 'Coin Balance',
+        text: 'APT Available',
         style: {
           color: lightTheme.text.body,
           fontSize: '14px',
@@ -64,17 +64,14 @@ export const History = ({
       },
       xAxis: {
         type: 'datetime',
-        title: {
-          text: 'date',
-        },
       },
       yAxis: {
         title: {
-          text: 'balance',
+          text: '',
         },
       },
       legend: {
-        enabled: true,
+        enabled: false,
       },
       plotOptions: {
         area: {
@@ -114,7 +111,7 @@ export const History = ({
   return (
     <Card>
       <Box padding="12px">
-        <Box height="291px" ref={ref} id="balance-history-charts"></Box>
+        <Box height="191px" ref={ref} id="balance-history-charts"></Box>
       </Box>
     </Card>
   )

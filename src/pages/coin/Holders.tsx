@@ -29,7 +29,7 @@ export const Holders = ({
   count?: number
   decimals: number
   symbol: string
-  totalSupply: string
+  totalSupply?: string
   price?: string
 }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
@@ -45,7 +45,7 @@ export const Holders = ({
   )
   const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
-  const total = useMemo(() => new RealBigNumber(totalSupply), [totalSupply])
+  const total = useMemo(() => new RealBigNumber(totalSupply || '0'), [totalSupply])
   const columns = useMemo(
     () => [
       helper.accessor('rank', {
