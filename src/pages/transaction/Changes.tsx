@@ -13,7 +13,7 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
-import { OneLineText } from 'components/OneLineText'
+import { TypeParam } from 'components/TypeParam'
 
 const helper = createColumnHelper<any>()
 
@@ -55,7 +55,7 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Address / Handle',
+    header: 'Address | Handle',
     cell: (info) => {
       if (info.row.original.tx_type === 'WriteTableItem' || info.row.original.type === 'DeleteTableItem') {
         return (
@@ -74,7 +74,7 @@ const columns = [
   }),
 
   helper.accessor('type', {
-    header: 'Module / Key',
+    header: 'Module | Key',
     cell: (info) => {
       if (isTableType(info.row.original?.tx_type)) {
         return (
@@ -107,7 +107,10 @@ const columns = [
   }),
 
   helper.accessor('data.move_resource_name', {
-    header: 'Resource / Value',
+    header: 'Resource | Value',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       if (isTableType(info.row.original?.tx_type)) {
         return <Hash ellipsis value={info.row.original?.data?.value} tooltip />
@@ -117,17 +120,7 @@ const columns = [
         const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
         const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-        if (!value) {
-          return '-'
-        }
-
-        if (info.row.getIsExpanded()) {
-          return value
-        }
-
-        return (
-          <OneLineText tooltip size="long" value={`${info.row.original?.data?.move_resource_name}<${resourceType}>`} />
-        )
+        return <TypeParam fallback="-" ellipsis value={value} />
       }
 
       return info.getValue() || '-'
@@ -226,7 +219,14 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       <DataTable
         sx={{
           '& > table td:nth-child(6)': {
-            maxWidth: '300px',
+            maxWidth: '250px',
+            '> div': {
+              display: 'block',
+              maxWidth: '250px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
         }}
         page={pageProps.page}

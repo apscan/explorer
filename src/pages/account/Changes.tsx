@@ -13,8 +13,8 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
-import { OneLineText } from 'components/OneLineText'
 import { Link } from 'components/link'
+import { TypeParam } from 'components/TypeParam'
 
 const helper = createColumnHelper<any>()
 
@@ -77,19 +77,14 @@ const columns = [
 
   helper.accessor('data.move_resource_name', {
     header: 'Resource',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
       const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-      if (!value) {
-        return '-'
-      }
-
-      if (info.row.getIsExpanded()) {
-        return value
-      }
-
-      return <OneLineText tooltip size="long" value={value} />
+      return <TypeParam fallback="-" ellipsis value={value} />
     },
   }),
 
@@ -185,7 +180,14 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       <DataTable
         sx={{
           '& > table td:nth-child(6)': {
-            maxWidth: '300px',
+            maxWidth: '220px',
+            '> div': {
+              display: 'block',
+              maxWidth: '320px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
         }}
         page={pageProps.page}

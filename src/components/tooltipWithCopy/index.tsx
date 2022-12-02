@@ -11,19 +11,29 @@ const Wrapper = styled.div<{ pull?: number }>`
   ${({ pull }) => 'margin-' + pull + ': 0;'}
 `
 
-export default function TooltipWithCopy({ children, label = '', pullRight = false, style, ...restProps }: any) {
+export default function TooltipWithCopy({
+  children,
+  disabled,
+  label = '',
+  pullRight = false,
+  style,
+  ...restProps
+}: any) {
   const ref = useRef<HTMLDivElement | null>()
   const dispatch = useDispatch()
 
   useEffect(() => {
+    if (disabled) {
+      return
+    }
     return () => {
       dispatch(toggleTooltip(false))
     }
-  }, [dispatch])
+  }, [disabled, dispatch])
 
   useEffect(() => {
-    if (ref?.current) {
-      ref?.current?.addEventListener('mouseenter', () => {
+    if (ref?.current && !disabled) {
+      const onMouseEnter = () => {
         const position = ref?.current?.getBoundingClientRect()
         dispatch(clearTimer())
         dispatch(toggleTooltip(true))
@@ -34,15 +44,24 @@ export default function TooltipWithCopy({ children, label = '', pullRight = fals
             bottom: window.innerHeight - (position?.bottom ?? 0) + (position?.height ?? 0),
           })
         )
-      })
-      ref.current.addEventListener('mouseout', () => {
+      }
+      const onMouseOut = () => {
         const timer = setTimeout(() => {
           dispatch(toggleTooltip(false))
         }, 500)
         dispatch(setTimerId(timer))
-      })
+      }
+      ref.current.addEventListener('mouseenter', onMouseEnter)
+      ref.current.addEventListener('mouseout', onMouseOut)
+
+      const current = ref.current
+
+      return () => {
+        current.removeEventListener('mouseenter', onMouseEnter)
+        current.removeEventListener('mouseout', onMouseOut)
+      }
     }
-  }, [dispatch, label])
+  }, [disabled, dispatch, label])
 
   if (!label) return children
 
