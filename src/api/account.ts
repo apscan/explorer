@@ -104,7 +104,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
       { id: string; start?: number; pageSize?: number }
     >({
       keepUnusedDataFor: 86400, // keep for 24 hours
-      query: ({ id, start = 0, pageSize }) => {
+      query: ({ id }) => {
         if (!id) throw new Error('miss transaction version')
 
         return {

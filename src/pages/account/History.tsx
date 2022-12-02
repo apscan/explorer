@@ -111,7 +111,7 @@ export const History = ({
   return (
     <Card>
       <Box padding="12px">
-        <Box height="191px" ref={ref} id="balance-history-charts"></Box>
+        <Box height="261.5px" ref={ref} id="balance-history-charts"></Box>
       </Box>
     </Card>
   )

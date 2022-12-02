@@ -9,6 +9,9 @@ export const BaseInput = styled(Input)`
   border: 1px solid ${vars.colors.border3};
   border-radius: 8px;
 
+  &::placeholder {
+    font-size: 12px;
+  }
   &:focus {
     box-shadow: 0 0 0 2px rgb(203 188 185 / 25%);
   }

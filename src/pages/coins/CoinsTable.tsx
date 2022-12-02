@@ -59,7 +59,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
             '-'
           ) : (
             <AmountFormat
-              fixed={0}
+              maximumFractionDigits={0}
               value={info.getValue()}
               postfix={` ${info.row.original.symbol}`}
               decimals={info.row.original.decimals}

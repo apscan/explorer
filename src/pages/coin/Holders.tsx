@@ -107,9 +107,8 @@ export const Holders = ({
           return (
             <NumberFormat
               textTransform="uppercase"
-              fixed={0}
               useGrouping
-              maximumFractionDigits={3}
+              maximumFractionDigits={0}
               prefix="$"
               value={value}
               fallback="-"

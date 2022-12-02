@@ -1,0 +1,187 @@
+import { Menu, MenuButton, MenuList } from 'components/menu'
+import { ChevronDownIcon } from '@chakra-ui/icons'
+import { Button, Image, Text } from '@chakra-ui/react'
+import RealBigNumber from 'bignumber.js'
+import { BaseInput } from 'components/inputs'
+import { Box, Flex, InlineBox } from 'components/container'
+import styled from '@emotion/styled'
+import { Link } from 'components/link'
+import { AmountFormat } from 'components/AmountFormat'
+import { NumberFormat } from 'components/NumberFormat'
+import { vars } from 'theme/theme.css'
+import { useMemo, useRef, useState } from 'react'
+import { CoinIconFileNameMap, defaultCoinIconFileName } from 'config/coin-icons'
+
+const CoinItem = styled(Box)`
+  border-bottom: 1px solid #e7eaf3;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+  &:last-child {
+    margin-bottom: 0rem;
+    border-bottom-width: 0px;
+  }
+`
+
+export type CoinBalance = {
+  type: string
+  symbol: string
+  name: string
+  decimals: number
+  balance: string
+  price?: number
+}
+
+type CoinAmount = CoinBalance & { value: string }
+
+export const CoinIcon = ({ type }: { type: string }) => {
+  return (
+    <Image
+      style={{
+        width: '12px',
+        height: '12px',
+        marginRight: '4px',
+      }}
+      src={`/images/icons/${CoinIconFileNameMap[type] || defaultCoinIconFileName}`}
+    />
+  )
+}
+
+const Coin = (coin: CoinAmount) => {
+  return (
+    <CoinItem>
+      {/* use Link instead MenuItem here, cuz MenuItem cause search component blur when list filled */}
+      <Link
+        sx={{
+          padding: '0.25rem 0.5rem',
+          borderRadius: '0.25rem',
+          backgroundColor: 'transparent',
+          color: 'unset !important',
+          '&:hover': {
+            color: 'white !important',
+            span: {
+              color: 'white !important',
+            },
+            backgroundColor: '#3498db',
+          },
+        }}
+        display="block"
+        fontSize="0.76562rem !important"
+        to={`/coin/${coin.type}`}
+      >
+        <Flex alignItems="center" justifyContent="space-between">
+          <InlineBox alignItems="center">
+            <CoinIcon type={coin.type} />
+            <span>
+              {coin.name}({coin.symbol})
+            </span>
+          </InlineBox>
+          <AmountFormat
+            value={coin.balance}
+            maximumFractionDigits={6}
+            decimals={coin.decimals}
+            postfix={` ${coin.symbol}`}
+          />
+        </Flex>
+        {coin.price && (
+          <Flex alignItems="center" justifyContent="space-between">
+            <NumberFormat color="#77838f" value={coin.price} maximumFractionDigits={2} prefix="$" />
+            <NumberFormat value={coin.value} maximumFractionDigits={2} prefix="$" />
+          </Flex>
+        )}
+      </Link>
+    </CoinItem>
+  )
+}
+
+export const List = ({ coins, search }: { coins: CoinAmount[]; search: string }) => {
+  const filteredCoins = useMemo(
+    () =>
+      !search
+        ? coins
+        : coins.filter(
+            (coin) =>
+              coin.name.toLowerCase().includes(search) ||
+              coin.symbol.toLowerCase().includes(search) ||
+              coin.type.toLowerCase().includes(search)
+          ),
+    [coins, search]
+  )
+
+  if (!filteredCoins.length) {
+    return <Text pl="0.25rem">No Available Coins</Text>
+  } else {
+    return (
+      <>
+        {filteredCoins.map((coin) => (
+          <Coin key={coin.type} {...coin} />
+        ))}
+      </>
+    )
+  }
+}
+
+export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [search, setSearch] = useState('')
+  const coins: CoinAmount[] = useMemo(
+    () =>
+      coinBalances.map((coin) => ({
+        ...coin,
+        value: new RealBigNumber(coin.balance)
+          .multipliedBy(coin.price || 0)
+          .div(new RealBigNumber(10).pow(coin.decimals))
+          .toString(),
+      })),
+    [coinBalances]
+  )
+  const amount = useMemo(
+    () => coins.reduce((all: RealBigNumber, curr) => all.plus(curr.value), new RealBigNumber(0)),
+    [coins]
+  )
+  const filteredCoins = useMemo(
+    () =>
+      !search
+        ? coins
+        : coins.filter(
+            (coin) =>
+              coin.name.toLowerCase().includes(search) ||
+              coin.symbol.toLowerCase().includes(search) ||
+              coin.type.toLowerCase().includes(search)
+          ),
+    [coins, search]
+  )
+
+  return (
+    <Menu>
+      <MenuButton
+        as={Button}
+        _expanded={{ bg: vars.colors.buttonBg1 }}
+        rightIcon={<ChevronDownIcon />}
+        minWidth="300px"
+        textAlign="left"
+      >
+        &gt;&nbsp;
+        <NumberFormat value={amount.toString()} prefix="$" />
+      </MenuButton>
+      <MenuList minWidth="300px">
+        <Box p="0em 0.75em 0em 0.5em">
+          <BaseInput
+            ref={inputRef}
+            value={search}
+            borderRadius="0.25em"
+            mb="0.75em"
+            placeholder="Search for Coin Name"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Box>
+        <Box p="0em 0.75em 0em 0.5em">
+          {!filteredCoins.length ? (
+            <Text pl="0.25rem">No Available Coins</Text>
+          ) : (
+            filteredCoins.map((coin) => <Coin key={coin.type} {...coin} />)
+          )}
+        </Box>
+      </MenuList>
+    </Menu>
+  )
+}
