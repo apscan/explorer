@@ -81,7 +81,7 @@ const columns = [
       const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
       const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-      if (!resourceType) {
+      if (!value) {
         return '-'
       }
 
