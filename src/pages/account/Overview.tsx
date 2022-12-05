@@ -1,30 +1,19 @@
 import { css } from '@emotion/react'
-import { FixedNumber } from '@ethersproject/bignumber'
 import { useMarketInfoQuery } from 'api'
 import { AmountFormat } from 'components/AmountFormat'
 import { Card } from 'components/Card'
 import { Box, Flex } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { renderRow } from 'components/helpers'
-import { NumberFormat } from 'components/NumberFormat'
 import { Poptip } from 'components/PopTip'
 import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
 import { vars } from 'theme/theme.css'
 import { AptosCoin } from 'utils'
-import { toFixedNumber } from 'utils/number'
 import { CoinBalance, CoinList } from './CoinList'
 
 export const Overview = ({ data }: { data: any | undefined }) => {
   const { data: market } = useMarketInfoQuery()
-
-  const totalValue = useMemo(() => {
-    if (!data?.aptos_coin_total_balance || !market?.quotes?.USD?.price) return
-
-    return toFixedNumber(data.aptos_coin_total_balance as string)
-      .toFormat('fixed128x18')
-      .mulUnsafe(FixedNumber.fromString(Number(market.quotes.USD.price).toFixed(18)))
-  }, [data, market])
 
   const coinBalances: CoinBalance[] = useMemo(() => {
     return (
@@ -53,7 +42,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
     <Card>
       <Box padding="0 12px">
         {renderRow(
-          'Coins',
+          'APT',
           <Box>
             {data && (
               <Flex alignItems="center">
@@ -113,17 +102,10 @@ export const Overview = ({ data }: { data: any | undefined }) => {
                 </Poptip>
               </Flex>
             )}
-            <Box pt="1rem">
-              <CoinList coinBalances={coinBalances} />
-            </Box>
           </Box>
         )}
-
+        {renderRow('Coins', <CoinList coinBalances={coinBalances} />)}
         {renderRow('Tokens', 'Coming Soon')}
-        {renderRow(
-          'Total Value',
-          <NumberFormat separate useGrouping prefix="$" maximumFractionDigits={2} value={totalValue} />
-        )}
         {renderRow(
           'Creation Time',
           data?.created_at_timestamp && data?.created_at_timestamp !== '0' ? (

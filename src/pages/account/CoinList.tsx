@@ -69,7 +69,7 @@ const Coin = (coin: CoinAmount) => {
         to={`/coin/${coin.type}`}
       >
         <Flex alignItems="center" justifyContent="space-between">
-          <InlineBox alignItems="center">
+          <InlineBox alignItems="center" mr="0.35rem">
             <CoinIcon type={coin.type} />
             <span>
               {coin.name}({coin.symbol})
@@ -84,40 +84,13 @@ const Coin = (coin: CoinAmount) => {
         </Flex>
         {coin.price && (
           <Flex alignItems="center" justifyContent="space-between">
-            <NumberFormat color="#77838f" value={coin.price} maximumFractionDigits={2} prefix="$" />
+            <NumberFormat color="#77838f" value={coin.price} maximumFractionDigits={2} prefix="@ $" />
             <NumberFormat value={coin.value} maximumFractionDigits={2} prefix="$" />
           </Flex>
         )}
       </Link>
     </CoinItem>
   )
-}
-
-export const List = ({ coins, search }: { coins: CoinAmount[]; search: string }) => {
-  const filteredCoins = useMemo(
-    () =>
-      !search
-        ? coins
-        : coins.filter(
-            (coin) =>
-              coin.name.toLowerCase().includes(search) ||
-              coin.symbol.toLowerCase().includes(search) ||
-              coin.type.toLowerCase().includes(search)
-          ),
-    [coins, search]
-  )
-
-  if (!filteredCoins.length) {
-    return <Text pl="0.25rem">No Available Coins</Text>
-  } else {
-    return (
-      <>
-        {filteredCoins.map((coin) => (
-          <Coin key={coin.type} {...coin} />
-        ))}
-      </>
-    )
-  }
 }
 
 export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
@@ -161,7 +134,19 @@ export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
         textAlign="left"
       >
         &gt;&nbsp;
-        <NumberFormat value={amount.toString()} prefix="$" />
+        <NumberFormat value={amount.toString()} maximumFractionDigits={2} prefix="$" />
+        <span
+          style={{
+            color: '#fff',
+            background: '#3498db',
+            borderRadius: '0.25rem',
+            padding: '0.15rem 0.25rem',
+            fontSize: '75%',
+            margin: '0px 0.25rem',
+          }}
+        >
+          &gt;{coins.length}
+        </span>
       </MenuButton>
       <MenuList minWidth="300px">
         <Box p="0em 0.75em 0em 0.5em">

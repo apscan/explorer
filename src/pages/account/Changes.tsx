@@ -15,6 +15,7 @@ import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { Link } from 'components/link'
 import { TypeParam } from 'components/TypeParam'
+import { Divider, Text } from '@chakra-ui/react'
 
 const helper = createColumnHelper<any>()
 
@@ -131,19 +132,21 @@ const columns = [
 ]
 
 const renderSubComponent = ({ row }: { row: any }) => {
-  if (((row.original?.tx_type as string) || undefined)?.includes('TableItem')) {
-    const rawData = row.original?.data || {}
-    const data = {
-      table_data_key: rawData.table_data_key,
-      table_data_key_type: rawData.table_data_key_type,
-      table_data_value: rawData.table_data_value,
-      table_data_value_type: rawData.table_data_value_type,
-    }
+  const data = row.original?.data?.move_resource_data
+  const resourceType = (row.original?.data?.move_resource_generic_type_params || [])[0]
+  const value = `${row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-    return <JsonView fallback="-" src={data} />
+  if (!resourceType) {
+    return <JsonView fallback="-" src={data} withContainer />
   }
 
-  return <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
+  return (
+    <Box>
+      <Text>{value}</Text>
+      <Divider color="#e7eaf3" />
+      <JsonView fallback="-" src={data} withContainer />
+    </Box>
+  )
 }
 
 const getRowCanExpand = (row: any) => {

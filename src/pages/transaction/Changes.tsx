@@ -14,6 +14,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { TypeParam } from 'components/TypeParam'
+import { Divider, Text } from '@chakra-ui/react'
 
 const helper = createColumnHelper<any>()
 
@@ -170,7 +171,7 @@ const columns = [
 ]
 
 const renderSubComponent = ({ row }: { row: any }) => {
-  if (((row.original?.tx_type as string) || undefined)?.includes('TableItem')) {
+  if ((row.original?.tx_type as string)?.includes('TableItem')) {
     const rawData = row.original?.data || {}
     const data = {
       table_data_key: rawData.table_data_key,
@@ -178,8 +179,30 @@ const renderSubComponent = ({ row }: { row: any }) => {
       table_data_value: rawData.table_data_value,
       table_data_value_type: rawData.table_data_value_type,
     }
+    return (
+      <Box>
+        <Text>{row.original?.data?.value}</Text>
+        <Divider color="#e7eaf3" />
+        <JsonView fallback="-" src={data} withContainer />
+      </Box>
+    )
+  }
 
-    return <JsonView fallback="-" src={data} />
+  if (isResourceType(row.original?.tx_type)) {
+    const resourceType = (row.original?.data?.move_resource_generic_type_params || [])[0]
+    const value = `${row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
+
+    if (!resourceType) {
+      return <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
+    }
+
+    return (
+      <Box>
+        <Text>{value}</Text>
+        <Divider color="#e7eaf3" />
+        <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
+      </Box>
+    )
   }
 
   return <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
