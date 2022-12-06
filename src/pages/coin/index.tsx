@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { useCoinDetailQuery, useMarketInfoQuery } from 'api'
 import { Card } from 'components/Card'
-import { Container, Flex, InlineBox } from 'components/container'
+import { Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'

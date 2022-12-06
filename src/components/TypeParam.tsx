@@ -7,12 +7,10 @@ import Tooltip from './tooltipWithCopy'
 export const TypeParam = ({
   fallback,
   value,
-  ellipsis,
 }: // ...props
 {
   fallback?: React.ReactNode
   value?: string
-  ellipsis?: boolean
 }) => {
   const rawValue = value
   const parts = useMemo(() => {

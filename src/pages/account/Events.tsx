@@ -47,11 +47,8 @@ const columns = [
     cell: (info) => <NumberFormat prefix="#" value={info.getValue()} />,
   }),
   helper.accessor('type', {
-    // meta: {
-    //   nowrap: true,
-    // },
     header: 'Type',
-    cell: (info) => <TypeParam ellipsis fallback="-" value={info.getValue()} />,
+    cell: (info) => <TypeParam fallback="-" value={info.getValue()} />,
   }),
 
   helper.accessor('data', {
@@ -116,6 +113,17 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable
+        sx={{
+          '& > table td:nth-child(5)': {
+            width: '320px',
+            '> div': {
+              maxWidth: '300px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+          },
+        }}
         page={pageProps.page}
         renderSubComponent={renderSubComponent}
         getRowCanExpand={getRowCanExpand}

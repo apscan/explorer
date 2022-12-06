@@ -395,6 +395,13 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
         sx={{
           '& > table td:nth-child(3)': {
             padding: '0px 10px',
+            width: '400px',
+            '> div': {
+              maxWidth: '380px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
           '& > table td:nth-child(4)': {
             padding: '0px 10px',

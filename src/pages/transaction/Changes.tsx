@@ -121,7 +121,7 @@ const columns = [
         const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
         const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-        return <TypeParam fallback="-" ellipsis value={value} />
+        return <TypeParam fallback="-" value={value} />
       }
 
       return info.getValue() || '-'

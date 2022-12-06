@@ -85,7 +85,7 @@ const columns = [
       const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
       const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-      return <TypeParam fallback="-" ellipsis value={value} />
+      return <TypeParam fallback="-" value={value} />
     },
   }),
 
@@ -183,10 +183,10 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       <DataTable
         sx={{
           '& > table td:nth-child(6)': {
-            maxWidth: '220px',
+            width: '300px',
             '> div': {
               display: 'block',
-              maxWidth: '320px',
+              maxWidth: '280px',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
