@@ -233,9 +233,21 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
           meta: {
             nowrap: true,
           },
-          cell: (info) => {
-            return <TypeParam value={info.row.original?.type} />
-          },
+          cell: (info) => (
+            <Box
+              sx={{
+                display: 'inline-block',
+                '> div': {
+                  maxWidth: '380px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                },
+              }}
+            >
+              <TypeParam fallback="-" value={info.getValue()} />
+            </Box>
+          ),
         }),
         helper.accessor('sender', {
           meta: {
@@ -396,12 +408,6 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
           '& > table td:nth-child(3)': {
             padding: '0px 10px',
             width: '400px',
-            '> div': {
-              maxWidth: '380px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            },
           },
           '& > table td:nth-child(4)': {
             padding: '0px 10px',

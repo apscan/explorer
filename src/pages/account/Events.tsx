@@ -48,7 +48,27 @@ const columns = [
   }),
   helper.accessor('type', {
     header: 'Type',
-    cell: (info) => <TypeParam fallback="-" value={info.getValue()} />,
+    cell: (info) => {
+      if (info.row.getIsExpanded()) {
+        return <TypeParam fallback="-" value={info.getValue()} />
+      } else {
+        return (
+          <Box
+            sx={{
+              display: 'inline-block',
+              '> div': {
+                maxWidth: '300px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              },
+            }}
+          >
+            <TypeParam fallback="-" value={info.getValue()} />
+          </Box>
+        )
+      }
+    },
   }),
 
   helper.accessor('data', {
@@ -116,12 +136,6 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
         sx={{
           '& > table td:nth-child(5)': {
             width: '320px',
-            '> div': {
-              maxWidth: '300px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            },
           },
         }}
         page={pageProps.page}

@@ -11,6 +11,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
+import { Box } from 'components/container'
 
 const helper = createColumnHelper<any>()
 
@@ -49,7 +50,27 @@ const columns = [
   }),
   helper.accessor('type', {
     header: 'Type',
-    cell: (info) => <TypeParam fallback="-" value={info.getValue()} />,
+    cell: (info) => {
+      if (info.row.getIsExpanded()) {
+        return <TypeParam fallback="-" value={info.getValue() + 'asdfasdfasdflkasdflawjerl;iawfl;asjkdfl asdf'} />
+      } else {
+        return (
+          <Box
+            sx={{
+              display: 'inline-block',
+              '> div': {
+                maxWidth: '380px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              },
+            }}
+          >
+            <TypeParam fallback="-" value={info.getValue() + 'asdfasldfjasldura;lwieru;alsdfjkasl;kfas;ldk'} />
+          </Box>
+        )
+      }
+    },
   }),
 
   helper.accessor('data', {
@@ -116,12 +137,6 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
         sx={{
           '& > table td:nth-child(5)': {
             width: '400px',
-            '> div': {
-              maxWidth: '380px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            },
           },
         }}
         page={pageProps.page}
