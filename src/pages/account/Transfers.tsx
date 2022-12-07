@@ -13,7 +13,6 @@ import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { Version } from 'components/transaction/Version'
-import { JsonView } from 'components/JsonView'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { parseUserTransfer } from 'utils/parseUserTransfer'
@@ -183,17 +182,6 @@ const parseTypeText = (type: string) => {
   }
 
   return textMap[type] || '-'
-}
-
-const renderSubComponent = ({ row }: { row: any }) => {
-  const self = row.original?.address || ''
-  const { json } = parseSenderAndReceiver(row.original?.events || [], self)
-
-  return json ? <JsonView forcePretty={true} src={json} withContainer /> : <></>
-}
-
-const getRowCanExpand = (row: any) => {
-  return true
 }
 
 export const Transfers = ({ id, count, type }: { id?: string; count: number; type?: string }) => {
@@ -421,8 +409,6 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
         }}
         dataSource={data}
         columns={columns}
-        renderSubComponent={renderSubComponent}
-        getRowCanExpand={getRowCanExpand}
       />
       {pageProps.total > 1 && (
         <CardFooter variant="tabletab">

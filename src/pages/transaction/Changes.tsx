@@ -76,6 +76,9 @@ const columns = [
 
   helper.accessor('type', {
     header: 'Module | Key',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       if (isTableType(info.row.original?.tx_type)) {
         return (
@@ -198,7 +201,7 @@ const renderSubComponent = ({ row }: { row: any }) => {
 
     return (
       <Box>
-        <Text>{value}</Text>
+        <TypeParam fallback="-" copyable={false} size="full" value={value} />
         <Divider color="#e7eaf3" />
         <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
       </Box>

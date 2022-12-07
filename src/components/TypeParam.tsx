@@ -7,10 +7,14 @@ import Tooltip from './tooltipWithCopy'
 export const TypeParam = ({
   fallback,
   value,
+  size = 'short',
+  copyable = false,
 }: // ...props
 {
   fallback?: React.ReactNode
   value?: string
+  size?: 'full' | 'short' | 'long'
+  copyable?: boolean
 }) => {
   const rawValue = value
   const parts = useMemo(() => {
@@ -18,12 +22,12 @@ export const TypeParam = ({
 
     return value.split(/(::|<|,\W)/g).map((str) => {
       if (/^0x[0-9a-f]+$/.test(str)) {
-        return <Address hideTooltip as={Link} size="short" value={str} />
+        return <Address copyable={copyable} hideTooltip as={Link} size={size} value={str} />
       }
 
       return str
     })
-  }, [value])
+  }, [copyable, size, value])
 
   if (!value) return <>{fallback}</>
 

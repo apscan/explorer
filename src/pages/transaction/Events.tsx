@@ -12,6 +12,7 @@ import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { Box } from 'components/container'
+import { Divider } from '@chakra-ui/react'
 
 const helper = createColumnHelper<any>()
 
@@ -51,25 +52,21 @@ const columns = [
   helper.accessor('type', {
     header: 'Type',
     cell: (info) => {
-      if (info.row.getIsExpanded()) {
-        return <TypeParam fallback="-" value={info.getValue()} />
-      } else {
-        return (
-          <Box
-            sx={{
-              display: 'inline-block',
-              '> div': {
-                maxWidth: '380px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              },
-            }}
-          >
-            <TypeParam fallback="-" value={info.getValue()} />
-          </Box>
-        )
-      }
+      return (
+        <Box
+          sx={{
+            display: 'inline-block',
+            '> div': {
+              maxWidth: '380px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+          }}
+        >
+          <TypeParam fallback="-" value={info.getValue()} />
+        </Box>
+      )
     },
   }),
 
@@ -102,7 +99,13 @@ const columns = [
 ]
 
 const renderSubComponent = ({ row }: { row: any }) => {
-  return <JsonView src={row.original?.data} withContainer />
+  return (
+    <Box>
+      <TypeParam fallback="-" copyable={false} size="full" value={row.original?.type} />
+      <Divider color="#e7eaf3" />
+      <JsonView fallback="-" src={row.original?.data} withContainer />
+    </Box>
+  )
 }
 
 const getRowCanExpand = (row: any) => {

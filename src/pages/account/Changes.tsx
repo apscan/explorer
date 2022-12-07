@@ -59,6 +59,9 @@ const columns = [
 
   helper.accessor('type', {
     header: 'Module',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       const [address, module] = [
         info.row.original?.data?.move_resource_address,
@@ -142,7 +145,7 @@ const renderSubComponent = ({ row }: { row: any }) => {
 
   return (
     <Box>
-      <Text>{value}</Text>
+      <TypeParam fallback="-" copyable={false} size="full" value={value} />
       <Divider color="#e7eaf3" />
       <JsonView fallback="-" src={data} withContainer />
     </Box>
@@ -150,9 +153,6 @@ const renderSubComponent = ({ row }: { row: any }) => {
 }
 
 const getRowCanExpand = (row: any) => {
-  if (((row.original?.tx_type as string) || undefined)?.includes('TableItem')) {
-    return true
-  }
   return Boolean(row?.original?.data?.move_resource_data)
 }
 
