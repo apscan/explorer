@@ -52,7 +52,7 @@ const columns = [
     header: 'Type',
     cell: (info) => {
       if (info.row.getIsExpanded()) {
-        return <TypeParam fallback="-" value={info.getValue() + 'asdfasdfasdflkasdflawjerl;iawfl;asjkdfl asdf'} />
+        return <TypeParam fallback="-" value={info.getValue()} />
       } else {
         return (
           <Box
@@ -66,7 +66,7 @@ const columns = [
               },
             }}
           >
-            <TypeParam fallback="-" value={info.getValue() + 'asdfasldfjasldura;lwieru;alsdfjkasl;kfas;ldk'} />
+            <TypeParam fallback="-" value={info.getValue()} />
           </Box>
         )
       }
