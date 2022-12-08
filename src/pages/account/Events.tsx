@@ -53,7 +53,7 @@ const columns = [
       return (
         <Box
           sx={{
-            display: 'inline-block',
+            display: 'inline-flex',
             '> div': {
               maxWidth: '300px',
               overflow: 'hidden',

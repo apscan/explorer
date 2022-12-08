@@ -224,7 +224,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
           cell: (info) => (
             <Box
               sx={{
-                display: 'inline-block',
+                display: 'inline-flex',
                 '> div': {
                   maxWidth: '380px',
                   overflow: 'hidden',
