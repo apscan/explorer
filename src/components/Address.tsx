@@ -66,7 +66,7 @@ export const Address = memo(
         return
       }
 
-      fetch(`https://www.aptosnames.com/api/testnet/v1/name/${value}`)
+      fetch(`https://www.aptosnames.com/api/mainnet/v1/name/${value}`)
         .then((response) => response.json())
         .then(({ name }) => setAns(name))
     }, [value])
