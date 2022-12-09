@@ -16,8 +16,8 @@ export const History = ({
   coin: any
   history: {
     resourceType: string
-    timestamp: string
-    value: string
+    timestamp: string | undefined
+    value: string | undefined
   }[]
 }) => {
   const ref = useRef<HTMLDivElement>(null)
@@ -28,7 +28,13 @@ export const History = ({
     }
 
     const decimals = new RealBigNumber(10).pow(coin.decimals)
-    const data = [...history]
+    const data = (
+      [...history].filter((item) => item.timestamp && item.value !== undefined) as {
+        resourceType: string
+        timestamp: string
+        value: string
+      }[]
+    )
       .sort((a, b) => {
         if (a.timestamp > b.timestamp) {
           return 1

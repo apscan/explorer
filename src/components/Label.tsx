@@ -23,7 +23,7 @@ export const Label = memo(({ address, ...props }: LabelProps) => {
       {...props}
     >
       {' '}
-      {addressTagsMap[address].label}
+      {addressTagsMap[address]?.label}
     </Text>
   )
 })
