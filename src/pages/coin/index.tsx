@@ -24,7 +24,7 @@ export const Coin = () => {
   const tabs = useMemo(() => {
     if (!data) return undefined
 
-    const count = data?.transactions_count
+    const count = data?.events_count.reduce((all: number, curr: any) => curr.events_count + all, 0)
 
     return [
       {

@@ -52,7 +52,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
         const url = type
           ? `/coin_transfers?move_resource_generic_type_params=eq.["${type}"]`
           : id
-          ? `/coin_transfers_address?address=eq.${id}`
+          ? `/coin_transfers?address=eq.${id}`
           : ''
 
         return {

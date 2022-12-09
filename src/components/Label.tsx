@@ -7,10 +7,15 @@ export interface LabelProps extends TextProps {
 }
 
 export const Label = memo(({ address, ...props }: LabelProps) => {
+  if (!addressTagsMap[address]?.label) {
+    return null
+  }
+
   return (
     <Text
-      color="#77838f"
-      backgroundColor="rgba(119,131,143,.1)"
+      display="inline-flex"
+      color="#3498db"
+      backgroundColor="rgba(52,152,219,.1)"
       fontSize=".65625rem"
       lineHeight="1.7"
       padding="0.2rem 0.5rem"
@@ -18,7 +23,7 @@ export const Label = memo(({ address, ...props }: LabelProps) => {
       transition=".2s ease-in-out"
       _hover={{
         color: '#fff',
-        backgroundColor: '#77838f',
+        backgroundColor: '#3498db',
       }}
       {...props}
     >

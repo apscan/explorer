@@ -28,15 +28,14 @@ export const Account = () => {
   const address = useMemo(() => data?.address, [data])
   const { data: coin } = useCoinDetailQuery({ type: '0x1::aptos_coin::AptosCoin' })
   const { data: history = [] } = useAccountBalanceHistoryQuery({ id: address }, { skip: !address })
-  const showHistory = useMemo(() => !!coin && !!history.length, [coin, history.length])
+  const showHistory = useMemo(
+    () => !!coin && !!history.filter((item) => item.timestamp && item.value !== undefined).length,
+    [coin, history]
+  )
   const tabs = useMemo(() => {
     if (!data || !address) return undefined
 
-    const count =
-      data?.coin_transfer_events_count?.reduce(
-        (all: any, curr: any) => all + curr['0x1::coin::DepositEvent'] + curr['0x1::coin::WithdrawEvent'],
-        0
-      ) || 0
+    const count = data?.coin_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
 
     return [
       {
@@ -105,9 +104,9 @@ export const Account = () => {
                 `}
               />
             )}
-            {address && <Label ml="0.25rem" address={address} />}
           </InlineBox>
         }
+        sub={address && <Label ml="0.25rem" address={address} />}
       />
       <Box
         css={css`
