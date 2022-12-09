@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
-import { memo, useMemo } from 'react'
+import { addressTagsMap } from 'config/address-tags'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { truncated } from 'utils/truncated'
 import { Box, BoxProps } from './container'
 import { CopyButton } from './CopyButton'
@@ -19,10 +20,22 @@ export interface AddressProps extends BoxProps {
   hideTooltip?: boolean
   size?: 'full' | 'short' | 'long'
   copyable?: boolean
+  replaceAddress?: boolean
 }
 
 export const Address = memo(
-  ({ as = Link, copyable, tooltip: _tooltip, hideTooltip, value, size = 'long', fallback, ...props }: AddressProps) => {
+  ({
+    as = Link,
+    copyable,
+    tooltip: _tooltip,
+    hideTooltip,
+    value,
+    size = 'long',
+    fallback,
+    replaceAddress = true,
+    ...props
+  }: AddressProps) => {
+    const [ans, setAns] = useState()
     const text = useMemo(() => {
       if (!value) return
 
@@ -47,13 +60,24 @@ export const Address = memo(
       return _tooltip || value
     }, [hideTooltip, size, _tooltip, value])
 
-    if (!text) return <>{fallback}</>
+    useEffect(() => {
+      // Replace "address" with the address you want to lookup.
+      if (!value) {
+        return
+      }
+
+      fetch(`https://www.aptosnames.com/api/testnet/v1/name/${value}`)
+        .then((response) => response.json())
+        .then(({ name }) => setAns(name))
+    }, [value])
+
+    if (!text || !value) return <>{fallback}</>
 
     return (
       <Tooltip label={tooltip} isDisabled={!tooltip} closeDelay={500000}>
         <Box {...props} css={container}>
           <Box as={as} css={container} to={`/account/${value}`}>
-            {text}
+            {replaceAddress ? ans || addressTagsMap[value]?.label || text : text}
           </Box>
           {copy && value && <CopyButton text={value} />}
         </Box>

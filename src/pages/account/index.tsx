@@ -4,6 +4,7 @@ import { Address } from 'components/Address'
 import { Card } from 'components/Card'
 import { Box, Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
+import { Label } from 'components/Label'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
 import { useSearchTab } from 'hooks/useSearchTab'
@@ -92,6 +93,7 @@ export const Account = () => {
             Account
             {address && (
               <Address
+                replaceAddress={false}
                 size="full"
                 as="span"
                 value={address}
@@ -103,6 +105,7 @@ export const Account = () => {
                 `}
               />
             )}
+            {address && <Label ml="0.25rem" address={address} />}
           </InlineBox>
         }
       />
