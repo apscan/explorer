@@ -20,7 +20,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
       data?.all_balances?.map(
         (coin: {
           move_resource_generic_type_params: string[]
-          balance: string[]
+          balance: string
           coin_info: {
             name: string
             symbol: string
