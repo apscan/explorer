@@ -14,7 +14,6 @@ export const usePageStartLimit = () => {
 
   const limit = useMemo(() => {
     const limitInUrl = parseInt(queryString.parse(location.search)?.limit as string)
-    console.log('limitInUrl || storedPageSize', limitInUrl, storedPageSize)
 
     return isNaN(limitInUrl) ? storedPageSize : limitInUrl
   }, [location.search, storedPageSize])

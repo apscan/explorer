@@ -70,8 +70,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
     accountChanges: builder.query<any, { id: string; start?: number; pageSize?: number }>({
       keepUnusedDataFor: 86400, // keep for 24 hours
       query: ({ id, start = 0, pageSize }) => {
-        console.log('asdfafd')
-
         if (!id) throw new Error('miss transaction version')
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 

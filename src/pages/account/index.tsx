@@ -1,8 +1,9 @@
 import { css } from '@emotion/react'
 import { useAccountBalanceHistoryQuery, useAccountDetailQuery, useCoinDetailQuery } from 'api'
 import { Address } from 'components/Address'
+import { Ans } from 'components/Ans'
 import { Card } from 'components/Card'
-import { Box, Container, InlineBox } from 'components/container'
+import { Box, Container, Flex, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { Label } from 'components/Label'
 import { PageTitle } from 'components/PageTitle'
@@ -106,7 +107,14 @@ export const Account = () => {
             )}
           </InlineBox>
         }
-        sub={address && <Label ml="0.25rem" address={address} />}
+        sub={
+          address && (
+            <Flex>
+              <Ans ml="0.25rem" address={address} />
+              <Label ml="0.25rem" address={address} />
+            </Flex>
+          )
+        }
       />
       <Box
         css={css`

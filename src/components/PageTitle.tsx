@@ -15,7 +15,7 @@ export const PageTitle = ({ value, sub }: { value: React.ReactNode; sub?: React.
       >
         {value}
       </Box>
-      {sub && <Box>{sub}</Box>}
+      {sub}
     </Box>
   )
 }

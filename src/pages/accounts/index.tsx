@@ -18,6 +18,7 @@ import { useMemo } from 'react'
 import { useAppStats, useTotalSupply } from 'state/api/hooks'
 import { usePageSize } from 'hooks/usePageSize'
 import { toFixedNumber } from 'utils/number'
+import { Name } from 'components/Name'
 
 const helper = createColumnHelper<any>()
 const maxCount = 1000
@@ -55,7 +56,14 @@ export const Accounts = () => {
           nowrap: true,
         },
         header: 'Address',
-        cell: (info) => <Address value={info.getValue()} size="short" />,
+        cell: (info) => <Address replaceAddress={false} value={info.getValue()} size="short" />,
+      }),
+      helper.accessor('address', {
+        meta: {
+          nowrap: true,
+        },
+        header: 'Name',
+        cell: (info) => <Name address={info.getValue()} />,
       }),
       helper.accessor('created_at_timestamp', {
         meta: {

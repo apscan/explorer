@@ -27,7 +27,6 @@ export const Label = memo(({ address, ...props }: LabelProps) => {
       }}
       {...props}
     >
-      {' '}
       {addressTagsMap[address]?.label}
     </Text>
   )

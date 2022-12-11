@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { addressTagsMap } from 'config/address-tags'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { useAns } from 'hooks/useAns'
+import { memo, useMemo } from 'react'
 import { truncated } from 'utils/truncated'
 import { Box, BoxProps } from './container'
 import { CopyButton } from './CopyButton'
@@ -35,7 +36,7 @@ export const Address = memo(
     replaceAddress = true,
     ...props
   }: AddressProps) => {
-    const [ans, setAns] = useState()
+    const ans = useAns(value)
     const text = useMemo(() => {
       if (!value) return
 
@@ -59,17 +60,6 @@ export const Address = memo(
 
       return _tooltip || value
     }, [hideTooltip, size, _tooltip, value])
-
-    useEffect(() => {
-      // Replace "address" with the address you want to lookup.
-      if (!value) {
-        return
-      }
-
-      fetch(`https://www.aptosnames.com/api/mainnet/v1/name/${value}`)
-        .then((response) => response.json())
-        .then(({ name }) => setAns(name))
-    }, [value])
 
     if (!text || !value) return <>{fallback}</>
 
