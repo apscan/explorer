@@ -1,4 +1,3 @@
-import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountsQuery } from 'api'
 import { Address } from 'components/Address'
@@ -19,20 +18,21 @@ import { useAppStats, useTotalSupply } from 'state/api/hooks'
 import { usePageSize } from 'hooks/usePageSize'
 import { toFixedNumber } from 'utils/number'
 import { Name } from 'components/Name'
+import { formatFixed } from '@ethersproject/bignumber'
 
 const helper = createColumnHelper<any>()
 const maxCount = 1000
+
+function getMaxFractionDigits(value?: string) {
+  return formatFixed(value || '0', 8).split('.')[0]?.length > 3 ? 0 : undefined
+}
 
 export const Accounts = () => {
   const { address_count: addressCount } = useAppStats()
   const totalSupply = useTotalSupply(false)
   const [pageSize, setPageSize, page, setPage] = usePageSize()
 
-  const {
-    data: { data } = {},
-    isLoading,
-    error,
-  } = useAccountsQuery(
+  const { data: { data } = {}, isLoading } = useAccountsQuery(
     {
       pageSize,
       offset: (page - 1) * pageSize,
@@ -77,21 +77,42 @@ export const Accounts = () => {
           nowrap: true,
         },
         header: 'Available (APT)',
-        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => (
+          <AmountFormat
+            minimumFractionDigits={0}
+            maximumFractionDigits={getMaxFractionDigits(info.getValue())}
+            postfix={false}
+            value={info.getValue()}
+          />
+        ),
       }),
       helper.accessor('aptos_coin_staked', {
         meta: {
           nowrap: true,
         },
         header: 'Staked (APT)',
-        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => (
+          <AmountFormat
+            minimumFractionDigits={0}
+            maximumFractionDigits={getMaxFractionDigits(info.getValue())}
+            postfix={false}
+            value={info.getValue()}
+          />
+        ),
       }),
       helper.accessor('aptos_coin_total_balance', {
         meta: {
           nowrap: true,
         },
         header: 'Balance (APT)',
-        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => (
+          <AmountFormat
+            minimumFractionDigits={0}
+            maximumFractionDigits={getMaxFractionDigits(info.getValue())}
+            postfix={false}
+            value={info.getValue()}
+          />
+        ),
       }),
       helper.accessor('percentage', {
         meta: {
