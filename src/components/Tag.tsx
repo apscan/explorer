@@ -1,13 +1,14 @@
 import { Text, TextProps } from '@chakra-ui/react'
 import { addressTagsMap } from 'config/address-tags'
+import { CoinTagsMap } from 'config/coin-tags'
 import { memo } from 'react'
 
 export interface LabelProps extends TextProps {
   address: string
 }
 
-export const Label = memo(({ address, ...props }: LabelProps) => {
-  if (!addressTagsMap[address]?.label) {
+export const Tag = memo(({ address, ...props }: LabelProps) => {
+  if (!addressTagsMap[address]?.label && !CoinTagsMap[address]) {
     return null
   }
 
@@ -28,8 +29,9 @@ export const Label = memo(({ address, ...props }: LabelProps) => {
       {...props}
     >
       {addressTagsMap[address]?.label}
+      {CoinTagsMap[address]}
     </Text>
   )
 })
 
-Label.displayName = 'Label'
+Tag.displayName = 'Label'

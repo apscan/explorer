@@ -5,7 +5,7 @@ import { Ans } from 'components/Ans'
 import { Card } from 'components/Card'
 import { Box, Container, Flex, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
-import { Label } from 'components/Label'
+import { Tag } from 'components/Tag'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
 import { useSearchTab } from 'hooks/useSearchTab'
@@ -111,7 +111,7 @@ export const Account = () => {
           address && (
             <Flex>
               <Ans ml="0.25rem" address={address} />
-              <Label ml="0.25rem" address={address} />
+              <Tag ml="0.25rem" address={address} />
             </Flex>
           )
         }

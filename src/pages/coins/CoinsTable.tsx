@@ -6,6 +6,7 @@ import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { TypeParamLink } from 'components/TypeParamLink'
+import { CoinTagsMap } from 'config/coin-tags'
 import { useMemo } from 'react'
 import { AptosCoin } from 'utils'
 
@@ -47,7 +48,11 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('name', {
         header: 'Name',
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+          const type = info.row.original?.['move_resource_generic_type_params']?.[0]
+
+          return info.getValue() + (CoinTagsMap[type] ? ` (${CoinTagsMap[type]})` : '')
+        },
       }),
       helper.accessor('total_supply', {
         header: 'Total Supply',

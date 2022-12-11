@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { useCoinDetailQuery, useMarketInfoQuery } from 'api'
 import { Card } from 'components/Card'
-import { Container, InlineBox } from 'components/container'
+import { Container, Flex, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
@@ -15,6 +15,7 @@ import { Box } from '@chakra-ui/react'
 import { Overview } from './Overview'
 import { Market } from './Market'
 import { Holders } from './Holders'
+import { Tag } from 'components/Tag'
 
 export const Coin = () => {
   const { type } = useParams<{ type: string }>()
@@ -83,6 +84,11 @@ export const Coin = () => {
               {type && <CopyButton text={type} />}
             </span>
           </InlineBox>
+        }
+        sub={
+          <Flex>
+            <Tag ml="0.25rem" address={type || ''} />
+          </Flex>
         }
       />
       <Box
