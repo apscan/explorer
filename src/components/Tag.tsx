@@ -2,6 +2,7 @@ import { Text, TextProps } from '@chakra-ui/react'
 import { addressTagsMap } from 'config/address-tags'
 import { CoinTagsMap } from 'config/coin-tags'
 import { memo } from 'react'
+import { Link } from './link'
 
 export interface LabelProps extends TextProps {
   address: string

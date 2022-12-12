@@ -58,12 +58,12 @@ export const Accounts = () => {
         header: 'Address',
         cell: (info) => <Address replaceAddress={false} value={info.getValue()} size="short" />,
       }),
-      helper.accessor('address', {
+      helper.accessor('name', {
         meta: {
           nowrap: true,
         },
-        header: 'Name',
-        cell: (info) => <Name address={info.getValue()} />,
+        header: 'Name | Tag',
+        cell: (info) => <Name address={info.row.original?.address} />,
       }),
       helper.accessor('created_at_timestamp', {
         meta: {
@@ -76,43 +76,22 @@ export const Accounts = () => {
         meta: {
           nowrap: true,
         },
-        header: 'Available (APT)',
-        cell: (info) => (
-          <AmountFormat
-            minimumFractionDigits={0}
-            maximumFractionDigits={getMaxFractionDigits(info.getValue())}
-            postfix={false}
-            value={info.getValue()}
-          />
-        ),
+        header: 'Available',
+        cell: (info) => <AmountFormat maximumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_staked', {
         meta: {
           nowrap: true,
         },
-        header: 'Staked (APT)',
-        cell: (info) => (
-          <AmountFormat
-            minimumFractionDigits={0}
-            maximumFractionDigits={getMaxFractionDigits(info.getValue())}
-            postfix={false}
-            value={info.getValue()}
-          />
-        ),
+        header: 'Staked',
+        cell: (info) => <AmountFormat maximumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_total_balance', {
         meta: {
           nowrap: true,
         },
-        header: 'Balance (APT)',
-        cell: (info) => (
-          <AmountFormat
-            minimumFractionDigits={0}
-            maximumFractionDigits={getMaxFractionDigits(info.getValue())}
-            postfix={false}
-            value={info.getValue()}
-          />
-        ),
+        header: 'Balance',
+        cell: (info) => <AmountFormat maximumFractionDigits={0} value={info.getValue()} />,
       }),
       helper.accessor('percentage', {
         meta: {
@@ -139,7 +118,7 @@ export const Accounts = () => {
         meta: {
           nowrap: true,
         },
-        header: 'Transactions',
+        header: 'Txs',
         cell: (info) => <NumberFormat to={`/account/${info.row.original.address}?tab=tx`} value={info.getValue()} />,
       }),
       // helper.accessor('resources_count', {

@@ -226,7 +226,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
               sx={{
                 display: 'inline-flex',
                 '> div': {
-                  maxWidth: '380px',
+                  maxWidth: '190px',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -395,7 +395,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
         sx={{
           '& > table td:nth-child(3)': {
             padding: '0px 10px',
-            width: '400px',
+            width: '200px',
           },
           '& > table td:nth-child(4)': {
             padding: '0px 10px',

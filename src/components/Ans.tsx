@@ -1,8 +1,7 @@
 import { memo } from 'react'
-import { Image, Text, TextProps } from '@chakra-ui/react'
+import { Image, Link, Text, TextProps } from '@chakra-ui/react'
 import { useAns } from 'hooks/useAns'
 import ANSLogo from 'assets/icons/apscan-name.jpeg'
-import { css } from '@emotion/react'
 
 export interface LabelProps extends TextProps {
   address: string
@@ -17,6 +16,10 @@ export const Ans = memo(({ address, ...props }: LabelProps) => {
 
   return (
     <Text
+      as={Link}
+      rel="noopener noreferrer"
+      target="_blank"
+      href={`https://www.aptosnames.com/name/${ans}`}
       sx={{
         display: 'inline-flex',
         color: '#3498db',
@@ -30,6 +33,7 @@ export const Ans = memo(({ address, ...props }: LabelProps) => {
         '&:hover': {
           color: '#fff',
           backgroundColor: '#3498db',
+          textDecoration: 'none',
         },
         '& > img': {
           marginRight: '0.25rem',
