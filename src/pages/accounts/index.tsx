@@ -69,22 +69,22 @@ export const Accounts = () => {
         meta: {
           nowrap: true,
         },
-        header: 'Available',
+        header: 'Available (APT)',
         cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_staked', {
         meta: {
           nowrap: true,
         },
-        header: 'Staked',
+        header: 'Staked (APT)',
         cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_total_balance', {
         meta: {
           nowrap: true,
         },
-        header: 'Balance',
-        cell: (info) => <AmountFormat minimumFractionDigits={0} value={info.getValue()} />,
+        header: 'Balance (APT)',
+        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('percentage', {
         meta: {
