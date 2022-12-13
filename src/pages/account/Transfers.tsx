@@ -19,6 +19,7 @@ import { parseUserTransfer } from 'utils/parseUserTransfer'
 import { Link } from 'components/link'
 import { useMemo } from 'react'
 import { TypeParam } from 'components/TypeParam'
+import { Name } from 'components/Name'
 
 const helper = createColumnHelper<any>()
 
@@ -259,7 +260,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
 
             const transferType = parseType(info.row.original)
             if (transferType === 'OUT' || transferType === 'SELF') {
-              return <Address size="short" as="span" value={info.row.original?.address} />
+              return <Name address={info.row.original?.address} />
             }
             if (!info.row.original?.counter_party) {
               return '-'
@@ -335,7 +336,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
 
               const transferType = parseType(info.row.original)
               if (transferType === 'IN' || transferType === 'SELF') {
-                return <Address size="short" as="span" value={info.row.original?.address} />
+                return <Name address={info.row.original?.address} />
               }
 
               if (!info.row.original?.counter_party) {
@@ -398,10 +399,13 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
             width: '200px',
           },
           '& > table td:nth-child(4)': {
-            padding: '0px 10px',
+            position: 'relative',
           },
           '& > table td:nth-child(5)': {
             padding: '0px 10px',
+          },
+          '& > table td:nth-child(6)': {
+            position: 'relative',
           },
           '& > table td:nth-child(7)': {
             padding: '0px 10px',

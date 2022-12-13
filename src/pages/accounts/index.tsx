@@ -17,7 +17,6 @@ import { useMemo } from 'react'
 import { useAppStats, useTotalSupply } from 'state/api/hooks'
 import { usePageSize } from 'hooks/usePageSize'
 import { toFixedNumber } from 'utils/number'
-import { Name } from 'components/Name'
 import { formatFixed } from '@ethersproject/bignumber'
 
 const helper = createColumnHelper<any>()

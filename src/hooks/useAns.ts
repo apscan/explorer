@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react'
+import { AnsContext } from './../providers/AnsProvider'
+import { useEffect, useContext, useMemo, useState } from 'react'
 
 export const useAns = (address?: string) => {
-  const [ans, setAns] = useState()
+  const { ansMap, getAns } = useContext(AnsContext)
+  const [ans, setAns] = useState<string>()
 
   useEffect(() => {
     if (!address) {
       return
     }
 
-    fetch(`https://www.aptosnames.com/api/mainnet/v1/name/${address}`)
-      .then((response) => response.json())
-      .then(({ name }) => setAns(name))
-  }, [address])
+    setAns(getAns(address))
+  }, [address, getAns])
 
-  return ans
+  return useMemo(() => (!address ? '' : ans || ansMap[address]), [address, ans, ansMap])
 }
