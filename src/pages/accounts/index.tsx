@@ -61,7 +61,7 @@ export const Accounts = () => {
         meta: {
           nowrap: true,
         },
-        header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Age" />,
+        header: () => <SwitchDateFormat timeLabel="Time" ageLabel="Age" />,
         cell: (info) => <DateTime value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_balance', {

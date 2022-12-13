@@ -45,7 +45,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
         meta: {
           nowrap: true,
         },
-        header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Creation Age" />,
+        header: () => <SwitchDateFormat timeLabel="Time" ageLabel="Age" />,
         cell: (info) => <DateTime value={info.row.original?.created_at.timestamp} />,
       }),
       helper.accessor('name', {
