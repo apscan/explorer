@@ -67,7 +67,7 @@ export const Address = memo(
       <Tooltip label={tooltip} isDisabled={!tooltip} closeDelay={500000}>
         <Box {...props} css={container}>
           <Box as={as} css={container} to={`/account/${value}`}>
-            {replaceAddress ? ans || addressTagsMap[value]?.label || text : text}
+            {replaceAddress ? (ans && `${ans}.apt`) || addressTagsMap[value]?.label || text : text}
           </Box>
           {copy && value && <CopyButton text={value} />}
         </Box>

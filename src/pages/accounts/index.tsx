@@ -56,20 +56,13 @@ export const Accounts = () => {
           nowrap: true,
         },
         header: 'Address',
-        cell: (info) => <Address replaceAddress={false} value={info.getValue()} size="short" />,
-      }),
-      helper.accessor('name', {
-        meta: {
-          nowrap: true,
-        },
-        header: 'Name | Tag',
-        cell: (info) => <Name address={info.row.original?.address} />,
+        cell: (info) => <Address value={info.getValue()} size="short" />,
       }),
       helper.accessor('created_at_timestamp', {
         meta: {
           nowrap: true,
         },
-        header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Creation Age" />,
+        header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Age" />,
         cell: (info) => <DateTime value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_balance', {
@@ -77,21 +70,21 @@ export const Accounts = () => {
           nowrap: true,
         },
         header: 'Available',
-        cell: (info) => <AmountFormat maximumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_staked', {
         meta: {
           nowrap: true,
         },
         header: 'Staked',
-        cell: (info) => <AmountFormat maximumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_total_balance', {
         meta: {
           nowrap: true,
         },
         header: 'Balance',
-        cell: (info) => <AmountFormat maximumFractionDigits={0} value={info.getValue()} />,
+        cell: (info) => <AmountFormat minimumFractionDigits={0} value={info.getValue()} />,
       }),
       helper.accessor('percentage', {
         meta: {
