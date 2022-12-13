@@ -56,7 +56,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
           return (
             <Text display="inline-flex" alignItems="center">
               {info.getValue()}&nbsp;
-              {CoinTagsMap[type] && <Tag padding="0rem 0.5rem" address={type} />}
+              {CoinTagsMap[type] && <i>({CoinTagsMap[type]})</i>}
             </Text>
           )
         },
