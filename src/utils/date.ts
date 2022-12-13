@@ -44,14 +44,26 @@ export const fromNow = (value: string | number | dayjs.Dayjs | Date = 0): string
   const minutes = dayjs(now).diff(target, 'minutes')
   const hours = dayjs(now).diff(target, 'hours')
   const days = dayjs(now).diff(target, 'days')
+  const weeks = dayjs(now).diff(target, 'weeks')
+  const years = dayjs(now).diff(target, 'years')
 
   const secondStr = `${diffDate.get('seconds')}s`
-  const minuteStr = `${diffDate.get('minutes')}m`
+  const minuteStr = `${diffDate.get('minutes')}min`
   const hourStr = `${diffDate.get('hours')}h`
   const dayStr = `${days}d`
+  const weekStr = `${Math.floor(days / 7)}w`
+  const yearStr = `${Math.floor(days / 365)}y`
+
+  if (years) {
+    return `${yearStr} ${weekStr} ${dayStr} ${age}`
+  }
+
+  if (weeks) {
+    return `${weekStr} ${dayStr} ${hourStr} ${age}`
+  }
 
   if (days) {
-    return `${dayStr} ${hourStr} ${minuteStr} ${secondStr} ${age}`
+    return `${dayStr} ${hourStr} ${minuteStr} ${age}`
   }
 
   if (hours) {
