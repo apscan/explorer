@@ -16,8 +16,8 @@ export const History = ({
   coin: any
   history: {
     resourceType: string
-    timestamp: string
-    value: string
+    timestamp: string | undefined
+    value: string | undefined
   }[]
 }) => {
   const ref = useRef<HTMLDivElement>(null)
@@ -28,7 +28,13 @@ export const History = ({
     }
 
     const decimals = new RealBigNumber(10).pow(coin.decimals)
-    const data = [...history]
+    const data = (
+      [...history].filter((item) => item.timestamp && item.value !== undefined) as {
+        resourceType: string
+        timestamp: string
+        value: string
+      }[]
+    )
       .sort((a, b) => {
         if (a.timestamp > b.timestamp) {
           return 1
@@ -55,7 +61,7 @@ export const History = ({
         zoomType: 'x',
       },
       title: {
-        text: 'Coin Balance',
+        text: 'APT Available',
         style: {
           color: lightTheme.text.body,
           fontSize: '14px',
@@ -64,17 +70,14 @@ export const History = ({
       },
       xAxis: {
         type: 'datetime',
-        title: {
-          text: 'date',
-        },
       },
       yAxis: {
         title: {
-          text: 'balance',
+          text: '',
         },
       },
       legend: {
-        enabled: true,
+        enabled: false,
       },
       plotOptions: {
         area: {
@@ -91,7 +94,7 @@ export const History = ({
             ],
           },
           marker: {
-            radius: 2,
+            enabled: false,
           },
           lineWidth: 1,
           states: {
@@ -114,7 +117,7 @@ export const History = ({
   return (
     <Card>
       <Box padding="12px">
-        <Box height="291px" ref={ref} id="balance-history-charts"></Box>
+        <Box height="200px" ref={ref} id="balance-history-charts"></Box>
       </Box>
     </Card>
   )

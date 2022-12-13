@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@ant-design/maps': ^1.0.4
+  '@chakra-ui/icons': ^2.0.13
   '@chakra-ui/react': ^2.2.9
   '@craco/craco': ^6.4.5
   '@emotion/babel-plugin': ^11.10.2
@@ -86,6 +87,7 @@ specifiers:
 
 dependencies:
   '@ant-design/maps': 1.0.4_biqbaboplfbrettd7655fr4n2y
+  '@chakra-ui/icons': 2.0.13_react@18.2.0
   '@chakra-ui/react': 2.2.9_kwjdylbqj6pspeszli4dc362ma
   '@emotion/cache': 11.10.3
   '@emotion/react': 11.10.0_ug65io7jkbhmo4fihdmbrh3ina
@@ -2132,6 +2134,17 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@chakra-ui/icon/3.0.13_react@18.2.0:
+    resolution:
+      { integrity: sha512-RaDLC4psd8qyInY2RX4AlYRfpLBNw3VsMih17BFf8EESVhBXNJcYy7Q9eMV/K4NvZfZT42vuVqGVNFmkG89lBQ== }
+    peerDependencies:
+      '@chakra-ui/system': '>=2.0.0'
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/shared-utils': 2.0.3
+      react: 18.2.0
+    dev: false
+
   /@chakra-ui/icon/3.0.9_q4a3cbcpctftsvshrietnfkwtq:
     resolution:
       { integrity: sha512-P2Pwm/za6m1W1oqL2kGHH6XrrymsBjqYAFwOW2lB5Q6mI1e+RYe/iMxDoPSLHMYhqdfH7vyib/ffE3Vv3a5oTA== }
@@ -2141,6 +2154,17 @@ packages:
     dependencies:
       '@chakra-ui/shared-utils': 2.0.1
       '@chakra-ui/system': 2.2.7_rq3l25qc4qpq3j4w6o4x7hatzy
+      react: 18.2.0
+    dev: false
+
+  /@chakra-ui/icons/2.0.13_react@18.2.0:
+    resolution:
+      { integrity: sha512-86X+NXAr2N/whkp8vNt0Qf5udqSPVc3lAe4U4w7SkSa/+PnDggfAM6Sc5HwLp8Er0h/RF97DuwFi9YZ/ZRJCDA== }
+    peerDependencies:
+      '@chakra-ui/system': '>=2.0.0'
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/icon': 3.0.13_react@18.2.0
       react: 18.2.0
     dev: false
 
@@ -2694,6 +2718,11 @@ packages:
   /@chakra-ui/shared-utils/2.0.1:
     resolution:
       { integrity: sha512-NXDBl/u4wrSNp0ON5R3r3evkRurrAz2yuO7neooaG+O5HEenVouGqm4CsXd6lUAPmjwiGzA0LQFNCt0Hj92dXg== }
+    dev: false
+
+  /@chakra-ui/shared-utils/2.0.3:
+    resolution:
+      { integrity: sha512-pCU+SUGdXzjAuUiUT8mriekL3tJVfNdwSTIaNeip7k/SWDzivrKGMwAFBxd3XVTDevtVusndkO4GJuQ3yILzDg== }
     dev: false
 
   /@chakra-ui/skeleton/2.0.14_q4a3cbcpctftsvshrietnfkwtq:

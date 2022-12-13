@@ -1,3 +1,4 @@
+import { Text } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AmountFormat } from 'components/AmountFormat'
 import { Box } from 'components/container'
@@ -5,7 +6,9 @@ import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
+import { Tag } from 'components/Tag'
 import { TypeParamLink } from 'components/TypeParamLink'
+import { CoinTagsMap } from 'config/coin-tags'
 import { useMemo } from 'react'
 import { AptosCoin } from 'utils'
 
@@ -42,12 +45,21 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
         meta: {
           nowrap: true,
         },
-        header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Creation Age" />,
+        header: () => <SwitchDateFormat timeLabel="Time" ageLabel="Age" />,
         cell: (info) => <DateTime value={info.row.original?.created_at.timestamp} />,
       }),
       helper.accessor('name', {
         header: 'Name',
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+          const type = info.row.original?.['move_resource_generic_type_params']?.[0]
+
+          return (
+            <Text display="inline-flex" alignItems="center">
+              {info.getValue()}&nbsp;
+              {CoinTagsMap[type] && <i>({CoinTagsMap[type]})</i>}
+            </Text>
+          )
+        },
       }),
       helper.accessor('total_supply', {
         header: 'Total Supply',
@@ -59,7 +71,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
             '-'
           ) : (
             <AmountFormat
-              fixed={0}
+              maximumFractionDigits={0}
               value={info.getValue()}
               postfix={` ${info.row.original.symbol}`}
               decimals={info.row.original.decimals}

@@ -1,3 +1,4 @@
+import { AnsProvider } from 'providers/AnsProvider'
 import { ApiStateProvider } from 'providers/ApiStateProvider'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -29,14 +30,16 @@ root.render(
   <React.StrictMode>
     <ReduxProvider store={store}>
       <ApiStateProvider>
-        <BrowserRouter>
-          <Updaters />
-          <ThemeProvider>
-            <HelmetProvider>
-              <App />
-            </HelmetProvider>
-          </ThemeProvider>
-        </BrowserRouter>
+        <AnsProvider>
+          <BrowserRouter>
+            <Updaters />
+            <ThemeProvider>
+              <HelmetProvider>
+                <App />
+              </HelmetProvider>
+            </ThemeProvider>
+          </BrowserRouter>
+        </AnsProvider>
       </ApiStateProvider>
     </ReduxProvider>
   </React.StrictMode>

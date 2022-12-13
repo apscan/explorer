@@ -13,7 +13,8 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
-import { OneLineText } from 'components/OneLineText'
+import { TypeParam } from 'components/TypeParam'
+import { Divider, Text } from '@chakra-ui/react'
 
 const helper = createColumnHelper<any>()
 
@@ -55,7 +56,7 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Address / Handle',
+    header: 'Address | Handle',
     cell: (info) => {
       if (info.row.original.tx_type === 'WriteTableItem' || info.row.original.type === 'DeleteTableItem') {
         return (
@@ -74,7 +75,10 @@ const columns = [
   }),
 
   helper.accessor('type', {
-    header: 'Module / Key',
+    header: 'Module | Key',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       if (isTableType(info.row.original?.tx_type)) {
         return (
@@ -107,7 +111,10 @@ const columns = [
   }),
 
   helper.accessor('data.move_resource_name', {
-    header: 'Resource / Value',
+    header: 'Resource | Value',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       if (isTableType(info.row.original?.tx_type)) {
         return <Hash ellipsis value={info.row.original?.data?.value} tooltip />
@@ -117,17 +124,7 @@ const columns = [
         const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
         const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-        if (!resourceType) {
-          return '-'
-        }
-
-        if (info.row.getIsExpanded()) {
-          return value
-        }
-
-        return (
-          <OneLineText tooltip size="long" value={`${info.row.original?.data?.move_resource_name}<${resourceType}>`} />
-        )
+        return <TypeParam fallback="-" value={value} />
       }
 
       return info.getValue() || '-'
@@ -177,7 +174,7 @@ const columns = [
 ]
 
 const renderSubComponent = ({ row }: { row: any }) => {
-  if (((row.original?.tx_type as string) || undefined)?.includes('TableItem')) {
+  if ((row.original?.tx_type as string)?.includes('TableItem')) {
     const rawData = row.original?.data || {}
     const data = {
       table_data_key: rawData.table_data_key,
@@ -185,8 +182,30 @@ const renderSubComponent = ({ row }: { row: any }) => {
       table_data_value: rawData.table_data_value,
       table_data_value_type: rawData.table_data_value_type,
     }
+    return (
+      <Box>
+        <Text>{row.original?.data?.value}</Text>
+        <Divider color="#e7eaf3" />
+        <JsonView fallback="-" src={data} withContainer />
+      </Box>
+    )
+  }
 
-    return <JsonView fallback="-" src={data} />
+  if (isResourceType(row.original?.tx_type)) {
+    const resourceType = (row.original?.data?.move_resource_generic_type_params || [])[0]
+    const value = `${row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
+
+    if (!resourceType) {
+      return <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
+    }
+
+    return (
+      <Box>
+        <TypeParam fallback="-" copyable={false} size="full" value={value} />
+        <Divider color="#e7eaf3" />
+        <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
+      </Box>
+    )
   }
 
   return <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
@@ -226,7 +245,14 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       <DataTable
         sx={{
           '& > table td:nth-child(6)': {
-            maxWidth: '300px',
+            maxWidth: '250px',
+            '> div': {
+              display: 'block',
+              maxWidth: '250px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
         }}
         page={pageProps.page}

@@ -52,7 +52,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
         const url = type
           ? `/coin_transfers?move_resource_generic_type_params=eq.["${type}"]`
           : id
-          ? `/coin_transfers_address?address=eq.${id}`
+          ? `/coin_transfers?address=eq.${id}`
           : ''
 
         return {
@@ -70,8 +70,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
     accountChanges: builder.query<any, { id: string; start?: number; pageSize?: number }>({
       keepUnusedDataFor: 86400, // keep for 24 hours
       query: ({ id, start = 0, pageSize }) => {
-        console.log('asdfafd')
-
         if (!id) throw new Error('miss transaction version')
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
@@ -98,29 +96,43 @@ export const accountApi = emptySplitApi.injectEndpoints({
     accountBalanceHistory: builder.query<
       {
         resourceType: string
-        timestamp: string
-        value: string
+        timestamp: string | undefined
+        value: string | undefined
       }[],
       { id: string; start?: number; pageSize?: number }
     >({
       keepUnusedDataFor: 86400, // keep for 24 hours
-      query: ({ id, start = 0, pageSize }) => {
+      query: ({ id }) => {
         if (!id) throw new Error('miss transaction version')
 
         return {
-          url: `/resource_changes?address=eq.${id}&move_resource_address=eq.0x1&move_resource_module=eq.coin&move_resource_name=eq.CoinStore&move_resource_generic_type_params=eq.["0x1::aptos_coin::AptosCoin"]`,
+          url: `coin_balance_history?address=eq.${id}&move_resource_generic_type_params=eq.[%220x1::aptos_coin::AptosCoin%22]&limit=1`,
           headers: {
             'Range-Unit': 'items',
             Range: `0-${Number.MAX_SAFE_INTEGER}`,
           },
         }
       },
-      transformResponse(data: any[], meta: any) {
-        console.log('data')
-        return data.map((item) => ({
-          value: item.move_resource_data?.coin?.value,
-          timestamp: item.time_microseconds,
-          resourceType: (item.move_resource_generic_type_params || [])[0],
+      transformResponse(
+        data: {
+          address: string
+          move_resource_generic_type_params: [string]
+          coin_balance_history: {
+            days_from_present: number
+            resource_change: {
+              transaction_version: number
+              time_microseconds: string
+              balance: string
+            } | null
+          }[]
+        }[],
+        meta: any
+      ) {
+        console.log('data', data)
+        return data[0].coin_balance_history.map((item) => ({
+          value: item.resource_change?.balance,
+          timestamp: item.resource_change?.time_microseconds,
+          resourceType: data[0].move_resource_generic_type_params[0],
         }))
       },
     }),

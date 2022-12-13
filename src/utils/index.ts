@@ -48,7 +48,7 @@ export const isLargeObject = (object: any): boolean => {
         stack.push(value[i])
       }
     }
-    if (bytes > 2000) {
+    if (bytes > 10000) {
       return true
     }
   }

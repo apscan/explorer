@@ -1,4 +1,6 @@
 import { css } from '@emotion/react'
+import { addressTagsMap } from 'config/address-tags'
+import { useAns } from 'hooks/useAns'
 import { memo, useMemo } from 'react'
 import { truncated } from 'utils/truncated'
 import { Box, BoxProps } from './container'
@@ -19,10 +21,22 @@ export interface AddressProps extends BoxProps {
   hideTooltip?: boolean
   size?: 'full' | 'short' | 'long'
   copyable?: boolean
+  replaceAddress?: boolean
 }
 
 export const Address = memo(
-  ({ as = Link, copyable, tooltip: _tooltip, hideTooltip, value, size = 'long', fallback, ...props }: AddressProps) => {
+  ({
+    as = Link,
+    copyable,
+    tooltip: _tooltip,
+    hideTooltip,
+    value,
+    size = 'long',
+    fallback,
+    replaceAddress = true,
+    ...props
+  }: AddressProps) => {
+    const ans = useAns(value)
     const text = useMemo(() => {
       if (!value) return
 
@@ -47,13 +61,13 @@ export const Address = memo(
       return _tooltip || value
     }, [hideTooltip, size, _tooltip, value])
 
-    if (!text) return <>{fallback}</>
+    if (!text || !value) return <>{fallback}</>
 
     return (
       <Tooltip label={tooltip} isDisabled={!tooltip} closeDelay={500000}>
         <Box {...props} css={container}>
           <Box as={as} css={container} to={`/account/${value}`}>
-            {text}
+            {replaceAddress ? (ans && `${ans}.apt`) || addressTagsMap[value]?.label || text : text}
           </Box>
           {copy && value && <CopyButton text={value} />}
         </Box>

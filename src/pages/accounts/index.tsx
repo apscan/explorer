@@ -1,4 +1,3 @@
-import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountsQuery } from 'api'
 import { Address } from 'components/Address'
@@ -27,11 +26,7 @@ export const Accounts = () => {
   const totalSupply = useTotalSupply(false)
   const [pageSize, setPageSize, page, setPage] = usePageSize()
 
-  const {
-    data: { data } = {},
-    isLoading,
-    error,
-  } = useAccountsQuery(
+  const { data: { data } = {}, isLoading } = useAccountsQuery(
     {
       pageSize,
       offset: (page - 1) * pageSize,
@@ -61,7 +56,7 @@ export const Accounts = () => {
         meta: {
           nowrap: true,
         },
-        header: () => <SwitchDateFormat timeLabel="Creation Time" ageLabel="Creation Age" />,
+        header: () => <SwitchDateFormat timeLabel="Time" ageLabel="Age" />,
         cell: (info) => <DateTime value={info.getValue()} />,
       }),
       helper.accessor('aptos_coin_balance', {
@@ -110,7 +105,7 @@ export const Accounts = () => {
         meta: {
           nowrap: true,
         },
-        header: 'Transactions',
+        header: 'Txs',
         cell: (info) => <NumberFormat to={`/account/${info.row.original.address}?tab=tx`} value={info.getValue()} />,
       }),
       // helper.accessor('resources_count', {

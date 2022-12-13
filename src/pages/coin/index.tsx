@@ -15,6 +15,7 @@ import { Box } from '@chakra-ui/react'
 import { Overview } from './Overview'
 import { Market } from './Market'
 import { Holders } from './Holders'
+import { Tag } from 'components/Tag'
 
 export const Coin = () => {
   const { type } = useParams<{ type: string }>()
@@ -24,7 +25,7 @@ export const Coin = () => {
   const tabs = useMemo(() => {
     if (!data) return undefined
 
-    const count = data?.transactions_count
+    const count = data?.events_count.reduce((all: number, curr: any) => curr.events_count + all, 0)
 
     return [
       {
@@ -83,6 +84,11 @@ export const Coin = () => {
               {type && <CopyButton text={type} />}
             </span>
           </InlineBox>
+        }
+        sub={
+          <Flex>
+            <Tag ml="0.25rem" address={type || ''} />
+          </Flex>
         }
       />
       <Box

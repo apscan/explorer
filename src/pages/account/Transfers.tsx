@@ -13,13 +13,13 @@ import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { Version } from 'components/transaction/Version'
-import { JsonView } from 'components/JsonView'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { parseUserTransfer } from 'utils/parseUserTransfer'
 import { Link } from 'components/link'
 import { useMemo } from 'react'
 import { TypeParam } from 'components/TypeParam'
+import { Name } from 'components/Name'
 
 const helper = createColumnHelper<any>()
 
@@ -185,17 +185,6 @@ const parseTypeText = (type: string) => {
   return textMap[type] || '-'
 }
 
-const renderSubComponent = ({ row }: { row: any }) => {
-  const self = row.original?.address || ''
-  const { json } = parseSenderAndReceiver(row.original?.events || [], self)
-
-  return json ? <JsonView forcePretty={true} src={json} withContainer /> : <></>
-}
-
-const getRowCanExpand = (row: any) => {
-  return true
-}
-
 export const Transfers = ({ id, count, type }: { id?: string; count: number; type?: string }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountTransferQuery(
@@ -233,9 +222,21 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
           meta: {
             nowrap: true,
           },
-          cell: (info) => {
-            return <TypeParam value={info.row.original?.type} />
-          },
+          cell: (info) => (
+            <Box
+              sx={{
+                display: 'inline-flex',
+                '> div': {
+                  maxWidth: '190px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                },
+              }}
+            >
+              <TypeParam fallback="-" value={info.getValue()} />
+            </Box>
+          ),
         }),
         helper.accessor('sender', {
           meta: {
@@ -395,12 +396,16 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
         sx={{
           '& > table td:nth-child(3)': {
             padding: '0px 10px',
+            width: '200px',
           },
           '& > table td:nth-child(4)': {
-            padding: '0px 10px',
+            position: 'relative',
           },
           '& > table td:nth-child(5)': {
             padding: '0px 10px',
+          },
+          '& > table td:nth-child(6)': {
+            position: 'relative',
           },
           '& > table td:nth-child(7)': {
             padding: '0px 10px',
@@ -408,8 +413,6 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
         }}
         dataSource={data}
         columns={columns}
-        renderSubComponent={renderSubComponent}
-        getRowCanExpand={getRowCanExpand}
       />
       {pageProps.total > 1 && (
         <CardFooter variant="tabletab">

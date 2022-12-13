@@ -29,7 +29,7 @@ export const Holders = ({
   count?: number
   decimals: number
   symbol: string
-  totalSupply: string
+  totalSupply?: string
   price?: string
 }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
@@ -45,7 +45,7 @@ export const Holders = ({
   )
   const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
-  const total = useMemo(() => new RealBigNumber(totalSupply), [totalSupply])
+  const total = useMemo(() => new RealBigNumber(totalSupply || '0'), [totalSupply])
   const columns = useMemo(
     () => [
       helper.accessor('rank', {
@@ -107,9 +107,8 @@ export const Holders = ({
           return (
             <NumberFormat
               textTransform="uppercase"
-              fixed={0}
               useGrouping
-              maximumFractionDigits={3}
+              maximumFractionDigits={0}
               prefix="$"
               value={value}
               fallback="-"
@@ -122,18 +121,26 @@ export const Holders = ({
           nowrap: true,
         },
         header: 'Deposit Events',
-        cell: (info) => (
-          <NumberFormat to={`/account/${info.row.original?.address}?tab=events`} value={info.getValue() || 0} />
-        ),
+        cell: (info) => {
+          const deposit_events = info.row.original?.deposit_events_count.find(
+            (event: any) => event['deposit_events'] !== undefined
+          )?.deposit_events
+
+          return <NumberFormat to={`/account/${info.row.original?.address}?tab=events`} value={deposit_events || 0} />
+        },
       }),
       helper.accessor('withdraw_events_count', {
         meta: {
           nowrap: true,
         },
         header: 'Withdraw Events',
-        cell: (info) => (
-          <NumberFormat to={`/account/${info.row.original?.address}?tab=events`} value={info.getValue() || 0} />
-        ),
+        cell: (info) => {
+          const withdraw_events = info.row.original?.deposit_events_count.find(
+            (event: any) => event['withdraw_events'] !== undefined
+          )?.withdraw_events
+
+          return <NumberFormat to={`/account/${info.row.original?.address}?tab=events`} value={withdraw_events || 0} />
+        },
       }),
     ],
     [page, pageSize, price, total]

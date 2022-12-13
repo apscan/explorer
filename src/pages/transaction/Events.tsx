@@ -11,6 +11,8 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
+import { Box } from 'components/container'
+import { Divider } from '@chakra-ui/react'
 
 const helper = createColumnHelper<any>()
 
@@ -49,7 +51,23 @@ const columns = [
   }),
   helper.accessor('type', {
     header: 'Type',
-    cell: (info) => <TypeParam ellipsis fallback="-" value={info.getValue()} />,
+    cell: (info) => {
+      return (
+        <Box
+          sx={{
+            display: 'inline-flex',
+            '> div': {
+              maxWidth: '380px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+          }}
+        >
+          <TypeParam fallback="-" value={info.getValue()} />
+        </Box>
+      )
+    },
   }),
 
   helper.accessor('data', {
@@ -81,7 +99,13 @@ const columns = [
 ]
 
 const renderSubComponent = ({ row }: { row: any }) => {
-  return <JsonView src={row.original?.data} withContainer />
+  return (
+    <Box>
+      <TypeParam fallback="-" copyable={false} size="full" value={row.original?.type} />
+      <Divider color="#e7eaf3" />
+      <JsonView fallback="-" src={row.original?.data} withContainer />
+    </Box>
+  )
 }
 
 const getRowCanExpand = (row: any) => {
@@ -113,6 +137,11 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable
+        sx={{
+          '& > table td:nth-child(5)': {
+            width: '400px',
+          },
+        }}
         page={pageProps.page}
         renderSubComponent={renderSubComponent}
         getRowCanExpand={getRowCanExpand}

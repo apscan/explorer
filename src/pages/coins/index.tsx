@@ -19,12 +19,7 @@ export const Coins = () => {
     pageSize,
   })
 
-  const pageProps = useRangePagination(
-    page,
-    pageSize,
-    pageParams.count > maxCount ? maxCount : pageParams.count,
-    setPage
-  )
+  const pageProps = useRangePagination(page, pageSize, maxCount, setPage)
   const { data: market } = useMarketInfoQuery()
 
   return (
@@ -35,7 +30,7 @@ export const Coins = () => {
         <CardHead variant="table">
           <CardHeadStats variant="table">
             <Box>
-              Total of <NumberFormat useGrouping fallback="-" value={pageParams.count} /> coins
+              Total of <NumberFormat useGrouping fallback="-" value={maxCount} /> coins
             </Box>
             {pageParams.count && pageParams.count > maxCount && (
               <Box>

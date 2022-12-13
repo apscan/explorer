@@ -13,8 +13,9 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
-import { OneLineText } from 'components/OneLineText'
 import { Link } from 'components/link'
+import { TypeParam } from 'components/TypeParam'
+import { Divider, Text } from '@chakra-ui/react'
 
 const helper = createColumnHelper<any>()
 
@@ -58,6 +59,9 @@ const columns = [
 
   helper.accessor('type', {
     header: 'Module',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       const [address, module] = [
         info.row.original?.data?.move_resource_address,
@@ -77,19 +81,14 @@ const columns = [
 
   helper.accessor('data.move_resource_name', {
     header: 'Resource',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => {
       const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
       const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-      if (!resourceType) {
-        return '-'
-      }
-
-      if (info.row.getIsExpanded()) {
-        return value
-      }
-
-      return <OneLineText tooltip size="long" value={value} />
+      return <TypeParam fallback="-" value={value} />
     },
   }),
 
@@ -136,25 +135,24 @@ const columns = [
 ]
 
 const renderSubComponent = ({ row }: { row: any }) => {
-  if (((row.original?.tx_type as string) || undefined)?.includes('TableItem')) {
-    const rawData = row.original?.data || {}
-    const data = {
-      table_data_key: rawData.table_data_key,
-      table_data_key_type: rawData.table_data_key_type,
-      table_data_value: rawData.table_data_value,
-      table_data_value_type: rawData.table_data_value_type,
-    }
+  const data = row.original?.data?.move_resource_data
+  const resourceType = (row.original?.data?.move_resource_generic_type_params || [])[0]
+  const value = `${row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
-    return <JsonView fallback="-" src={data} />
+  if (!resourceType) {
+    return <JsonView fallback="-" src={data} withContainer />
   }
 
-  return <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />
+  return (
+    <Box>
+      <TypeParam fallback="-" copyable={false} size="full" value={value} />
+      <Divider color="#e7eaf3" />
+      <JsonView fallback="-" src={data} withContainer />
+    </Box>
+  )
 }
 
 const getRowCanExpand = (row: any) => {
-  if (((row.original?.tx_type as string) || undefined)?.includes('TableItem')) {
-    return true
-  }
   return Boolean(row?.original?.data?.move_resource_data)
 }
 
@@ -185,7 +183,14 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       <DataTable
         sx={{
           '& > table td:nth-child(6)': {
-            maxWidth: '300px',
+            width: '300px',
+            '> div': {
+              display: 'block',
+              maxWidth: '280px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
           },
         }}
         page={pageProps.page}

@@ -1,9 +1,11 @@
 import { css } from '@emotion/react'
 import { useAccountBalanceHistoryQuery, useAccountDetailQuery, useCoinDetailQuery } from 'api'
 import { Address } from 'components/Address'
+import { Ans } from 'components/Ans'
 import { Card } from 'components/Card'
-import { Box, Container, InlineBox } from 'components/container'
+import { Box, Container, Flex, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
+import { Tag } from 'components/Tag'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
 import { useSearchTab } from 'hooks/useSearchTab'
@@ -27,15 +29,14 @@ export const Account = () => {
   const address = useMemo(() => data?.address, [data])
   const { data: coin } = useCoinDetailQuery({ type: '0x1::aptos_coin::AptosCoin' })
   const { data: history = [] } = useAccountBalanceHistoryQuery({ id: address }, { skip: !address })
-  const showHistory = useMemo(() => !!coin && !!history.length, [coin, history.length])
+  const showHistory = useMemo(
+    () => !!coin && !!history.filter((item) => item.timestamp && item.value !== undefined).length,
+    [coin, history]
+  )
   const tabs = useMemo(() => {
     if (!data || !address) return undefined
 
-    const count =
-      data?.coin_transfer_events_count?.reduce(
-        (all: any, curr: any) => all + curr['0x1::coin::DepositEvent'] + curr['0x1::coin::WithdrawEvent'],
-        0
-      ) || 0
+    const count = data?.coin_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
 
     return [
       {
@@ -92,6 +93,7 @@ export const Account = () => {
             Account
             {address && (
               <Address
+                replaceAddress={false}
                 size="full"
                 as="span"
                 value={address}
@@ -104,6 +106,14 @@ export const Account = () => {
               />
             )}
           </InlineBox>
+        }
+        sub={
+          address && (
+            <Flex>
+              <Ans ml="0.25rem" address={address} />
+              <Tag ml="0.25rem" address={address} />
+            </Flex>
+          )
         }
       />
       <Box
