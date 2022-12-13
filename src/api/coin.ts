@@ -10,7 +10,7 @@ export const coinApi = emptySplitApi.injectEndpoints({
         return {
           url: `/coin_info`,
           headers: {
-            prefer: 'count=exact',
+            // prefer: 'count=exact',
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
           },

@@ -17,14 +17,9 @@ import { useMemo } from 'react'
 import { useAppStats, useTotalSupply } from 'state/api/hooks'
 import { usePageSize } from 'hooks/usePageSize'
 import { toFixedNumber } from 'utils/number'
-import { formatFixed } from '@ethersproject/bignumber'
 
 const helper = createColumnHelper<any>()
 const maxCount = 1000
-
-function getMaxFractionDigits(value?: string) {
-  return formatFixed(value || '0', 8).split('.')[0]?.length > 3 ? 0 : undefined
-}
 
 export const Accounts = () => {
   const { address_count: addressCount } = useAppStats()

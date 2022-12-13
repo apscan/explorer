@@ -50,20 +50,22 @@ export const fromNow = (value: string | number | dayjs.Dayjs | Date = 0): string
   const secondStr = `${diffDate.get('seconds')}s`
   const minuteStr = `${diffDate.get('minutes')}m`
   const hourStr = `${diffDate.get('hours')}h`
-  const dayStr = `${days}d`
-  const weekStr = `${Math.floor(days / 7)}w`
-  const yearStr = `${Math.floor(days / 365)}y`
+  const yearStr = `${diffDate.get('years')}y`
 
   if (years) {
-    return `${yearStr} ${weekStr} ${dayStr} ${age}`
+    const weeks = Math.floor((days - years * 365) / 7)
+    const dayStr = `${days - years * 365 - weeks * 7}d`
+    return `${yearStr} ${weeks}w ${dayStr} ${age}`
   }
 
   if (weeks) {
-    return `${weekStr} ${dayStr} ${hourStr} ${age}`
+    const dayStr = `${days - weeks * 7}d`
+
+    return `${weeks}w ${dayStr} ${hourStr} ${age}`
   }
 
   if (days) {
-    return `${dayStr} ${hourStr} ${minuteStr} ${age}`
+    return `${days}d ${hourStr} ${minuteStr} ${age}`
   }
 
   if (hours) {
