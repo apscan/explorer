@@ -260,7 +260,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
 
             const transferType = parseType(info.row.original)
             if (transferType === 'OUT' || transferType === 'SELF') {
-              return <Name address={info.row.original?.address} />
+              return <Address size="short" as="span" value={info.row.original?.address} />
             }
             if (!info.row.original?.counter_party) {
               return '-'
@@ -336,7 +336,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
 
               const transferType = parseType(info.row.original)
               if (transferType === 'IN' || transferType === 'SELF') {
-                return <Name address={info.row.original?.address} />
+                return <Address size="short" as="span" value={info.row.original?.address} />
               }
 
               if (!info.row.original?.counter_party) {
