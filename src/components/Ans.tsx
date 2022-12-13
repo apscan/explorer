@@ -45,7 +45,7 @@ export const Ans = memo(({ address, ...props }: LabelProps) => {
       {...props}
     >
       <Image src={ANSLogo} />
-      {ans}
+      {ans}.apt
     </Text>
   )
 })

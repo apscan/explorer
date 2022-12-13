@@ -1,3 +1,4 @@
+import { Text } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AmountFormat } from 'components/AmountFormat'
 import { Box } from 'components/container'
@@ -5,6 +6,7 @@ import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
+import { Tag } from 'components/Tag'
 import { TypeParamLink } from 'components/TypeParamLink'
 import { CoinTagsMap } from 'config/coin-tags'
 import { useMemo } from 'react'
@@ -51,7 +53,12 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
         cell: (info) => {
           const type = info.row.original?.['move_resource_generic_type_params']?.[0]
 
-          return info.getValue() + (CoinTagsMap[type] ? ` (${CoinTagsMap[type]})` : '')
+          return (
+            <Text display="inline-flex" alignItems="center">
+              {info.getValue()}&nbsp;
+              {CoinTagsMap[type] && <Tag padding="0rem 0.5rem" address={type} />}
+            </Text>
+          )
         },
       }),
       helper.accessor('total_supply', {
