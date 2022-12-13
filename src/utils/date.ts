@@ -48,7 +48,7 @@ export const fromNow = (value: string | number | dayjs.Dayjs | Date = 0): string
   const years = dayjs(now).diff(target, 'years')
 
   const secondStr = `${diffDate.get('seconds')}s`
-  const minuteStr = `${diffDate.get('minutes')}min`
+  const minuteStr = `${diffDate.get('minutes')}m`
   const hourStr = `${diffDate.get('hours')}h`
   const dayStr = `${days}d`
   const weekStr = `${Math.floor(days / 7)}w`
