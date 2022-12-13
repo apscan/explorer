@@ -54,7 +54,18 @@ export const Name = memo(({ address, ...props }: NameProps) => {
   }
 
   if (addressTagsMap[address]) {
-    return <Tag address={address} />
+    return (
+      <Tag
+        style={{
+          fontSize: '14px',
+          position: 'absolute',
+          top: '8px',
+          lineHeight: '1.7',
+          padding: '0rem 0.5rem',
+        }}
+        address={address}
+      />
+    )
   }
 
   return <Address size="short" as="span" value={address} />
