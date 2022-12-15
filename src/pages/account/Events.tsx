@@ -137,7 +137,7 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
       </CardHead>
       <DataTable
         sx={{
-          '& > table td:nth-child(5)': {
+          '& > table td:nth-of-type(5)': {
             width: '320px',
           },
         }}

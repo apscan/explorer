@@ -11,8 +11,6 @@ import { Pagination } from 'components/table/Pagination'
 import { AmountFormat } from 'components/AmountFormat'
 import { useMemo } from 'react'
 import RealBigNumber from 'bignumber.js'
-import { FixedNumber } from '@ethersproject/bignumber'
-import { toFixedNumber } from 'utils/number'
 
 const helper = createColumnHelper<any>()
 const maxCount = 1000
@@ -30,7 +28,7 @@ export const Holders = ({
   decimals: number
   symbol: string
   totalSupply?: string
-  price?: string
+  price?: number
 }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useCoinHoldersQuery(
@@ -68,12 +66,7 @@ export const Holders = ({
         },
         header: 'Balance',
         cell: (info) => (
-          <AmountFormat
-            minimumFractionDigits={0}
-            postfix={false}
-            decimals={info.row.original?.coin_info?.decimals}
-            value={info.getValue()}
-          />
+          <AmountFormat minimumFractionDigits={0} postfix={false} decimals={decimals} value={info.getValue()} />
         ),
       }),
       helper.accessor('percentage', {
@@ -100,9 +93,10 @@ export const Holders = ({
           if (!price) {
             return '-'
           }
-          const value = FixedNumber.from(price.toString(), 'fixed128x18').mulUnsafe(
-            toFixedNumber(info.row.original?.balance).toFormat('fixed128x18')
-          )
+          const value = new RealBigNumber(price)
+            .multipliedBy(info.row.original?.balance)
+            .div(Math.pow(10, decimals))
+            .toNumber()
 
           return (
             <NumberFormat

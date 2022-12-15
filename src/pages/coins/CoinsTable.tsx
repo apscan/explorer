@@ -6,13 +6,21 @@ import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
-import { Tag } from 'components/Tag'
 import { TypeParamLink } from 'components/TypeParamLink'
 import { CoinTagsMap } from 'config/coin-tags'
-import { useMemo } from 'react'
-import { AptosCoin } from 'utils'
+import { usePrice } from 'providers/PriceContext'
+import React, { useMemo } from 'react'
 
 const helper = createColumnHelper<any>()
+
+const Price: React.FC<{ type: string }> = ({ type }) => {
+  const price = usePrice(type)
+
+  if (typeof price === 'undefined') {
+    return <>-</>
+  }
+  return <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
+}
 
 export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
   const columns = useMemo(
@@ -80,13 +88,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('price', {
         header: 'Price',
-        cell: (info) => {
-          if (info.row.original?.move_resource_generic_type_params[0] !== AptosCoin) {
-            return '-'
-          }
-
-          return <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
-        },
+        cell: (info) => <Price type={info.row.original?.move_resource_generic_type_params[0]} />,
       }),
       helper.accessor('addresses_count', {
         header: 'Holders',

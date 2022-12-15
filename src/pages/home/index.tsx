@@ -5,14 +5,8 @@ import { vars } from 'theme/theme.css'
 import { CurrentValidators, LatestBlocks, LatestTransactions } from './Cards'
 import { Head } from './Head'
 import { Statistics } from './Statistics'
-import { useMediaQuery } from '@chakra-ui/react'
-import { useEffect } from 'react'
 
 export const Home = () => {
-  // const [small] = useMediaQuery(['(min-width: 100px)']);
-
-  // useEffect(() => alert(small), [small])
-
   return (
     <>
       <Head />

@@ -1,5 +1,6 @@
 import { AnsProvider } from 'providers/AnsProvider'
 import { ApiStateProvider } from 'providers/ApiStateProvider'
+import { PriceContextProvider } from 'providers/PriceContext'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
@@ -27,7 +28,8 @@ function Updaters() {
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <PriceContextProvider>
     <ReduxProvider store={store}>
       <ApiStateProvider>
         <AnsProvider>
@@ -42,7 +44,8 @@ root.render(
         </AnsProvider>
       </ApiStateProvider>
     </ReduxProvider>
-  </React.StrictMode>
+  </PriceContextProvider>
+  // </React.StrictMode>
 )
 
 // If you want your app to work offline and load faster, you can change

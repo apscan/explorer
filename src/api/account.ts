@@ -129,11 +129,13 @@ export const accountApi = emptySplitApi.injectEndpoints({
         meta: any
       ) {
         console.log('data', data)
-        return data[0].coin_balance_history.map((item) => ({
-          value: item.resource_change?.balance,
-          timestamp: item.resource_change?.time_microseconds,
-          resourceType: data[0].move_resource_generic_type_params[0],
-        }))
+        return (
+          data[0]?.coin_balance_history.map((item) => ({
+            value: item.resource_change?.balance,
+            timestamp: item.resource_change?.time_microseconds,
+            resourceType: data[0].move_resource_generic_type_params[0],
+          })) || []
+        )
       },
     }),
     accountModules: builder.query<any, { id: string; start?: number; pageSize?: number }>({

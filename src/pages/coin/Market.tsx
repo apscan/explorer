@@ -3,24 +3,19 @@ import { Box, InlineBox } from 'components/container'
 import { renderRow } from 'components/helpers'
 import { Card } from 'components/Card'
 import { useMemo } from 'react'
-import { FixedNumber } from '@ethersproject/bignumber'
-import { toFixedNumber } from 'utils/number'
 import { NumberFormat } from 'components/NumberFormat'
 import { DateTime } from 'components/DateTime'
 import { DateFormat } from 'state/application/slice'
 import { css } from '@emotion/react'
 import { vars } from 'theme/theme.css'
+import RealBigNumber from 'bignumber.js'
 
-export const Market = ({ data, price, percentChange24h }: { data?: any; price?: string; percentChange24h: number }) => {
+export const Market = ({ data, percentChange24h, price }: { price?: number; data?: any; percentChange24h: number }) => {
   data = data || {}
   const fully = useMemo(
     () =>
-      !price
-        ? undefined
-        : FixedNumber.from(price.toString(), 'fixed128x18').mulUnsafe(
-            toFixedNumber(data.total_supply).toFormat('fixed128x18')
-          ),
-    [data.total_supply, price]
+      !price ? undefined : new RealBigNumber(price).multipliedBy(data.total_supply).div(Math.pow(10, data.decimals)),
+    [data.decimals, data.total_supply, price]
   )
 
   return (
@@ -60,11 +55,11 @@ export const Market = ({ data, price, percentChange24h }: { data?: any; price?: 
           <NumberFormat
             textTransform="uppercase"
             abbr
-            forceAverage="billion"
+            forceAverage="million"
             useGrouping
             maximumFractionDigits={3}
             prefix="$"
-            value={fully}
+            value={fully?.toNumber()}
             fallback="-"
           />
         )}

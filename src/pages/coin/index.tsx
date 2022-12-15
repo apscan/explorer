@@ -16,11 +16,13 @@ import { Overview } from './Overview'
 import { Market } from './Market'
 import { Holders } from './Holders'
 import { Tag } from 'components/Tag'
+import { usePrice } from 'providers/PriceContext'
 
 export const Coin = () => {
   const { type } = useParams<{ type: string }>()
   const { data } = useCoinDetailQuery({ type })
   const { data: market } = useMarketInfoQuery()
+  const price = usePrice(data?.move_resource_generic_type_params?.[0] || '')
 
   const tabs = useMemo(() => {
     if (!data) return undefined
@@ -28,12 +30,6 @@ export const Coin = () => {
     const count = data?.events_count.reduce((all: number, curr: any) => curr.events_count + all, 0)
 
     return [
-      {
-        label: tabNameWithCount('Events', count),
-        key: 'transfers',
-        children: <Transfers key={type} type={type} count={count} />,
-        hide: !count,
-      },
       {
         label: tabNameWithCount('Holders', data?.addresses_count),
         key: 'holders',
@@ -44,13 +40,19 @@ export const Coin = () => {
             decimals={data?.decimals}
             symbol={data?.symbol}
             totalSupply={data?.total_supply}
-            price={data.move_resource_generic_type_params[0] === AptosCoin ? market?.quotes?.USD?.price : undefined}
+            price={price}
           />
         ),
         hide: !data?.addresses_count,
       },
+      {
+        label: tabNameWithCount('Events', count),
+        key: 'transfers',
+        children: <Transfers key={type} type={type} count={count} />,
+        hide: !count,
+      },
     ].filter((item) => !item.hide) as any
-  }, [data, market, type])
+  }, [data, price, type])
 
   const [activeKey, onTabChange] = useSearchTab(tabs)
 
@@ -102,7 +104,7 @@ export const Coin = () => {
         <Overview data={data} />
         <Market
           data={data}
-          price={data?.move_resource_generic_type_params[0] === AptosCoin ? market?.quotes?.USD?.price : undefined}
+          price={price}
           percentChange24h={
             data?.move_resource_generic_type_params[0] === AptosCoin
               ? market?.quotes?.USD?.percent_change_24h

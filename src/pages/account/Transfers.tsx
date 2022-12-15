@@ -394,20 +394,20 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
       </CardHead>
       <DataTable
         sx={{
-          '& > table td:nth-child(3)': {
+          '& > table td:nth-of-type(3)': {
             padding: '0px 10px',
             width: '200px',
           },
-          '& > table td:nth-child(4)': {
+          '& > table td:nth-of-type(4)': {
             position: 'relative',
           },
-          '& > table td:nth-child(5)': {
+          '& > table td:nth-of-type(5)': {
             padding: '0px 10px',
           },
-          '& > table td:nth-child(6)': {
+          '& > table td:nth-of-type(6)': {
             position: 'relative',
           },
-          '& > table td:nth-child(7)': {
+          '& > table td:nth-of-type(7)': {
             padding: '0px 10px',
           },
         }}
