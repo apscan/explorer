@@ -1,6 +1,7 @@
 import { Text } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AmountFormat } from 'components/AmountFormat'
+import CoinPrice from 'components/CoinPrice'
 import { Box } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
@@ -8,23 +9,9 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { TypeParamLink } from 'components/TypeParamLink'
 import { CoinTagsMap } from 'config/coin-tags'
-import { usePrice } from 'providers/PriceContext'
 import React, { useMemo } from 'react'
 
 const helper = createColumnHelper<any>()
-
-const Price: React.FC<{ type: string }> = ({ type }) => {
-  const price = usePrice(type)
-
-  if (typeof price === 'undefined') {
-    return <>-</>
-  }
-
-  if (price < 0.0001) {
-    return <>&lt; $0.0001</>
-  }
-  return <NumberFormat minimumFractionDigits={4} maximumFractionDigits={4} prefix="$" value={price} fallback="-" />
-}
 
 export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
   const columns = useMemo(
@@ -92,7 +79,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('price', {
         header: 'Price',
-        cell: (info) => <Price type={info.row.original?.move_resource_generic_type_params[0]} />,
+        cell: (info) => <CoinPrice type={info.row.original?.move_resource_generic_type_params[0]} />,
       }),
       helper.accessor('addresses_count', {
         header: 'Holders',

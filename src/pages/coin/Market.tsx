@@ -9,6 +9,7 @@ import { DateFormat } from 'state/application/slice'
 import { css } from '@emotion/react'
 import { vars } from 'theme/theme.css'
 import RealBigNumber from 'bignumber.js'
+import CoinPrice from 'components/CoinPrice'
 
 export const Market = ({ data, percentChange24h, price }: { price?: number; data?: any; percentChange24h: number }) => {
   data = data || {}
@@ -18,13 +19,15 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
     [data.decimals, data.total_supply, price]
   )
 
+  console.log('data', data)
+
   return (
     <Card>
       <Box padding="0 12px">
         {renderRow(
           'Price',
           <InlineBox>
-            <NumberFormat minimumFractionDigits={4} maximumFractionDigits={4} prefix="$" value={price} fallback="-" />
+            <CoinPrice price={price} />
             {percentChange24h && (
               <InlineBox
                 css={css`
@@ -58,7 +61,7 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
             forceAverage="million"
             useGrouping
             maximumFractionDigits={3}
-            prefix="$"
+            prefix={fully?.toNumber() ? '$' : ''}
             value={fully?.toNumber()}
             fallback="-"
           />

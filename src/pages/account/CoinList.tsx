@@ -13,6 +13,7 @@ import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { CoinIconFileNameMap, defaultCoinIconFileName } from 'config/coin-icons'
 import { PriceContext } from 'providers/PriceContext'
 import { useMarketInfoQuery } from 'api'
+import CoinPrice from 'components/CoinPrice'
 
 const CoinItem = styled(Box)`
   border-bottom: 1px solid #e7eaf3;
@@ -88,13 +89,7 @@ const Coin = (coin: CoinAmount) => {
         </Flex>
         {!!coin.price && (
           <Flex alignItems="center" justifyContent="space-between">
-            <NumberFormat
-              color="#77838f"
-              value={coin.price}
-              minimumFractionDigits={4}
-              maximumFractionDigits={4}
-              prefix="@ $"
-            />
+            <CoinPrice color="#77838f" price={coin.price} prefix="@ $" />
             <NumberFormat value={coin.value} maximumFractionDigits={2} prefix="$" />
           </Flex>
         )}
