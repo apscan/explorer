@@ -30,13 +30,17 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
           'Price',
           <InlineFlex alignItems="center">
             <NumberFormat prefix="$" value={price} fallback="-" />
-            {price && coin !== AptosCoin && (
+            {price && (
               <Link
                 height="20px"
                 marginLeft="5px"
                 target="_blank"
                 rel="noopener noreferrer"
-                to={`https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${AptosCoin}`}
+                to={`https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${
+                  coin === AptosCoin
+                    ? '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC'
+                    : AptosCoin
+                }`}
               >
                 <Image height="20px" src={PancakeSvg} borderRadius="50%" />
               </Link>
