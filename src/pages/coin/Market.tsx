@@ -28,7 +28,6 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
           'Price',
           <InlineBox>
             <NumberFormat prefix="$" value={price} fallback="-" />
-            {/* <CoinPrice price={price} /> */}
             {percentChange24h && (
               <InlineBox
                 css={css`

@@ -2,8 +2,8 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountsQuery } from 'api'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
-import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box, Container } from 'components/container'
+import { Card, CardFooter, CardHead } from 'components/Card'
+import { Container } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { NumberFormat } from 'components/NumberFormat'
@@ -17,12 +17,14 @@ import { useMemo } from 'react'
 import { useAppStats, useTotalSupply } from 'state/api/hooks'
 import { usePageSize } from 'hooks/usePageSize'
 import { toFixedNumber } from 'utils/number'
+import TableStat from 'components/TotalStat'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
-const maxCount = 1000
 
 export const Accounts = () => {
-  const { address_count: addressCount } = useAppStats()
+  const maxCount = queryRangeLimitMap['accounts_with_rank']
+  const { address_count: count } = useAppStats()
   const totalSupply = useTotalSupply(false)
   const [pageSize, setPageSize, page, setPage] = usePageSize()
 
@@ -127,12 +129,7 @@ export const Accounts = () => {
     [totalSupply]
   )
 
-  const queryCount = useMemo(() => {
-    if (addressCount === undefined) return undefined
-    return addressCount > maxCount ? maxCount : addressCount
-  }, [addressCount])
-
-  const pageProps = useRangePagination(page, pageSize, queryCount, setPage)
+  const pageProps = useRangePagination(page, pageSize, !count ? count : count > maxCount ? maxCount : count, setPage)
 
   return (
     <Container>
@@ -140,16 +137,7 @@ export const Accounts = () => {
       <PageTitle value="Accounts" />
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
-          <CardHeadStats variant="table">
-            <Box>
-              Total of <NumberFormat useGrouping fallback="-" value={addressCount} /> accounts
-            </Box>
-            {addressCount && addressCount > maxCount && (
-              <Box>
-                &nbsp;(showing the top <NumberFormat useGrouping value={maxCount} /> only)
-              </Box>
-            )}
-          </CardHeadStats>
+          <TableStat variant="table" maxCount={maxCount} object="accounts" count={count} />
           <Pagination {...pageProps} />
         </CardHead>
         <DataTable dataSource={data} columns={columns} />

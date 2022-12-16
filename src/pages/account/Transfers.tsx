@@ -3,10 +3,9 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { useAccountTransferQuery } from 'api'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
-import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead } from 'components/Card'
 import { Box, InlineBox } from 'components/container'
 import { DateTime } from 'components/DateTime'
-import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
@@ -18,136 +17,13 @@ import { parseUserTransfer } from 'utils/parseUserTransfer'
 import { Link } from 'components/link'
 import { useMemo } from 'react'
 import { TypeParam } from 'components/TypeParam'
+import { queryRangeLimitMap } from 'config/api'
+import TableStat from 'components/TotalStat'
 
 const helper = createColumnHelper<any>()
 
 const isIn = (type: string) => type.indexOf('DepositEvent') > -1
 const isOut = (type: string) => type.indexOf('WithdrawEvent') > -1
-
-// type Transfer = {
-//   address: string
-//   amount: string
-// }
-
-// type TransferEvent = {
-//   address: string
-//   counter: number
-//   creation_number: number
-//   data: { amount: string }
-//   sequence_number: number
-//   transaction_index: number
-//   transaction_version: number
-//   type: string
-// }
-
-// const parseSenderReceiver = (events: TransferEvent[]): [senders: Transfer[], receivers: Transfer[], amount: string] => {
-//   const senders: Transfer[] = []
-//   const receivers: Transfer[] = []
-//   let amountIn = BigNumber.from(0)
-//   let amountOut = BigNumber.from(0)
-
-//   events.forEach((event) => {
-//     if (isIn(event.type)) {
-//       receivers.push({
-//         address: event.address,
-//         amount: event.data.amount,
-//       })
-
-//       amountIn = amountIn.add(event.data.amount)
-//     } else if (isOut(event.type)) {
-//       senders.push({
-//         address: event.address,
-//         amount: event.data.amount,
-//       })
-//       amountOut = amountOut.add(event.data.amount)
-//     }
-//   })
-
-//   return [senders, receivers, amountIn.toString()]
-// }
-
-// const parseSenderAndReceiver = (
-//   events: TransferEvent[],
-//   self: string
-// ): {
-//   transfers: {
-//     sender: string | undefined
-//     receiver: string | undefined
-//     amount: string
-//     type: 'IN' | 'OUT' | 'SELF'
-//   }[]
-//   json: string[][]
-// } => {
-//   const selfSender = events.find((event) => event.address === self && isOut(event.type))
-//   const selfReceiver = events.find((event) => event.address === self && isIn(event.type))
-//   const json = events.map((event) => [event.address, event.type, event.data.amount])
-
-//   if (selfSender && selfReceiver) {
-//     // if (selfSender.data.amount === selfReceiver.data.amount) {
-//     //   return {
-//     //     transfers: [{
-//     //       type: 'SELF',
-//     //       sender: selfSender.address,
-//     //       receiver: selfSender.address,
-//     //       amount: selfSender.data.amount,
-//     //     }],
-//     //     json
-//     //   }
-//     // }
-//     return {
-//       transfers: [
-//         {
-//           type: 'OUT',
-//           sender: selfSender.address,
-//           receiver: undefined,
-//           amount: selfSender.data.amount,
-//         },
-//         {
-//           type: 'IN',
-//           sender: undefined,
-//           receiver: selfReceiver.address,
-//           amount: selfReceiver.data.amount,
-//         },
-//       ],
-//       json,
-//     }
-//   }
-
-//   const [senders, receivers] = parseSenderReceiver(events)
-
-//   if (selfSender) {
-//     return {
-//       transfers: [
-//         {
-//           type: 'OUT',
-//           sender: selfSender.address,
-//           receiver: receivers.length > 1 ? undefined : receivers[0]?.address || '',
-//           amount: selfSender.data.amount,
-//         },
-//       ],
-//       json,
-//     }
-//   }
-
-//   if (selfReceiver) {
-//     return {
-//       transfers: [
-//         {
-//           type: 'IN',
-//           sender: senders.length > 1 ? undefined : senders[0]?.address || '',
-//           receiver: selfReceiver.address,
-//           amount: selfReceiver.data.amount,
-//         },
-//       ],
-//       json,
-//     }
-//   }
-
-//   return {
-//     transfers: [],
-//     json: [],
-//   }
-// }
 
 const parseType = (data: {
   address: string
@@ -168,22 +44,10 @@ const parseType = (data: {
   return 'OUT'
 }
 
-// const parseTypeText = (type: string) => {
-//   const textMap: Record<string, string> = {
-//     '0x1::coin::DepositEvent': 'Coin Deposit',
-//     '0x1::coin::WithdrawEvent': 'Coin Withdraw',
-//     '0x1::stake::AddStakeEvent': 'Stake Add',
-//     '0x1::stake::WithdrawStakeEvent': 'Stake Withdraw',
-//     '0x1::stake::DistributeRewardsEvent': 'Stake Reward',
-//     '0x1::staking_contract::DistributeEvent': 'Staking Reward',
-//     '0x1::vesting::DistributeEvent': 'Vesting Distribute',
-//     '0x1::vesting::AdminWithdrawEvent': 'Vesting Withdraw',
-//   }
-
-//   return textMap[type] || '-'
-// }
-
 export const Transfers = ({ id, count, type }: { id?: string; count: number; type?: string }) => {
+  const maxCount = id
+    ? queryRangeLimitMap['coin_transfers?address']
+    : queryRangeLimitMap['coin_transfers?move_resource_generic_type_params']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountTransferQuery(
     {
@@ -196,7 +60,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
       skip: (!id && !type) || !count,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   const columns = useMemo(
     () =>
@@ -383,11 +247,7 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <CardHeadStats variant="tabletab">
-          <Box>
-            Total of <NumberFormat useGrouping fallback="-" value={count} /> {type ? 'events' : 'coin events'}
-          </Box>
-        </CardHeadStats>
+        <TableStat variant="tabletab" maxCount={maxCount} object={type ? 'events' : 'coin events'} count={count} />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable

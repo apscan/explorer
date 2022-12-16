@@ -5,7 +5,7 @@ import { useBlocksQuery } from 'api'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
 import { BlockHeight } from 'components/block/BlockHeight'
-import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { Card, CardFooter, CardHead } from 'components/Card'
 import { Box, Container } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -16,6 +16,7 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import TableStat from 'components/TotalStat'
 import { useCustomSearchParams } from 'hooks/useCustomSearchParams'
 import { useMaxValue } from 'hooks/useMaxValue'
 import { usePageStartLimit } from 'hooks/usePageStartLimit'
@@ -33,13 +34,6 @@ const columns = [
     header: 'Height',
     cell: (info) => <BlockHeight value={info.getValue()} />,
   }),
-  // helper.accessor('hash', {
-  //   meta: {
-  //     nowrap: true,
-  //   },
-  //   header: 'Hash',
-  //   cell: (info) => <BlockHash ellipsis value={info.getValue()} />,
-  // }),
   helper.accessor('time_microseconds', {
     meta: {
       nowrap: true,
@@ -103,20 +97,6 @@ const columns = [
       )
     },
   }),
-  // helper.accessor('failed_proposers_count', {
-  //   meta: {
-  //     nowrap: true,
-  //   },
-  //   header: 'Failed Proposers',
-  //   cell: (info) => <Box>{info.getValue() || '-'}</Box>,
-  // }),
-  // helper.accessor('votes', {
-  //   meta: {
-  //     nowrap: true,
-  //   },
-  //   header: 'Votes',
-  //   cell: (info) => null,
-  // }),
   helper.accessor('epoch', {
     meta: {
       nowrap: true,
@@ -257,11 +237,7 @@ export const Blocks = () => {
       <PageTitle value="Blocks" />
       <Card variant="table" isLoading={isInitialLoading}>
         <CardHead variant="table">
-          <CardHeadStats variant="table">
-            <Box>
-              Total of <NumberFormat useGrouping fallback="-" value={latestBlockHeight} /> blocks
-            </Box>
-          </CardHeadStats>
+          <TableStat variant="table" object="blocks" count={latestBlockHeight} />
           <Pagination
             syncUrl={false}
             page={showPage}

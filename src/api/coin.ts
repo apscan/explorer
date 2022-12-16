@@ -1,11 +1,13 @@
 import { parseHeaders } from 'utils'
+import { getLimitedEnd } from 'utils/api'
 import { emptySplitApi } from './api'
 
 export const coinApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     coins: builder.query<any, { start?: number; pageSize?: number }>({
       query: ({ start = 0, pageSize }) => {
-        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        end = getLimitedEnd('coin_info', end)
 
         return {
           url: `/coin_info`,

@@ -1,17 +1,18 @@
 import { useCoinsQuery, useMarketInfoQuery } from 'api'
-import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box, Container } from 'components/container'
+import { Card, CardFooter, CardHead } from 'components/Card'
+import { Container } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
-import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { CoinsTable } from './CoinsTable'
-import { maxCount } from 'utils'
+import TableStat from 'components/TotalStat'
+import { queryRangeLimitMap } from 'config/api'
 
 export const Coins = () => {
+  const maxCount = queryRangeLimitMap['coin_info']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
 
   const { data: { data, page: pageParams = {} } = {}, isLoading } = useCoinsQuery({
@@ -28,16 +29,7 @@ export const Coins = () => {
       <PageTitle value="Coins" />
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
-          <CardHeadStats variant="table">
-            <Box>
-              Total of <NumberFormat useGrouping fallback="-" value={maxCount} /> coins
-            </Box>
-            {pageParams.count && pageParams.count > maxCount && (
-              <Box>
-                &nbsp;(showing the top <NumberFormat useGrouping value={maxCount} /> only)
-              </Box>
-            )}
-          </CardHeadStats>
+          <TableStat variant="table" maxCount={maxCount} object="coins" count={maxCount} />
           <Pagination {...pageProps} />
         </CardHead>
         <CoinsTable price={market?.quotes?.USD?.price} data={data} />

@@ -1,4 +1,5 @@
 import { parseHeaders } from 'utils'
+import { getLimitedEnd } from 'utils/api'
 import { toFixedNumber } from 'utils/number'
 import { emptySplitApi } from './api'
 
@@ -31,8 +32,8 @@ export const accountApi = emptySplitApi.injectEndpoints({
     accountEvents: builder.query<any, { id: string; start?: number; pageSize?: number }>({
       query: ({ id, start = 0, pageSize }) => {
         if (!id) throw new Error('miss account id')
-        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
-
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        end = getLimitedEnd('events?address', end)
         return {
           url: `/events?address=eq.${id}`,
           headers: {
@@ -48,12 +49,15 @@ export const accountApi = emptySplitApi.injectEndpoints({
     accountTransfer: builder.query<any, { id?: string; type?: string; start?: number; pageSize?: number }>({
       query: ({ id, type, start = 0, pageSize }) => {
         if (!id && !type) throw new Error('miss account id or type')
-        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
-        const url = type
-          ? `/coin_transfers?move_resource_generic_type_params=eq.["${type}"]`
-          : id
-          ? `/coin_transfers?address=eq.${id}`
-          : ''
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        let url = ''
+        if (type) {
+          end = getLimitedEnd('coin_transfers?move_resource_generic_type_params', end)
+          url = `/coin_transfers?move_resource_generic_type_params=eq.["${type}"]`
+        } else {
+          end = getLimitedEnd('coin_transfers?address', end)
+          url = `/coin_transfers?address=eq.${id}`
+        }
 
         return {
           url,
