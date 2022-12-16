@@ -74,7 +74,7 @@
     "workbox-streams": "^6.5.4"
   },
   "scripts": {
-    "start": "craco start --port 3080",
+    "start": "craco start",
     "build": "craco build",
     "test": "react-scripts test",
     "lint": "pnpm eslint .",

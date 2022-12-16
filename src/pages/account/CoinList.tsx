@@ -88,7 +88,13 @@ const Coin = (coin: CoinAmount) => {
         </Flex>
         {!!coin.price && (
           <Flex alignItems="center" justifyContent="space-between">
-            <NumberFormat color="#77838f" value={coin.price} maximumFractionDigits={2} prefix="@ $" />
+            <NumberFormat
+              color="#77838f"
+              value={coin.price}
+              minimumFractionDigits={4}
+              maximumFractionDigits={4}
+              prefix="@ $"
+            />
             <NumberFormat value={coin.value} maximumFractionDigits={2} prefix="$" />
           </Flex>
         )}

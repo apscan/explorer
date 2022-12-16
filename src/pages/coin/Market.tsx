@@ -24,7 +24,7 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
         {renderRow(
           'Price',
           <InlineBox>
-            <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
+            <NumberFormat minimumFractionDigits={4} maximumFractionDigits={4} prefix="$" value={price} fallback="-" />
             {percentChange24h && (
               <InlineBox
                 css={css`

@@ -19,7 +19,11 @@ const Price: React.FC<{ type: string }> = ({ type }) => {
   if (typeof price === 'undefined') {
     return <>-</>
   }
-  return <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
+
+  if (price < 0.0001) {
+    return <>&lt; $0.0001</>
+  }
+  return <NumberFormat minimumFractionDigits={4} maximumFractionDigits={4} prefix="$" value={price} fallback="-" />
 }
 
 export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {

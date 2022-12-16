@@ -108,9 +108,7 @@ function aggrateExceptAptosCoin(
 export const PriceContextProvider = React.memo(({ children }: { children: React.ReactNode }): React.ReactElement => {
   const [decmalsCache, setDecimalsCache] = useState<Record<string, number>>({})
   const [coinRoutesMap, setCoinRoutesMap] = useState<Record<string, Path[]>>({})
-  const [provider] = useState(
-    new AptosClient('https://aptos-mainnet.nodereal.io/v1/12ddf0cdbca04e7e90a19294912cd2ff/v1')
-  )
+  const [provider] = useState(new AptosClient('https://fullnode.mainnet.aptoslabs.com/v1'))
 
   useEffect(() => {
     provider.getAccountResources(SWAP_ADDRESS).then((resources) => {
@@ -142,14 +140,14 @@ export const PriceContextProvider = React.memo(({ children }: { children: React.
 
       const routersMap = Object.fromEntries(
         allCoins.map((coin) => {
-          let routers: Path[] = []
+          let routes: Path[] = []
           const connectionSteps1 = pairs.find(
             (pair) =>
               (coin === pair.xCoin && AptosCoin === pair.yCoin) || (coin === pair.yCoin && AptosCoin === pair.xCoin)
           )
 
           if (connectionSteps1) {
-            routers.push([connectionSteps1])
+            routes.push([connectionSteps1])
           }
 
           const connectionSteps2 = baseCoins.reduce((all: Path[], baseCoin) => {
@@ -185,9 +183,9 @@ export const PriceContextProvider = React.memo(({ children }: { children: React.
             return all
           }, [])
 
-          routers = routers.concat(connectionSteps2)
+          routes = routes.concat(connectionSteps2)
 
-          return [coin, routers]
+          return [coin, routes]
         })
       )
       setCoinRoutesMap(routersMap)
@@ -240,7 +238,7 @@ export const PriceContextProvider = React.memo(({ children }: { children: React.
       )
       const decimals = await Promise.all(relatedCoins.map(getDecimals))
 
-      if (decimals.find((decimal) => typeof decimal === 'undefined')) {
+      if (decimals.findIndex((decimal) => typeof decimal === 'undefined') >= 0) {
         return undefined
       }
 
