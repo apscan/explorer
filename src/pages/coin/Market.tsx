@@ -1,5 +1,5 @@
 import { AmountFormat } from 'components/AmountFormat'
-import { Box, InlineBox } from 'components/container'
+import { Box, InlineBox as InlineFlex } from 'components/container'
 import { renderRow } from 'components/helpers'
 import { Card } from 'components/Card'
 import { useMemo } from 'react'
@@ -9,7 +9,10 @@ import { DateFormat } from 'state/application/slice'
 import { css } from '@emotion/react'
 import { vars } from 'theme/theme.css'
 import RealBigNumber from 'bignumber.js'
-import CoinPrice from 'components/CoinPrice'
+import { Link } from 'components/link'
+import { AptosCoin } from 'utils'
+import { Image } from '@chakra-ui/react'
+import PancakeSvg from 'assets/icons/pancake.svg'
 
 export const Market = ({ data, percentChange24h, price }: { price?: number; data?: any; percentChange24h: number }) => {
   data = data || {}
@@ -18,18 +21,24 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
       !price ? undefined : new RealBigNumber(price).multipliedBy(data.total_supply).div(Math.pow(10, data.decimals)),
     [data.decimals, data.total_supply, price]
   )
-
-  console.log('data', data)
+  const coin = data.move_resource_generic_type_params?.[0]
 
   return (
     <Card>
       <Box padding="0 12px">
         {renderRow(
           'Price',
-          <InlineBox>
-            <NumberFormat prefix="$" value={price} fallback="-" />
+          <InlineFlex alignItems="center">
+            <NumberFormat
+              as={Link}
+              to={`https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${AptosCoin}`}
+              prefix="$"
+              value={price}
+              fallback="-"
+            />
+            {price && coin !== AptosCoin && <Image width="20px" marginLeft="5px" src={PancakeSvg} borderRadius="50%" />}
             {percentChange24h && (
-              <InlineBox
+              <InlineFlex
                 css={css`
                   color: ${percentChange24h < 0 ? vars.text.error : vars.text.success};
                 `}
@@ -45,9 +54,9 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
                   fallback="-"
                 />
                 )
-              </InlineBox>
+              </InlineFlex>
             )}
-          </InlineBox>
+          </InlineFlex>
         )}
         {renderRow(
           'Total Supply',
