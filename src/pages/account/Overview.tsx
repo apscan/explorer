@@ -1,6 +1,5 @@
 import { css } from '@emotion/react'
 
-import { useMarketInfoQuery } from 'api'
 import { AmountFormat } from 'components/AmountFormat'
 import { Card } from 'components/Card'
 import { Box, Flex } from 'components/container'
@@ -10,12 +9,9 @@ import { Poptip } from 'components/PopTip'
 import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
 import { vars } from 'theme/theme.css'
-import { AptosCoin } from 'utils'
 import { CoinBalance, CoinList } from './CoinList'
 
 export const Overview = ({ data }: { data: any | undefined }) => {
-  const { data: market } = useMarketInfoQuery()
-
   const coinBalances: CoinBalance[] = useMemo(() => {
     return (
       data?.all_balances?.map(
@@ -33,11 +29,10 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           name: coin?.coin_info?.name,
           decimals: parseInt(coin?.coin_info?.decimals || '8'),
           balance: coin?.balance,
-          price: coin?.move_resource_generic_type_params[0] === AptosCoin ? market?.quotes?.USD.price : undefined,
         })
       ) || []
     )
-  }, [data, market])
+  }, [data])
 
   return (
     <Card>
@@ -67,10 +62,10 @@ export const Overview = ({ data }: { data: any | undefined }) => {
                           css={css`
                             margin-top: 12px;
                             border-bottom: 1px solid ${vars.colors.border1};
-                            &:first-child {
+                            &:first-of-type {
                               margin-top: 16px;
                             }
-                            &:last-child {
+                            &:last-of-type {
                               border-bottom: none;
                               margin-bottom: 16px;
                             }

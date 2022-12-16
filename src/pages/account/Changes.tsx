@@ -15,7 +15,7 @@ import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { Link } from 'components/link'
 import { TypeParam } from 'components/TypeParam'
-import { Divider, Text } from '@chakra-ui/react'
+import { Divider } from '@chakra-ui/react'
 
 const helper = createColumnHelper<any>()
 
@@ -182,7 +182,7 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       </CardHead>
       <DataTable
         sx={{
-          '& > table td:nth-child(6)': {
+          '& > table td:nth-of-type(6)': {
             width: '300px',
             '> div': {
               display: 'block',

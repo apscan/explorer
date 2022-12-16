@@ -1,10 +1,9 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { AppState } from 'state'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
-import { pageSizeSelector } from './selectors'
 import * as queryString from 'query-string'
 
-import { ApplicationModal, setOpenModal, setPageSize as setPageSizeAction } from './slice'
+import { ApplicationModal, setOpenModal } from './slice'
 import { useLocation } from 'react-router-dom'
 
 export const useModalOpen = (modal: ApplicationModal): boolean => {

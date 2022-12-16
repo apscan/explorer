@@ -244,7 +244,7 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       </CardHead>
       <DataTable
         sx={{
-          '& > table td:nth-child(6)': {
+          '& > table td:nth-of-type(6)': {
             maxWidth: '250px',
             '> div': {
               display: 'block',

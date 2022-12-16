@@ -1,10 +1,9 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountResourcesQuery } from 'api'
 import { Address } from 'components/Address'
-import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead } from 'components/Card'
 import { Box } from 'components/container'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
-import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
 import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
@@ -12,6 +11,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
+import TableStat from 'components/TotalStat'
 
 const helper = createColumnHelper<any>()
 
@@ -79,7 +79,7 @@ const getRowCanExpand = (row: any) => {
 
 export const Resources = ({ id, count }: { id: any; count: number }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
-  const { data: { data } = {}, isLoading } = useAccountResourcesQuery(
+  const { data: { data } = { data: {} }, isLoading } = useAccountResourcesQuery(
     {
       id: id!,
       start: (page - 1) * pageSize,
@@ -95,11 +95,7 @@ export const Resources = ({ id, count }: { id: any; count: number }) => {
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <CardHeadStats variant="tabletab">
-          <Box>
-            Total of <NumberFormat useGrouping fallback="-" value={count} /> resources
-          </Box>
-        </CardHeadStats>
+        <TableStat variant="tabletab" object="resources" count={count} />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable

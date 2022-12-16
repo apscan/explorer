@@ -1,37 +1,38 @@
 import { AmountFormat } from 'components/AmountFormat'
-import { Box, InlineBox } from 'components/container'
+import { Box, InlineBox as InlineFlex } from 'components/container'
 import { renderRow } from 'components/helpers'
 import { Card } from 'components/Card'
 import { useMemo } from 'react'
-import { FixedNumber } from '@ethersproject/bignumber'
-import { toFixedNumber } from 'utils/number'
 import { NumberFormat } from 'components/NumberFormat'
 import { DateTime } from 'components/DateTime'
 import { DateFormat } from 'state/application/slice'
 import { css } from '@emotion/react'
 import { vars } from 'theme/theme.css'
+import RealBigNumber from 'bignumber.js'
+import { Link } from 'components/link'
+import { AptosCoin } from 'utils'
+import { Image } from '@chakra-ui/react'
+import PancakeSvg from 'assets/icons/pancake.svg'
+import CoinmarketcapPng from 'assets/icons/coinmarketcap.png'
 
-export const Market = ({ data, price, percentChange24h }: { data?: any; price?: string; percentChange24h: number }) => {
+export const Market = ({ data, percentChange24h, price }: { price?: number; data?: any; percentChange24h: number }) => {
   data = data || {}
   const fully = useMemo(
     () =>
-      !price
-        ? undefined
-        : FixedNumber.from(price.toString(), 'fixed128x18').mulUnsafe(
-            toFixedNumber(data.total_supply).toFormat('fixed128x18')
-          ),
-    [data.total_supply, price]
+      !price ? undefined : new RealBigNumber(price).multipliedBy(data.total_supply).div(Math.pow(10, data.decimals)),
+    [data.decimals, data.total_supply, price]
   )
+  const coin = data.move_resource_generic_type_params?.[0]
 
   return (
     <Card>
       <Box padding="0 12px">
         {renderRow(
           'Price',
-          <InlineBox>
-            <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
+          <InlineFlex alignItems="center">
+            <NumberFormat prefix="$" value={price} fallback="-" />
             {percentChange24h && (
-              <InlineBox
+              <InlineFlex
                 css={css`
                   color: ${percentChange24h < 0 ? vars.text.error : vars.text.success};
                 `}
@@ -47,9 +48,25 @@ export const Market = ({ data, price, percentChange24h }: { data?: any; price?: 
                   fallback="-"
                 />
                 )
-              </InlineBox>
+              </InlineFlex>
             )}
-          </InlineBox>
+            {price && (
+              <Link
+                display="inline-flex"
+                alignItems="center"
+                marginLeft="8px"
+                target="_blank"
+                rel="noopener noreferrer"
+                to={
+                  coin === AptosCoin
+                    ? 'https://coinmarketcap.com/currencies/aptos/'
+                    : `https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${AptosCoin}`
+                }
+              >
+                <Image height="18px" src={coin === AptosCoin ? CoinmarketcapPng : PancakeSvg} borderRadius="50%" />
+              </Link>
+            )}
+          </InlineFlex>
         )}
         {renderRow(
           'Total Supply',
@@ -60,11 +77,11 @@ export const Market = ({ data, price, percentChange24h }: { data?: any; price?: 
           <NumberFormat
             textTransform="uppercase"
             abbr
-            forceAverage="billion"
+            forceAverage="million"
             useGrouping
             maximumFractionDigits={3}
-            prefix="$"
-            value={fully}
+            prefix={fully?.toNumber() ? '$' : ''}
+            value={fully?.toNumber()}
             fallback="-"
           />
         )}

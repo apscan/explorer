@@ -1,8 +1,7 @@
 import { useValidatorsQuery } from 'api/validator'
-import { Box, Container } from 'components/container'
-import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { Container } from 'components/container'
+import { Card, CardFooter, CardHead } from 'components/Card'
 import { DocumentTitle } from 'components/DocumentTitle'
-import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
@@ -10,6 +9,7 @@ import { useRangePagination } from 'hooks/useRangePagination'
 import { useAppStats } from 'state/api/hooks'
 import { usePageSize } from 'hooks/usePageSize'
 import { ValidatorsTable } from './ValidatorsTable'
+import TableStat from 'components/TotalStat'
 
 export const Validators = () => {
   const stats = useAppStats()
@@ -26,11 +26,7 @@ export const Validators = () => {
       <PageTitle value="Validators" />
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
-          <CardHeadStats variant="table">
-            <Box>
-              Total of <NumberFormat useGrouping fallback="-" value={stats?.validators_count} /> validators
-            </Box>
-          </CardHeadStats>
+          <TableStat variant="table" object="validators" count={stats?.validators_count} />
           <Pagination {...pageProps} />
         </CardHead>
         <ValidatorsTable data={data} />

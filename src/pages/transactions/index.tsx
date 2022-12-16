@@ -1,11 +1,11 @@
 import { useLastVersionQuery, useTransactionsQuery } from 'api'
-import { Card, CardFooter, CardHead, CardHeadStats } from 'components/Card'
-import { Box, Container } from 'components/container'
+import { Card, CardFooter, CardHead } from 'components/Card'
+import { Container } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
-import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import TableStat from 'components/TotalStat'
 import { useCustomSearchParams } from 'hooks/useCustomSearchParams'
 import { useMaxValue } from 'hooks/useMaxValue'
 import { usePageStartLimit } from 'hooks/usePageStartLimit'
@@ -104,11 +104,7 @@ export const Transactions = () => {
       <PageTitle value="Transactions" />
       <Card variant="table" isLoading={isInitialLoading}>
         <CardHead variant="table">
-          <CardHeadStats variant="table">
-            <Box>
-              Total of <NumberFormat useGrouping fallback="-" value={latestVersion} /> transactions
-            </Box>
-          </CardHeadStats>
+          <TableStat variant="table" object="transactions" count={latestVersion} />
           <Pagination
             syncUrl={false}
             page={showPage}

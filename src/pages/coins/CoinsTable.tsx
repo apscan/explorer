@@ -1,16 +1,15 @@
 import { Text } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { AmountFormat } from 'components/AmountFormat'
+import CoinPrice from 'components/CoinPrice'
 import { Box } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
-import { Tag } from 'components/Tag'
 import { TypeParamLink } from 'components/TypeParamLink'
 import { CoinTagsMap } from 'config/coin-tags'
-import { useMemo } from 'react'
-import { AptosCoin } from 'utils'
+import React, { useMemo } from 'react'
 
 const helper = createColumnHelper<any>()
 
@@ -80,20 +79,14 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('price', {
         header: 'Price',
-        cell: (info) => {
-          if (info.row.original?.move_resource_generic_type_params[0] !== AptosCoin) {
-            return '-'
-          }
-
-          return <NumberFormat maximumFractionDigits={2} prefix="$" value={price} fallback="-" />
-        },
+        cell: (info) => <CoinPrice type={info.row.original?.move_resource_generic_type_params[0]} />,
       }),
       helper.accessor('addresses_count', {
         header: 'Holders',
         cell: (info) => <NumberFormat useGrouping fallback="-" value={info.getValue()} />,
       }),
     ],
-    [price]
+    []
   )
 
   return <DataTable dataSource={data} columns={columns} />

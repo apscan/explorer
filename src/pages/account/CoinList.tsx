@@ -9,8 +9,11 @@ import { Link } from 'components/link'
 import { AmountFormat } from 'components/AmountFormat'
 import { NumberFormat } from 'components/NumberFormat'
 import { vars } from 'theme/theme.css'
-import { useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { CoinIconFileNameMap, defaultCoinIconFileName } from 'config/coin-icons'
+import { PriceContext } from 'providers/PriceContext'
+import { useMarketInfoQuery } from 'api'
+import CoinPrice from 'components/CoinPrice'
 
 const CoinItem = styled(Box)`
   border-bottom: 1px solid #e7eaf3;
@@ -28,10 +31,12 @@ export type CoinBalance = {
   name: string
   decimals: number
   balance: string
-  price?: number
 }
 
-type CoinAmount = CoinBalance & { value: string }
+type CoinAmount = CoinBalance & {
+  value: number
+  price: number
+}
 
 export const CoinIcon = ({ type }: { type: string }) => {
   return (
@@ -82,9 +87,9 @@ const Coin = (coin: CoinAmount) => {
             postfix={` ${coin.symbol}`}
           />
         </Flex>
-        {coin.price && (
+        {!!coin.price && (
           <Flex alignItems="center" justifyContent="space-between">
-            <NumberFormat color="#77838f" value={coin.price} maximumFractionDigits={2} prefix="@ $" />
+            <CoinPrice color="#77838f" price={coin.price} prefix="@ $" />
             <NumberFormat value={coin.value} maximumFractionDigits={2} prefix="$" />
           </Flex>
         )}
@@ -96,17 +101,32 @@ const Coin = (coin: CoinAmount) => {
 export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [search, setSearch] = useState('')
-  const coins: CoinAmount[] = useMemo(
-    () =>
-      coinBalances.map((coin) => ({
-        ...coin,
-        value: new RealBigNumber(coin.balance)
-          .multipliedBy(coin.price || 0)
-          .div(new RealBigNumber(10).pow(coin.decimals))
-          .toString(),
-      })),
-    [coinBalances]
-  )
+  const [coins, setCoins] = useState<CoinAmount[]>([])
+  const { getPriceVsApt } = useContext(PriceContext)
+  const { data: market } = useMarketInfoQuery()
+
+  useEffect(() => {
+    const aptPrice = market?.quotes?.USD?.price
+
+    if (!aptPrice) {
+      return
+    }
+
+    Promise.all(coinBalances.map((coin) => getPriceVsApt(coin.type))).then((prices) => {
+      setCoins(
+        coinBalances.map((coin, i) => ({
+          ...coin,
+          price: prices[i]?.multipliedBy(aptPrice)?.toNumber() || 0,
+          value: new RealBigNumber(coin.balance)
+            .multipliedBy(prices[i] || 0)
+            .multipliedBy(aptPrice)
+            .div(Math.pow(10, coin.decimals))
+            .toNumber(),
+        }))
+      )
+    })
+  }, [coinBalances, getPriceVsApt, market?.quotes?.USD?.price])
+
   const amount = useMemo(
     () => coins.reduce((all: RealBigNumber, curr) => all.plus(curr.value), new RealBigNumber(0)),
     [coins]
@@ -133,7 +153,6 @@ export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
         minWidth="300px"
         textAlign="left"
       >
-        &gt;&nbsp;
         <NumberFormat value={amount.toString()} maximumFractionDigits={2} prefix="$" />
         <span
           style={{
@@ -145,7 +164,7 @@ export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
             margin: '0px 0.25rem',
           }}
         >
-          &gt;{coins.length}
+          {coins.length}
         </span>
       </MenuButton>
       <MenuList minWidth="300px">
