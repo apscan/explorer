@@ -153,7 +153,6 @@ export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
         minWidth="300px"
         textAlign="left"
       >
-        &gt;&nbsp;
         <NumberFormat value={amount.toString()} maximumFractionDigits={2} prefix="$" />
         <span
           style={{
@@ -165,7 +164,7 @@ export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
             margin: '0px 0.25rem',
           }}
         >
-          &gt;{coins.length}
+          {coins.length}
         </span>
       </MenuButton>
       <MenuList minWidth="300px">

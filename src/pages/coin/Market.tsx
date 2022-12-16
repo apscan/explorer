@@ -13,6 +13,7 @@ import { Link } from 'components/link'
 import { AptosCoin } from 'utils'
 import { Image } from '@chakra-ui/react'
 import PancakeSvg from 'assets/icons/pancake.svg'
+import CoinmarketcapPng from 'assets/icons/coinmarketcap.png'
 
 export const Market = ({ data, percentChange24h, price }: { price?: number; data?: any; percentChange24h: number }) => {
   data = data || {}
@@ -30,21 +31,6 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
           'Price',
           <InlineFlex alignItems="center">
             <NumberFormat prefix="$" value={price} fallback="-" />
-            {price && (
-              <Link
-                height="20px"
-                marginLeft="5px"
-                target="_blank"
-                rel="noopener noreferrer"
-                to={`https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${
-                  coin === AptosCoin
-                    ? '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC'
-                    : AptosCoin
-                }`}
-              >
-                <Image height="20px" src={PancakeSvg} borderRadius="50%" />
-              </Link>
-            )}
             {percentChange24h && (
               <InlineFlex
                 css={css`
@@ -63,6 +49,22 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
                 />
                 )
               </InlineFlex>
+            )}
+            {price && (
+              <Link
+                display="inline-flex"
+                alignItems="center"
+                marginLeft="8px"
+                target="_blank"
+                rel="noopener noreferrer"
+                to={
+                  coin === AptosCoin
+                    ? 'https://coinmarketcap.com/currencies/aptos/'
+                    : `https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${AptosCoin}`
+                }
+              >
+                <Image height="18px" src={coin === AptosCoin ? CoinmarketcapPng : PancakeSvg} borderRadius="50%" />
+              </Link>
             )}
           </InlineFlex>
         )}
