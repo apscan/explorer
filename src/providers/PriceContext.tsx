@@ -12,7 +12,7 @@ interface PriceContextProps {
 
 type Path = PairConnection[]
 
-function aggregateRoutes(sourcePairs: Path): Record<string, Path[]> {
+export function aggregateRoutes(sourcePairs: Path): Record<string, Path[]> {
   const coins = Object.keys(
     sourcePairs.reduce((all: Record<string, boolean>, pair) => {
       all[pair.xCoin] = true

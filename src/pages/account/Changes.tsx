@@ -15,7 +15,7 @@ import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { Link } from 'components/link'
 import { TypeParam } from 'components/TypeParam'
-import { Divider, Text } from '@chakra-ui/react'
+import { Divider } from '@chakra-ui/react'
 
 const helper = createColumnHelper<any>()
 

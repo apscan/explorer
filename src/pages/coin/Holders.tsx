@@ -137,7 +137,7 @@ export const Holders = ({
         },
       }),
     ],
-    [page, pageSize, price, total]
+    [decimals, page, pageSize, price, total]
   )
 
   return (

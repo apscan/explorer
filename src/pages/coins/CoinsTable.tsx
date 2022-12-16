@@ -95,7 +95,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
         cell: (info) => <NumberFormat useGrouping fallback="-" value={info.getValue()} />,
       }),
     ],
-    [price]
+    []
   )
 
   return <DataTable dataSource={data} columns={columns} />
