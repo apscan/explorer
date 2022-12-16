@@ -34,6 +34,8 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
               <Link
                 height="20px"
                 marginLeft="5px"
+                target="_blank"
+                rel="noopener noreferrer"
                 to={`https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${AptosCoin}`}
               >
                 <Image height="20px" src={PancakeSvg} borderRadius="50%" />
