@@ -27,7 +27,8 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
         {renderRow(
           'Price',
           <InlineBox>
-            <CoinPrice price={price} />
+            <NumberFormat prefix="$" value={price} fallback="-" />
+            {/* <CoinPrice price={price} /> */}
             {percentChange24h && (
               <InlineBox
                 css={css`
