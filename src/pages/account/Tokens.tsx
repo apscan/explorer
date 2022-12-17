@@ -63,11 +63,10 @@ const fetchTokenMeta = async (url: string): Promise<TokenMeta | undefined> => {
 }
 
 const Token: React.FC<TokenType> = ({ name, url, amount }) => {
-  const [img, setImg] = useState<string>()
-
-  useEffect(() => {
-    fetchTokenMeta(url).then((meta) => meta && setImg(meta.image))
-  }, [url])
+  // const [img, setImg] = useState<string>()
+  // useEffect(() => {
+  //   fetchTokenMeta(url).then((meta) => meta && setImg(meta.image))
+  // }, [url])
 
   return (
     <ListItem>
