@@ -10,6 +10,7 @@ import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
 import { vars } from 'theme/theme.css'
 import { CoinBalance, CoinList } from './CoinList'
+import { Tokens } from './Tokens'
 
 export const Overview = ({ data }: { data: any | undefined }) => {
   const coinBalances: CoinBalance[] = useMemo(() => {
@@ -101,7 +102,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           </Box>
         )}
         {renderRow('Coins', <CoinList coinBalances={coinBalances} />)}
-        {renderRow('Tokens', 'Coming Soon')}
+        {renderRow('Tokens', <Tokens address={data?.address} />)}
         {renderRow(
           'Creation Time',
           data?.created_at_timestamp && data?.created_at_timestamp !== '0' ? (

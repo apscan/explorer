@@ -132,7 +132,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
         }[],
         meta: any
       ) {
-        console.log('data', data)
         return (
           data[0]?.coin_balance_history.map((item) => ({
             value: item.resource_change?.balance,
