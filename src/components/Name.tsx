@@ -13,8 +13,6 @@ export const Name = memo(({ address, ...props }: NameProps) => {
   const ans = useAns(address)
 
   if (ans) {
-    console.log('ans', ans)
-
     return (
       <Text
         as={Link}
