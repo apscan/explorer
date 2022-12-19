@@ -29,6 +29,11 @@ export const useSearchOptions = () => {
         name: t('Blocks'),
         desc: t('Search blocks'),
       },
+      {
+        id: SearchOption.Ans,
+        name: t('ANS'),
+        desc: t('Search Aptos domain name'),
+      },
     ]
   }, [t])
 

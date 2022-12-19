@@ -228,6 +228,12 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
               <Box>No Results</Box>
             ) : (
               <>
+                {data?.ansAddress !== undefined && data?.ansAddress !== null && (
+                  <StyledSearchSection onClick={() => onSearch()} to={`/account/${data.ansAddress}`}>
+                    Ans
+                    <StyledSearchItemSmall>{data.ansAddress}</StyledSearchItemSmall>
+                  </StyledSearchSection>
+                )}
                 {data?.account !== undefined && data?.account !== null && (
                   <StyledSearchSection onClick={() => onSearch()} to={`/account/${data.account}`}>
                     Account
