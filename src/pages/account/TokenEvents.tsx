@@ -177,8 +177,6 @@ const columns: ColumnDef<any, any>[] = [
     },
     header: 'Amount',
     cell: (info) => {
-      console.log('info.row', info.row.original)
-
       return <AmountFormat minimumFractionDigits={0} decimals={0} postfix="" value={info.row.original?.data?.amount} />
     },
   }),

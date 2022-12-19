@@ -93,8 +93,6 @@ export const Resources = ({ id, count }: { id: any; count: number }) => {
 
   const pageProps = useRangePagination(page, pageSize, count, setPage)
 
-  console.log('data', data)
-
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
