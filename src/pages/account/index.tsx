@@ -48,7 +48,7 @@ export const Account = () => {
       {
         label: tabNameWithCount('Transactions', data?.transactions_count),
         key: 'tx',
-        children: <AccountTransactions key={address} id={address} count={data?.transactions_count} />,
+        children: <AccountTransactions key={address} id={address} count={(data?.sequence_number ?? -1) + 1} />,
         hide: !data?.transactions_count,
       },
       {

@@ -3,30 +3,16 @@ import { getLimitedEnd } from 'utils/api'
 import { toFixedNumber } from 'utils/number'
 import { emptySplitApi } from './api'
 
-const getAccountTranscationUrl = (id?: string | void) => {
-  if (!id) throw new Error('miss account id')
-
-  const queryString = `?sender=eq.${id}`
-
-  return `/transactions${queryString}`
-}
-
 export const accountApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
-    accountTransactions: builder.query<any, { id: string; start?: number; pageSize?: number }>({
-      query: ({ id, start = 0, pageSize }) => {
-        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
-
+    accountTransactions: builder.query<any, { id: string; start: number; pageSize: number }>({
+      query: ({ id, start, pageSize }) => {
         return {
-          url: getAccountTranscationUrl(id),
-          headers: {
-            'Range-Unit': 'items',
-            Range: `${start}-${end ?? ''}`,
-          },
+          url: `/user_transactions?sender=eq.${id}&sequence_number=lte.${start}&limit=${pageSize}`,
         }
       },
       transformResponse(data, meta: any) {
-        return { data, page: parseHeaders(meta?.response?.headers) }
+        return { data }
       },
     }),
     accountEvents: builder.query<any, { id: string; start?: number; pageSize?: number }>({
