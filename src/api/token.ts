@@ -75,9 +75,33 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+    accountTokenEvents: builder.query<PageResult<{}>, { id?: string; start?: number; pageSize?: number }>({
+      query: ({ start = 0, pageSize, id }) => {
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
+        return {
+          url: `/token_events?address=eq.${id}`,
+          headers: {
+            prefer: 'count=exact',
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+          },
+        }
+      },
+      transformResponse(data, meta: any) {
+        return {
+          data: (data as any[])?.map((item, index) => {
+            return {
+              ...item,
+            }
+          }),
+          page: parseHeaders(meta?.response?.headers),
+        }
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useTokensQuery } = tokenApi
+export const { useTokensQuery, useAccountTokenEventsQuery } = tokenApi
