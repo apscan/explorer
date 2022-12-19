@@ -1,7 +1,7 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTransactionEventsQuery } from 'api'
 import { Address } from 'components/Address'
-import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead } from 'components/Card'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'

@@ -15,7 +15,7 @@ export const Coins = () => {
   const maxCount = queryRangeLimitMap['coin_info']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
 
-  const { data: { data, page: pageParams = {} } = {}, isLoading } = useCoinsQuery({
+  const { data: { data } = {}, isLoading } = useCoinsQuery({
     start: (page - 1) * pageSize,
     pageSize,
   })
@@ -29,7 +29,7 @@ export const Coins = () => {
       <PageTitle value="Coins" />
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
-          <TableStat variant="table" maxCount={maxCount} object="coins" count={maxCount} />
+          <TableStat variant="table" forceMaxCount={true} maxCount={maxCount} object="coins" count={maxCount} />
           <Pagination {...pageProps} />
         </CardHead>
         <CoinsTable price={market?.quotes?.USD?.price} data={data} />

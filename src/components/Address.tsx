@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import AnsAvatar from 'assets/icons/AnsAvatar'
 import { addressTagsMap } from 'config/address-tags'
 import { useAns } from 'hooks/useAns'
 import { memo, useMemo } from 'react'
@@ -22,6 +23,7 @@ export interface AddressProps extends BoxProps {
   size?: 'full' | 'short' | 'long'
   copyable?: boolean
   replaceAddress?: boolean
+  withAnsIcon?: boolean
 }
 
 export const Address = memo(
@@ -34,6 +36,7 @@ export const Address = memo(
     size = 'long',
     fallback,
     replaceAddress = true,
+    withAnsIcon = false,
     ...props
   }: AddressProps) => {
     const ans = useAns(value)
@@ -66,6 +69,12 @@ export const Address = memo(
     return (
       <Tooltip label={tooltip} isDisabled={!tooltip} closeDelay={500000}>
         <Box {...props} css={container}>
+          {withAnsIcon && ans && (
+            <>
+              <AnsAvatar />
+              &nbsp;
+            </>
+          )}
           <Box as={as} css={container} to={`/account/${value}`}>
             {replaceAddress ? (ans && `${ans}.apt`) || addressTagsMap[value]?.label || text : text}
           </Box>
