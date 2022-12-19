@@ -50,7 +50,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         token_id_handle: string
         rank: number
       }>,
-      { address: string; start?: number; pageSize?: number }
+      { address?: string; start?: number; pageSize?: number }
     >({
       query: ({ start = 0, pageSize, address }) => {
         let end = pageSize != null && start != null ? start + pageSize - 1 : undefined

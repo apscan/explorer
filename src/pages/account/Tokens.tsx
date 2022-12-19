@@ -63,11 +63,6 @@ const fetchTokenMeta = async (url: string): Promise<TokenMeta | undefined> => {
 }
 
 const Token: React.FC<TokenType> = ({ name, url, amount }) => {
-  // const [img, setImg] = useState<string>()
-  // useEffect(() => {
-  //   fetchTokenMeta(url).then((meta) => meta && setImg(meta.image))
-  // }, [url])
-
   return (
     <ListItem>
       {/* use Link instead MenuItem here, cuz MenuItem cause search component blur when list filled */}
@@ -91,21 +86,6 @@ const Token: React.FC<TokenType> = ({ name, url, amount }) => {
       >
         <Flex alignItems="center" justifyContent="space-between">
           <InlineBox alignItems="center" mr="0.35rem">
-            {/* <object
-                style={{
-                  width: '12px',
-                  height: '12px',
-                  marginRight: '4px',
-                }} data={`/images/icons/${defaultCoinIconFileName}`} type="image/png">
-            </object> */}
-            {/* <Image
-              style={{
-                width: '12px',
-                height: '12px',
-                marginRight: '4px',
-              }}
-              src={TokenDefaultSvg}
-            /> */}
             <TokenDefault
               sx={{
                 '&': {
@@ -173,50 +153,108 @@ const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
   )
 }
 
-export const Tokens = ({ address }: { address: string }) => {
-  const { data } = useTokensQuery({ address })
+export const Tokens = ({ address }: { address?: string }) => {
+  const { data } = useTokensQuery(
+    { address, start: 0, pageSize: 50 },
+    {
+      skip: !address,
+    }
+  )
+  const { data: data2 } = useTokensQuery(
+    { address, start: 50, pageSize: 50 },
+    {
+      skip: !address,
+    }
+  )
+  const { data: data3 } = useTokensQuery(
+    { address, start: 100, pageSize: 50 },
+    {
+      skip: !address,
+    }
+  )
   const inputRef = useRef<HTMLInputElement>(null)
   const [search, setSearch] = useState('')
   const collections: CollectionType[] = useMemo(() => {
-    if (!data) {
+    if (!data && !data2 && !data3) {
       return []
     }
 
-    const collections = data.data.reduce(
-      (
-        collections: Record<
-          string,
-          {
-            name: string
-            creator: string
-            tokens: TokenType[]
+    const collections = (data?.data ?? [])
+      .concat(data2?.data || [])
+      .concat(data3?.data ?? [])
+      .reduce(
+        (
+          collections: Record<
+            string,
+            {
+              name: string
+              creator: string
+              tokens: TokenType[]
+            }
+          >,
+          token
+        ) => {
+          const collectionId = `${token.token_id.id.token_data_id.collection}${token.token_id.id.token_data_id.creator}`
+
+          collections[collectionId] = collections[collectionId] || {
+            name: token.token_id.id.token_data_id.collection,
+            creator: token.token_id.id.token_data_id.creator,
+            tokens: [],
           }
-        >,
-        token
-      ) => {
-        const collectionId = `${token.token_id.id.token_data_id.collection}${token.token_id.id.token_data_id.creator}`
 
-        collections[collectionId] = collections[collectionId] || {
-          name: token.token_id.id.token_data_id.collection,
-          creator: token.token_id.id.token_data_id.creator,
-          tokens: [],
-        }
+          collections[collectionId].tokens.push({
+            name: token.token_id.id.token_data_id.name,
+            amount: token.token_id.amount,
+            collectionName: token.token_id.id.token_data_id.collection,
+            propertiVersion: token.token_id.id.property_version,
+            url: token.token_info.uri,
+          })
 
-        collections[collectionId].tokens.push({
-          name: token.token_id.id.token_data_id.name,
-          amount: token.token_id.amount,
-          collectionName: token.token_id.id.token_data_id.collection,
-          propertiVersion: token.token_id.id.property_version,
-          url: token.token_info.uri,
-        })
-
-        return collections
-      },
-      {}
-    )
+          return collections
+        },
+        {}
+      )
 
     return Object.values(collections)
-  }, [data])
+      .map((collection) => ({
+        ...collection,
+        tokens: [...collection.tokens].sort((tokenA, tokenB) => {
+          const [nameA, numberA_] = tokenA.name.split('#')
+          const [nameB, numberB_] = tokenB.name.split('#')
+          if (nameA > nameB) {
+            return 1
+          }
+
+          if (nameA < nameB) {
+            return -1
+          }
+
+          const numberA = parseInt(numberA_)
+          const numberB = parseInt(numberB_)
+
+          if (numberA > numberB) {
+            return 1
+          }
+
+          if (numberA < numberB) {
+            return -1
+          }
+
+          return 0
+        }),
+      }))
+      .sort((collectionA, collectionB) => {
+        if (collectionA.name > collectionB.name) {
+          return 1
+        }
+
+        if (collectionA.name < collectionB.name) {
+          return -1
+        }
+
+        return 0
+      })
+  }, [data, data2, data3])
   const filteredCollections = useMemo(() => {
     if (!search) {
       return collections
@@ -271,6 +309,7 @@ export const Tokens = ({ address }: { address: string }) => {
             />
             Tokens
             <NumberFormat
+              prefix=">"
               style={{
                 color: '#fff',
                 background: '#3498db',
