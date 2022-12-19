@@ -75,7 +75,8 @@ export const accountApi = emptySplitApi.injectEndpoints({
       keepUnusedDataFor: 86400, // keep for 24 hours
       query: ({ id, start = 0, pageSize }) => {
         if (!id) throw new Error('miss transaction version')
-        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        end = getLimitedEnd('resource_changes?address', end)
 
         return {
           url: `/resource_changes?address=eq.${id}`,

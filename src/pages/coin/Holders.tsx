@@ -1,6 +1,6 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { Address } from 'components/Address'
-import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead } from 'components/Card'
 import { useCoinHoldersQuery } from 'api'
 import { NumberFormat } from 'components/NumberFormat'
 import { DataTable } from 'components/table'
@@ -11,9 +11,10 @@ import { Pagination } from 'components/table/Pagination'
 import { AmountFormat } from 'components/AmountFormat'
 import { useMemo } from 'react'
 import RealBigNumber from 'bignumber.js'
+import TableStat from 'components/TotalStat'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
-const maxCount = 1000
 
 export const Holders = ({
   type: id,
@@ -30,6 +31,7 @@ export const Holders = ({
   totalSupply?: string
   price?: number
 }) => {
+  const maxCount = queryRangeLimitMap['coin_balances_rank?move_resource_generic_type_params']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useCoinHoldersQuery(
     {
@@ -143,18 +145,7 @@ export const Holders = ({
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <CardHeadStats variant="tabletab">
-          Total of&nbsp;
-          <NumberFormat useGrouping fallback="-" value={count} />
-          &nbsp;holders
-          {count && count > maxCount && (
-            <>
-              &nbsp;(showing the top&nbsp;
-              <NumberFormat useGrouping value={maxCount} />
-              &nbsp;only)
-            </>
-          )}
-        </CardHeadStats>
+        <TableStat maxCount={maxCount} count={count} variant="tabletab" object="holders" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable dataSource={data} columns={columns} />

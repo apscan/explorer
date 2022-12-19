@@ -295,7 +295,7 @@ export const Tokens = ({ address }: { address: string }) => {
             </Box>
             <Box p="0em 0.75em 0em 0.5em" maxH="500px" overflowY="scroll">
               {!collections.length ? (
-                <Text pl="0.25rem">No Available Coins</Text>
+                <Text pl="0.25rem">No Tokens</Text>
               ) : (
                 filteredCollections.map((collection) => (
                   <Collection key={collection.name} needCollasped={needCollasped} {...collection} />

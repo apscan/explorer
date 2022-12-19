@@ -12,6 +12,7 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import numbro from 'numbro'
 import { usePageSize } from 'hooks/usePageSize'
+import TableStat from 'components/TotalStat'
 
 const helper = createColumnHelper<any>()
 
@@ -124,11 +125,7 @@ export const Modules = ({ id, count }: { id: any; count: number }) => {
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <CardHeadStats variant="tabletab">
-          Total of&nbsp;
-          <NumberFormat fallback="-" value={count} />
-          &nbsp;modules
-        </CardHeadStats>
+        <TableStat count={count} variant="tabletab" object="modules" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable

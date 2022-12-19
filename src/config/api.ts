@@ -10,7 +10,9 @@ export const queryRangeLimitMap: {
   'blocks?proposer': number
   coin_info: number
   'coin_balances_rank?move_resource_generic_type_params': number
+  'user_transactions?sender': number
 } = {
+  'user_transactions?sender': 10000,
   'coin_transfers?move_resource_generic_type_params': 10000,
   'coin_transfers?address': 10000,
   'coin_transfers?address&move_resource_generic_type_params': 10000,

@@ -13,6 +13,7 @@ import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { Box } from 'components/container'
 import { Divider } from '@chakra-ui/react'
+import TableStat from 'components/TotalStat'
 
 const helper = createColumnHelper<any>()
 
@@ -129,11 +130,7 @@ export const Events = ({ id, count }: { id: any; count: number }) => {
   return (
     <CardBody isLoading={isLoading || id == null}>
       <CardHead variant="tabletab">
-        <CardHeadStats variant="tabletab">
-          Total of&nbsp;
-          <NumberFormat useGrouping fallback="-" value={count} />
-          &nbsp;events
-        </CardHeadStats>
+        <TableStat count={count} variant="tabletab" object="events" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable

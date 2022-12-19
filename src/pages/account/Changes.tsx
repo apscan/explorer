@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountChangesQuery } from 'api'
 import { Address } from 'components/Address'
-import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead } from 'components/Card'
 import { Box } from 'components/container'
 import { Hash } from 'components/Hash'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
@@ -16,6 +16,8 @@ import { usePageSize } from 'hooks/usePageSize'
 import { Link } from 'components/link'
 import { TypeParam } from 'components/TypeParam'
 import { Divider } from '@chakra-ui/react'
+import TableStat from 'components/TotalStat'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
 
@@ -157,6 +159,7 @@ const getRowCanExpand = (row: any) => {
 }
 
 export const Changes = ({ id, count }: { id: any; count: number }) => {
+  const maxCount = queryRangeLimitMap['resource_changes?address']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountChangesQuery(
     {
@@ -168,16 +171,12 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       skip: id == null || !count,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   return (
     <CardBody isLoading={isLoading || id == null || !count}>
       <CardHead variant="tabletab">
-        <CardHeadStats variant="tabletab">
-          Total of&nbsp;
-          <NumberFormat useGrouping fallback="-" value={count} />
-          &nbsp;changes
-        </CardHeadStats>
+        <TableStat maxCount={maxCount} count={count} variant="tabletab" object="changes" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable
