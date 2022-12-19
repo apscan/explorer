@@ -21,6 +21,7 @@ import { Overview } from './Overview'
 import { Resources } from './Resources'
 import { AccountTransactions } from './Transactions'
 import { Transfers } from './Transfers'
+import { TokenEvents } from './TokenEvents'
 
 export const Account = () => {
   const { id } = useParams<{ id: string }>()
@@ -36,14 +37,21 @@ export const Account = () => {
   const tabs = useMemo(() => {
     if (!data || !address) return undefined
 
-    const count = data?.coin_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
+    const coinEventsCount = data?.coin_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
+    const tokenEventsCount = data?.token_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
 
     return [
       {
-        label: tabNameWithCount('Coin Events', count),
+        label: tabNameWithCount('Coin Events', coinEventsCount),
         key: 'transfers',
-        children: <Transfers key={address} id={address} count={count} />,
-        hide: !count,
+        children: <Transfers key={address} id={address} count={coinEventsCount} />,
+        hide: !coinEventsCount,
+      },
+      {
+        label: tabNameWithCount('Token Events', tokenEventsCount),
+        key: 'Token Events',
+        children: <TokenEvents key={address} id={address} count={tokenEventsCount} />,
+        hide: !tokenEventsCount,
       },
       {
         label: tabNameWithCount('Transactions', data?.transactions_count),
