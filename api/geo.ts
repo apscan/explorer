@@ -1,4 +1,5 @@
-import type { VercelResponse } from '@vercel/node'
+/* eslint-disable import/no-anonymous-default-export */
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { BCS, HexString } from 'aptos'
 import ip from 'ipaddr.js'
 import axios from 'axios'
@@ -51,11 +52,7 @@ const deserializeNetworkAddress = (str: string) => {
   return result
 }
 
-// let result = deserializeNetworkAddress(
-//   '0x014404021a76616c696461746f722e6170746f732e6e6f6465732e6775727505241807203deb2d94d3d75438e2e3afdd3aec98cf57505baa329045fe05415b96260d8f440800'
-// )
-
-export const geo = async function (res: VercelResponse) {
+export default async function (req: VercelRequest, res: VercelResponse) {
   //
   // const { name = 'World' } = req.query
 
