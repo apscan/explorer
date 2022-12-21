@@ -231,7 +231,7 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
               <>
                 {data?.ansAddress !== undefined && data?.ansAddress !== null && (
                   <StyledSearchSection onClick={() => onSearch()} to={`/account/${data.ansAddress}`}>
-                    Ans
+                    Aptos Names
                     <StyledSearchItemSmall>
                       <Address value={data.ansAddress} size="short" />
                     </StyledSearchItemSmall>

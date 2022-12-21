@@ -68,9 +68,21 @@ export const coinApi = emptySplitApi.injectEndpoints({
         return { data }
       },
     }),
+    coinsCount: builder.query<number, {}>({
+      query: () => {
+        return {
+          url: 'coin_info_count',
+        }
+      },
+      transformResponse(data: { count: number }[], meta: any) {
+        console.log('data', data)
+
+        return data[0]?.count || 0
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useCoinsQuery, useCoinDetailQuery, useCoinHoldersQuery } = coinApi
+export const { useCoinsQuery, useCoinDetailQuery, useCoinHoldersQuery, useCoinsCountQuery } = coinApi

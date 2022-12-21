@@ -6,7 +6,7 @@ import { SearchOption, SearchItem } from '../types'
 export const useSearchOptions = () => {
   const { t } = useTranslation()
   const options = useMemo<SearchItem[]>(() => {
-    const desc = t('Account Address / Tx Version & Hash /  Block Height & Hash')
+    const desc = t('Account Address / Tx Version & Hash /  Block Height & Hash / Aptos Names')
 
     return [
       {
@@ -31,8 +31,8 @@ export const useSearchOptions = () => {
       },
       {
         id: SearchOption.Ans,
-        name: t('ANS'),
-        desc: t('Search Aptos domain name'),
+        name: t('Aptos Names'),
+        desc: t('Search Aptos Names'),
       },
     ]
   }, [t])

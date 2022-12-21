@@ -1,4 +1,4 @@
-import { useCoinsQuery, useMarketInfoQuery } from 'api'
+import { useCoinsCountQuery, useCoinsQuery, useMarketInfoQuery } from 'api'
 import { Card, CardFooter, CardHead } from 'components/Card'
 import { Container } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -13,8 +13,9 @@ import { queryRangeLimitMap } from 'config/api'
 
 export const Coins = () => {
   const maxCount = queryRangeLimitMap['coin_info']
+  // const
   const [pageSize, setPageSize, page, setPage] = usePageSize()
-
+  const { data: count } = useCoinsCountQuery({})
   const { data: { data } = {}, isLoading } = useCoinsQuery({
     start: (page - 1) * pageSize,
     pageSize,
@@ -29,7 +30,7 @@ export const Coins = () => {
       <PageTitle value="Coins" />
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
-          <TableStat variant="table" forceMaxCount={true} maxCount={maxCount} object="coins" count={maxCount} />
+          <TableStat variant="table" count={count} maxCount={maxCount} object="coins" />
           <Pagination {...pageProps} />
         </CardHead>
         <CoinsTable price={market?.quotes?.USD?.price} data={data} />
