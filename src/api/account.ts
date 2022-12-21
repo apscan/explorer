@@ -11,7 +11,34 @@ export const accountApi = emptySplitApi.injectEndpoints({
           url: `/user_transactions?sender=eq.${id}&sequence_number=lte.${start}&limit=${pageSize}`,
         }
       },
-      transformResponse(data, meta: any) {
+      transformResponse(
+        data: {
+          version: number
+          payload: {
+            type: string
+            function: string
+            arguments: any[]
+            type_arguments: any[]
+          }
+          block_height: number
+          sender: string
+          sequence_number: number
+          time_microseconds: string
+          gas_used: number
+          gas_unit_price: number
+          events_count: number
+          changes_count: number
+        }[],
+        meta: any
+      ) {
+        console.log('data', data)
+        data = data.map((item) => ({
+          ...item,
+          type: 'user_transaction',
+          user_transaction_detail: {
+            gas_unit_price: item.gas_unit_price,
+          },
+        }))
         return { data }
       },
     }),

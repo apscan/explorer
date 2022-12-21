@@ -75,8 +75,6 @@ export const coinApi = emptySplitApi.injectEndpoints({
         }
       },
       transformResponse(data: { count: number }[], meta: any) {
-        console.log('data', data)
-
         return data[0]?.count || 0
       },
     }),
