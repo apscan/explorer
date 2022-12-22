@@ -282,6 +282,8 @@ export const Tokens = ({ address }: { address?: string }) => {
   )
   const tokensCount = useMemo(() => collections.reduce((all, curr) => all + curr.tokens.length, 0), [collections])
 
+  console.log('data?.page.count', data?.page.count, data?.page.count ?? tokensCount)
+
   return (
     <Menu>
       {({ isOpen }) => (
@@ -313,7 +315,6 @@ export const Tokens = ({ address }: { address?: string }) => {
             />
             Tokens
             <NumberFormat
-              prefix={data?.page.count ?? tokensCount}
               style={{
                 color: '#fff',
                 background: '#3498db',
@@ -322,7 +323,7 @@ export const Tokens = ({ address }: { address?: string }) => {
                 fontSize: '75%',
                 margin: '0px 0.25rem',
               }}
-              value={tokensCount}
+              value={data?.page.count ?? tokensCount}
             />
           </MenuButton>
           <MenuList minWidth="300px">
