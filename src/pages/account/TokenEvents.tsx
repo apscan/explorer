@@ -158,6 +158,24 @@ const columns: ColumnDef<any, any>[] = [
       },
     }
   ),
+  helper.accessor('creator', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Creator',
+    cell: (info) => {
+      return <Address value={info.row.original?.data?.id?.token_data_id.creator} size="short" />
+    },
+  }),
+  helper.accessor('collection', {
+    meta: {
+      nowrap: true,
+    },
+    header: 'Collection',
+    cell: (info) => {
+      return info.row.original?.data?.id?.token_data_id.collection
+    },
+  }),
   helper.accessor('tokenname', {
     meta: {
       nowrap: true,

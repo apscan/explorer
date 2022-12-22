@@ -11,6 +11,7 @@ import { ListItem } from './CoinList'
 import { useTokensQuery } from 'api/token'
 import { BaseInput } from 'components/inputs'
 import TokenDefault from 'assets/tokens/TokenDefault'
+import { Address } from 'components/Address'
 
 type TokenType = {
   name: string
@@ -109,6 +110,7 @@ const Token: React.FC<TokenType> = ({ name, url, amount }) => {
 const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
   name,
   tokens,
+  creator,
   needCollasped = false,
 }) => {
   const [collasped, setCollasped] = useState(needCollasped && tokens.length > 5)
@@ -131,7 +133,17 @@ const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
           justifyContent="space-between"
         >
           <InlineBox alignItems="center" justifyContent="space-between">
-            <Text fontWeight="600">{name}</Text>
+            <Address
+              fontWeight="600"
+              sx={{
+                a: {
+                  color: '#1e2022',
+                },
+              }}
+              value={creator}
+              size="short"
+            />
+            <Text fontWeight="600">::{name}</Text>
             <Text>&nbsp;({tokens.length})</Text>
           </InlineBox>
           <ChevronDownIcon
@@ -144,7 +156,7 @@ const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
           />
         </Flex>
       </Link>
-      <Box maxH={collasped ? '0px' : '99999999px'} overflowY="scroll" transition="max-height .1s">
+      <Box maxH={collasped ? '0px' : '99999999px'} overflow="hidden" transition="max-height .1s">
         {tokens.map((token) => (
           <Token key={token.name} {...token} />
         ))}
