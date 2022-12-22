@@ -178,12 +178,6 @@ export const Tokens = ({ address }: { address?: string }) => {
       skip: !address,
     }
   )
-  // const { data: data3 } = useTokensQuery(
-  //   { address, start: 100, pageSize: 50 },
-  //   {
-  //     skip: !address,
-  //   }
-  // )
   const inputRef = useRef<HTMLInputElement>(null)
   const [search, setSearch] = useState('')
   const collections: CollectionType[] = useMemo(() => {
@@ -191,41 +185,38 @@ export const Tokens = ({ address }: { address?: string }) => {
       return []
     }
 
-    const collections = (data?.data ?? [])
-      .concat(data2?.data || [])
-      // .concat(data3?.data ?? [])
-      .reduce(
-        (
-          collections: Record<
-            string,
-            {
-              name: string
-              creator: string
-              tokens: TokenType[]
-            }
-          >,
-          token
-        ) => {
-          const collectionId = `${token.token_id.id.token_data_id.collection}${token.token_id.id.token_data_id.creator}`
-
-          collections[collectionId] = collections[collectionId] || {
-            name: token.token_id.id.token_data_id.collection,
-            creator: token.token_id.id.token_data_id.creator,
-            tokens: [],
+    const collections = (data?.data ?? []).concat(data2?.data || []).reduce(
+      (
+        collections: Record<
+          string,
+          {
+            name: string
+            creator: string
+            tokens: TokenType[]
           }
+        >,
+        token
+      ) => {
+        const collectionId = `${token.token_id.id.token_data_id.collection}${token.token_id.id.token_data_id.creator}`
 
-          collections[collectionId].tokens.push({
-            name: token.token_id.id.token_data_id.name,
-            amount: token.token_id.amount,
-            collectionName: token.token_id.id.token_data_id.collection,
-            propertiVersion: token.token_id.id.property_version,
-            url: token.token_info.uri,
-          })
+        collections[collectionId] = collections[collectionId] || {
+          name: token.token_id.id.token_data_id.collection,
+          creator: token.token_id.id.token_data_id.creator,
+          tokens: [],
+        }
 
-          return collections
-        },
-        {}
-      )
+        collections[collectionId].tokens.push({
+          name: token.token_id.id.token_data_id.name,
+          amount: token.token_id.amount,
+          collectionName: token.token_id.id.token_data_id.collection,
+          propertiVersion: token.token_id.id.property_version,
+          url: token.token_info.uri,
+        })
+
+        return collections
+      },
+      {}
+    )
 
     return Object.values(collections)
       .map((collection) => ({
@@ -322,7 +313,7 @@ export const Tokens = ({ address }: { address?: string }) => {
             />
             Tokens
             <NumberFormat
-              prefix={(data?.page.count ?? 0) > tokensCount ? '>' : ' '}
+              prefix={data?.page.count ?? tokensCount}
               style={{
                 color: '#fff',
                 background: '#3498db',
