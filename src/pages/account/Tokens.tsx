@@ -178,22 +178,22 @@ export const Tokens = ({ address }: { address?: string }) => {
       skip: !address,
     }
   )
-  const { data: data3 } = useTokensQuery(
-    { address, start: 100, pageSize: 50 },
-    {
-      skip: !address,
-    }
-  )
+  // const { data: data3 } = useTokensQuery(
+  //   { address, start: 100, pageSize: 50 },
+  //   {
+  //     skip: !address,
+  //   }
+  // )
   const inputRef = useRef<HTMLInputElement>(null)
   const [search, setSearch] = useState('')
   const collections: CollectionType[] = useMemo(() => {
-    if (!data && !data2 && !data3) {
+    if (!data && !data2) {
       return []
     }
 
     const collections = (data?.data ?? [])
       .concat(data2?.data || [])
-      .concat(data3?.data ?? [])
+      // .concat(data3?.data ?? [])
       .reduce(
         (
           collections: Record<
@@ -266,7 +266,7 @@ export const Tokens = ({ address }: { address?: string }) => {
 
         return 0
       })
-  }, [data, data2, data3])
+  }, [data, data2])
   const filteredCollections = useMemo(() => {
     if (!search) {
       return collections
@@ -289,6 +289,7 @@ export const Tokens = ({ address }: { address?: string }) => {
     () => filteredCollections.length > 1 && filteredCollections.reduce((all, curr) => all + curr.tokens.length, 0) > 14,
     [filteredCollections]
   )
+  const tokensCount = useMemo(() => collections.reduce((all, curr) => all + curr.tokens.length, 0), [collections])
 
   return (
     <Menu>
@@ -321,7 +322,7 @@ export const Tokens = ({ address }: { address?: string }) => {
             />
             Tokens
             <NumberFormat
-              prefix=">"
+              prefix={(data?.page.count ?? 0) > tokensCount ? '>' : ' '}
               style={{
                 color: '#fff',
                 background: '#3498db',
@@ -330,7 +331,7 @@ export const Tokens = ({ address }: { address?: string }) => {
                 fontSize: '75%',
                 margin: '0px 0.25rem',
               }}
-              value={collections.reduce((all, curr) => all + curr.tokens.length, 0)}
+              value={tokensCount}
             />
           </MenuButton>
           <MenuList minWidth="300px">
