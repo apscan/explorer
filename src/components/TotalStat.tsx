@@ -7,14 +7,13 @@ const TableStat: React.FC<{
   object: string
   maxCount?: number
   variant: 'table' | 'tabletab'
-  forceMaxCount?: boolean
-}> = ({ count, object, maxCount, variant, forceMaxCount = false }) => {
+}> = ({ count, object, maxCount, variant }) => {
   return (
     <CardHeadStats variant={variant}>
       <Box>
         Total of <NumberFormat useGrouping fallback="-" value={count} /> {object}
       </Box>
-      {(forceMaxCount || (maxCount !== undefined && count !== undefined && count > maxCount)) && (
+      {maxCount !== undefined && count !== undefined && count > maxCount && (
         <Box>
           &nbsp;(showing the top <NumberFormat useGrouping value={maxCount} /> only)
         </Box>

@@ -4,13 +4,11 @@ import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import { TransactionsTable } from 'pages/transactions/TransactionsTable'
 import TableStat from 'components/TotalStat'
-import { queryRangeLimitMap } from 'config/api'
 import { usePageStartLimit } from 'hooks/usePageStartLimit'
 import { useCallback, useMemo } from 'react'
 import { useCustomSearchParams } from 'hooks/useCustomSearchParams'
 
 export const AccountTransactions = ({ id, count }: { id: string; count: number }) => {
-  const maxCount = queryRangeLimitMap['transactions?sender']
   const { limit: pageSize, setLimit: setPageSize, start = count - 1, setStart } = usePageStartLimit()
   const [search, setSearch] = useCustomSearchParams()
 
@@ -80,7 +78,7 @@ export const AccountTransactions = ({ id, count }: { id: string; count: number }
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <TableStat variant="tabletab" maxCount={maxCount} object="transactions" count={count} />
+        <TableStat variant="tabletab" object="transactions" count={count} />
         {totalPage > 1 && (
           <Pagination
             syncUrl={false}
