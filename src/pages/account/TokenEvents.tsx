@@ -18,6 +18,7 @@ import { TypeParam } from 'components/TypeParam'
 import TableStat from 'components/TotalStat'
 import { useAccountTokenEventsQuery } from 'api/token'
 import { truncated } from 'utils/truncated'
+import { P } from '@pancakeswap/awgmi/dist/constants-9c00c5aa'
 
 const helper = createColumnHelper<any>()
 
@@ -174,10 +175,16 @@ const columns: ColumnDef<any, any>[] = [
     },
     header: 'Collection',
     cell: (info) => {
+      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)?.token_data_id
+
+      if (!id) {
+        return '-'
+      }
+
       return (
         <Link>
-          {truncated(info.row.original?.data?.id?.token_data_id.creator, 8)}::
-          {info.row.original?.data?.id?.token_data_id.collection ?? ''}
+          {truncated(id.creator, 8)}::
+          {id.collection}
         </Link>
       )
     },
@@ -188,11 +195,13 @@ const columns: ColumnDef<any, any>[] = [
     },
     header: 'Token',
     cell: (info) => {
-      return (
-        <Link to={`/token/${info.row.original?.data?.id?.token_data_id.name}`}>
-          {info.row.original?.data?.id?.token_data_id.name}
-        </Link>
-      )
+      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)?.token_data_id
+
+      if (!id) {
+        return '-'
+      }
+
+      return <Link to={`/token/${id?.name}`}>{id?.name}</Link>
     },
   }),
   helper.accessor('amount', {
@@ -201,7 +210,15 @@ const columns: ColumnDef<any, any>[] = [
     },
     header: 'Amount',
     cell: (info) => {
-      return <AmountFormat minimumFractionDigits={0} decimals={0} postfix=" " value={info.row.original?.data?.amount} />
+      return (
+        <AmountFormat
+          fallback="-"
+          minimumFractionDigits={0}
+          decimals={0}
+          postfix=" "
+          value={info.row.original?.data?.amount}
+        />
+      )
     },
   }),
 ]
