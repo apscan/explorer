@@ -15,11 +15,12 @@ import { PriceContext } from 'providers/PriceContext'
 import { useMarketInfoQuery } from 'api'
 import CoinPrice from 'components/CoinPrice'
 
-const CoinItem = styled(Box)`
+export const ListItem = styled(Box)`
   border-bottom: 1px solid #e7eaf3;
   padding-bottom: 0.25rem;
   margin-bottom: 0.25rem;
   &:last-child {
+    padding-bottom: 0rem;
     margin-bottom: 0rem;
     border-bottom-width: 0px;
   }
@@ -53,7 +54,7 @@ export const CoinIcon = ({ type }: { type: string }) => {
 
 const Coin = (coin: CoinAmount) => {
   return (
-    <CoinItem>
+    <ListItem>
       {/* use Link instead MenuItem here, cuz MenuItem cause search component blur when list filled */}
       <Link
         sx={{
@@ -94,7 +95,7 @@ const Coin = (coin: CoinAmount) => {
           </Flex>
         )}
       </Link>
-    </CoinItem>
+    </ListItem>
   )
 }
 
@@ -152,6 +153,11 @@ export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
         rightIcon={<ChevronDownIcon />}
         minWidth="300px"
         textAlign="left"
+        sx={{
+          '& > span': {
+            display: 'inline-flex',
+          },
+        }}
       >
         <NumberFormat value={amount.toString()} maximumFractionDigits={2} prefix="$" />
         <span
@@ -178,7 +184,7 @@ export const CoinList = ({ coinBalances }: { coinBalances: CoinBalance[] }) => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </Box>
-        <Box p="0em 0.75em 0em 0.5em">
+        <Box p="0em 0.75em 0em 0.5em" maxH="500px" overflowY="scroll">
           {!filteredCoins.length ? (
             <Text pl="0.25rem">No Available Coins</Text>
           ) : (

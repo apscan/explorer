@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useSearchQuery } from 'api'
+import { Address } from 'components/Address'
 import { Link } from 'components/link'
 import { Popover, PopoverContent, PopoverTrigger } from 'components/popover'
 import { useDebounce } from 'hooks/useDebounce'
@@ -228,6 +229,14 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
               <Box>No Results</Box>
             ) : (
               <>
+                {data?.ansAddress !== undefined && data?.ansAddress !== null && (
+                  <StyledSearchSection onClick={() => onSearch()} to={`/account/${data.ansAddress}`}>
+                    Aptos Names
+                    <StyledSearchItemSmall>
+                      <Address value={data.ansAddress} size="short" />
+                    </StyledSearchItemSmall>
+                  </StyledSearchSection>
+                )}
                 {data?.account !== undefined && data?.account !== null && (
                   <StyledSearchSection onClick={() => onSearch()} to={`/account/${data.account}`}>
                     Account

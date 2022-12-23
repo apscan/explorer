@@ -1,7 +1,7 @@
 import { memo } from 'react'
-import { Image, Link, Text, TextProps } from '@chakra-ui/react'
+import { Link, Text, TextProps } from '@chakra-ui/react'
 import { useAns } from 'hooks/useAns'
-import ANSLogo from 'assets/icons/ans-avatar.svg'
+import AnsAvatar from 'assets/icons/AnsAvatar'
 
 export interface LabelProps extends TextProps {
   address: string
@@ -34,17 +34,21 @@ export const Ans = memo(({ address, ...props }: LabelProps) => {
           color: '#fff',
           backgroundColor: '#3498db',
           textDecoration: 'none',
+
+          '& > svg path': {
+            fill: 'white',
+            stroke: 'white',
+          },
         },
-        '& > img': {
+        '& > svg': {
           marginRight: '0.25rem',
           width: '16px',
           height: '16px',
-          borderRadius: '100%',
         },
       }}
       {...props}
     >
-      <Image src={ANSLogo} />
+      <AnsAvatar />
       {ans}.apt
     </Text>
   )

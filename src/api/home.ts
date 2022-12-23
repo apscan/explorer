@@ -95,6 +95,7 @@ export const homeApi = emptySplitApi.injectEndpoints({
         transaction: null | string
         account: null | string
         block: null | string
+        ansAddress: null | string
       },
       {
         filter: SearchOption
@@ -107,10 +108,12 @@ export const homeApi = emptySplitApi.injectEndpoints({
           transaction: null | string
           account: null | string
           block: null | string
+          ansAddress: null | string
         } = {
           transaction: null,
           account: null,
           block: null,
+          ansAddress: null,
         }
         if (!value ?? typeof value !== 'string') return { data: result }
 
@@ -119,24 +122,24 @@ export const homeApi = emptySplitApi.injectEndpoints({
         const isNumber = /^\d+$/.test(value)
         const isHex = /^0x[0-9A-Fa-f]+$/.test(value)
 
-        if (!isHex && !isNumber) return { data: result }
-
         const queryUrls = {
           transaction: `/transactions?${
             isNumber ? `version=eq.${value}` : `hash=eq.${value}`
           }&limit=1&select=version,hash`,
           account: `/accounts?address=eq.${value}&limit=1&select=address`,
           block: `/blocks?${isNumber ? `height=eq.${value}` : `hash=eq.${value}`}&limit=1&select=height,hash`,
+          apt: `https://www.aptosnames.com/api/mainnet/v1/address/${value}`,
         }
 
         if (filter === SearchOption.Addresses ?? (isHex && value.length !== 66)) {
           const account = await baseQuery({ url: queryUrls['account'] })
           result.account = (account.data as any)?.[0]?.address ?? null
         } else if (filter === SearchOption.All) {
-          const [account, transaction, block] = await Promise.all([
+          const [account, transaction, block, address] = await Promise.all([
             baseQuery({ url: queryUrls['account'] }),
             baseQuery({ url: queryUrls['transaction'] }),
             baseQuery({ url: queryUrls['block'] }),
+            baseQuery({ url: queryUrls['apt'] }),
           ])
 
           result.account = (account.data as any)?.[0]?.address ?? null
@@ -147,6 +150,7 @@ export const homeApi = emptySplitApi.injectEndpoints({
             result.transaction = (transaction.data as any)?.[0]?.hash ?? null
             result.block = (block.data as any)?.[0]?.hash ?? null
           }
+          result.ansAddress = (address.data as { address?: string })?.address ?? null
         } else if (filter === SearchOption.Tx) {
           const transaction = await baseQuery({ url: queryUrls['transaction'] })
           if (isNumber) {
@@ -161,6 +165,9 @@ export const homeApi = emptySplitApi.injectEndpoints({
           } else {
             result.block = (block.data as any)?.[0]?.hash ?? null
           }
+        } else if (filter === SearchOption.Ans) {
+          const address = await baseQuery({ url: queryUrls['apt'] })
+          result.ansAddress = (address.data as { address?: string })?.address ?? null
         }
 
         return { data: result }

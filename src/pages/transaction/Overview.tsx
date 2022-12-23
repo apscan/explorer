@@ -184,7 +184,11 @@ export const Overview = ({ data }: { data: any | undefined }) => {
 
         {renderRow(
           'Sender',
-          data?.sender ? <Address size="full" value={data?.sender} /> : data?.type && <TxType value={data?.type} />
+          data?.sender ? (
+            <Address withAnsIcon size="full" value={data?.sender} />
+          ) : (
+            data?.type && <TxType value={data?.type} />
+          )
         )}
 
         {data?.type === 'user_transaction' && renderUserTransactionSection(data)}

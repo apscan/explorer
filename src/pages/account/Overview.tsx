@@ -10,11 +10,12 @@ import { useMemo } from 'react'
 import { DateFormat } from 'state/application/slice'
 import { vars } from 'theme/theme.css'
 import { CoinBalance, CoinList } from './CoinList'
+import { Tokens } from './Tokens'
 
 export const Overview = ({ data }: { data: any | undefined }) => {
   const coinBalances: CoinBalance[] = useMemo(() => {
-    return (
-      data?.all_balances?.map(
+    return (data?.all_balances || [])
+      .map(
         (coin: {
           move_resource_generic_type_params: string[]
           balance: string
@@ -30,8 +31,11 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           decimals: parseInt(coin?.coin_info?.decimals || '8'),
           balance: coin?.balance,
         })
-      ) || []
-    )
+      )
+      .filter(
+        (coin: { type: string; symbol: string; name: string; decimals: number; balance: string }) =>
+          coin.balance !== '0' && coin.symbol !== undefined && coin.name !== undefined
+      )
   }, [data])
 
   return (
@@ -101,7 +105,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           </Box>
         )}
         {renderRow('Coins', <CoinList coinBalances={coinBalances} />)}
-        {renderRow('Tokens', 'Coming Soon')}
+        {renderRow('Tokens', <Tokens address={data?.address} />)}
         {renderRow(
           'Creation Time',
           data?.created_at_timestamp && data?.created_at_timestamp !== '0' ? (

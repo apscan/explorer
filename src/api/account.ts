@@ -3,30 +3,43 @@ import { getLimitedEnd } from 'utils/api'
 import { toFixedNumber } from 'utils/number'
 import { emptySplitApi } from './api'
 
-const getAccountTranscationUrl = (id?: string | void) => {
-  if (!id) throw new Error('miss account id')
-
-  const queryString = `?sender=eq.${id}`
-
-  return `/transactions${queryString}`
-}
-
 export const accountApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
-    accountTransactions: builder.query<any, { id: string; start?: number; pageSize?: number }>({
-      query: ({ id, start = 0, pageSize }) => {
-        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
-
+    accountTransactions: builder.query<any, { id: string; start: number; pageSize: number }>({
+      query: ({ id, start, pageSize }) => {
         return {
-          url: getAccountTranscationUrl(id),
-          headers: {
-            'Range-Unit': 'items',
-            Range: `${start}-${end ?? ''}`,
-          },
+          url: `/user_transactions?sender=eq.${id}&sequence_number=lte.${start}&limit=${pageSize}`,
         }
       },
-      transformResponse(data, meta: any) {
-        return { data, page: parseHeaders(meta?.response?.headers) }
+      transformResponse(
+        data: {
+          version: number
+          payload: {
+            type: string
+            function: string
+            arguments: any[]
+            type_arguments: any[]
+          }
+          block_height: number
+          sender: string
+          sequence_number: number
+          time_microseconds: string
+          gas_used: number
+          gas_unit_price: number
+          events_count: number
+          changes_count: number
+        }[],
+        meta: any
+      ) {
+        console.log('data', data)
+        data = data.map((item) => ({
+          ...item,
+          type: 'user_transaction',
+          user_transaction_detail: {
+            gas_unit_price: item.gas_unit_price,
+          },
+        }))
+        return { data }
       },
     }),
     accountEvents: builder.query<any, { id: string; start?: number; pageSize?: number }>({
@@ -75,7 +88,8 @@ export const accountApi = emptySplitApi.injectEndpoints({
       keepUnusedDataFor: 86400, // keep for 24 hours
       query: ({ id, start = 0, pageSize }) => {
         if (!id) throw new Error('miss transaction version')
-        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        end = getLimitedEnd('resource_changes?address', end)
 
         return {
           url: `/resource_changes?address=eq.${id}`,
@@ -132,7 +146,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
         }[],
         meta: any
       ) {
-        console.log('data', data)
         return (
           data[0]?.coin_balance_history.map((item) => ({
             value: item.resource_change?.balance,

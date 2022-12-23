@@ -37,9 +37,10 @@ const columns = [
     header: 'Resource Name',
     cell: (info) => <Box>{info.getValue()}</Box>,
   }),
-  helper.accessor('move_resource_generic_type_params.0', {
+  helper.accessor('move_resource_generic_type_params', {
     header: 'Resource Type',
-    cell: (info) => (info.getValue() ? <TypeParam value={info.getValue()} /> : '-'),
+    cell: (info) =>
+      info.getValue() ? <TypeParam value={info.row.original?.move_resource_generic_type_params[0]} /> : '-',
   }),
   helper.accessor('move_resource_data', {
     meta: {

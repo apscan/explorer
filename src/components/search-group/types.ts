@@ -3,6 +3,7 @@ export enum SearchOption {
   Addresses = 'Addresses',
   Tx = 'Tx',
   Block = 'Block',
+  Ans = 'Ans',
 }
 
 export interface SearchItem {

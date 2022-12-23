@@ -13,7 +13,72 @@ import { Link } from 'components/link'
 import { AptosCoin } from 'utils'
 import { Image } from '@chakra-ui/react'
 import PancakeSvg from 'assets/icons/pancake.svg'
-import CoinmarketcapPng from 'assets/icons/coinmarketcap.png'
+import CoinmarketcapPng from 'assets/brand/coinmarketcap.png'
+import CoinGeckoPng from 'assets/brand/coingecko.png'
+import Coinpaprikang from 'assets/brand/coinpaprika.png'
+import CoinstatsSvg from 'assets/brand/coinstats.jpeg'
+
+const PriceSources: React.FC<{ coin: string }> = ({ coin }) => {
+  if (coin !== AptosCoin) {
+    return (
+      <Link
+        display="inline-flex"
+        alignItems="center"
+        marginLeft="8px"
+        target="_blank"
+        rel="noopener noreferrer"
+        to={`https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${AptosCoin}`}
+      >
+        <Image height="18px" src={PancakeSvg} borderRadius="50%" />
+      </Link>
+    )
+  }
+
+  return (
+    <>
+      <Link
+        display="inline-flex"
+        alignItems="center"
+        marginLeft="8px"
+        target="_blank"
+        rel="noopener noreferrer"
+        to="https://coinmarketcap.com/currencies/aptos/"
+      >
+        <Image height="18px" src={CoinmarketcapPng} borderRadius="50%" />
+      </Link>
+      <Link
+        display="inline-flex"
+        alignItems="center"
+        marginLeft="8px"
+        target="_blank"
+        rel="noopener noreferrer"
+        to="https://www.coingecko.com/en/coins/aptos"
+      >
+        <Image height="18px" src={CoinGeckoPng} borderRadius="50%" />
+      </Link>
+      <Link
+        display="inline-flex"
+        alignItems="center"
+        marginLeft="8px"
+        target="_blank"
+        rel="noopener noreferrer"
+        to="https://coinstats.app/coins/aptos/"
+      >
+        <Image height="18px" src={CoinstatsSvg} borderRadius="50%" />
+      </Link>
+      <Link
+        display="inline-flex"
+        alignItems="center"
+        marginLeft="8px"
+        target="_blank"
+        rel="noopener noreferrer"
+        to="https://coinpaprika.com/coin/apt-aptos/"
+      >
+        <Image height="18px" src={Coinpaprikang} borderRadius="50%" />
+      </Link>
+    </>
+  )
+}
 
 export const Market = ({ data, percentChange24h, price }: { price?: number; data?: any; percentChange24h: number }) => {
   data = data || {}
@@ -50,22 +115,7 @@ export const Market = ({ data, percentChange24h, price }: { price?: number; data
                 )
               </InlineFlex>
             )}
-            {price && (
-              <Link
-                display="inline-flex"
-                alignItems="center"
-                marginLeft="8px"
-                target="_blank"
-                rel="noopener noreferrer"
-                to={
-                  coin === AptosCoin
-                    ? 'https://coinmarketcap.com/currencies/aptos/'
-                    : `https://aptos.pancakeswap.finance/swap?inputCurrency=${coin}&outputCurrency=${AptosCoin}`
-                }
-              >
-                <Image height="18px" src={coin === AptosCoin ? CoinmarketcapPng : PancakeSvg} borderRadius="50%" />
-              </Link>
-            )}
+            {price && <PriceSources coin={coin} />}
           </InlineFlex>
         )}
         {renderRow(

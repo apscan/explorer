@@ -53,7 +53,8 @@ export const coinApi = emptySplitApi.injectEndpoints({
     coinHolders: builder.query<any, { id: string; start?: number; pageSize?: number }>({
       query: ({ id, start = 0, pageSize }) => {
         if (!id) throw new Error('miss account id')
-        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        end = getLimitedEnd('coin_balances_rank?move_resource_generic_type_params', end)
 
         return {
           url: `/coin_balances_rank?move_resource_generic_type_params=eq.["${id}"]`,
@@ -67,9 +68,19 @@ export const coinApi = emptySplitApi.injectEndpoints({
         return { data }
       },
     }),
+    coinsCount: builder.query<number, {}>({
+      query: () => {
+        return {
+          url: 'coin_info_count',
+        }
+      },
+      transformResponse(data: { count: number }[], meta: any) {
+        return data[0]?.count || 0
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useCoinsQuery, useCoinDetailQuery, useCoinHoldersQuery } = coinApi
+export const { useCoinsQuery, useCoinDetailQuery, useCoinHoldersQuery, useCoinsCountQuery } = coinApi

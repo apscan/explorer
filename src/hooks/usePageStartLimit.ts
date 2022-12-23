@@ -5,9 +5,9 @@ import { pageSizeSelector } from 'state/application/selectors'
 import { useAppSelector, useAppDispatch } from 'state/hooks'
 import { setPageSize as setPageSizeAction } from 'state/application/slice'
 
-export const usePageStartLimit = () => {
+export const usePageStartLimit = (initialStart?: number) => {
   const storedPageSize = useAppSelector(pageSizeSelector)
-  const [start, setStart] = useState<number>()
+  const [start, setStart] = useState<number | undefined>(initialStart)
   const location = useLocation()
   const dispatch = useAppDispatch()
   const setPageSize = useCallback((pageSize: number) => dispatch(setPageSizeAction(pageSize)), [dispatch])
