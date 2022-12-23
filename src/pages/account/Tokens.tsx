@@ -12,6 +12,7 @@ import { useTokensQuery } from 'api/token'
 import { BaseInput } from 'components/inputs'
 import TokenDefault from 'assets/tokens/TokenDefault'
 import { Address } from 'components/Address'
+import { truncated } from 'utils/truncated'
 
 type TokenType = {
   name: string
@@ -133,17 +134,9 @@ const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
           justifyContent="space-between"
         >
           <InlineBox alignItems="center" justifyContent="space-between">
-            <Address
-              fontWeight="600"
-              sx={{
-                a: {
-                  color: '#1e2022',
-                },
-              }}
-              value={creator}
-              size="short"
-            />
-            <Text fontWeight="600">::{name}</Text>
+            <Link fontWeight="600" as={Box} sx={{ wordWrap: 'nowrap' }}>
+              {truncated(creator, 8)}::{name}
+            </Link>
             <Text>&nbsp;({tokens.length})</Text>
           </InlineBox>
           <ChevronDownIcon

@@ -17,6 +17,7 @@ import { Link } from 'components/link'
 import { TypeParam } from 'components/TypeParam'
 import TableStat from 'components/TotalStat'
 import { useAccountTokenEventsQuery } from 'api/token'
+import { truncated } from 'utils/truncated'
 
 const helper = createColumnHelper<any>()
 
@@ -158,22 +159,27 @@ const columns: ColumnDef<any, any>[] = [
       },
     }
   ),
-  helper.accessor('creator', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Creator',
-    cell: (info) => {
-      return <Address value={info.row.original?.data?.id?.token_data_id.creator} size="short" />
-    },
-  }),
+  // helper.accessor('creator', {
+  //   meta: {
+  //     nowrap: true,
+  //   },
+  //   header: 'Creator',
+  //   cell: (info) => {
+  //     return <Address value={info.row.original?.data?.id?.token_data_id.creator} size="short" />
+  //   },
+  // }),
   helper.accessor('collection', {
     meta: {
       nowrap: true,
     },
     header: 'Collection',
     cell: (info) => {
-      return info.row.original?.data?.id?.token_data_id.collection
+      return (
+        <Link>
+          {truncated(info.row.original?.data?.id?.token_data_id.creator, 8)}::
+          {info.row.original?.data?.id?.token_data_id.collection ?? ''}
+        </Link>
+      )
     },
   }),
   helper.accessor('tokenname', {
