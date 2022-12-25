@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { Address } from './Address'
+import { Box } from './container'
 // import { Box } from './container'
 import { Link } from './link'
 import Tooltip from './tooltipWithCopy'
@@ -9,8 +10,8 @@ export const TypeParam = ({
   value,
   size = 'short',
   copyable = false,
-}: // ...props
-{
+  ...props
+}: {
   fallback?: React.ReactNode
   value?: string
   size?: 'full' | 'short' | 'long'
@@ -33,14 +34,14 @@ export const TypeParam = ({
 
   return (
     <Tooltip label={rawValue}>
-      {/* <Box css={false} as="span" {...props}>
+      <Box css={false} as="span" {...props}>
         {parts?.map((item, index) => {
           return <React.Fragment key={index}>{item}</React.Fragment>
         })}
-      </Box> */}
-      {parts?.map((item, index) => {
+      </Box>
+      {/* {parts?.map((item, index) => {
         return <React.Fragment key={index}>{item}</React.Fragment>
-      })}
+      })} */}
     </Tooltip>
   )
 }

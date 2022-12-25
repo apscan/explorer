@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useTransactionChangesQuery } from 'api'
 import { Address } from 'components/Address'
-import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead } from 'components/Card'
 import { Box } from 'components/container'
 import { Hash } from 'components/Hash'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
@@ -33,6 +33,9 @@ const columns = [
 
   helper.accessor('data.state_key_hash', {
     header: 'Stake Key',
+    meta: {
+      nowrap: true,
+    },
     cell: (info) => (
       <Hash
         css={css`
@@ -241,15 +244,37 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       </CardHead>
       <DataTable
         sx={{
-          '& > table td:nth-of-type(6)': {
-            maxWidth: '250px',
-            '> div': {
-              display: 'block',
-              maxWidth: '250px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
+          '& > table': {
+            tableLayout: 'fixed',
+          },
+          '& > table td': {
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+          },
+          '& > table td:nth-of-type(1), & > table th:nth-of-type(1)': {
+            width: '5%',
+          },
+          '& > table td:nth-of-type(2), & > table th:nth-of-type(2)': {
+            width: '12%',
+          },
+          '& > table td:nth-of-type(3), & > table th:nth-of-type(3)': {
+            width: '10%',
+          },
+          '& > table td:nth-of-type(4), & > table th:nth-of-type(4)': {
+            width: '10%',
+          },
+          '& > table td:nth-of-type(5), & > table th:nth-of-type(5)': {
+            width: '20%',
+          },
+          '& > table td:nth-of-type(6), & > table th:nth-of-type(6)': {
+            width: '25%',
+            div: {
+              display: 'inline',
             },
+          },
+          '& > table td:nth-of-type(7), & > table th:nth-of-type(7)': {
+            width: '18%',
           },
         }}
         page={pageProps.page}

@@ -181,15 +181,38 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
       </CardHead>
       <DataTable
         sx={{
-          '& > table td:nth-of-type(6)': {
-            width: '300px',
-            '> div': {
-              display: 'block',
-              maxWidth: '280px',
+          '& > table': {
+            tableLayout: 'fixed',
+          },
+          '& > table td': {
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+          },
+          '& > table td:nth-of-type(1), & > table th:nth-of-type(1)': {
+            width: '10%',
+          },
+          '& > table td:nth-of-type(2), & > table th:nth-of-type(2)': {
+            width: '5%',
+          },
+          '& > table td:nth-of-type(3), & > table th:nth-of-type(3)': {
+            width: '13%',
+          },
+          '& > table td:nth-of-type(4), & > table th:nth-of-type(4)': {
+            width: '14%',
+          },
+          '& > table td:nth-of-type(5), & > table th:nth-of-type(5)': {
+            width: '15%',
+          },
+          '& > table td:nth-of-type(6), & > table th:nth-of-type(6)': {
+            width: '25%',
+            div: {
+              display: 'inline',
               overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
             },
+          },
+          '& > table td:nth-of-type(7), & > table th:nth-of-type(7)': {
+            width: '18%',
           },
         }}
         page={pageProps.page}
