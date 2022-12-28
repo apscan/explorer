@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@chakra-ui/react'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useSearchQuery } from 'api'
@@ -163,6 +164,7 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
   }, [data, navigate, onSearch])
 
   const size = useMemo(() => (variant === 'home' ? 'lg' : 'md'), [variant])
+  const [isSmall] = useMediaQuery('(max-width: 800px)')
 
   return (
     <Wrapper
@@ -198,7 +200,7 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
       </StyledSelectWrapper>
       <Popover gutter={0} matchWidth autoFocus={false} isOpen={isOpen}>
         <PopoverTrigger>
-          <Box width={variant === 'header' ? '100%' : '642px'}>
+          <Box width={variant === 'header' ? (isSmall ? '95%' : '100%') : isSmall ? '100%' : '642px'}>
             <SearchInputGroup
               onFocus={() => setInside(true)}
               onBlur={onBlur}
@@ -213,14 +215,7 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
               }}
               placeholder={selected.desc}
               variant={variant}
-            >
-              {/* <SearchButton
-                isLoading={loading}
-                onClick={onEnter}
-              >
-                <SearchIcon style={{ width: '24px' }} />
-              </SearchButton> */}
-            </SearchInputGroup>
+            ></SearchInputGroup>
           </Box>
         </PopoverTrigger>
         <Portal>

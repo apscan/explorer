@@ -11,7 +11,6 @@ import { ListItem } from './CoinList'
 import { useTokensQuery } from 'api/token'
 import { BaseInput } from 'components/inputs'
 import TokenDefault from 'assets/tokens/TokenDefault'
-import { Address } from 'components/Address'
 import { truncated } from 'utils/truncated'
 
 type TokenType = {

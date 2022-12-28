@@ -67,7 +67,6 @@ export const HistoryChart = memo(() => {
     <Box
       css={css`
         flex: 1;
-        max-width: 33%;
         padding-left: 20px;
         padding-right: 20px;
         display: flex;

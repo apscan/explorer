@@ -1,3 +1,5 @@
+import { HamburgerIcon } from '@chakra-ui/icons'
+import { useMediaQuery } from '@chakra-ui/react'
 import { css } from '@emotion/react'
 import { useMarketInfoQuery } from 'api'
 import Logo from 'assets/apscan-logo.png'
@@ -69,6 +71,8 @@ const Price = () => {
 }
 
 export const Header = memo(({ isHome }: { isHome?: boolean }) => {
+  const [isSmall] = useMediaQuery('(max-width: 800px)')
+
   return (
     <Box as="header" css={[header, !isHome && `border-bottom: 1px solid ${vars.colors.border1};`]}>
       <Container css={container}>
@@ -113,18 +117,30 @@ export const Header = memo(({ isHome }: { isHome?: boolean }) => {
         </Box>
         {isHome ? (
           <Box css={content}>
-            <PageNav />
-            <Divider type="vertical" css={divider} />
-            <SelectNetwork />
+            {isSmall ? (
+              <HamburgerIcon />
+            ) : (
+              <>
+                <PageNav />
+                <Divider type="vertical" css={divider} />
+                <SelectNetwork />
+              </>
+            )}
           </Box>
         ) : (
           <Box css={contentWrapper}>
-            <SearchGroup variant="header" />
-            <Box css={content}>
-              <PageNav />
-              <Divider type="vertical" css={divider} />
-              <SelectNetwork />
-            </Box>
+            {isSmall ? (
+              <HamburgerIcon />
+            ) : (
+              <>
+                <SearchGroup variant="header" />
+                <Box css={content}>
+                  <PageNav />
+                  <Divider type="vertical" css={divider} />
+                  <SelectNetwork />
+                </Box>
+              </>
+            )}
           </Box>
         )}
       </Container>

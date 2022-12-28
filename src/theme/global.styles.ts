@@ -12,7 +12,7 @@ export const globalCSS = css`
   h1,
   input,
   select {
-    font-family: Helvetica, Arial,sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     text-rendering: optimizeLegibility;
     font-feature-settings: 'ss01' on, 'cv01' on, 'cv03' on, 'calt' off, 'zero' off;
     height: 100%;
@@ -23,7 +23,6 @@ export const globalCSS = css`
     font-weight: 400;
     position: relative;
     min-height: 100%;
-    min-width: fit-content;
     line-height: 1.5;
   }
 

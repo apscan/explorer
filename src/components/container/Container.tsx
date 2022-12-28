@@ -8,5 +8,4 @@ export const Container = styled(Box)`
   padding-left: 15px;
   padding-right: 15px;
   max-width: ${vars.breakpoints.lg};
-  min-width: ${vars.breakpoints.sm};
 `

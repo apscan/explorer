@@ -153,7 +153,14 @@ export const Statistics = ({ ...rest }) => {
     >
       <Box
         css={css`
-          display: flex;
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          @media screen and (max-width: 900px) {
+            grid-template-columns: 1fr 1fr;
+          }
+          @media screen and (max-width: 600px) {
+            grid-template-columns: 1fr;
+          }
         `}
       >
         <ItemSection>
@@ -304,9 +311,6 @@ export const Statistics = ({ ...rest }) => {
               'Validators',
               <>
                 <NumberFormat to="/validators" useGrouping value={stats?.active_validators_count} fallback="-" />
-                {/* <HelpText>
-                  (<NumberFormat value={stats?.pending_validators_count} fallback="-" />)
-                </HelpText> */}
               </>,
               'right'
             )}

@@ -21,7 +21,6 @@ import { vars } from 'theme/theme.css'
 
 const StyledCard = styled(Card)`
   display: flex;
-  min-width: 512px;
   flex-direction: column;
 `
 
