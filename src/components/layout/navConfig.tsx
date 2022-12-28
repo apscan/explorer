@@ -63,8 +63,7 @@ export const navConfig: INavItem[] = [
       },
       {
         name: 'Collections',
-        isDisabled: true,
-        path: '/apt',
+        path: '/collections',
       },
     ],
   },

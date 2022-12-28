@@ -8,6 +8,7 @@ import { Block } from './block'
 import { Blocks } from './blocks'
 import { Coin } from './coin'
 import { Coins } from './coins'
+import { Collections } from './collections'
 import { Home } from './home'
 import { NotFound } from './NotFound'
 import { Transaction } from './transaction'
@@ -92,6 +93,14 @@ const routes = [
     element: (
       <Layout>
         <Coin />
+      </Layout>
+    ),
+  } as any,
+  {
+    path: '/collections',
+    element: (
+      <Layout>
+        <Collections />
       </Layout>
     ),
   } as any,
