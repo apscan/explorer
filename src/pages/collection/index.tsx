@@ -1,7 +1,6 @@
 import { css } from '@emotion/react'
-import { useCoinDetailQuery } from 'api'
 import { Card } from 'components/Card'
-import { Container, Flex, InlineBox } from 'components/container'
+import { Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { PageTitle } from 'components/PageTitle'
 import { Tabs } from 'components/Tabs'
@@ -11,6 +10,8 @@ import { useParams } from 'react-router-dom'
 import { Box } from '@chakra-ui/react'
 import { Overview } from './Overview'
 import { useCollectionDetailQuery } from 'api/collection'
+import { tabNameWithCount } from 'utils'
+import { Holders } from './Holders'
 
 export const Collection = () => {
   const { creator, name } = useParams<{ creator: string; name: string }>()
@@ -21,36 +22,31 @@ export const Collection = () => {
     }
   )
 
-  const tabs: any[] = []
-  // const tabs = useMemo(() => {
-  //   if (!data) return undefined
+  const tabs = useMemo(() => {
+    if (!data) return undefined
 
-  //   const count = data?.events_count.reduce((all: number, curr: any) => curr.events_count + all, 0)
-
-  //   return [
-  //     {
-  //       label: tabNameWithCount('Holders', data?.addresses_count),
-  //       key: 'holders',
-  //       children: (
-  //         <Holders
-  //           type={type}
-  //           count={data?.addresses_count}
-  //           decimals={data?.decimals}
-  //           symbol={data?.symbol}
-  //           totalSupply={data?.total_supply}
-  //           price={price}
-  //         />
-  //       ),
-  //       hide: !data?.addresses_count,
-  //     },
-  //     {
-  //       label: tabNameWithCount('Events', count),
-  //       key: 'transfers',
-  //       children: <Transfers key={type} type={type} count={count} />,
-  //       hide: !count,
-  //     },
-  //   ].filter((item) => !item.hide) as any
-  // }, [data, price, type])
+    return [
+      {
+        label: tabNameWithCount('Holders', data?.addresses_count),
+        key: 'holders',
+        children: (
+          <Holders
+            count={data.addresses_count}
+            name={data.collection_name}
+            creator={data.creator_address}
+            supply={parseInt(data.collection_data.supply)}
+          />
+        ),
+        hide: !data.addresses_count,
+      },
+      // {
+      //   label: tabNameWithCount('Events', count),
+      //   key: 'transfers',
+      //   children: <Transfers key={type} type={type} count={count} />,
+      //   hide: !count,
+      // },
+    ].filter((item) => !item.hide) as any
+  }, [data])
 
   console.log('data', data)
 

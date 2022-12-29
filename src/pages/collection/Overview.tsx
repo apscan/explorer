@@ -46,7 +46,14 @@ export const Overview = ({ data }: { data: Collection | undefined }) => {
           'URI',
           data?.collection_data.uri ? (
             <Flex alignItems="center">
-              <Link overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" href={data.collection_data.uri}>
+              <Link
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
+                href={data.collection_data.uri}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {data.collection_data.uri}
               </Link>
               <Mutability marginLeft="5px" mutable={data.collection_data.mutability_config.uri} />

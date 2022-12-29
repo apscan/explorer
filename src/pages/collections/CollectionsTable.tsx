@@ -76,6 +76,8 @@ const columns = [
             whiteSpace="nowrap"
             textOverflow="ellipsis"
             href={data.collection_data.uri}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {data.collection_data.uri}
           </Link>

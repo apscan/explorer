@@ -35,6 +35,13 @@ export type Collection = {
   }
 }
 
+export type CollectionHolder = {
+  collection_name: string
+  creator_address: string
+  holder_address: string
+  tokens_count: number
+}
+
 export const collectionApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     collections: builder.query<PageResult<Collection>, { start?: number; pageSize?: number }>({
@@ -67,9 +74,28 @@ export const collectionApi = emptySplitApi.injectEndpoints({
         return data[0]
       },
     }),
+    collectionHolders: builder.query<
+      PageResult<CollectionHolder>,
+      { creator: string; name: string; start?: number; pageSize?: number }
+    >({
+      query: ({ creator, name, start = 0, pageSize }) => {
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
+        return {
+          url: `/collection_holders?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+          },
+        }
+      },
+      transformResponse(data: CollectionHolder[], meta: any) {
+        return { data, page: parseHeaders(meta?.response?.headers) }
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useCollectionsQuery, useCollectionDetailQuery } = collectionApi
+export const { useCollectionsQuery, useCollectionDetailQuery, useCollectionHoldersQuery } = collectionApi
