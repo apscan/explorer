@@ -115,6 +115,36 @@ type TokenByAddress = {
   rank: number
 }
 
+export type TokenHolder = {
+  collection_name: string
+  creator_address: string
+  token_name: string
+  token_id_handle: string
+  token_id_key: string
+  created_at_version: number
+  address: string
+  amount: number
+  is_write: boolean
+  token_id: {
+    id: {
+      token_data_id: {
+        name: string
+        creator: string
+        collection: string
+      }
+      property_version: string
+    }
+    amount: string
+    token_properties: {
+      map: {
+        data: any[]
+      }
+    }
+  }
+}
+
+export type TokenEvent = {}
+
 export const tokenApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     tokens: builder.query<PageResult<TokenByAddress>, { address?: string; start?: number; pageSize?: number }>({
@@ -202,9 +232,58 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+    tokenHolders: builder.query<
+      TokenHolder[],
+      { creator: string; name: string; collectionName: string; start?: number; pageSize?: number }
+    >({
+      query: ({ creator, name, collectionName, start, pageSize }) => {
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
+        return {
+          url: `/token_holders?collection_name=eq.${encodeURIComponent(
+            collectionName
+          )}&creator_address=eq.${creator}&token_name=eq.${encodeURIComponent(name)}`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+          },
+        }
+      },
+      transformResponse(data: TokenHolder[]) {
+        return data
+      },
+    }),
+    tokenEvents: builder.query<
+      TokenEvent[],
+      { creator: string; name: string; collectionName: string; start?: number; pageSize?: number }
+    >({
+      query: ({ creator, name, collectionName, start, pageSize }) => {
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
+        return {
+          url: `/token_events?collection_name=eq.${encodeURIComponent(
+            collectionName
+          )}&creator_address=eq.${creator}&token_name=eq.${encodeURIComponent(name)}`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+          },
+        }
+      },
+      transformResponse(data: TokenEvent[]) {
+        return data
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useTokensQuery, useAccountTokenEventsQuery, useTokensByCollectionQuery, useTokenDetailQuery } = tokenApi
+export const {
+  useTokensQuery,
+  useAccountTokenEventsQuery,
+  useTokensByCollectionQuery,
+  useTokenDetailQuery,
+  useTokenHoldersQuery,
+  useTokenEventsQuery,
+} = tokenApi

@@ -11,6 +11,9 @@ import { Box } from '@chakra-ui/react'
 import { Overview } from './Overview'
 import TokenDefault from 'assets/tokens/TokenDefault'
 import { useTokenDetailQuery } from 'api/token'
+import { Holders } from './Holders'
+import { tabNameWithCount } from 'utils'
+import { Events } from './Events'
 
 export const Token = () => {
   const { creator, name, collectionName } = useParams<{ creator: string; collectionName: string; name: string }>()
@@ -24,8 +27,34 @@ export const Token = () => {
   const tabs = useMemo(() => {
     if (!data) return undefined
 
-    return []
-    // .filter((item) => !item.hide) as any
+    return [
+      {
+        label: tabNameWithCount('Holders', data.addresses_count),
+        key: 'holders',
+        children: (
+          <Holders
+            count={data.addresses_count}
+            name={data.token_name}
+            creator={data.creator_address}
+            collectionName={data.collection_name}
+          />
+        ),
+        hide: !data.addresses_count,
+      },
+      {
+        label: tabNameWithCount('Events', data.events_count),
+        key: 'events',
+        children: (
+          <Events
+            collectionName={data.collection_name}
+            name={data.token_name}
+            creator={data.creator_address}
+            count={data.events_count}
+          />
+        ),
+        hide: !data.events_count,
+      },
+    ].filter((item) => !item.hide) as any
   }, [data])
 
   const [activeKey, onTabChange] = useSearchTab(tabs)

@@ -130,7 +130,7 @@ export const collectionApi = emptySplitApi.injectEndpoints({
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
-    tokenEvents: builder.query<
+    tokenEventsByCollection: builder.query<
       PageResult<TokenEvent>,
       { creator: string; name: string; start?: number; pageSize?: number }
     >({
@@ -158,5 +158,9 @@ export const collectionApi = emptySplitApi.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useCollectionsQuery, useCollectionDetailQuery, useCollectionHoldersQuery, useTokenEventsQuery } =
-  collectionApi
+export const {
+  useCollectionsQuery,
+  useCollectionDetailQuery,
+  useCollectionHoldersQuery,
+  useTokenEventsByCollectionQuery,
+} = collectionApi

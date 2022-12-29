@@ -8,7 +8,7 @@ import { Pagination } from 'components/table/Pagination'
 import TableStat from 'components/TotalStat'
 import { NumberFormat } from 'components/NumberFormat'
 import { Address } from 'components/Address'
-import { TokenEvent, useTokenEventsQuery } from 'api/collection'
+import { TokenEvent, useTokenEventsByCollectionQuery } from 'api/collection'
 import { Version } from 'components/transaction/Version'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DateTime } from 'components/DateTime'
@@ -115,7 +115,7 @@ const columns = [
 export const TokenEvents = ({ creator, name, count }: { creator: string; name: string; count: number }) => {
   const maxCount = queryRangeLimitMap['token_events?creator_address&collection_name']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
-  const { data: { data = [] } = {}, isLoading } = useTokenEventsQuery(
+  const { data: { data = [] } = {}, isLoading } = useTokenEventsByCollectionQuery(
     { creator, name, start: (page - 1) * pageSize, pageSize },
     {
       skip: !creator || !name,
