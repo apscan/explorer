@@ -57,9 +57,19 @@ export const collectionApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+    collectionDetail: builder.query<Collection, { creator: string; name: string }>({
+      query: ({ creator, name }) => {
+        return {
+          url: `/collections?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
+        }
+      },
+      transformResponse(data: Collection[]) {
+        return data[0]
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useCollectionsQuery } = collectionApi
+export const { useCollectionsQuery, useCollectionDetailQuery } = collectionApi

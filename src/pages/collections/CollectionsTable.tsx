@@ -1,13 +1,9 @@
 import { createColumnHelper, Row } from '@tanstack/react-table'
-import { Address } from 'components/Address'
-import { AmountFormat } from 'components/AmountFormat'
 import { DateTime } from 'components/DateTime'
-import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 import { memo } from 'react'
-import { TransactionFunction } from 'components/TransactionFunction'
 import { ExpandButton } from 'components/table/ExpandButton'
 import { Collection } from 'api/collection'
 import { truncated } from 'utils/truncated'
@@ -29,7 +25,7 @@ const columns = [
       const data = info.row.original as Collection
 
       return (
-        <Link sx={{ wordWrap: 'nowrap' }} to={`collection/${data.creator_address}/${data.collection_name}`}>
+        <Link sx={{ wordWrap: 'nowrap' }} to={`/collection/${data.creator_address}/${data.collection_name}`}>
           {truncated(data.creator_address, 8)}::{data.collection_name}
         </Link>
       )
@@ -60,18 +56,12 @@ const columns = [
       )
     },
   }),
-  helper.accessor('maximum', {
-    header: 'Token Maximum',
-    cell: (info) => {
-      const data = info.row.original as Collection
-
-      return (
-        <Flex alignItems="center">
-          <NumberFormat useGrouping value={data.collection_data.maximum} />
-          <Mutability marginLeft="5px" mutable={data.collection_data.mutability_config.maximum} />
-        </Flex>
-      )
+  helper.accessor('addresses_count', {
+    header: 'Holders',
+    meta: {
+      nowrap: true,
     },
+    cell: (info) => <NumberFormat useGrouping value={info.getValue()} />,
   }),
   helper.accessor('uri', {
     header: 'URI',
@@ -81,7 +71,7 @@ const columns = [
       return (
         <Flex alignItems="center">
           <Link
-            maxW="120px"
+            maxW="180px"
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
@@ -94,13 +84,6 @@ const columns = [
       )
     },
   }),
-  helper.accessor('addresses_count', {
-    header: 'Holders',
-    meta: {
-      nowrap: true,
-    },
-    cell: (info) => <NumberFormat useGrouping value={info.getValue()} />,
-  }),
   helper.accessor('desc', {
     header: 'Description',
     cell: (info) => {
@@ -108,7 +91,7 @@ const columns = [
 
       return (
         <Flex alignItems="center">
-          <Text maxW="150px" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
+          <Text maxW="180px" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
             {data.collection_data.description}
           </Text>
           <Mutability marginLeft="5px" mutable={data.collection_data.mutability_config.description} />

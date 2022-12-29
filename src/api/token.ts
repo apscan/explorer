@@ -56,7 +56,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
-          url: `/tokens?address=eq.${address}`,
+          url: `/tokens_by_address?address=eq.${address}`,
           headers: {
             prefer: 'count=exact',
             'Range-Unit': 'items',
@@ -80,7 +80,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
-          url: `/token_events?address=eq.${id}`,
+          url: `/token_events_by_address?address=eq.${id}`,
           headers: {
             prefer: 'count=exact',
             'Range-Unit': 'items',

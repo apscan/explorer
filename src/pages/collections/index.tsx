@@ -1,4 +1,3 @@
-import { useLastVersionQuery, useTransactionsQuery } from 'api'
 import { useCollectionsQuery } from 'api/collection'
 import { Card, CardFooter, CardHead } from 'components/Card'
 import { Container } from 'components/container'

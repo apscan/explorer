@@ -118,11 +118,17 @@ export const Holders = ({
         },
         header: 'Deposit Events',
         cell: (info) => {
-          const deposit_events = info.row.original?.deposit_events_count.find(
+          const deposit_events = info.row.original?.deposit_events_count?.find(
             (event: any) => event['deposit_events'] !== undefined
           )?.deposit_events
 
-          return <NumberFormat to={`/account/${info.row.original?.address}?tab=events`} value={deposit_events || 0} />
+          return (
+            <NumberFormat
+              fallback="-"
+              to={`/account/${info.row.original?.address}?tab=events`}
+              value={deposit_events}
+            />
+          )
         },
       }),
       helper.accessor('withdraw_events_count', {
@@ -131,11 +137,17 @@ export const Holders = ({
         },
         header: 'Withdraw Events',
         cell: (info) => {
-          const withdraw_events = info.row.original?.deposit_events_count.find(
+          const withdraw_events = info.row.original?.deposit_events_count?.find(
             (event: any) => event['withdraw_events'] !== undefined
           )?.withdraw_events
 
-          return <NumberFormat to={`/account/${info.row.original?.address}?tab=events`} value={withdraw_events || 0} />
+          return (
+            <NumberFormat
+              fallback="-"
+              to={`/account/${info.row.original?.address}?tab=events`}
+              value={withdraw_events}
+            />
+          )
         },
       }),
     ],

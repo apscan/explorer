@@ -274,8 +274,6 @@ export const Tokens = ({ address }: { address?: string }) => {
   )
   const tokensCount = useMemo(() => collections.reduce((all, curr) => all + curr.tokens.length, 0), [collections])
 
-  console.log('data?.page.count', data?.page.count, data?.page.count ?? tokensCount)
-
   return (
     <Menu>
       {({ isOpen }) => (
