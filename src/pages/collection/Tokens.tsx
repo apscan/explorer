@@ -48,14 +48,14 @@ export const Tokens = ({ creator, name, count }: { creator: string; name: string
         cell: (info) => {
           const data = info.row.original as TokenOfCollection
           const fee =
-            data.token_data.royalty.royalty_points_denominator === '0'
-              ? 0
+            !data.token_data.royalty || data.token_data.royalty.royalty_points_denominator === '0'
+              ? NaN
               : parseInt(data.token_data.royalty.royalty_points_numerator) /
                 parseInt(data.token_data.royalty.royalty_points_denominator)
 
           return (
             <>
-              <Address value={data.token_data.royalty.payee_address} size="short" />
+              <Address value={data.token_data.royalty?.payee_address} size="short" />
               <NumberFormat prefix=" (" postfix="%)" value={isNaN(fee) ? undefined : fee} fallback="-" />
             </>
           )

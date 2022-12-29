@@ -25,7 +25,7 @@ export type TokenOfCollection = {
     name: string
     supply: string
     maximum: string
-    royalty: {
+    royalty?: {
       payee_address: string
       royalty_points_numerator: string
       royalty_points_denominator: string
