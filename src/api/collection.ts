@@ -1,4 +1,5 @@
 import { parseHeaders } from 'utils'
+import { getLimitedEnd } from 'utils/api'
 import { emptySplitApi } from './api'
 
 type PageResult<T> = {
@@ -135,6 +136,7 @@ export const collectionApi = emptySplitApi.injectEndpoints({
     >({
       query: ({ start = 0, pageSize, creator, name }) => {
         let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        end = getLimitedEnd('token_events?creator_address&collection_name', end)
 
         return {
           url: `/token_events?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,

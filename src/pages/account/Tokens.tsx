@@ -16,6 +16,7 @@ import { truncated } from 'utils/truncated'
 type TokenType = {
   name: string
   amount: string
+  creator: string
   collectionName: string
   propertiVersion: string
   url: string
@@ -40,7 +41,7 @@ export const CoinIcon = ({ type }: { type: string }) => {
   )
 }
 
-const Token: React.FC<TokenType> = ({ name, url, amount }) => {
+const Token: React.FC<TokenType> = ({ creator, collectionName, name, url, amount }) => {
   return (
     <ListItem>
       {/* use Link instead MenuItem here, cuz MenuItem cause search component blur when list filled */}
@@ -60,7 +61,7 @@ const Token: React.FC<TokenType> = ({ name, url, amount }) => {
         }}
         display="block"
         fontSize="0.76562rem !important"
-        to={`/token/${name}`}
+        to={`/token/${encodeURIComponent(creator)}/${encodeURIComponent(collectionName)}/${encodeURIComponent(name)}`}
       >
         <Flex alignItems="center" justifyContent="space-between">
           <InlineBox alignItems="center" mr="0.35rem">
@@ -98,33 +99,31 @@ const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
 
   return (
     <>
-      <Link>
-        <Flex
-          mb="4px"
-          color="#1e2022"
-          fontSize="0.765rem"
-          padding="4px 8px"
-          bg="rgba(231,234,243,.5)"
-          borderRadius="0.25rem"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <InlineBox alignItems="center" justifyContent="space-between">
-            <Link fontWeight="600" as={Box} sx={{ wordWrap: 'nowrap' }}>
-              {truncated(creator, 8)}::{name}
-            </Link>
-            <Text>&nbsp;({tokens.length})</Text>
-          </InlineBox>
-          <ChevronDownIcon
-            fontSize="1rem"
-            userSelect="none"
-            onClick={() => setCollasped((old) => !old)}
-            style={{
-              transform: collasped ? 'unset' : 'scaleY(-1)',
-            }}
-          />
-        </Flex>
-      </Link>
+      <Flex
+        mb="4px"
+        color="#1e2022"
+        fontSize="0.765rem"
+        padding="4px 8px"
+        bg="rgba(231,234,243,.5)"
+        borderRadius="0.25rem"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <InlineBox alignItems="center" justifyContent="space-between">
+          <Link to={`/collection/${creator}/${name}`} fontWeight="600" sx={{ wordWrap: 'nowrap' }}>
+            {truncated(creator, 8)}::{name}
+          </Link>
+          <Text>&nbsp;({tokens.length})</Text>
+        </InlineBox>
+        <ChevronDownIcon
+          fontSize="1rem"
+          userSelect="none"
+          onClick={() => setCollasped((old) => !old)}
+          style={{
+            transform: collasped ? 'unset' : 'scaleY(-1)',
+          }}
+        />
+      </Flex>
       <Box maxH={collasped ? '0px' : '99999999px'} overflow="hidden" transition="max-height .1s">
         {tokens.map((token) => (
           <Token key={token.name} {...token} />
@@ -180,6 +179,7 @@ export const Tokens = ({ address }: { address?: string }) => {
           collectionName: token.token_id.id.token_data_id.collection,
           propertiVersion: token.token_id.id.property_version,
           url: token.token_info.uri,
+          creator: token.token_id.id.token_data_id.creator,
         })
 
         return collections

@@ -15,10 +15,12 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DateTime } from 'components/DateTime'
 import { parseType } from 'pages/account/TokenEvents'
 import { Text } from '@chakra-ui/react'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
 
 export const TokenEvents = ({ creator, name, count }: { creator: string; name: string; count: number }) => {
+  const maxCount = queryRangeLimitMap['token_events?creator_address&collection_name']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data = [] } = {}, isLoading } = useTokenEventsQuery(
     { creator, name, start: (page - 1) * pageSize, pageSize },
@@ -26,7 +28,7 @@ export const TokenEvents = ({ creator, name, count }: { creator: string; name: s
       skip: !creator || !name,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   const columns = useMemo(
     () => [
@@ -116,7 +118,7 @@ export const TokenEvents = ({ creator, name, count }: { creator: string; name: s
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <TableStat count={count} variant="tabletab" object="tokens" />
+        <TableStat maxCount={maxCount} count={count} variant="tabletab" object="token events" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable dataSource={data} columns={columns} />
