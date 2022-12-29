@@ -118,9 +118,9 @@ export const Holders = ({
         },
         header: 'Deposit Events',
         cell: (info) => {
-          const deposit_events = info.row.original?.deposit_events_count?.find(
-            (event: any) => event['deposit_events'] !== undefined
-          )?.deposit_events
+          const deposit_events =
+            info.row.original?.events_count?.find((event: any) => event.event_type.includes('DepositEvent'))
+              ?.events_count || 0
 
           return (
             <NumberFormat
@@ -137,9 +137,9 @@ export const Holders = ({
         },
         header: 'Withdraw Events',
         cell: (info) => {
-          const withdraw_events = info.row.original?.deposit_events_count?.find(
-            (event: any) => event['withdraw_events'] !== undefined
-          )?.withdraw_events
+          const withdraw_events =
+            info.row.original?.events_count?.find((event: any) => event.event_type.includes('WithdrawEvent'))
+              ?.events_count || 0
 
           return (
             <NumberFormat
