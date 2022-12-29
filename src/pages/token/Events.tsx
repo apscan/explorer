@@ -38,8 +38,6 @@ export const Events = ({
   )
   const pageProps = useRangePagination(page, pageSize, count, setPage)
 
-  console.log('asdfasdfas', data)
-
   const columns = useMemo(
     () => [
       helper.accessor('transaction_version', {

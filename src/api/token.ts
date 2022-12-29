@@ -1,5 +1,6 @@
 import { parseHeaders } from 'utils'
 import { emptySplitApi } from './api'
+import { TokenEvent } from './collection'
 
 type PageResult<T> = {
   data: T[]
@@ -53,27 +54,32 @@ export type TokenDetail = {
   addresses_count: number
   is_write: boolean
   token_data: {
-    uri: string
-    name: string
-    supply: string
-    maximum: string
-    royalty: {
+    image_uri?: string
+    animation_uri?: string
+    image_checksum?: string
+    update_block_height?: string
+    uri?: string
+    name?: string
+    supply?: string
+    maximum?: string
+    royalty?: {
       payee_address: string
       royalty_points_numerator: string
       royalty_points_denominator: string
     }
-    description: string
-    mutability_config: {
-      maximum: boolean
-      uri: boolean
-      royalty: boolean
-      properties: boolean
-      description: boolean
+    description?: string
+    mutability_config?: {
+      image_uri?: boolean
+      maximum?: boolean
+      uri?: boolean
+      royalty?: boolean
+      properties?: boolean
+      description?: boolean
     }
-    default_properties: {
+    default_properties?: {
       map?: Record<string, any>
     }
-    largest_property_version: string
+    largest_property_version?: string
   }
 }
 
@@ -142,8 +148,6 @@ export type TokenHolder = {
     }
   }
 }
-
-export type TokenEvent = {}
 
 export const tokenApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
