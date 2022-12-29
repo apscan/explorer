@@ -96,7 +96,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
   return (
     <>
       <Card>
-        <Flex alignItems="center" height="100%" justifyContent="center">
+        <Flex p={4} alignItems="center" height="100%" justifyContent="center">
           <TokenImg uri={data?.token_data.uri || data?.token_data.image_uri} />
         </Flex>
       </Card>
