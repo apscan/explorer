@@ -67,10 +67,7 @@ const Token: React.FC<TokenType> = ({ creator, collectionName, name, url, amount
           <InlineBox alignItems="center" mr="0.35rem">
             <TokenDefault
               sx={{
-                '&': {
-                  fill: '#606672',
-                  color: 'red',
-                },
+                fill: '#606672',
                 width: '12px',
                 height: '12px',
                 marginRight: '4px',

@@ -12,6 +12,7 @@ import { Collection } from './collection'
 import { Collections } from './collections'
 import { Home } from './home'
 import { NotFound } from './NotFound'
+import { Token } from './token'
 import { Transaction } from './transaction'
 import { Transactions } from './transactions'
 import { Validators } from './validators'
@@ -110,6 +111,14 @@ const routes = [
     element: (
       <Layout>
         <Collection />
+      </Layout>
+    ),
+  } as any,
+  {
+    path: '/token/:creator/:collectionName/:name',
+    element: (
+      <Layout>
+        <Token />
       </Layout>
     ),
   } as any,

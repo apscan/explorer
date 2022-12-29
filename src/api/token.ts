@@ -42,48 +42,82 @@ export type TokenOfCollection = {
   }
 }
 
+export type TokenDetail = {
+  collection_name: string
+  creator_address: string
+  token_name: string
+  token_data_handle: string
+  token_data_key: string
+  created_at_version: number
+  events_count: number
+  addresses_count: number
+  is_write: boolean
+  token_data: {
+    uri: string
+    name: string
+    supply: string
+    maximum: string
+    royalty: {
+      payee_address: string
+      royalty_points_numerator: string
+      royalty_points_denominator: string
+    }
+    description: string
+    mutability_config: {
+      maximum: boolean
+      uri: boolean
+      royalty: boolean
+      properties: boolean
+      description: boolean
+    }
+    default_properties: {
+      map?: Record<string, any>
+    }
+    largest_property_version: string
+  }
+}
+
+type TokenByAddress = {
+  address: string
+  token_id: {
+    id: {
+      token_data_id: {
+        name: string
+        creator: string
+        collection: string
+      }
+      property_version: string
+    }
+    amount: string
+  }
+  latest_transaction_version: string
+  token_info: {
+    uri: string
+    name: string
+    supply: string
+    maximum: string
+    royalty: {
+      payee_address: string
+      royalty_points_numerator: string
+      royalty_points_denominator: string
+    }
+    description: string
+    mutability_config: {
+      uri: boolean
+      maximum: boolean
+      royalty: boolean
+      properties: boolean
+      description: boolean
+    }
+    largest_property_version: string
+  }
+  token_id_handle: string
+  rank: number
+}
+
 export const tokenApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
-    tokens: builder.query<
-      PageResult<{
-        address: string
-        token_id: {
-          id: {
-            token_data_id: {
-              name: string
-              creator: string
-              collection: string
-            }
-            property_version: string
-          }
-          amount: string
-        }
-        latest_transaction_version: string
-        token_info: {
-          uri: string
-          name: string
-          supply: string
-          maximum: string
-          royalty: {
-            payee_address: string
-            royalty_points_numerator: string
-            royalty_points_denominator: string
-          }
-          description: string
-          mutability_config: {
-            uri: boolean
-            maximum: boolean
-            royalty: boolean
-            properties: boolean
-            description: boolean
-          }
-          largest_property_version: string
-        }
-        token_id_handle: string
-        rank: number
-      }>,
-      { address?: string; start?: number; pageSize?: number }
-    >({
+    tokens: builder.query<PageResult<TokenByAddress>, { address?: string; start?: number; pageSize?: number }>({
       query: ({ start = 0, pageSize, address }) => {
         let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
@@ -96,7 +130,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta: any) {
+      transformResponse(data: TokenByAddress[], meta: any) {
         return {
           data: (data as any[])?.map((item, index) => {
             return {
@@ -105,6 +139,21 @@ export const tokenApi = emptySplitApi.injectEndpoints({
           }),
           page: parseHeaders(meta?.response?.headers),
         }
+      },
+    }),
+    tokenDetail: builder.query<TokenDetail, { creator: string; name: string; collectionName: string }>({
+      query: ({ creator, name, collectionName }) => {
+        return {
+          url: `/tokens?collection_name=eq.${encodeURIComponent(
+            collectionName
+          )}&creator_address=eq.${creator}&token_name=eq.${encodeURIComponent(name)}`,
+          headers: {
+            'Range-Unit': 'items',
+          },
+        }
+      },
+      transformResponse(data: TokenDetail[], meta: any) {
+        return data[0]
       },
     }),
     tokensByCollection: builder.query<
@@ -158,4 +207,4 @@ export const tokenApi = emptySplitApi.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useTokensQuery, useAccountTokenEventsQuery, useTokensByCollectionQuery } = tokenApi
+export const { useTokensQuery, useAccountTokenEventsQuery, useTokensByCollectionQuery, useTokenDetailQuery } = tokenApi
