@@ -12,6 +12,7 @@ import { Overview } from './Overview'
 import { useCollectionDetailQuery } from 'api/collection'
 import { tabNameWithCount } from 'utils'
 import { Holders } from './Holders'
+import { Tokens } from './Tokens'
 
 export const Collection = () => {
   const { creator, name } = useParams<{ creator: string; name: string }>()
@@ -39,12 +40,12 @@ export const Collection = () => {
         ),
         hide: !data.addresses_count,
       },
-      // {
-      //   label: tabNameWithCount('Events', count),
-      //   key: 'transfers',
-      //   children: <Transfers key={type} type={type} count={count} />,
-      //   hide: !count,
-      // },
+      {
+        label: tabNameWithCount('Tokens', 100),
+        key: 'tokens',
+        children: <Tokens name={data.collection_name} creator={data.creator_address} count={100} />,
+        hide: false,
+      },
     ].filter((item) => !item.hide) as any
   }, [data])
 

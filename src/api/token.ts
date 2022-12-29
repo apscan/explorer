@@ -10,6 +10,38 @@ type PageResult<T> = {
   }
 }
 
+export type TokenOfCollection = {
+  collection_name: string
+  creator_address: string
+  token_name: string
+  token_data_handle: string
+  token_data_key: string
+  created_at_version: number
+  events_count: number
+  addresses_count: number
+  is_write: boolean
+  token_data: {
+    uri: string
+    name: string
+    supply: string
+    maximum: string
+    royalty: {
+      payee_address: string
+      royalty_points_numerator: string
+      royalty_points_denominator: string
+    }
+    description: string
+    mutability_config: {
+      uri: boolean
+      maximum: boolean
+      royalty: boolean
+      properties: boolean
+      description: boolean
+    }
+    argest_property_version: string
+  }
+}
+
 export const tokenApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     tokens: builder.query<
@@ -75,6 +107,32 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+    tokensByCollection: builder.query<
+      PageResult<TokenOfCollection>,
+      { creator: string; name: string; start?: number; pageSize?: number }
+    >({
+      query: ({ start = 0, pageSize, creator, name }) => {
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
+        return {
+          url: `/tokens?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+          },
+        }
+      },
+      transformResponse(data, meta: any) {
+        return {
+          data: (data as any[])?.map((item, index) => {
+            return {
+              ...item,
+            }
+          }),
+          page: parseHeaders(meta?.response?.headers),
+        }
+      },
+    }),
     accountTokenEvents: builder.query<PageResult<{}>, { id?: string; start?: number; pageSize?: number }>({
       query: ({ start = 0, pageSize, id }) => {
         let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
@@ -104,4 +162,4 @@ export const tokenApi = emptySplitApi.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useTokensQuery, useAccountTokenEventsQuery } = tokenApi
+export const { useTokensQuery, useAccountTokenEventsQuery, useTokensByCollectionQuery } = tokenApi
