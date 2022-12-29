@@ -27,18 +27,6 @@ type CollectionType = {
   tokens: TokenType[]
 }
 
-type TokenMeta = {
-  animation_url: string
-  description: string
-  image: string
-  name: string
-  properties: {
-    key: string
-    type: string
-    value: string
-  }[]
-}
-
 export const CoinIcon = ({ type }: { type: string }) => {
   return (
     <Image
@@ -50,17 +38,6 @@ export const CoinIcon = ({ type }: { type: string }) => {
       src={`/images/icons/${CoinIconFileNameMap[type] || defaultCoinIconFileName}`}
     />
   )
-}
-
-const fetchTokenMeta = async (url: string): Promise<TokenMeta | undefined> => {
-  try {
-    const res = await fetch(url)
-    const data = (await res.json()) as TokenMeta
-
-    return data
-  } catch (e) {}
-
-  return undefined
 }
 
 const Token: React.FC<TokenType> = ({ name, url, amount }) => {

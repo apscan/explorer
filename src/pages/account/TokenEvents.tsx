@@ -21,10 +21,10 @@ import { truncated } from 'utils/truncated'
 
 const helper = createColumnHelper<any>()
 
-const isIn = (type: string) => type.indexOf('DepositEvent') > -1
-const isOut = (type: string) => type.indexOf('WithdrawEvent') > -1
+export const isIn = (type: string) => type.indexOf('DepositEvent') > -1
+export const isOut = (type: string) => type.indexOf('WithdrawEvent') > -1
 
-const parseType = (data: {
+export const parseType = (data: {
   address: string
   counter_party: {
     address: string

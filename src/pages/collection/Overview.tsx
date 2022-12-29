@@ -1,4 +1,3 @@
-import { Address } from 'components/Address'
 import { Box, Flex } from 'components/container'
 import { renderRow } from 'components/helpers'
 import { Card } from 'components/Card'
@@ -16,12 +15,7 @@ export const Overview = ({ data }: { data: Collection | undefined }) => {
       <Box padding="0 12px">
         {renderRow(
           'Creation',
-          <DateTime
-            format={DateFormat.FULL}
-            value={data?.created_at.time_microseconds
-              .toString()
-              .slice(0, data?.created_at.time_microseconds.toString().length - 3)}
-          />
+          <DateTime format={DateFormat.FULL} value={data?.created_at.time_microseconds.toString()} />
         )}
         {renderRow(
           'Token Supply',

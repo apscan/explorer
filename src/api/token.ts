@@ -122,13 +122,9 @@ export const tokenApi = emptySplitApi.injectEndpoints({
           },
         }
       },
-      transformResponse(data, meta: any) {
+      transformResponse(data: TokenOfCollection[], meta: any) {
         return {
-          data: (data as any[])?.map((item, index) => {
-            return {
-              ...item,
-            }
-          }),
+          data,
           page: parseHeaders(meta?.response?.headers),
         }
       },

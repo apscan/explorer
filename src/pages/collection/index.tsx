@@ -13,6 +13,7 @@ import { useCollectionDetailQuery } from 'api/collection'
 import { tabNameWithCount } from 'utils'
 import { Holders } from './Holders'
 import { Tokens } from './Tokens'
+import { TokenEvents } from './TokenEvents'
 
 export const Collection = () => {
   const { creator, name } = useParams<{ creator: string; name: string }>()
@@ -46,10 +47,14 @@ export const Collection = () => {
         children: <Tokens name={data.collection_name} creator={data.creator_address} count={100} />,
         hide: false,
       },
+      {
+        label: tabNameWithCount('Token Events', data.events_count),
+        key: 'token events',
+        children: <TokenEvents name={data.collection_name} creator={data.creator_address} count={data.events_count} />,
+        hide: !data.events_count,
+      },
     ].filter((item) => !item.hide) as any
   }, [data])
-
-  console.log('data', data)
 
   const [activeKey, onTabChange] = useSearchTab(tabs)
 

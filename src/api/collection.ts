@@ -42,6 +42,42 @@ export type CollectionHolder = {
   tokens_count: number
 }
 
+export type TokenEvent = {
+  transaction_version: number
+  transaction_index: number
+  creator_address: string
+  collection_name: string
+  token_name: string
+  address: string
+  event_type: string
+  data: {
+    id: {
+      token_data_id: {
+        name: string
+        creator: string
+        collection: string
+      }
+      property_version: string
+    }
+    amount: string
+  }
+  counter_party: {
+    address: string
+    data: {
+      id: {
+        token_data_id: {
+          name: string
+          creator: string
+          collection: string
+        }
+        property_version: string
+      }
+      amount: string
+    }
+    type: string
+  }
+}
+
 export const collectionApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     collections: builder.query<PageResult<Collection>, { start?: number; pageSize?: number }>({
@@ -93,9 +129,32 @@ export const collectionApi = emptySplitApi.injectEndpoints({
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
+    tokenEvents: builder.query<
+      PageResult<TokenEvent>,
+      { creator: string; name: string; start?: number; pageSize?: number }
+    >({
+      query: ({ start = 0, pageSize, creator, name }) => {
+        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
+        return {
+          url: `/token_events?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+          },
+        }
+      },
+      transformResponse(data: any[], meta: any) {
+        return {
+          data,
+          page: parseHeaders(meta?.response?.headers),
+        }
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useCollectionsQuery, useCollectionDetailQuery, useCollectionHoldersQuery } = collectionApi
+export const { useCollectionsQuery, useCollectionDetailQuery, useCollectionHoldersQuery, useTokenEventsQuery } =
+  collectionApi
