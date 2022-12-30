@@ -42,7 +42,7 @@ const columns = [
       return <DateTime value={data.created_at?.time_microseconds.toString()} />
     },
   }),
-  helper.accessor('collection_data.supply', {
+  helper.accessor('supply', {
     header: 'Token Supply',
     cell: (info) => {
       const data = info.row.original as Collection
@@ -51,7 +51,8 @@ const columns = [
         <NumberFormat
           to={`/collection/${data.creator_address}/${data.collection_name}?tab=tokens`}
           useGrouping
-          value={data.collection_data.supply}
+          fallback="-"
+          value={data.collection_data?.supply}
         />
       )
     },
@@ -75,13 +76,13 @@ const columns = [
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
-            href={data.collection_data.uri}
+            href={data.collection_data?.uri}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {data.collection_data.uri}
+            {data.collection_data?.uri}
           </Link>
-          <Mutability marginLeft="5px" mutable={data.collection_data.mutability_config.uri} />
+          <Mutability marginLeft="5px" mutable={data.collection_data?.mutability_config.uri} />
         </Flex>
       )
     },
@@ -94,9 +95,9 @@ const columns = [
       return (
         <Flex alignItems="center">
           <Text maxW="180px" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
-            {data.collection_data.description}
+            {data.collection_data?.description}
           </Text>
-          <Mutability marginLeft="5px" mutable={data.collection_data.mutability_config.description} />
+          {<Mutability marginLeft="5px" mutable={data.collection_data?.mutability_config.description} />}
         </Flex>
       )
     },

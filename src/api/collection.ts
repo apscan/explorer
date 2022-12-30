@@ -18,11 +18,11 @@ export type Collection = {
   collection_data_key: string
   events_count: number
   addresses_count: number
-  created_at: {
+  created_at?: {
     time_microseconds: number
     transaction_version: number
   }
-  collection_data: {
+  collection_data?: {
     uri: string
     name: string
     supply: string

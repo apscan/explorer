@@ -36,7 +36,7 @@ export const Collection = () => {
             count={data.addresses_count}
             name={data.collection_name}
             creator={data.creator_address}
-            supply={parseInt(data.collection_data.supply)}
+            supply={data.collection_data?.supply ? parseInt(data.collection_data?.supply) : undefined}
           />
         ),
         hide: !data.addresses_count,

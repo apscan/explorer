@@ -102,7 +102,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
       </Card>
       <Card>
         <Box padding="0 12px">
-          {renderRow('Creator', <Address size="long" value={data?.creator_address} />)}
+          {renderRow('Creator', <Address size="long" fallback="-" value={data?.creator_address} />)}
           {renderRow(
             'Collection',
             !data ? (
@@ -127,20 +127,23 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
             return (
               <Flex alignItems="center">
                 <NumberFormat postfix="%" value={isNaN(fee) ? undefined : fee} fallback="-" />
-                {data?.token_data.mutability_config && data?.token_data.mutability_config.royalty !== undefined && (
+                {data?.token_data.mutability_config?.royalty !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.royalty} />
                 )}
               </Flex>
             )
           })}
-          {renderRow('Royalty Payee', <Address value={data?.token_data.royalty?.payee_address} size="long" />)}
+          {renderRow(
+            'Royalty Payee',
+            <Address fallback="-" value={data?.token_data.royalty?.payee_address} size="long" />
+          )}
           {renderRow('Supply', <NumberFormat useGrouping fallback="-" value={data?.token_data.supply} />)}
           {renderRow(
             'Maximum',
-            data ? (
+            data?.token_data.maximum ? (
               <Flex alignItems="center">
                 <NumberFormat useGrouping value={data?.token_data.maximum} />
-                {data?.token_data.mutability_config && data?.token_data.mutability_config.maximum !== undefined && (
+                {data?.token_data.mutability_config?.maximum !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.maximum} />
                 )}
               </Flex>
@@ -166,7 +169,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
                 >
                   {data.token_data.uri}
                 </Link>
-                {data?.token_data.mutability_config && data?.token_data.mutability_config.uri !== undefined && (
+                {data?.token_data.mutability_config?.uri !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.uri} />
                 )}
               </Flex>
@@ -179,7 +182,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
             data?.token_data.description ? (
               <Flex alignItems="center">
                 <Text>{data.token_data.description}</Text>
-                {data?.token_data.mutability_config && data?.token_data.mutability_config.description !== undefined && (
+                {data?.token_data.mutability_config?.description !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.description} />
                 )}
               </Flex>

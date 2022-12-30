@@ -15,22 +15,23 @@ export const Overview = ({ data }: { data: Collection | undefined }) => {
       <Box padding="0 12px">
         {renderRow(
           'Creation',
-          <DateTime format={DateFormat.FULL} value={data?.created_at.time_microseconds.toString()} />
+          <DateTime format={DateFormat.FULL} value={data?.created_at?.time_microseconds.toString()} />
         )}
         {renderRow(
           'Token Supply',
           <NumberFormat
             to={`/collection/${data?.creator_address}/${data?.collection_name}?tab=tokens`}
             useGrouping
-            value={data?.collection_data.supply}
+            fallback="-"
+            value={data?.collection_data?.supply}
           />
         )}
         {renderRow(
           'Token Maximum',
-          data ? (
+          data?.collection_data?.maximum ? (
             <Flex alignItems="center">
-              <NumberFormat useGrouping value={data?.collection_data.maximum} />
-              <Mutability marginLeft="5px" mutable={data?.collection_data.mutability_config.maximum} />
+              <NumberFormat useGrouping fallback="-" value={data?.collection_data?.maximum} />
+              <Mutability marginLeft="5px" mutable={data?.collection_data?.mutability_config.maximum} />
             </Flex>
           ) : (
             '-'
@@ -38,7 +39,7 @@ export const Overview = ({ data }: { data: Collection | undefined }) => {
         )}
         {renderRow(
           'URI',
-          data?.collection_data.uri ? (
+          data?.collection_data?.uri ? (
             <Flex alignItems="center">
               <Link
                 overflow="hidden"
@@ -58,10 +59,10 @@ export const Overview = ({ data }: { data: Collection | undefined }) => {
         )}
         {renderRow(
           'Description',
-          data ? (
+          data?.collection_data?.description ? (
             <Flex alignItems="center">
-              <Text>{data.collection_data.description}</Text>
-              <Mutability marginLeft="5px" mutable={data.collection_data.mutability_config.description} />
+              <Text>{data.collection_data?.description}</Text>
+              <Mutability marginLeft="5px" mutable={data.collection_data?.mutability_config.description} />
             </Flex>
           ) : (
             '-'

@@ -22,7 +22,7 @@ export const Holders = ({
   creator: string
   name: string
   count: number
-  supply: number
+  supply?: number
 }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data = [] } = {}, isLoading } = useCollectionHoldersQuery(
@@ -64,7 +64,14 @@ export const Holders = ({
         cell: (info) => {
           const data = info.row.original as CollectionHolder
 
-          return <NumberFormat maximumFractionDigits={2} postfix="%" value={(data.tokens_count / supply) * 100} />
+          return (
+            <NumberFormat
+              fallback="-"
+              maximumFractionDigits={2}
+              postfix="%"
+              value={!supply ? undefined : (data.tokens_count / supply) * 100}
+            />
+          )
         },
       }),
     ],

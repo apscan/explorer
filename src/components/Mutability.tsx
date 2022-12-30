@@ -4,11 +4,15 @@ import { memo } from 'react'
 import { Tooltip } from './Tooltip'
 
 export interface MutabilityProps extends IconProps {
-  mutable: boolean
+  mutable?: boolean
   showMutable?: boolean
 }
 
 export const Mutability = memo(({ mutable, showMutable = false, ...props }: MutabilityProps) => {
+  if (typeof mutable === 'undefined') {
+    return <>-</>
+  }
+
   return (
     <Tooltip label={mutable ? 'Mutable' : 'Immutable'}>
       {mutable ? showMutable ? <EditIcon {...props} /> : '' : <LockIcon {...props} />}
