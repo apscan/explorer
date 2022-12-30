@@ -61,7 +61,7 @@ const Token: React.FC<TokenType> = ({ creator, collectionName, name, url, amount
         }}
         display="block"
         fontSize="0.76562rem !important"
-        to={`/token/${encodeURIComponent(creator)}/${encodeURIComponent(collectionName)}/${encodeURIComponent(name)}`}
+        to={`/token/${creator}/${encodeURIComponent(collectionName)}/${encodeURIComponent(name)}`}
       >
         <Flex alignItems="center" justifyContent="space-between">
           <InlineBox alignItems="center" mr="0.35rem">
@@ -107,7 +107,7 @@ const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
         justifyContent="space-between"
       >
         <InlineBox alignItems="center" justifyContent="space-between">
-          <Link to={`/collection/${creator}/${name}`} fontWeight="600" sx={{ wordWrap: 'nowrap' }}>
+          <Link to={`/collection/${creator}/${encodeURIComponent(name)}`} fontWeight="600" sx={{ wordWrap: 'nowrap' }}>
             {truncated(creator, 8)}::{name}
           </Link>
           <Text>&nbsp;({tokens.length})</Text>

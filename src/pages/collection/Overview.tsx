@@ -20,7 +20,7 @@ export const Overview = ({ data }: { data: Collection | undefined }) => {
         {renderRow(
           'Token Supply',
           <NumberFormat
-            to={`/collection/${data?.creator_address}/${data?.collection_name}?tab=tokens`}
+            to={`/collection/${data?.creator_address}/${encodeURIComponent(data?.collection_name || '')}?tab=tokens`}
             useGrouping
             fallback="-"
             value={data?.collection_data?.supply}

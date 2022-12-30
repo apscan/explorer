@@ -25,7 +25,10 @@ const columns = [
       const data = info.row.original as Collection
 
       return (
-        <Link sx={{ wordWrap: 'nowrap' }} to={`/collection/${data.creator_address}/${data.collection_name}`}>
+        <Link
+          sx={{ wordWrap: 'nowrap' }}
+          to={`/collection/${data.creator_address}/${encodeURIComponent(data.collection_name)}`}
+        >
           {truncated(data.creator_address, 8)}::{data.collection_name}
         </Link>
       )
@@ -49,7 +52,7 @@ const columns = [
 
       return (
         <NumberFormat
-          to={`/collection/${data.creator_address}/${data.collection_name}?tab=tokens`}
+          to={`/collection/${data.creator_address}/${encodeURIComponent(data.collection_name)}?tab=tokens`}
           useGrouping
           fallback="-"
           value={data.collection_data?.supply}
