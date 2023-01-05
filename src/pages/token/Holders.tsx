@@ -10,6 +10,7 @@ import TableStat from 'components/TotalStat'
 import { NumberFormat } from 'components/NumberFormat'
 import { Address } from 'components/Address'
 import { useTokenHoldersQuery } from 'api/token'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
 
@@ -24,6 +25,7 @@ export const Holders = ({
   collectionName: string
   count: number
 }) => {
+  const maxCount = queryRangeLimitMap['token_holders?collection_name&creator_address&token_name']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data = [], isLoading } = useTokenHoldersQuery(
     { creator, name, collectionName, start: (page - 1) * pageSize, pageSize },
@@ -31,7 +33,7 @@ export const Holders = ({
       skip: !creator || !name || !collectionName,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   const columns = useMemo(
     () => [
@@ -84,7 +86,7 @@ export const Holders = ({
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <TableStat count={count} variant="tabletab" object="holders" />
+        <TableStat maxCount={maxCount} count={count} variant="tabletab" object="holders" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable dataSource={data} columns={columns} />

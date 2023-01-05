@@ -12,6 +12,7 @@ import { Link } from 'components/link'
 import { TokenOfCollection, useTokensByCollectionQuery } from 'api/token'
 import { Flex } from 'components/container'
 import { Mutability } from 'components/Mutability'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
 
@@ -113,6 +114,7 @@ const columns = [
 ]
 
 export const Tokens = ({ creator, name, count }: { creator: string; name: string; count: number }) => {
+  const maxCount = queryRangeLimitMap['tokens?collection_name&creator_address']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data = [] } = {}, isLoading } = useTokensByCollectionQuery(
     { creator, name, start: (page - 1) * pageSize, pageSize },
@@ -120,12 +122,12 @@ export const Tokens = ({ creator, name, count }: { creator: string; name: string
       skip: !creator || !name,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <TableStat count={count} variant="tabletab" object="tokens" />
+        <TableStat maxCount={maxCount} count={count} variant="tabletab" object="tokens" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable dataSource={data} columns={columns} />

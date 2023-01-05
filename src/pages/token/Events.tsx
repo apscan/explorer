@@ -15,6 +15,7 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DateTime } from 'components/DateTime'
 import { parseType } from 'pages/account/TokenEvents'
 import { useTokenEventsQuery } from 'api/token'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
 
@@ -29,6 +30,7 @@ export const Events = ({
   collectionName: string
   count: number
 }) => {
+  const maxCount = queryRangeLimitMap['token_events?collection_name&creator_address&token_name']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data = [], isLoading } = useTokenEventsQuery(
     { creator, name, collectionName, start: (page - 1) * pageSize, pageSize },
@@ -36,7 +38,7 @@ export const Events = ({
       skip: !creator || !name || !collectionName,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   const columns = useMemo(
     () => [
@@ -115,7 +117,7 @@ export const Events = ({
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <TableStat count={count} variant="tabletab" object="token events" />
+        <TableStat maxCount={maxCount} count={count} variant="tabletab" object="token events" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable dataSource={data} columns={columns} />

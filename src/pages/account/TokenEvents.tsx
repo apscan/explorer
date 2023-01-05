@@ -18,6 +18,7 @@ import { TypeParam } from 'components/TypeParam'
 import TableStat from 'components/TotalStat'
 import { useAccountTokenEventsQuery } from 'api/token'
 import { truncated } from 'utils/truncated'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
 
@@ -235,6 +236,7 @@ const columns: ColumnDef<any, any>[] = [
 ]
 
 export const TokenEvents = ({ id, count }: { id: string; count: number }) => {
+  const maxCount = queryRangeLimitMap['token_events_by_address?address']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountTokenEventsQuery(
     {
@@ -246,12 +248,12 @@ export const TokenEvents = ({ id, count }: { id: string; count: number }) => {
       skip: !id || !count,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <TableStat variant="tabletab" object="tokens" count={count} />
+        <TableStat maxCount={maxCount} variant="tabletab" object="tokens" count={count} />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable

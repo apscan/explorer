@@ -27,6 +27,8 @@ export const Collection = () => {
   const tabs = useMemo(() => {
     if (!data) return undefined
 
+    const tokenCount = parseInt(data.collection_data?.supply ?? '0')
+
     return [
       {
         label: tabNameWithCount('Holders', data?.addresses_count),
@@ -42,10 +44,10 @@ export const Collection = () => {
         hide: !data.addresses_count,
       },
       {
-        label: tabNameWithCount('Tokens', 100),
+        label: tabNameWithCount('Tokens', tokenCount),
         key: 'tokens',
-        children: <Tokens name={data.collection_name} creator={data.creator_address} count={100} />,
-        hide: false,
+        children: <Tokens name={data.collection_name} creator={data.creator_address} count={tokenCount} />,
+        hide: !tokenCount,
       },
       {
         label: tabNameWithCount('Token Events', data.events_count),

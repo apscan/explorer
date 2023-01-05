@@ -94,7 +94,7 @@ const TokenImg: React.FC<{ uri?: string }> = ({ uri }) => {
 export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
   return (
     <>
-      <Card>
+      <Card maxH="360px">
         <Box padding="0 12px">
           {renderRow(
             'Collection',
@@ -142,10 +142,10 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
               '-'
             )
           )}
-          {renderRow(
+          {/* {renderRow(
             'Largest Property Version',
             <NumberFormat fallback="-" useGrouping value={data?.token_data.largest_property_version} />
-          )}
+          )} */}
           {renderRow(
             'URI',
             data?.token_data.uri ? (
@@ -183,7 +183,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
           )}
         </Box>
       </Card>
-      <Card>
+      <Card maxH="360px">
         <Flex p={4} alignItems="center" height="100%" justifyContent="center">
           <TokenImg uri={data?.token_data.uri || data?.token_data.image_uri} />
         </Flex>
