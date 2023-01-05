@@ -17,10 +17,10 @@ export const queryRangeLimitMap: {
   'token_holders?collection_name&creator_address&token_name': number
   'token_events?collection_name&creator_address&token_name': number
 } = {
-  'token_events?collection_name&creator_address&token_name': 1000,
-  'token_holders?collection_name&creator_address&token_name': 100,
+  'token_events?collection_name&creator_address&token_name': 10000,
+  'token_holders?collection_name&creator_address&token_name': 1000,
   'tokens?collection_name&creator_address': 1000,
-  'collection_holders?collection_name&creator_address': 100,
+  'collection_holders?collection_name&creator_address': 1000,
   collections: 1000,
   'token_events_by_address?address': 10000,
   'token_events?creator_address&collection_name': 10000,
