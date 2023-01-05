@@ -7,7 +7,6 @@ import { Link } from 'components/link'
 import { Image as CImage, Text } from '@chakra-ui/react'
 import { Address } from 'components/Address'
 import { TokenDetail } from 'api/token'
-import { truncated } from 'utils/truncated'
 import { useEffect, useState } from 'react'
 import TokenDefault from 'assets/tokens/TokenDefault'
 
@@ -96,20 +95,14 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
   return (
     <>
       <Card>
-        <Flex p={4} alignItems="center" height="100%" justifyContent="center">
-          <TokenImg uri={data?.token_data.uri || data?.token_data.image_uri} />
-        </Flex>
-      </Card>
-      <Card>
         <Box padding="0 12px">
-          {renderRow('Creator', <Address size="long" fallback="-" value={data?.creator_address} />)}
           {renderRow(
             'Collection',
             !data ? (
               '-'
             ) : (
               <Link to={`/collection/${data.creator_address}/${encodeURIComponent(data.collection_name)}`}>
-                {truncated(data.creator_address, 8)}::{data.collection_name}
+                {data.creator_address}::{data.collection_name}
               </Link>
             )
           )}
@@ -121,22 +114,20 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
             const fee =
               !data.token_data.royalty || data.token_data.royalty.royalty_points_denominator === '0'
                 ? NaN
-                : parseInt(data.token_data.royalty.royalty_points_numerator) /
-                  parseInt(data.token_data.royalty.royalty_points_denominator)
+                : (parseInt(data.token_data.royalty.royalty_points_numerator) /
+                    parseInt(data.token_data.royalty.royalty_points_denominator)) *
+                  100
 
             return (
-              <Flex alignItems="center">
-                <NumberFormat postfix="%" value={isNaN(fee) ? undefined : fee} fallback="-" />
+              <Flex alignItems="center" justifyContent="flex-start" overflow="hidden">
+                <Address fallback="-" value={data?.token_data.royalty?.payee_address} size="full" />
+                <NumberFormat prefix=" (" postfix="%) " value={isNaN(fee) ? undefined : fee} fallback="-" />
                 {data?.token_data.mutability_config?.royalty !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.royalty} />
                 )}
               </Flex>
             )
           })}
-          {renderRow(
-            'Royalty Payee',
-            <Address fallback="-" value={data?.token_data.royalty?.payee_address} size="long" />
-          )}
           {renderRow('Supply', <NumberFormat useGrouping fallback="-" value={data?.token_data.supply} />)}
           {renderRow(
             'Maximum',
@@ -190,8 +181,12 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
               '-'
             )
           )}
-          {renderRow('Properties', JSON.stringify(data?.token_data.default_properties?.map))}
         </Box>
+      </Card>
+      <Card>
+        <Flex p={4} alignItems="center" height="100%" justifyContent="center">
+          <TokenImg uri={data?.token_data.uri || data?.token_data.image_uri} />
+        </Flex>
       </Card>
     </>
   )

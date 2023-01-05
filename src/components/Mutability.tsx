@@ -1,7 +1,7 @@
-import { EditIcon, LockIcon } from '@chakra-ui/icons'
+import { EditIcon } from '@chakra-ui/icons'
 import { IconProps } from '@chakra-ui/icons'
+import Unlock from 'assets/icons/Unlock'
 import { memo } from 'react'
-import { Tooltip } from './Tooltip'
 
 export interface MutabilityProps extends IconProps {
   mutable?: boolean
@@ -13,11 +13,10 @@ export const Mutability = memo(({ mutable, showMutable = false, ...props }: Muta
     return <>-</>
   }
 
-  return (
-    <Tooltip label={mutable ? 'Mutable' : 'Immutable'}>
-      {mutable ? showMutable ? <EditIcon {...props} /> : '' : <LockIcon {...props} />}
-    </Tooltip>
-  )
+  if (mutable && showMutable) {
+    return <EditIcon {...props} />
+  }
+  return <Unlock {...props} />
 })
 
 Mutability.displayName = 'Mutability'

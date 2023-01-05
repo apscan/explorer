@@ -162,7 +162,7 @@ export const NumberFormat = memo(
         }
 
         return (
-          <Box ref={ref} {...componentProps} {...rest}>
+          <Box whiteSpace="pre" ref={ref} {...componentProps} {...rest}>
             {prefix}
             {styledShowValue}
             {postfix !== false && !postfix && symbolDisplay && ` ${symbolDisplay}`}

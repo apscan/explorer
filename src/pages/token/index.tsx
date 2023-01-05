@@ -101,7 +101,7 @@ export const Token = () => {
       <Box
         css={css`
           display: grid;
-          grid-template-columns: 2fr 3fr;
+          grid-template-columns: 3fr 2fr;
           grid-gap: 16px;
           margin-bottom: 24px;
         `}

@@ -49,8 +49,9 @@ const columns = [
       const fee =
         !data.token_data.royalty || data.token_data.royalty.royalty_points_denominator === '0'
           ? NaN
-          : parseInt(data.token_data.royalty.royalty_points_numerator) /
-            parseInt(data.token_data.royalty.royalty_points_denominator)
+          : (parseInt(data.token_data.royalty.royalty_points_numerator) /
+              parseInt(data.token_data.royalty.royalty_points_denominator)) *
+            100
 
       return (
         <>
