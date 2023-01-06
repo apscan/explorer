@@ -19,7 +19,7 @@ import { vars } from 'theme/theme.css'
 
 const helper = createColumnHelper<any>()
 
-type HashesTableProps<T> = {
+type MiniTableProps<T> = {
   data: T[]
   columns: {
     header: ReactNode
@@ -27,11 +27,14 @@ type HashesTableProps<T> = {
   }[]
 }
 
-export const HashesTable = ({ data, columns }: HashesTableProps<any>) => {
+export const MiniTable = ({ data, columns }: MiniTableProps<any>) => {
   return (
     <table
       css={css`
-        font-size: 14px;
+        position: relative;
+        left: -10px;
+        text-align: left;
+        font-size: 12px;
       `}
     >
       <thead>
@@ -75,10 +78,8 @@ export const HashesTable = ({ data, columns }: HashesTableProps<any>) => {
 const renderSubComponent = ({ row }: { row: any }) => {
   const holder = row.original as TokenHolder
 
-  console.log('holder', holder)
-
   return (
-    <HashesTable
+    <MiniTable
       columns={[
         {
           header: 'Key',
