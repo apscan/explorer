@@ -33,10 +33,10 @@ export const Collection = () => {
       skip: !creator || !name,
     }
   )
+  const tokenCount = page?.count || 0
 
   const tabs = useMemo(() => {
     if (!data) return undefined
-    const tokenCount = page?.count || 0
 
     return [
       {
@@ -65,7 +65,7 @@ export const Collection = () => {
         hide: !data.events_count,
       },
     ].filter((item) => !item.hide) as any
-  }, [data, page])
+  }, [data, tokenCount])
 
   const [activeKey, onTabChange] = useSearchTab(tabs)
 
@@ -108,7 +108,7 @@ export const Collection = () => {
           margin-bottom: 24px;
         `}
       >
-        <Overview data={data} />
+        <Overview totalCount={tokenCount} data={data} />
       </Box>
       <Card>
         <Tabs onTabClick={onTabChange} activeKey={activeKey} size="large" items={tabs} />

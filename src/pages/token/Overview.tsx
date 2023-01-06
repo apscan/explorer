@@ -24,17 +24,8 @@ type TokenMeta = {
   }[]
 }
 
-const fetchImg = async (url: string, timeout: number = 1): Promise<string> => {
-  const res = (await Promise.race([
-    fetch(url, {}),
-    new Promise((_, rej) => {
-      setTimeout(() => {
-        console.log('rej')
-
-        rej()
-      }, timeout)
-    }),
-  ])) as Response
+const fetchImg = async (url: string): Promise<string> => {
+  const res = await fetch(url, {})
   const contentType = res.headers.get('Content-Type')
 
   if (contentType?.includes('image')) {

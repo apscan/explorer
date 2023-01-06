@@ -9,7 +9,7 @@ import { NumberFormat } from 'components/NumberFormat'
 import { Link } from 'components/link'
 import { Text } from '@chakra-ui/react'
 
-export const Overview = ({ data }: { data: Collection | undefined }) => {
+export const Overview = ({ data, totalCount }: { data: Collection | undefined; totalCount: number }) => {
   return (
     <Card>
       <Box padding="0 12px">
@@ -23,7 +23,7 @@ export const Overview = ({ data }: { data: Collection | undefined }) => {
             to={`/collection/${data?.creator_address}/${encodeURIComponent(data?.collection_name || '')}?tab=tokens`}
             useGrouping
             fallback="-"
-            value={data?.collection_data?.supply}
+            value={totalCount}
           />
         )}
         {renderRow(
