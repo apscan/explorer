@@ -5,32 +5,96 @@ import { ShowRecords } from 'components/table/ShowRecords'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import { Pagination } from 'components/table/Pagination'
-import { useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import TableStat from 'components/TotalStat'
 import { NumberFormat } from 'components/NumberFormat'
 import { Address } from 'components/Address'
 import { TokenHolder, useTokenHoldersQuery } from 'api/token'
 import { queryRangeLimitMap } from 'config/api'
-import { HashesTable } from 'components/HashesTable'
 import { ExpandButton } from 'components/table/ExpandButton'
 import { Hash } from 'components/Hash'
 import { JsonViewEllipsis } from 'components/JsonView'
+import { css } from '@emotion/react'
+import { vars } from 'theme/theme.css'
 
 const helper = createColumnHelper<any>()
+
+type HashesTableProps<T> = {
+  data: T[]
+  columns: {
+    header: ReactNode
+    cell: (data: T, index: number) => ReactNode
+  }[]
+}
+
+export const HashesTable = ({ data, columns }: HashesTableProps<any>) => {
+  return (
+    <table
+      css={css`
+        font-size: 14px;
+      `}
+    >
+      <thead>
+        <tr>
+          {columns.map((column, index) => (
+            <th
+              key={index}
+              css={css`
+                border: 1px solid ${vars.colors.border1};
+                padding: 8px 16px;
+                font-weight: 400;
+                background: #f5f5f5;
+              `}
+            >
+              {column.header}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item, index) => (
+          <tr key={index}>
+            {columns.map((column, index) => (
+              <td
+                key={index}
+                css={css`
+                  padding: 6px 12px;
+                  border: 1px solid ${vars.colors.border1};
+                `}
+              >
+                {column.cell(item, index)}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
 
 const renderSubComponent = ({ row }: { row: any }) => {
   const holder = row.original as TokenHolder
 
+  console.log('holder', holder)
+
   return (
     <HashesTable
-      value={holder.token_id?.token_properties.map.data.map((item) => ({
-        label: item.key,
-        content: (
-          <>
-            <Hash value={item.value.value} size="full" /> ({item.value.type}
-          </>
-        ),
-      }))}
+      columns={[
+        {
+          header: 'Key',
+          cell: (info) => info.key,
+        },
+        {
+          header: 'Value (Type)',
+          cell: (info) => (
+            <>
+              <Hash value={info.value.value} size="full" />
+              &nbsp;({info.value.type})
+            </>
+          ),
+        },
+      ]}
+      data={holder.token_id?.token_properties.map.data}
     />
   )
 }
@@ -61,7 +125,6 @@ export const Holders = ({
     }
   )
   const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
-
   const columns = useMemo(
     () => [
       helper.accessor('rank', {
@@ -114,11 +177,11 @@ export const Holders = ({
         cell: (info) => {
           const holder = info.row.original as TokenHolder
 
-          if (!holder.token_id.token_properties.map.data.length) {
+          if (!holder.token_id?.token_properties.map.data.length) {
             return '-'
           }
 
-          return <JsonViewEllipsis src={holder.token_id.token_properties.map.data} />
+          return <JsonViewEllipsis src={holder.token_id?.token_properties.map.data} />
         },
       }),
       helper.accessor('expand', {
