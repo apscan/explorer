@@ -44,7 +44,7 @@ export const MiniTable = ({ data, columns }: MiniTableProps<any>) => {
               key={index}
               css={css`
                 border: 1px solid ${vars.colors.border1};
-                padding: 8px 16px;
+                padding: 8px 12px;
                 font-weight: 400;
                 background: #f5f5f5;
               `}
