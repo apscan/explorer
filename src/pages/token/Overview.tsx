@@ -10,6 +10,7 @@ import { TokenDetail } from 'api/token'
 import { useEffect, useState } from 'react'
 import TokenDefault from 'assets/tokens/TokenDefault'
 import { css } from '@emotion/react'
+import { CircularProgress } from '@chakra-ui/react'
 
 type TokenMeta = {
   animation_url: string
@@ -23,8 +24,17 @@ type TokenMeta = {
   }[]
 }
 
-const fetchImg = async (url: string): Promise<string> => {
-  const res = await fetch(url)
+const fetchImg = async (url: string, timeout: number = 1): Promise<string> => {
+  const res = (await Promise.race([
+    fetch(url, {}),
+    new Promise((_, rej) => {
+      setTimeout(() => {
+        console.log('rej')
+
+        rej()
+      }, timeout)
+    }),
+  ])) as Response
   const contentType = res.headers.get('Content-Type')
 
   if (contentType?.includes('image')) {
@@ -49,7 +59,7 @@ const fetchTokenMeta = async (url: string): Promise<TokenMeta | Blob> => {
 async function blobToDataURL(blob: Blob): Promise<string> {
   const fr = new FileReader()
 
-  return new Promise((res, rej) => {
+  return new Promise((res) => {
     fr.onload = (e) => res(e.target?.result as string)
     fr.readAsDataURL(blob)
   })
@@ -57,6 +67,7 @@ async function blobToDataURL(blob: Blob): Promise<string> {
 
 const TokenImg: React.FC<{ uri?: string }> = ({ uri }) => {
   const [img, setImg] = useState<string>()
+  const [errorOccured, setErrorOccured] = useState(false)
 
   if (uri?.startsWith('ipfs://')) {
     uri = `https://gateway.ipfs.io/ipfs/${uri.slice('ipfs://'.length)}`
@@ -66,8 +77,7 @@ const TokenImg: React.FC<{ uri?: string }> = ({ uri }) => {
     if (!uri) {
       return
     }
-
-    fetchTokenMeta(uri)
+    const fetchData = fetchTokenMeta(uri)
       .then((res) => {
         if (res instanceof Blob) {
           return blobToDataURL(res)
@@ -76,10 +86,18 @@ const TokenImg: React.FC<{ uri?: string }> = ({ uri }) => {
         return fetchImg(res.image)
       })
       .then(setImg)
-      .catch(() => {})
+
+    Promise.race([
+      fetchData,
+      new Promise((_, rej) => {
+        setTimeout(() => rej(), 18000)
+      }),
+    ]).catch(() => setErrorOccured(true))
   }, [uri])
 
-  if (!img) {
+  console.log('errorOccured', errorOccured)
+
+  if (errorOccured) {
     return (
       <TokenDefault
         sx={{
@@ -89,6 +107,26 @@ const TokenImg: React.FC<{ uri?: string }> = ({ uri }) => {
           width: '500px',
           height: '500px',
         }}
+      />
+    )
+  }
+
+  if (!img) {
+    return (
+      <CircularProgress
+        color="white"
+        isIndeterminate
+        size="100px"
+        sx={{
+          '.chakra-progress__track': {
+            stroke: 'rgb(190, 190, 190)',
+            strokeWidth: '8px',
+          },
+          '.chakra-progress__indicator': {
+            strokeWidth: '9px',
+          },
+        }}
+        trackColor="red"
       />
     )
   }
