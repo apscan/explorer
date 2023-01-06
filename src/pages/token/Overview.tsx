@@ -4,11 +4,12 @@ import { Card } from 'components/Card'
 import { Mutability } from 'components/Mutability'
 import { NumberFormat } from 'components/NumberFormat'
 import { Link } from 'components/link'
-import { Image as CImage, Text } from '@chakra-ui/react'
+import { Image as CImage } from '@chakra-ui/react'
 import { Address } from 'components/Address'
 import { TokenDetail } from 'api/token'
 import { useEffect, useState } from 'react'
 import TokenDefault from 'assets/tokens/TokenDefault'
+import { css } from '@emotion/react'
 
 type TokenMeta = {
   animation_url: string
@@ -94,8 +95,17 @@ const TokenImg: React.FC<{ uri?: string }> = ({ uri }) => {
 export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
   return (
     <>
-      <Card maxH="360px">
-        <Box padding="0 12px">
+      <Card maxH="390px">
+        <Box
+          padding="0 12px"
+          css={css`
+            & > div:nth-of-type(1) > div:nth-of-type(2) {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+          `}
+        >
           {renderRow(
             'Collection',
             !data ? (
@@ -187,7 +197,18 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
             'Description',
             data?.token_data.description ? (
               <Flex alignItems="center">
-                <Text>{data.token_data.description}</Text>
+                <Box
+                  css={css`
+                    padding: 16px 40px 16px 16px;
+                    border-radius: 8px;
+                    border: 1px solid #e7eaf3;
+                    background-color: #f8f9fa;
+                    max-height: 80px;
+                    overflow: auto;
+                  `}
+                >
+                  {data.token_data.description}
+                </Box>
                 {data?.token_data.mutability_config?.description !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.description} />
                 )}
@@ -198,7 +219,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
           )}
         </Box>
       </Card>
-      <Card maxH="360px">
+      <Card maxH="390px">
         <Flex p={4} alignItems="center" height="100%" justifyContent="center">
           <TokenImg uri={data?.token_data.uri || data?.token_data.image_uri} />
         </Flex>
