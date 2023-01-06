@@ -14,9 +14,19 @@ import { tabNameWithCount } from 'utils'
 import { Holders } from './Holders'
 import { Tokens } from './Tokens'
 import { TokenEvents } from './TokenEvents'
+import { useTokensByCollectionQuery } from 'api/token'
 
 export const Collection = () => {
   const { creator, name } = useParams<{ creator: string; name: string }>()
+  const { data: { page } = {} } = useTokensByCollectionQuery(
+    {
+      creator: creator!,
+      name: name!,
+      start: 0,
+      pageSize: 1,
+    },
+    { skip: !creator || !name }
+  )
   const { data } = useCollectionDetailQuery(
     { creator: creator!, name: name! },
     {
@@ -26,8 +36,7 @@ export const Collection = () => {
 
   const tabs = useMemo(() => {
     if (!data) return undefined
-
-    const tokenCount = parseInt(data.collection_data?.supply ?? '0')
+    const tokenCount = page?.count || 0
 
     return [
       {
@@ -56,7 +65,7 @@ export const Collection = () => {
         hide: !data.events_count,
       },
     ].filter((item) => !item.hide) as any
-  }, [data])
+  }, [data, page])
 
   const [activeKey, onTabChange] = useSearchTab(tabs)
 

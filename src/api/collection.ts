@@ -149,8 +149,6 @@ export const collectionApi = emptySplitApi.injectEndpoints({
         }
       },
       transformResponse(data: CollectionHolder[], meta: any) {
-        console.log('adfasdf', data)
-
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),

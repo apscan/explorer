@@ -200,6 +200,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         return {
           url: `/tokens?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
           headers: {
+            prefer: 'count=exact',
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
           },
