@@ -120,8 +120,23 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
 
             return (
               <Flex alignItems="center" justifyContent="flex-start" overflow="hidden">
-                <Address fallback="-" value={data?.token_data.royalty?.payee_address} size="full" />
-                <NumberFormat prefix=" (" postfix="%) " value={isNaN(fee) ? undefined : fee} fallback="-" />
+                <Address
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    wordWrap: 'nowrap',
+                  }}
+                  fallback="-"
+                  value={data?.token_data.royalty?.payee_address}
+                  size="full"
+                />
+                <NumberFormat
+                  maximumFractionDigits={2}
+                  prefix=" ("
+                  postfix="%) "
+                  value={isNaN(fee) ? undefined : fee}
+                  fallback="-"
+                />
                 {data?.token_data.mutability_config?.royalty !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.royalty} />
                 )}

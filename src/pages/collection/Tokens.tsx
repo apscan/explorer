@@ -57,7 +57,7 @@ const columns = [
       return (
         <>
           <Address value={data.token_data.royalty?.payee_address} size="short" fallback="-" />
-          <NumberFormat prefix=" (" postfix="%)" value={isNaN(fee) ? undefined : fee} />
+          <NumberFormat maximumFractionDigits={2} prefix=" (" postfix="%)" value={isNaN(fee) ? undefined : fee} />
         </>
       )
     },
