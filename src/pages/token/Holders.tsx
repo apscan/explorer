@@ -9,10 +9,37 @@ import { useMemo } from 'react'
 import TableStat from 'components/TotalStat'
 import { NumberFormat } from 'components/NumberFormat'
 import { Address } from 'components/Address'
-import { useTokenHoldersQuery } from 'api/token'
+import { TokenHolder, useTokenHoldersQuery } from 'api/token'
 import { queryRangeLimitMap } from 'config/api'
+import { HashesTable } from 'components/HashesTable'
+import { ExpandButton } from 'components/table/ExpandButton'
+import { Hash } from 'components/Hash'
+import { JsonViewEllipsis } from 'components/JsonView'
 
 const helper = createColumnHelper<any>()
+
+const renderSubComponent = ({ row }: { row: any }) => {
+  const holder = row.original as TokenHolder
+
+  return (
+    <HashesTable
+      value={holder.token_id?.token_properties.map.data.map((item) => ({
+        label: item.key,
+        content: (
+          <>
+            <Hash value={item.value.value} size="full" /> ({item.value.type}
+          </>
+        ),
+      }))}
+    />
+  )
+}
+
+const getRowCanExpand = (row: any) => {
+  const holder = row.original as TokenHolder
+
+  return !!holder.token_id?.token_properties.map.data.length
+}
 
 export const Holders = ({
   creator,
@@ -79,6 +106,45 @@ export const Holders = ({
         header: 'Withdraw Events',
         cell: (info) => <NumberFormat fallback="-" useGrouping value={undefined} />,
       }),
+      helper.accessor('properties', {
+        meta: {
+          nowrap: true,
+        },
+        header: 'Properties',
+        cell: (info) => {
+          const holder = info.row.original as TokenHolder
+
+          if (!holder.token_id.token_properties.map.data.length) {
+            return '-'
+          }
+
+          return <JsonViewEllipsis src={holder.token_id.token_properties.map.data} />
+        },
+      }),
+      helper.accessor('expand', {
+        meta: {
+          nowrap: true,
+          isExpandButton: true,
+        },
+        header: (header) => {
+          return (
+            <ExpandButton
+              expandAll
+              expanded={header.table.getIsSomeRowsExpanded()}
+              onClick={() => header.table.toggleAllRowsExpanded()}
+            />
+          )
+        },
+        cell: (info) => {
+          const holder = info.row.original as TokenHolder
+
+          if (!holder.token_id?.token_properties.map.data.length) {
+            return null
+          }
+
+          return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+        },
+      }),
     ],
     [page, pageSize]
   )
@@ -89,7 +155,12 @@ export const Holders = ({
         <TableStat maxCount={maxCount} count={count} variant="tabletab" object="holders" />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
-      <DataTable dataSource={data} columns={columns} />
+      <DataTable
+        dataSource={data}
+        columns={columns}
+        renderSubComponent={renderSubComponent}
+        getRowCanExpand={getRowCanExpand}
+      />
       {pageProps.total > 1 && (
         <CardFooter variant="tabletab">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />

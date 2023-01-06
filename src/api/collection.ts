@@ -41,6 +41,28 @@ export type CollectionHolder = {
   creator_address: string
   holder_address: string
   tokens_count: number
+  token_id: {
+    id: {
+      token_data_id: {
+        name: string
+        creator: string
+        collection: string
+      }
+      property_version: string
+    }
+    amount: string
+    token_properties: {
+      map: {
+        data: {
+          key: string
+          value: {
+            type: string
+            value: string
+          }
+        }[]
+      }
+    }
+  }
 }
 
 export type TokenEvent = {
@@ -127,6 +149,8 @@ export const collectionApi = emptySplitApi.injectEndpoints({
         }
       },
       transformResponse(data: CollectionHolder[], meta: any) {
+        console.log('adfasdf', data)
+
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
