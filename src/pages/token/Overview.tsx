@@ -23,6 +23,18 @@ type TokenMeta = {
   }[]
 }
 
+const fetchImg = async (url: string): Promise<string> => {
+  const res = await fetch(url)
+  const contentType = res.headers.get('Content-Type')
+
+  if (contentType?.includes('image')) {
+    const blob = await res.blob()
+    return blobToDataURL(blob)
+  }
+
+  return ''
+}
+
 const fetchTokenMeta = async (url: string): Promise<TokenMeta | Blob> => {
   const res = await fetch(url)
   const contentType = res.headers.get('Content-Type')
@@ -61,7 +73,7 @@ const TokenImg: React.FC<{ uri?: string }> = ({ uri }) => {
           return blobToDataURL(res)
         }
 
-        return res.image
+        return fetchImg(res.image)
       })
       .then(setImg)
       .catch(() => {})
