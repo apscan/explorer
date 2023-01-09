@@ -30,7 +30,11 @@ export const Overview = ({ data, totalCount }: { data: Collection | undefined; t
           'Token Maximum',
           data?.collection_data?.maximum ? (
             <Flex alignItems="center">
-              <NumberFormat useGrouping fallback="-" value={data?.collection_data?.maximum} />
+              <NumberFormat
+                useGrouping
+                fallback={data?.collection_data?.maximum === '0' ? 'Unlimited' : '-'}
+                value={data?.collection_data?.maximum === '0' ? undefined : data?.collection_data?.maximum}
+              />
               <Mutability marginLeft="5px" mutable={data?.collection_data?.mutability_config.maximum} />
             </Flex>
           ) : (
