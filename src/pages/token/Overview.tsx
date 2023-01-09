@@ -251,6 +251,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
               <Flex alignItems="center">
                 <Box
                   css={css`
+                    flex: 1;
                     padding: 16px 40px 16px 16px;
                     border-radius: 8px;
                     border: 1px solid #e7eaf3;
