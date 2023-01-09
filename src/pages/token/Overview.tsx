@@ -194,12 +194,23 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
               </Flex>
             )
           })}
-          {renderRow('Supply', <NumberFormat useGrouping fallback="-" value={data?.token_data.supply} />)}
+          {renderRow(
+            'Supply',
+            <NumberFormat
+              useGrouping
+              fallback="-"
+              value={data?.token_data.supply === '0' ? undefined : data?.token_data.supply}
+            />
+          )}
           {renderRow(
             'Maximum',
             data?.token_data.maximum ? (
               <Flex alignItems="center">
-                <NumberFormat useGrouping value={data?.token_data.maximum} />
+                <NumberFormat
+                  fallback={data?.token_data.maximum === '0' ? 'Unlimited' : '-'}
+                  useGrouping
+                  value={data?.token_data.maximum === '0' ? undefined : data?.token_data.maximum}
+                />
                 {data?.token_data.mutability_config?.maximum !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.maximum} />
                 )}
