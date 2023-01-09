@@ -11,7 +11,6 @@ import { TokenDetail } from 'api/token'
 import { useEffect, useState } from 'react'
 import TokenDefault from 'assets/tokens/TokenDefault'
 import { css } from '@emotion/react'
-import { CircularProgress } from '@chakra-ui/react'
 
 type TokenMeta = {
   animation_url: string
