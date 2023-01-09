@@ -19,7 +19,6 @@ export const Coins = () => {
     start: (page - 1) * pageSize,
     pageSize,
   })
-
   const pageProps = useRangePagination(page, pageSize, maxCount, setPage)
   const { data: market } = useMarketInfoQuery()
 
