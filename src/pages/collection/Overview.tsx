@@ -23,7 +23,7 @@ export const Overview = ({ data, totalCount }: { data: Collection | undefined; t
             to={`/collection/${data?.creator_address}/${encodeURIComponent(data?.collection_name || '')}?tab=tokens`}
             useGrouping
             fallback="-"
-            value={totalCount}
+            value={data?.collection_data?.supply === '0' ? undefined : data?.collection_data?.supply}
           />
         )}
         {renderRow(
