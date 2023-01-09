@@ -186,10 +186,17 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
                   prefix=" ("
                   postfix="%) "
                   value={isNaN(fee) ? undefined : fee}
-                  fallback="-"
+                  fallback=""
                 />
                 {data?.token_data.mutability_config?.royalty !== undefined && (
-                  <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.royalty} />
+                  <Mutability
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      marginLeft: '5px',
+                    }}
+                    mutable={data.token_data.mutability_config.royalty}
+                  />
                 )}
               </Flex>
             )
