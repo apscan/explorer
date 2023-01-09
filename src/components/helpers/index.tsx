@@ -22,7 +22,7 @@ const ValueWrapper = styled(Box)`
 
 export function renderRow(
   key: React.ReactNode,
-  value: React.ReactNode,
+  value: React.ReactNode | (() => React.ReactNode),
   {
     border,
   }: {
@@ -41,7 +41,7 @@ export function renderRow(
       `}
     >
       <KeyWrapper>{key}</KeyWrapper>
-      <ValueWrapper>{value}</ValueWrapper>
+      <ValueWrapper>{typeof value === 'function' ? value() : value}</ValueWrapper>
     </Box>
   )
 }

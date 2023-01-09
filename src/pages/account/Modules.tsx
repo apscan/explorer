@@ -1,6 +1,6 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { useAccountModulesQuery } from 'api'
-import { CardBody, CardFooter, CardHead, CardHeadStats } from 'components/Card'
+import { CardBody, CardFooter, CardHead } from 'components/Card'
 import { Box } from 'components/container'
 import { CopyButton } from 'components/CopyButton'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'

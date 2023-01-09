@@ -18,14 +18,14 @@ import { TypeParam } from 'components/TypeParam'
 import TableStat from 'components/TotalStat'
 import { useAccountTokenEventsQuery } from 'api/token'
 import { truncated } from 'utils/truncated'
-import { P } from '@pancakeswap/awgmi/dist/constants-9c00c5aa'
+import { queryRangeLimitMap } from 'config/api'
 
 const helper = createColumnHelper<any>()
 
-const isIn = (type: string) => type.indexOf('DepositEvent') > -1
-const isOut = (type: string) => type.indexOf('WithdrawEvent') > -1
+export const isIn = (type: string) => type.indexOf('DepositEvent') > -1
+export const isOut = (type: string) => type.indexOf('WithdrawEvent') > -1
 
-const parseType = (data: {
+export const parseType = (data: {
   address: string
   counter_party: {
     address: string
@@ -175,14 +175,18 @@ const columns: ColumnDef<any, any>[] = [
     },
     header: 'Collection',
     cell: (info) => {
-      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)?.token_data_id
+      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)?.token_data_id as {
+        collection: string
+        name: string
+        creator: string
+      }
 
       if (!id) {
         return '-'
       }
 
       return (
-        <Link>
+        <Link to={`/collection/${id.creator}/${encodeURIComponent(id.collection)}`}>
           {truncated(id.creator, 8)}::
           {id.collection}
         </Link>
@@ -195,13 +199,21 @@ const columns: ColumnDef<any, any>[] = [
     },
     header: 'Token',
     cell: (info) => {
-      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)?.token_data_id
+      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)?.token_data_id as {
+        collection: string
+        name: string
+        creator: string
+      }
 
       if (!id) {
         return '-'
       }
 
-      return <Link to={`/token/${id?.name}`}>{id?.name}</Link>
+      return (
+        <Link to={`/token/${id.creator}/${encodeURIComponent(id.collection)}/${encodeURIComponent(id.name)}`}>
+          {id?.name}
+        </Link>
+      )
     },
   }),
   helper.accessor('amount', {
@@ -224,6 +236,7 @@ const columns: ColumnDef<any, any>[] = [
 ]
 
 export const TokenEvents = ({ id, count }: { id: string; count: number }) => {
+  const maxCount = queryRangeLimitMap['token_events_by_address?address']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data } = {}, isLoading } = useAccountTokenEventsQuery(
     {
@@ -235,12 +248,12 @@ export const TokenEvents = ({ id, count }: { id: string; count: number }) => {
       skip: !id || !count,
     }
   )
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
+  const pageProps = useRangePagination(page, pageSize, count > maxCount ? maxCount : count, setPage)
 
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <TableStat variant="tabletab" object="tokens" count={count} />
+        <TableStat maxCount={maxCount} variant="tabletab" object="tokens" count={count} />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable

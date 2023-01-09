@@ -11,12 +11,12 @@ import { ListItem } from './CoinList'
 import { useTokensQuery } from 'api/token'
 import { BaseInput } from 'components/inputs'
 import TokenDefault from 'assets/tokens/TokenDefault'
-import { Address } from 'components/Address'
 import { truncated } from 'utils/truncated'
 
 type TokenType = {
   name: string
   amount: string
+  creator: string
   collectionName: string
   propertiVersion: string
   url: string
@@ -26,18 +26,6 @@ type CollectionType = {
   name: string
   creator: string
   tokens: TokenType[]
-}
-
-type TokenMeta = {
-  animation_url: string
-  description: string
-  image: string
-  name: string
-  properties: {
-    key: string
-    type: string
-    value: string
-  }[]
 }
 
 export const CoinIcon = ({ type }: { type: string }) => {
@@ -53,18 +41,7 @@ export const CoinIcon = ({ type }: { type: string }) => {
   )
 }
 
-const fetchTokenMeta = async (url: string): Promise<TokenMeta | undefined> => {
-  try {
-    const res = await fetch(url)
-    const data = (await res.json()) as TokenMeta
-
-    return data
-  } catch (e) {}
-
-  return undefined
-}
-
-const Token: React.FC<TokenType> = ({ name, url, amount }) => {
+const Token: React.FC<TokenType> = ({ creator, collectionName, name, url, amount }) => {
   return (
     <ListItem>
       {/* use Link instead MenuItem here, cuz MenuItem cause search component blur when list filled */}
@@ -84,16 +61,13 @@ const Token: React.FC<TokenType> = ({ name, url, amount }) => {
         }}
         display="block"
         fontSize="0.76562rem !important"
-        to={`/token/${name}`}
+        to={`/token/${creator}/${encodeURIComponent(collectionName)}/${encodeURIComponent(name)}`}
       >
         <Flex alignItems="center" justifyContent="space-between">
           <InlineBox alignItems="center" mr="0.35rem">
             <TokenDefault
               sx={{
-                '&': {
-                  fill: '#606672',
-                  color: 'red',
-                },
+                fill: '#606672',
                 width: '12px',
                 height: '12px',
                 marginRight: '4px',
@@ -122,33 +96,31 @@ const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
 
   return (
     <>
-      <Link>
-        <Flex
-          mb="4px"
-          color="#1e2022"
-          fontSize="0.765rem"
-          padding="4px 8px"
-          bg="rgba(231,234,243,.5)"
-          borderRadius="0.25rem"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <InlineBox alignItems="center" justifyContent="space-between">
-            <Link fontWeight="600" as={Box} sx={{ wordWrap: 'nowrap' }}>
-              {truncated(creator, 8)}::{name}
-            </Link>
-            <Text>&nbsp;({tokens.length})</Text>
-          </InlineBox>
-          <ChevronDownIcon
-            fontSize="1rem"
-            userSelect="none"
-            onClick={() => setCollasped((old) => !old)}
-            style={{
-              transform: collasped ? 'unset' : 'scaleY(-1)',
-            }}
-          />
-        </Flex>
-      </Link>
+      <Flex
+        mb="4px"
+        color="#1e2022"
+        fontSize="0.765rem"
+        padding="4px 8px"
+        bg="rgba(231,234,243,.5)"
+        borderRadius="0.25rem"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <InlineBox alignItems="center" justifyContent="space-between">
+          <Link to={`/collection/${creator}/${encodeURIComponent(name)}`} fontWeight="600" sx={{ wordWrap: 'nowrap' }}>
+            {truncated(creator, 8)}::{name}
+          </Link>
+          <Text>&nbsp;({tokens.length})</Text>
+        </InlineBox>
+        <ChevronDownIcon
+          fontSize="1rem"
+          userSelect="none"
+          onClick={() => setCollasped((old) => !old)}
+          style={{
+            transform: collasped ? 'unset' : 'scaleY(-1)',
+          }}
+        />
+      </Flex>
       <Box maxH={collasped ? '0px' : '99999999px'} overflow="hidden" transition="max-height .1s">
         {tokens.map((token) => (
           <Token key={token.name} {...token} />
@@ -204,6 +176,7 @@ export const Tokens = ({ address }: { address?: string }) => {
           collectionName: token.token_id.id.token_data_id.collection,
           propertiVersion: token.token_id.id.property_version,
           url: token.token_info.uri,
+          creator: token.token_id.id.token_data_id.creator,
         })
 
         return collections
@@ -274,8 +247,6 @@ export const Tokens = ({ address }: { address?: string }) => {
     [filteredCollections]
   )
   const tokensCount = useMemo(() => collections.reduce((all, curr) => all + curr.tokens.length, 0), [collections])
-
-  console.log('data?.page.count', data?.page.count, data?.page.count ?? tokensCount)
 
   return (
     <Menu>

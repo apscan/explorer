@@ -31,7 +31,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
         }[],
         meta: any
       ) {
-        console.log('data', data)
         data = data.map((item) => ({
           ...item,
           type: 'user_transaction',

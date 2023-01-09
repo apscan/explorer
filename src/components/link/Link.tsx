@@ -57,14 +57,14 @@ export const Link = memo(
 
       const [as, to, href] = useMemo(() => {
         if (!_to) {
-          return ['a' as const, undefined, undefined]
+          return ['a' as const, undefined, _href]
         } else if (typeof _to === 'string' && isValidUrl(_to)) {
           // external link
           return ['a' as const, undefined, _to]
         } else {
           return [RouterLink, _to, undefined]
         }
-      }, [_to])
+      }, [_href, _to])
 
       return (
         <Tooltip label={tooltip} isDisabled={!tooltip}>
