@@ -5,6 +5,7 @@ import { Mutability } from 'components/Mutability'
 import { NumberFormat } from 'components/NumberFormat'
 import { Link } from 'components/link'
 import { Image as CImage } from '@chakra-ui/react'
+import { CircularProgress } from '@chakra-ui/react'
 import { Address } from 'components/Address'
 import { TokenDetail } from 'api/token'
 import { useEffect, useState } from 'react'
@@ -186,20 +187,38 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
                   prefix=" ("
                   postfix="%) "
                   value={isNaN(fee) ? undefined : fee}
-                  fallback="-"
+                  fallback=""
                 />
                 {data?.token_data.mutability_config?.royalty !== undefined && (
-                  <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.royalty} />
+                  <Mutability
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      marginLeft: '5px',
+                    }}
+                    mutable={data.token_data.mutability_config.royalty}
+                  />
                 )}
               </Flex>
             )
           })}
-          {renderRow('Supply', <NumberFormat useGrouping fallback="-" value={data?.token_data.supply} />)}
+          {renderRow(
+            'Supply',
+            <NumberFormat
+              useGrouping
+              fallback="-"
+              value={data?.token_data.supply === '0' ? undefined : data?.token_data.supply}
+            />
+          )}
           {renderRow(
             'Maximum',
             data?.token_data.maximum ? (
               <Flex alignItems="center">
-                <NumberFormat useGrouping value={data?.token_data.maximum} />
+                <NumberFormat
+                  fallback={data?.token_data.maximum === '0' ? 'Unlimited' : '-'}
+                  useGrouping
+                  value={data?.token_data.maximum === '0' ? undefined : data?.token_data.maximum}
+                />
                 {data?.token_data.mutability_config?.maximum !== undefined && (
                   <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.maximum} />
                 )}
@@ -240,6 +259,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
               <Flex alignItems="center">
                 <Box
                   css={css`
+                    flex: 1;
                     padding: 16px 40px 16px 16px;
                     border-radius: 8px;
                     border: 1px solid #e7eaf3;
