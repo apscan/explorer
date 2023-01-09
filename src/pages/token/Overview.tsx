@@ -5,12 +5,12 @@ import { Mutability } from 'components/Mutability'
 import { NumberFormat } from 'components/NumberFormat'
 import { Link } from 'components/link'
 import { Image as CImage } from '@chakra-ui/react'
+import { CircularProgress } from '@chakra-ui/react'
 import { Address } from 'components/Address'
 import { TokenDetail } from 'api/token'
 import { useEffect, useState } from 'react'
 import TokenDefault from 'assets/tokens/TokenDefault'
 import { css } from '@emotion/react'
-import { CircularProgress } from '@chakra-ui/react'
 
 type TokenMeta = {
   animation_url: string
