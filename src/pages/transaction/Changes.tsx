@@ -267,10 +267,10 @@ export const Changes = ({ id, count }: { id: any; count: number }) => {
             width: '10%',
           },
           '& > table td:nth-of-type(4), & > table th:nth-of-type(4)': {
-            width: '12%',
+            width: '15%',
           },
           '& > table td:nth-of-type(5), & > table th:nth-of-type(5)': {
-            width: '18%',
+            width: '15%',
           },
           '& > table td:nth-of-type(6), & > table th:nth-of-type(6)': {
             width: '25%',
