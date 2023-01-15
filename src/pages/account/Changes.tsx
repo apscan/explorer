@@ -38,7 +38,7 @@ const columns = [
   }),
 
   helper.accessor('data.state_key_hash', {
-    header: 'Stake Key',
+    header: 'State Key',
     cell: (info) => (
       <Hash
         css={css`

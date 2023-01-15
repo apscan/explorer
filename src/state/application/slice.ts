@@ -55,15 +55,6 @@ const initialState: SliceState = {
       chainName: 'Mainnet',
       to: 'https://apscan.io/',
     },
-    {
-      id: 'dev',
-      chainName: 'Devnet',
-      development: true,
-    },
-    {
-      id: '2',
-      chainName: 'Testnet',
-    },
   ],
   currentNetworkId: process.env.REACT_APP_NETWORK_ID || '1',
   dateFormat: DateFormat.AGE,

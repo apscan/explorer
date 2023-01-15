@@ -32,7 +32,7 @@ const columns = [
   }),
 
   helper.accessor('data.state_key_hash', {
-    header: 'Stake Key',
+    header: 'State Key',
     meta: {
       nowrap: true,
     },
