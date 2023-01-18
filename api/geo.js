@@ -1,11 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
-import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { BCS, HexString } from 'aptos'
-import ip from 'ipaddr.js'
-import axios from 'axios'
-import dns from 'node:dns'
+const { BCS, HexString } = require('aptos')
+const ip = require('ipaddr.js')
+const axios = require('axios')
+const dns = require('node:dns')
 
-const deserializeNetworkAddress = (str: string) => {
+const deserializeNetworkAddress = (str) => {
   if (!str || typeof str !== 'string') return
 
   const deserializer = new BCS.Deserializer(new HexString(str).toUint8Array())
@@ -52,7 +51,7 @@ const deserializeNetworkAddress = (str: string) => {
   return result
 }
 
-export default async function (req: VercelRequest, res: VercelResponse) {
+module.exports = async function (req, res) {
   //
   // const { name = 'World' } = req.query
 
@@ -64,7 +63,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     },
   })
 
-  const count = Number(response.headers['content-range'].split('/')[1])
+  const count = Number(response.headers['content-range']?.split('/')[1])
 
   const page = Math.ceil(count / 50)
 
@@ -90,7 +89,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
         ...v,
         network,
         fullnode,
-        networkIp: network!.match(/^\/(ip4|dns)\/(.*?)\//)?.[2],
+        networkIp: network.match(/^\/(ip4|dns)\/(.*?)\//)?.[2],
         fullnodeIp: fullnode?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2],
       }
     })
@@ -116,7 +115,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     }),
   ])
 
-  let ips = [] as string[]
+  let ips = []
 
   for (const item of validatorWithIp) {
     ips.push(item.networkIp)
@@ -138,7 +137,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     return r
   }, {})
 
-  let result = [] as any[]
+  let result = []
 
   for (const item of validatorWithIp) {
     const data = {
