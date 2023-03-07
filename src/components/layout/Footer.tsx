@@ -76,7 +76,7 @@ export const Footer = ({ isHome }: { isHome?: boolean }) => {
       <StyledContainer>
         <Title>©2022 APSCAN</Title>
         <BrandWrap>
-          <Brand title="Email" url="mailto:contact@apscan.io">
+          <Brand title="Email" url="mailto:jedi@apscan.io">
             <BrandIcon as={Email} />
           </Brand>
 
