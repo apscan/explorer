@@ -11,7 +11,7 @@ specifiers:
   '@emotion/styled': ^11.10.0
   '@ethersproject/bignumber': ^5.7.0
   '@ethersproject/bytes': ^5.7.0
-  '@pancakeswap/aptos-swap-sdk': ^0.0.1
+  '@pancakeswap/aptos-swap-sdk': ^0.0.2
   '@pancakeswap/awgmi': ^0.0.10
   '@reduxjs/toolkit': ^1.8.5
   '@sentry/react': ^7.16.0
@@ -96,7 +96,7 @@ dependencies:
   '@emotion/styled': 11.10.0_lzabd6uj4wst47copsenr4b56q
   '@ethersproject/bignumber': 5.7.0
   '@ethersproject/bytes': 5.7.0
-  '@pancakeswap/aptos-swap-sdk': 0.0.1_aptos@1.3.16
+  '@pancakeswap/aptos-swap-sdk': 0.0.2_aptos@1.3.16
   '@pancakeswap/awgmi': 0.0.10_5sp7vby3vy6zh4oqczzyudapv4
   '@reduxjs/toolkit': 1.8.5_kkwg4cbsojnjnupd3btipussee
   '@sentry/react': 7.16.0_react@18.2.0
@@ -3867,9 +3867,9 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
-  /@pancakeswap/aptos-swap-sdk/0.0.1_aptos@1.3.16:
+  /@pancakeswap/aptos-swap-sdk/0.0.2_aptos@1.3.16:
     resolution:
-      { integrity: sha512-/VgIaIi4YP380Oq0kg4/WXHNU7JjgCsXnWsdbpFKpcyZ0PcZFPIi+GehThklX1Q8EZJ0+6pan9W5v1j/I3PLLA== }
+      { integrity: sha512-wJu6OqE7yBraz2weFS9pT8PID8LXW3a+go/sFbTzLPDOSLl56MKd4hPeNko1u+N3rqEo6qR3YDyZ+vWbhKoJFg== }
     engines: { node: '>=10' }
     peerDependencies:
       aptos: ^1.3.14

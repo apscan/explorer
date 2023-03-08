@@ -1,6 +1,8 @@
 import { memo } from 'react'
-import Tooltip from './tooltipWithCopy'
+import { Tooltip } from './Tooltip'
 import Unlock from 'assets/icons/Unlock'
+import { css } from '@emotion/react'
+import { Box } from '@chakra-ui/react'
 
 export type MutabilityProps = {
   mutable?: boolean
@@ -8,8 +10,15 @@ export type MutabilityProps = {
 
 export const Mutability = memo(({ mutable, ...props }: MutabilityProps) => {
   return (
-    <Tooltip {...props} label={mutable ? 'Mutable' : 'Immutable'}>
-      {mutable ? '' : <Unlock />}
+    <Tooltip placement="top" label={mutable ? 'Mutable' : 'Immutable'}>
+      <Box
+        {...props}
+        css={css`
+          margin-left: 4px;
+        `}
+      >
+        {mutable ? '' : <Unlock />}
+      </Box>
     </Tooltip>
   )
 })

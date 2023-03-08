@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.10.0",
     "@ethersproject/bignumber": "^5.7.0",
     "@ethersproject/bytes": "^5.7.0",
-    "@pancakeswap/aptos-swap-sdk": "^0.0.1",
+    "@pancakeswap/aptos-swap-sdk": "^0.0.2",
     "@pancakeswap/awgmi": "^0.0.10",
     "@reduxjs/toolkit": "^1.8.5",
     "@sentry/react": "^7.16.0",

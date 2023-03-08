@@ -85,7 +85,7 @@ const columns = [
           >
             {data.collection_data?.uri}
           </Link>
-          <Mutability marginLeft="5px" mutable={data.collection_data?.mutability_config.uri} />
+          <Mutability mutable={data.collection_data?.mutability_config.uri} />
         </Flex>
       )
     },
@@ -100,7 +100,7 @@ const columns = [
           <Text maxW="180px" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
             {data.collection_data?.description}
           </Text>
-          {<Mutability marginLeft="5px" mutable={data.collection_data?.mutability_config.description} />}
+          {<Mutability mutable={data.collection_data?.mutability_config.description} />}
         </Flex>
       )
     },

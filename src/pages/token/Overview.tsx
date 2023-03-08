@@ -219,7 +219,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
                   value={data?.token_data.maximum === '0' ? undefined : data?.token_data.maximum}
                 />
                 {data?.token_data.mutability_config?.maximum !== undefined && (
-                  <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.maximum} />
+                  <Mutability mutable={data.token_data.mutability_config.maximum} />
                 )}
               </Flex>
             ) : (
@@ -245,7 +245,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
                   {data.token_data.uri}
                 </Link>
                 {data?.token_data.mutability_config?.uri !== undefined && (
-                  <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.uri} />
+                  <Mutability mutable={data.token_data.mutability_config.uri} />
                 )}
               </Flex>
             ) : (
@@ -270,7 +270,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
                   {data.token_data.description}
                 </Box>
                 {data?.token_data.mutability_config?.description !== undefined && (
-                  <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.description} />
+                  <Mutability mutable={data.token_data.mutability_config.description} />
                 )}
               </Flex>
             ) : (

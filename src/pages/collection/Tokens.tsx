@@ -105,7 +105,7 @@ const columns = [
             >
               {data.token_data.uri}
             </Link>
-            <Mutability marginLeft="5px" mutable={data.token_data.mutability_config.uri} />
+            <Mutability mutable={data.token_data.mutability_config.uri} />
           </Flex>
         </>
       )
