@@ -50,7 +50,7 @@ const columns = [
     cell: (info) => (
       <ProposalsStatus
         css={css`
-          transform: translateY(-1.5px);
+          transform: translateY(1.5px);
         `}
         value={info.getValue()}
       />
