@@ -48,7 +48,6 @@ export const navConfig: INavItem[] = [
     sub: [
       {
         name: 'Proposals',
-        isDisabled: true,
         path: '/proposals',
       },
     ],
