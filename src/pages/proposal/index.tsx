@@ -16,19 +16,16 @@ import { tabNameWithCount } from 'utils'
 // import { Changes } from './Changes'
 // import { Events } from './Events'
 import { Overview } from './Overview'
+import { Votes } from './Votes'
 
 const tabs: Record<string, { name: string; key: string }> = {
   overview: {
     key: 'overview',
     name: 'Overview',
   },
-  changes: {
+  votes: {
     key: 'votes',
-    name: 'Changes',
-  },
-  events: {
-    key: 'events',
-    name: 'Events',
+    name: 'Votes',
   },
 }
 
@@ -94,23 +91,10 @@ export const Proposal = () => {
   }, [data])
 
   const items = useMemo(() => {
-    let result = [{ label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> }]
-
-    // if (data?.changes_count > 0) {
-    //   result.push({
-    //     label: tabNameWithCount(tabs.changes.name, data?.changes_count) as any,
-    //     key: tabs.changes.key,
-    //     children: <Changes id={version} count={data?.changes_count} />,
-    //   })
-    // }
-
-    // if (data?.events_count > 0) {
-    //   result.push({
-    //     label: tabNameWithCount(tabs.events.name, data?.events_count) as any,
-    //     key: tabs.events.key,
-    //     children: <Events id={version} count={data?.events_count} />,
-    //   })
-    // }
+    let result = [
+      { label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> },
+      { label: tabs.votes.name, key: tabs.votes.key, children: <Votes id={id} count={0} /> },
+    ]
 
     return result
   }, [data, version])

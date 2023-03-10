@@ -137,4 +137,10 @@ export const globalCSS = css`
     border: 0;
     vertical-align: baseline;
   }
+
+  /* fix scoller width */
+  html {
+    margin-left: calc(100vw - 100%);
+    margin-right: 0;
+  }
 `
