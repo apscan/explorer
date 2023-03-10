@@ -38,8 +38,6 @@ const ProposalTitle = ({ id, latest }: { id?: string; latest?: string }) => {
     return Number(id) === 0
   }, [id])
 
-  console.log(isDisableNext)
-
   return (
     <InlineBox
       css={css`
@@ -84,7 +82,6 @@ export const Proposal = () => {
   const { data: { count } = {} } = useProposalCountQuery(id)
 
   const latest = count + 1
-  console.log(count)
 
   const version = useMemo(() => {
     return data?.version == null ? undefined : String(data?.version)
@@ -93,7 +90,7 @@ export const Proposal = () => {
   const items = useMemo(() => {
     let result = [
       { label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> },
-      { label: tabs.votes.name, key: tabs.votes.key, children: <Votes id={id} count={0} /> },
+      { label: tabs.votes.name, key: tabs.votes.key, children: <Votes id={id} /> },
     ]
 
     return result
