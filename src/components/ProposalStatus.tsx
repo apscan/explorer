@@ -22,6 +22,7 @@ const container = css`
   border: 1px solid ${vars.colors.border1};
   border-radius: 6px;
   background: #f8f9fa;
+  user-select: none;
 `
 
 export const ProposalStatus = ({
