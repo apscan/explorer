@@ -17,6 +17,7 @@ import { Transaction } from './transaction'
 import { Transactions } from './transactions'
 import { Validators } from './validators'
 import { Proposals } from './proposals'
+import { Proposal } from './proposal'
 
 const routes = [
   {
@@ -128,6 +129,14 @@ const routes = [
     element: (
       <Layout>
         <Proposals />
+      </Layout>
+    ),
+  } as any,
+  {
+    path: '/proposal/:id',
+    element: (
+      <Layout>
+        <Proposal />
       </Layout>
     ),
   } as any,

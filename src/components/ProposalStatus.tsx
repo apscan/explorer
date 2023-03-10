@@ -24,12 +24,14 @@ const container = css`
   background: #f8f9fa;
 `
 
-export const ProposalsStatus = ({
+export const ProposalStatus = ({
   value,
   fallback,
+  size = 'md',
   ...props
 }: {
   value: string
+  size?: 'lg' | 'md'
   fallback?: React.ReactNode
 } & BoxProps) => {
   const [tip, icon] = useMemo(() => {
@@ -46,7 +48,21 @@ export const ProposalsStatus = ({
 
   return (
     <Tooltip label={tip}>
-      <Box css={[container, css``]} {...props}>
+      <Box
+        css={[
+          container,
+          css`
+            ${size === 'lg' &&
+            css`
+              font-size: 12px;
+              padding-left: 12px;
+              padding-right: 12px;
+              height: 22px;
+            `}
+          `,
+        ]}
+        {...props}
+      >
         {icon && (
           <Icon
             css={css`

@@ -32,9 +32,51 @@ export const proposalApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+    proposalDetail: builder.query<any, string | void>({
+      keepUnusedDataFor: 86400, // keep for 24 hours
+      query: (id) => {
+        if (!id) throw new Error('miss proposal id')
+
+        const queryString = `?proposal_id=eq.${id}`
+
+        return {
+          url: `/proposals${queryString}`,
+          headers: {
+            'Range-Unit': 'items',
+            Prefer: 'count=exact',
+          },
+        }
+      },
+      transformResponse: (response: any[], meta: any) => {
+        const result = response?.[0] || null
+
+        return result
+      },
+    }),
+    proposalCount: builder.query<any, string | void>({
+      query: (id) => {
+        if (!id) throw new Error('miss proposal id')
+
+        const queryString = `?proposal_id=eq.${id}`
+
+        return {
+          url: `/proposals`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `0-1`,
+            Prefer: 'count=exact',
+          },
+        }
+      },
+      transformResponse: (response: any[], meta: any) => {
+        return {
+          count: parseHeaders(meta?.response?.headers).count,
+        }
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useProposalsQuery } = proposalApi
+export const { useProposalsQuery, useProposalDetailQuery, useProposalCountQuery } = proposalApi

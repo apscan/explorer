@@ -12,7 +12,7 @@ import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 
 import { useProposalsQuery } from 'api'
-import { ProposalsStatus } from 'components/ProposalStatus'
+import { ProposalStatus } from 'components/ProposalStatus'
 import { usePageSize } from 'hooks/usePageSize'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useAppStats } from 'state/api/hooks'
@@ -48,7 +48,7 @@ const columns = [
     },
     header: 'Status',
     cell: (info) => (
-      <ProposalsStatus
+      <ProposalStatus
         css={css`
           transform: translateY(1.5px);
         `}
