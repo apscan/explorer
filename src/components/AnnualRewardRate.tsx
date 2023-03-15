@@ -6,6 +6,7 @@ export const AnnualRewardRate = ({ value }: { value: any }) => {
   const interval = useAppSelector((state) => (state.api.queries['stats(undefined)']?.data as any)?.epoch_interval)
 
   const rate = useMemo(() => {
+    if (!value || !value.staking_config_data) return undefined
     const config = value.staking_config_data
     return ((config.rewards_rate / config.rewards_rate_denominator) * 365 * 24 * 60 * 60 * 1000 * 1000) / interval
   }, [value, interval])

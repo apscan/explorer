@@ -41,7 +41,12 @@ export const Overview = ({ data }: { data: any | undefined }) => {
         {renderRow('Total Joining Power', <AmountFormat value={data?.validators?.total_joining_power} />)}
         {renderRow(
           'Voting Power Increase Limit',
-          <AmountFormat value={data?.staking_config_data?.voting_power_increase_limit} />
+          <AmountFormat value={data?.staking_config_data?.voting_power_increase_limit} />,
+          { border: true }
+        )}
+        {renderRow(
+          'Recurring Lockup Duration',
+          <>{data?.staking_config_data?.recurring_lockup_duration_secs / 3600 / 24} days</>
         )}
       </Box>
     </Wrapper>
