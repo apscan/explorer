@@ -2,12 +2,15 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Address } from 'components/Address'
 import { AmountFormat } from 'components/AmountFormat'
+import { AnnualRewardRate } from 'components/AnnualRewardRate'
+import { BlockHeight } from 'components/block/BlockHeight'
 import { Box } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { Hash } from 'components/Hash'
 import { HashesTable } from 'components/HashesTable'
 import { renderRow } from 'components/helpers'
 import { ProposalStatus } from 'components/ProposalStatus'
+import { ValidatorsOverview } from 'components/ValidatorsOverview'
 import { DateFormat } from 'state/application/slice'
 
 const Wrapper = styled(Box)`
@@ -18,47 +21,32 @@ export const Overview = ({ data }: { data: any | undefined }) => {
   return (
     <Wrapper>
       <Box>
-        {renderRow('Status', <ProposalStatus size="lg" value={data?.proposal_status} />)}
-        {renderRow('Proposer', <Address withAnsIcon size="full" value={data?.proposal_content?.proposer} />)}
-        {renderRow('Required Stake', <AmountFormat value={undefined} />, { border: true })}
+        {renderRow('Consensus Scheme', data?.validators?.consensus_scheme)}
         {renderRow(
-          'Creation Time',
-          <DateTime format={DateFormat.FULL} value={data?.proposal_content?.creation_time_secs * 1000} />
+          'Start Time',
+          <DateTime format={DateFormat.FULL} value={data?.epoch_start_time_microseconds / 1000} />
         )}
+        {renderRow('Start Block', <BlockHeight value={data?.epoch_start_block_height} />)}
+        {renderRow('End Time', <DateTime format={DateFormat.FULL} value={data?.epoch_end_time_microseconds / 1000} />)}
+        {renderRow('End Block', <BlockHeight value={data?.epoch_end_block_height} />, { border: true })}
         {renderRow(
-          'Voting End Time',
-          <DateTime format={DateFormat.FULL} value={data?.proposal_content?.expiration_secs * 1000} />
-        )}
-        {renderRow('Min Vote Threshold', <AmountFormat value={data?.proposal_content?.min_vote_threshold} />)}
-        {renderRow(
-          'Early Resolution Threshold',
-          <AmountFormat value={data?.proposal_content?.early_resolution_vote_threshold.vec[0]} />
-        )}
-        {renderRow('Votes', null, { border: true })}
-        {renderRow(
-          'Execution Date',
-          <DateTime format={DateFormat.FULL} value={data?.proposal_content?.resolution_time_secs} />
-        )}
-        {renderRow('Execution Hash', <Hash fallback="-" value={data?.proposal_content?.execution_hash} size="full" />)}
-        {renderRow(
-          'Metadata',
-          <HashesTable
-            value={data?.proposal_content?.metadata?.data?.map((item: any) => {
-              return {
-                label: item.key,
-                content: (
-                  <Hash
-                    css={css`
-                      word-break: break-all;
-                      white-space: normal;
-                    `}
-                    value={item?.value}
-                    size="full"
-                  />
-                ),
-              }
-            })}
+          'Validators',
+          <ValidatorsOverview
+            type="detail"
+            allowChange={data?.staking_config_data?.allow_validator_set_change}
+            activeValidators={data?.validators?.active_validators}
+            pendingInactive={data?.validators?.pending_inactive}
+            pendingActive={data?.validators?.pending_active}
           />
+        )}
+        {renderRow('Annual Reward Rate', <AnnualRewardRate value={data} />, { border: true })}
+        {renderRow('Minimum Stake', <AmountFormat value={data?.staking_config_data?.minimum_stake} />)}
+        {renderRow('Maximum Stake', <AmountFormat value={data?.staking_config_data?.maximum_stake} />)}
+        {renderRow('Total Voting Power', <AmountFormat value={data?.validators?.total_voting_power} />)}
+        {renderRow('Total Joining Power', <AmountFormat value={data?.validators?.total_joining_power} />)}
+        {renderRow(
+          'Voting Power Increase Limit',
+          <AmountFormat value={data?.staking_config_data?.voting_power_increase_limit} />
         )}
       </Box>
     </Wrapper>

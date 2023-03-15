@@ -81,10 +81,6 @@ export const Epoch = () => {
 
   const latest = count
 
-  const epochNumber = useMemo(() => {
-    return data?.sequence_number == null ? undefined : data?.sequence_number + 1
-  }, [data])
-
   const items = useMemo(() => {
     let result = [
       { label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> },
@@ -99,7 +95,7 @@ export const Epoch = () => {
   return (
     <Container>
       <DocumentTitle value={`Aptos Epoch ${data?.proposal_id !== undefined ? `#${data.proposal_id}` : '-'} | Apscan`} />
-      <PageTitle value={<EpochTitle latest={String(latest)} id={epochNumber} />} />
+      <PageTitle value={<EpochTitle latest={String(latest)} id={data?.epoch_data?.epoch} />} />
       <Card>
         <Tabs onChange={onTabChange} activeKey={activeKey} size="large" items={items} />
       </Card>

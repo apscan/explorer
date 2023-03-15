@@ -32,7 +32,7 @@ const ShowDateOrBlock = ({ date, block }: { date: string | number; block: string
 }
 
 const columns = [
-  helper.accessor('epoch_number', {
+  helper.accessor('epoch_data.epoch', {
     meta: {
       nowrap: true,
     },

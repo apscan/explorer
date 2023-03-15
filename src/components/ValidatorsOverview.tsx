@@ -4,7 +4,7 @@ import { ReactComponent as LockIcon } from 'assets/icons/lock.svg'
 import { Icon } from './Icon'
 import { Tooltip } from './Tooltip'
 
-const Item = ({ color, value }: { color: string; value: number }) => {
+const Item = ({ color, value, label }: { color: string; value: number; label?: string }) => {
   return (
     <Box
       css={css`
@@ -23,7 +23,7 @@ const Item = ({ color, value }: { color: string; value: number }) => {
           margin-right: 4px;
         `}
       />
-      {value}
+      {label} {value}
     </Box>
   )
 }
@@ -33,11 +33,13 @@ export const ValidatorsOverview = ({
   pendingInactive,
   activeValidators,
   allowChange,
+  type,
 }: {
   pendingActive: number
   pendingInactive: number
   activeValidators: number
   allowChange: boolean
+  type?: string
 }) => {
   if (!activeValidators) return <>-</>
 
@@ -48,6 +50,7 @@ export const ValidatorsOverview = ({
           Active {activeValidators}, Pending Inactive {pendingInactive}, Pending Active {pendingActive}
         </Box>
       }
+      isDisabled={type === 'detail'}
     >
       <Box
         css={css`
@@ -66,9 +69,9 @@ export const ValidatorsOverview = ({
             `}
           />
         )}
-        <Item color="#4361ee" value={activeValidators} />
-        <Item color="#4895ef" value={pendingInactive} />
-        <Item color="#4cc9f0" value={pendingActive} />
+        <Item label={type === 'detail' ? 'Active' : undefined} color="#4361ee" value={activeValidators} />
+        <Item label={type === 'detail' ? 'Pending Inactive' : undefined} color="#4895ef" value={pendingInactive} />
+        <Item label={type === 'detail' ? 'Pending Active' : undefined} color="#4cc9f0" value={pendingActive} />
       </Box>
     </Tooltip>
   )
