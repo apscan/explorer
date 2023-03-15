@@ -19,7 +19,6 @@ export const Overview = ({ data }: { data: any | undefined }) => {
     <Wrapper>
       <Box>
         {renderRow('Status', <ProposalStatus size="lg" value={data?.proposal_status} />)}
-        {renderRow('Proposal Type', null)}
         {renderRow('Proposer', <Address withAnsIcon size="full" value={data?.proposal_content?.proposer} />)}
         {renderRow('Required Stake', <AmountFormat value={undefined} />, { border: true })}
         {renderRow(
@@ -31,7 +30,10 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           <DateTime format={DateFormat.FULL} value={data?.proposal_content?.expiration_secs * 1000} />
         )}
         {renderRow('Min Vote Threshold', <AmountFormat value={data?.proposal_content?.min_vote_threshold} />)}
-        {renderRow('Early Resolution Threshold', <AmountFormat value={undefined} />)}
+        {renderRow(
+          'Early Resolution Threshold',
+          <AmountFormat value={data?.proposal_content?.early_resolution_vote_threshold.vec[0]} />
+        )}
         {renderRow('Votes', null, { border: true })}
         {renderRow(
           'Execution Date',
