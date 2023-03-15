@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useProposalCountQuery, useProposalDetailQuery } from 'api'
+import { useEpochDetailQuery } from 'api/epoch'
 import { Card } from 'components/Card'
 import { Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -10,6 +10,7 @@ import { Tabs } from 'components/Tabs'
 import { useSearchTab } from 'hooks/useSearchTab'
 import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAppStats } from 'state/api/hooks'
 import { vars } from 'theme/theme.css'
 // import { Changes } from './Changes'
 // import { Events } from './Events'
@@ -27,7 +28,7 @@ const tabs: Record<string, { name: string; key: string }> = {
   },
 }
 
-const ProposalTitle = ({ id, latest }: { id?: string; latest?: string }) => {
+const EpochTitle = ({ id, latest }: { id?: string; latest?: string }) => {
   const isDisableNext = useMemo(() => {
     return Number(id) >= Number(latest)
   }, [id, latest])
@@ -42,7 +43,7 @@ const ProposalTitle = ({ id, latest }: { id?: string; latest?: string }) => {
         align-items: center;
       `}
     >
-      Proposal
+      Epoch
       {id && (
         <NumberFormat
           prefix="#"
@@ -60,10 +61,10 @@ const ProposalTitle = ({ id, latest }: { id?: string; latest?: string }) => {
         <ForwardBackward
           nextDisabled={isDisableNext}
           prevDisabled={isDisablePrev}
-          toNext={!isDisableNext ? `/proposal/${Number(id) + 1}` : undefined}
-          toPrev={!isDisablePrev ? `/proposal/${Number(id) - 1}` : undefined}
-          nextTooltip={isDisableNext ? 'You have reached the latest proposal' : 'View next proposal'}
-          prevTooltip={isDisablePrev ? 'You have reached the earliest proposal' : 'View previous proposal'}
+          toNext={!isDisableNext ? `/epoch/${Number(id) + 1}` : undefined}
+          toPrev={!isDisablePrev ? `/epoch/${Number(id) - 1}` : undefined}
+          nextTooltip={isDisableNext ? 'You have reached the latest epoch' : 'View next epoch'}
+          prevTooltip={isDisablePrev ? 'You have reached the earliest epoch' : 'View previous epoch'}
           css={css`
             transform: translateY(-1.5px);
           `}
@@ -73,13 +74,16 @@ const ProposalTitle = ({ id, latest }: { id?: string; latest?: string }) => {
   )
 }
 
-export const Proposal = () => {
+export const Epoch = () => {
   const { id } = useParams<{ id: string }>()
+  const { epoch: count } = useAppStats()
+  const { data = {} } = useEpochDetailQuery(id)
 
-  const { data = {} } = useProposalDetailQuery(id)
-  const { data: { count } = {} } = useProposalCountQuery(id)
+  const latest = count
 
-  const latest = count + 1
+  const epochNumber = useMemo(() => {
+    return data?.sequence_number == null ? undefined : data?.sequence_number + 1
+  }, [data])
 
   const items = useMemo(() => {
     let result = [
@@ -94,10 +98,8 @@ export const Proposal = () => {
 
   return (
     <Container>
-      <DocumentTitle
-        value={`Aptos Proposal ${data?.proposal_id !== undefined ? `#${data.proposal_id}` : '-'} | Apscan`}
-      />
-      <PageTitle value={<ProposalTitle latest={String(latest)} id={data?.proposal_id} />} />
+      <DocumentTitle value={`Aptos Epoch ${data?.proposal_id !== undefined ? `#${data.proposal_id}` : '-'} | Apscan`} />
+      <PageTitle value={<EpochTitle latest={String(latest)} id={epochNumber} />} />
       <Card>
         <Tabs onChange={onTabChange} activeKey={activeKey} size="large" items={items} />
       </Card>

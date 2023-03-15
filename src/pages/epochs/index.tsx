@@ -10,18 +10,18 @@ import { DataTable } from 'components/table'
 
 import { css } from '@emotion/react'
 import { useEpochsQuery } from 'api/epoch'
+import { AnnualRewardRate } from 'components/AnnualRewardRate'
 import { BlockHeight } from 'components/block/BlockHeight'
 import { SwitchDateBlock } from 'components/SwitchDateBlock'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import TableStat from 'components/TotalStat'
+import { ValidatorsOverview } from 'components/ValidatorsOverview'
 import { usePageSize } from 'hooks/usePageSize'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { useAppStats } from 'state/api/hooks'
-import { DateFormat, DateOrBlock } from 'state/application/slice'
+import { DateOrBlock } from 'state/application/slice'
 import { useAppSelector } from 'state/hooks'
-import { ValidatorsOverview } from 'components/ValidatorsOverview'
-import { AnnualRewardRate } from 'components/AnnualRewardRate'
 
 const helper = createColumnHelper<any>()
 
@@ -32,7 +32,7 @@ const ShowDateOrBlock = ({ date, block }: { date: string | number; block: string
 }
 
 const columns = [
-  helper.accessor('sequence_number', {
+  helper.accessor('epoch_number', {
     meta: {
       nowrap: true,
     },

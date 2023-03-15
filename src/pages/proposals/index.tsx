@@ -11,16 +11,15 @@ import { PageTitle } from 'components/PageTitle'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
 
+import { css } from '@emotion/react'
 import { useProposalsQuery } from 'api'
 import { ProposalStatus } from 'components/ProposalStatus'
-import { usePageSize } from 'hooks/usePageSize'
-import { useRangePagination } from 'hooks/useRangePagination'
-import { useAppStats } from 'state/api/hooks'
-import { DateFormat } from 'state/application/slice'
-import TableStat from 'components/TotalStat'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
-import { css } from '@emotion/react'
+import TableStat from 'components/TotalStat'
+import { usePageSize } from 'hooks/usePageSize'
+import { useRangePagination } from 'hooks/useRangePagination'
+import { DateFormat } from 'state/application/slice'
 
 const helper = createColumnHelper<any>()
 

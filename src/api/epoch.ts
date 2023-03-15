@@ -20,10 +20,27 @@ export const epochApi = emptySplitApi.injectEndpoints({
           data: (data as any[])?.map((item) => {
             return {
               ...item,
+              epoch_number: item.sequence_number + 1,
             }
           }),
           page: parseHeaders(meta?.response?.headers),
         }
+      },
+    }),
+    epochDetail: builder.query<any, string | void>({
+      query: (id) => {
+        if (!id) throw new Error('miss epoch number')
+
+        const queryString = `?sequence_number=eq.${Number(id) - 1}`
+
+        return {
+          url: `/epochs${queryString}`,
+        }
+      },
+      transformResponse: (response: any[], meta: any) => {
+        const result = response?.[0] || null
+
+        return result
       },
     }),
   }),
@@ -31,4 +48,4 @@ export const epochApi = emptySplitApi.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useEpochsQuery } = epochApi
+export const { useEpochsQuery, useEpochDetailQuery } = epochApi

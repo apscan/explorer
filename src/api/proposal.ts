@@ -79,8 +79,6 @@ export const proposalApi = emptySplitApi.injectEndpoints({
       query: (id) => {
         if (!id) throw new Error('miss proposal id')
 
-        const queryString = `?proposal_id=eq.${id}`
-
         return {
           url: `/proposals`,
           headers: {
