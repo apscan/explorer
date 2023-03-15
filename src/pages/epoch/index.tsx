@@ -12,19 +12,18 @@ import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppStats } from 'state/api/hooks'
 import { vars } from 'theme/theme.css'
-// import { Changes } from './Changes'
-// import { Events } from './Events'
+import { tabNameWithCount } from 'utils'
 import { Overview } from './Overview'
-import { Votes } from './Votes'
+import { Validators } from './Validators'
 
 const tabs: Record<string, { name: string; key: string }> = {
   overview: {
     key: 'overview',
     name: 'Overview',
   },
-  votes: {
-    key: 'votes',
-    name: 'Votes',
+  validators: {
+    key: 'validators',
+    name: 'Validators',
   },
 }
 
@@ -82,9 +81,21 @@ export const Epoch = () => {
   const latest = count
 
   const items = useMemo(() => {
+    const totalValidators = data?.validators?.active_validators
+      ? data?.validators?.pending_active + data?.validators?.active_validators + data?.validators?.pending_inactive
+      : undefined
+
     let result = [
-      { label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> },
-      { label: tabs.votes.name, key: tabs.votes.key, children: <Votes id={id} /> },
+      {
+        label: tabs.overview.name,
+        key: tabs.overview.key,
+        children: <Overview data={data} />,
+      },
+      {
+        label: tabNameWithCount(tabs.validators.name, totalValidators),
+        key: tabs.validators.key,
+        children: <Validators id={id} />,
+      },
     ]
 
     return result

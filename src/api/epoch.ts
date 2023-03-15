@@ -1,3 +1,4 @@
+import { deserializeNetworkAddress } from 'utils/deserializeNetworkAddress'
 import { parseHeaders } from 'utils'
 import { emptySplitApi } from './api'
 
@@ -27,6 +28,35 @@ export const epochApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+    epochValidators: builder.query<any, { id: string; start?: number; pageSize?: number }>({
+      query: ({ id, start = 0, pageSize }) => {
+        if (!id) throw new Error('miss epoch number')
+
+        const queryString = `?epoch=eq.${Number(id)}`
+
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
+        return {
+          url: `/epoch_validators${queryString}`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+            Prefer: 'count=exact',
+          },
+        }
+      },
+      transformResponse(data, meta: any) {
+        return {
+          data: (data as any[])?.map((item) => {
+            return {
+              ...item,
+              network_addresses: deserializeNetworkAddress(item.network_addresses),
+            }
+          }),
+          page: parseHeaders(meta?.response?.headers),
+        }
+      },
+    }),
     epochDetail: builder.query<any, string | void>({
       query: (id) => {
         if (!id) throw new Error('miss epoch number')
@@ -48,4 +78,4 @@ export const epochApi = emptySplitApi.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useEpochsQuery, useEpochDetailQuery } = epochApi
+export const { useEpochsQuery, useEpochDetailQuery, useEpochValidatorsQuery } = epochApi
