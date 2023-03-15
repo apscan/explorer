@@ -89,7 +89,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Early Resolution Threshold',
-    cell: (info) => <NumberFormat value={info.getValue()} />,
+    cell: (info) => <AmountFormat maximumFractionDigits={1} value={info.getValue()} />,
   }),
   helper.accessor('yes_votes', {
     meta: {
@@ -103,7 +103,7 @@ const columns = [
       nowrap: true,
     },
     header: () => 'Execution Time',
-    cell: (info) => <DateTime format={DateFormat.LOCAL} value={info.getValue()} />,
+    cell: (info) => <DateTime fallback="-" format={DateFormat.LOCAL} value={info.getValue()} />,
   }),
 ]
 
@@ -119,7 +119,7 @@ export const Proposals = () => {
 
   return (
     <Container>
-      <DocumentTitle value="Aptos Proposal | Apscan" />
+      <DocumentTitle value="Aptos Proposals | Apscan" />
       <PageTitle value="Proposals" />
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
