@@ -33,7 +33,6 @@ export const navConfig: INavItem[] = [
     sub: [
       {
         name: 'Epochs',
-        isDisabled: true,
         path: '/epochs',
       },
       {

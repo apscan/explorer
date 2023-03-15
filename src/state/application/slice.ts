@@ -14,6 +14,11 @@ export enum DateFormat {
   FULL = 'full',
 }
 
+export enum DateOrBlock {
+  DATE = 'date',
+  BLOCK = 'block',
+}
+
 export type Network = {
   id: string
   development?: boolean
@@ -43,6 +48,7 @@ type SliceState = {
   readonly currentNetworkId: Network['id']
   readonly dateFormat: DateFormat
   readonly pageSize: number
+  readonly dateOrBlock: DateOrBlock
 }
 
 const initialState: SliceState = {
@@ -58,6 +64,7 @@ const initialState: SliceState = {
   ],
   currentNetworkId: process.env.REACT_APP_NETWORK_ID || '1',
   dateFormat: DateFormat.AGE,
+  dateOrBlock: DateOrBlock.DATE,
   pageSize: 25,
 }
 
@@ -77,12 +84,16 @@ export const applicationSlice = createSlice({
       state.dateFormat = payload
     },
 
+    setDateOrBlock(state, { payload }: PayloadAction<DateOrBlock>) {
+      state.dateOrBlock = payload
+    },
+
     setPageSize(state, { payload }: PayloadAction<number>) {
       state.pageSize = payload
     },
   },
 })
 
-export const { setLanguage, setOpenModal, setDateFormat, setPageSize } = applicationSlice.actions
+export const { setLanguage, setOpenModal, setDateFormat, setPageSize, setDateOrBlock } = applicationSlice.actions
 
 export default applicationSlice.reducer
