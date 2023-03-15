@@ -6,7 +6,6 @@ import { Container } from 'components/container'
 import { DateTime } from 'components/DateTime'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { Link } from 'components/link'
-import { NumberFormat } from 'components/NumberFormat'
 import { PageTitle } from 'components/PageTitle'
 import { SwitchDateFormat } from 'components/SwitchDateFormat'
 import { DataTable } from 'components/table'
@@ -17,6 +16,7 @@ import { ProposalStatus } from 'components/ProposalStatus'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import TableStat from 'components/TotalStat'
+import { Votes } from 'components/Votes'
 import { usePageSize } from 'hooks/usePageSize'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { DateFormat } from 'state/application/slice'
@@ -90,12 +90,12 @@ const columns = [
     header: 'Early Resolution Threshold',
     cell: (info) => <AmountFormat maximumFractionDigits={1} value={info.getValue()} />,
   }),
-  helper.accessor('yes_votes', {
+  helper.accessor('votes', {
     meta: {
       nowrap: true,
     },
     header: 'Votes',
-    cell: (info) => <NumberFormat value={info.getValue()} />,
+    cell: (info) => <Votes data={info.row.original} />,
   }),
   helper.accessor('resolve_proposal_time_microseconds', {
     meta: {

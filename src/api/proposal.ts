@@ -43,7 +43,6 @@ export const proposalApi = emptySplitApi.injectEndpoints({
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
-            Prefer: 'count=exact',
           },
         }
       },
@@ -65,7 +64,6 @@ export const proposalApi = emptySplitApi.injectEndpoints({
           url: `/proposals${queryString}`,
           headers: {
             'Range-Unit': 'items',
-            Prefer: 'count=exact',
           },
         }
       },
@@ -80,7 +78,7 @@ export const proposalApi = emptySplitApi.injectEndpoints({
         if (!id) throw new Error('miss proposal id')
 
         return {
-          url: `/proposals`,
+          url: `/proposals?limit=1`,
           headers: {
             'Range-Unit': 'items',
             Range: `0-1`,
@@ -94,9 +92,34 @@ export const proposalApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
+    proposalVotesCount: builder.query<any, string | undefined>({
+      query: (id) => {
+        const queryString = `?proposal_id=eq.${id}&limit=1`
+
+        return {
+          url: `/voting_events${queryString}`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `0-1`,
+            Prefer: 'count=exact',
+          },
+        }
+      },
+      transformResponse(data, meta: any) {
+        return {
+          count: parseHeaders(meta?.response?.headers).count,
+        }
+      },
+    }),
   }),
 
   overrideExisting: false,
 })
 
-export const { useProposalsQuery, useProposalDetailQuery, useProposalCountQuery, useProposalVotesQuery } = proposalApi
+export const {
+  useProposalsQuery,
+  useProposalDetailQuery,
+  useProposalCountQuery,
+  useProposalVotesQuery,
+  useProposalVotesCountQuery,
+} = proposalApi

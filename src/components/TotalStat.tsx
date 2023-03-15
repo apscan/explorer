@@ -4,7 +4,7 @@ import { NumberFormat } from './NumberFormat'
 
 const TableStat: React.FC<{
   count?: number
-  object: string
+  object: React.ReactNode
   maxCount?: number
   variant: 'table' | 'tabletab'
 }> = ({ count, object, maxCount, variant }) => {

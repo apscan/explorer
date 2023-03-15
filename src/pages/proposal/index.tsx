@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useProposalCountQuery, useProposalDetailQuery } from 'api'
+import { useProposalCountQuery, useProposalDetailQuery, useProposalVotesCountQuery } from 'api'
 import { Card } from 'components/Card'
 import { Container, InlineBox } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
@@ -11,6 +11,7 @@ import { useSearchTab } from 'hooks/useSearchTab'
 import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { vars } from 'theme/theme.css'
+import { tabNameWithCount } from 'utils'
 // import { Changes } from './Changes'
 // import { Events } from './Events'
 import { Overview } from './Overview'
@@ -78,17 +79,22 @@ export const Proposal = () => {
 
   const { data = {} } = useProposalDetailQuery(id)
   const { data: { count } = {} } = useProposalCountQuery(id)
+  const { data: { count: voters } = {} } = useProposalVotesCountQuery(id)
 
-  const latest = count + 1
+  const latest = count - 1
 
   const items = useMemo(() => {
     let result = [
       { label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> },
-      { label: tabs.votes.name, key: tabs.votes.key, children: <Votes id={id} /> },
+      {
+        label: tabNameWithCount(tabs.votes.name, voters),
+        key: tabs.votes.key,
+        children: <Votes detail={data} count={voters} id={id} />,
+      },
     ]
 
     return result
-  }, [data, id])
+  }, [data, id, voters])
 
   const [activeKey, onTabChange] = useSearchTab(items)
 

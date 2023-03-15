@@ -8,6 +8,7 @@ import { Hash } from 'components/Hash'
 import { HashesTable } from 'components/HashesTable'
 import { renderRow } from 'components/helpers'
 import { ProposalStatus } from 'components/ProposalStatus'
+import { Votes } from 'components/Votes'
 import { DateFormat } from 'state/application/slice'
 
 const Wrapper = styled(Box)`
@@ -34,10 +35,16 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           'Early Resolution Threshold',
           <AmountFormat value={data?.proposal_content?.early_resolution_vote_threshold.vec[0]} />
         )}
-        {renderRow('Votes', null, { border: true })}
+        {renderRow(
+          'Votes',
+          <Box>
+            <Votes data={data} />
+          </Box>,
+          { border: true }
+        )}
         {renderRow(
           'Execution Date',
-          <DateTime format={DateFormat.FULL} value={data?.proposal_content?.resolution_time_secs} />
+          <DateTime fallback="-" format={DateFormat.FULL} value={data?.proposal_content?.resolution_time_secs} />
         )}
         {renderRow('Execution Hash', <Hash fallback="-" value={data?.proposal_content?.execution_hash} size="full" />)}
         {renderRow(
