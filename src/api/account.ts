@@ -124,10 +124,6 @@ export const accountApi = emptySplitApi.injectEndpoints({
 
         return {
           url: `coin_balance_history?address=eq.${id}&move_resource_generic_type_params=eq.[%220x1::aptos_coin::AptosCoin%22]&limit=1`,
-          headers: {
-            'Range-Unit': 'items',
-            Range: `0-${Number.MAX_SAFE_INTEGER}`,
-          },
         }
       },
       transformResponse(
@@ -227,13 +223,19 @@ export const accountApi = emptySplitApi.injectEndpoints({
     accounts: builder.query<
       any,
       {
+        start: number
         pageSize: number
-        offset: number | undefined
       }
     >({
-      query: ({ pageSize, offset }) => {
+      query: ({ start, pageSize }) => {
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+
         return {
-          url: `/accounts_with_rank?limit=${pageSize}${offset ? `&offset=${offset}` : ''}`,
+          url: `/accounts_with_rank`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `${start}-${end ?? ''}`,
+          },
         }
       },
       transformResponse(data, meta: any) {

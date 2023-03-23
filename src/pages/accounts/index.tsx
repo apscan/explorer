@@ -30,8 +30,8 @@ export const Accounts = () => {
 
   const { data: { data } = {}, isLoading } = useAccountsQuery(
     {
+      start: (page - 1) * pageSize,
       pageSize,
-      offset: (page - 1) * pageSize,
     },
     {
       refetchOnMountOrArgChange: true,
