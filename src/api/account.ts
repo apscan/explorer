@@ -124,6 +124,10 @@ export const accountApi = emptySplitApi.injectEndpoints({
 
         return {
           url: `coin_balance_history?address=eq.${id}&move_resource_generic_type_params=eq.[%220x1::aptos_coin::AptosCoin%22]&limit=1`,
+          headers: {
+            'Range-Unit': 'items',
+            Range: `0-49`,
+          },
         }
       },
       transformResponse(
