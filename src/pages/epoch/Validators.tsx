@@ -62,7 +62,9 @@ const columns = [
       nowrap: true,
     },
     header: 'Location',
-    cell: (info) => <GeoLocation value={info.row.original.validator_index} />,
+    cell: (info) => (
+      <GeoLocation address={info.row.original.network_addresses} value={info.row.original.validator_index} />
+    ),
   }),
   helper.accessor('voting_power', {
     meta: {
