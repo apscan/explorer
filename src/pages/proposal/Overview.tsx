@@ -21,7 +21,6 @@ export const Overview = ({ data }: { data: any | undefined }) => {
       <Box>
         {renderRow('Status', <ProposalStatus size="lg" value={data?.proposal_status} />)}
         {renderRow('Proposer', <Address withAnsIcon size="full" value={data?.proposal_content?.proposer} />)}
-        {renderRow('Required Stake', <AmountFormat value={undefined} />, { border: true })}
         {renderRow(
           'Creation Time',
           <DateTime format={DateFormat.FULL} value={data?.proposal_content?.creation_time_secs * 1000} />
