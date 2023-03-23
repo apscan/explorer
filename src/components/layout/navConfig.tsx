@@ -33,7 +33,6 @@ export const navConfig: INavItem[] = [
     sub: [
       {
         name: 'Epochs',
-        isDisabled: true,
         path: '/epochs',
       },
       {
@@ -48,7 +47,6 @@ export const navConfig: INavItem[] = [
     sub: [
       {
         name: 'Proposals',
-        isDisabled: true,
         path: '/proposals',
       },
     ],

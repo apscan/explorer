@@ -16,6 +16,10 @@ import { Token } from './token'
 import { Transaction } from './transaction'
 import { Transactions } from './transactions'
 import { Validators } from './validators'
+import { Proposals } from './proposals'
+import { Proposal } from './proposal'
+import { Epochs } from './epochs'
+import { Epoch } from './epoch'
 
 const routes = [
   {
@@ -119,6 +123,38 @@ const routes = [
     element: (
       <Layout>
         <Token />
+      </Layout>
+    ),
+  } as any,
+  {
+    path: '/proposals',
+    element: (
+      <Layout>
+        <Proposals />
+      </Layout>
+    ),
+  } as any,
+  {
+    path: '/proposal/:id',
+    element: (
+      <Layout>
+        <Proposal />
+      </Layout>
+    ),
+  } as any,
+  {
+    path: '/epochs',
+    element: (
+      <Layout>
+        <Epochs />
+      </Layout>
+    ),
+  } as any,
+  {
+    path: '/epoch/:id',
+    element: (
+      <Layout>
+        <Epoch />
       </Layout>
     ),
   } as any,

@@ -76,7 +76,7 @@ export const homeApi = emptySplitApi.injectEndpoints({
         return response?.map((item) => {
           return {
             ...item,
-            network_addresses: deserializeNetworkAddress(item.network_addresses),
+            network: deserializeNetworkAddress(item.network_addresses),
             non_voting_power: (
               BigInt(item.voting_power_detail.pending_active) + BigInt(item.voting_power_detail.inactive)
             ).toString(),
@@ -88,6 +88,11 @@ export const homeApi = emptySplitApi.injectEndpoints({
     geo: builder.query<any, void>({
       keepUnusedDataFor: 3600, // keep for 1 hour
       query: () => ({ url: `${window.location.origin}/api/geo` }),
+    }),
+
+    location: builder.query<any, string>({
+      keepUnusedDataFor: 3600 * 24, // keep for 24 hour
+      query: (address) => ({ url: `${window.location.origin}/api/location?address=${address}` }),
     }),
 
     search: builder.query<
@@ -191,4 +196,5 @@ export const {
   useSearchQuery,
   useChainConfigQuery,
   useGeoQuery,
+  useLocationQuery,
 } = homeApi

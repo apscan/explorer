@@ -95,7 +95,7 @@ export const DateTime = memo(
             {format === DateFormat.AGE && age}
             {format === DateFormat.FULL && (
               <>
-                {age} ({local})
+                {age} {local && `(${local})`}
               </>
             )}
           </Box>
