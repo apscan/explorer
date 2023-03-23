@@ -159,6 +159,8 @@ module.exports = async function (req, res) {
       result.push({
         ...data,
         type: 'fullnode',
+        network_addresses: item.network_addresses,
+        fullnode_addresses: item.fullnode_addresses,
         ...geoMap[item.fullnodeIp],
       })
   }
