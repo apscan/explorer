@@ -139,8 +139,8 @@ export const globalCSS = css`
   }
 
   /* fix scoller width */
-  html {
+  /* html {
     margin-left: calc(100vw - 100%);
     margin-right: 0;
-  }
+  } */
 `
