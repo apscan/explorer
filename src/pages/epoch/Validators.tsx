@@ -48,7 +48,7 @@ const columns = [
     header: 'Validator',
     cell: (info) => <Address size="short" value={info.getValue()} />,
   }),
-  helper.accessor('network_addresses', {
+  helper.accessor('network', {
     meta: {
       nowrap: true,
     },
@@ -62,9 +62,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Location',
-    cell: (info) => (
-      <GeoLocation address={info.row.original.network_addresses} value={info.row.original.validator_index} />
-    ),
+    cell: (info) => <GeoLocation value={info.row.original.network_addresses} />,
   }),
   helper.accessor('voting_power', {
     meta: {

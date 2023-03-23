@@ -50,7 +50,7 @@ export const epochApi = emptySplitApi.injectEndpoints({
           data: (data as any[])?.map((item) => {
             return {
               ...item,
-              network_addresses: deserializeNetworkAddress(item.network_addresses),
+              network: deserializeNetworkAddress(item.network_addresses),
             }
           }),
           page: parseHeaders(meta?.response?.headers),

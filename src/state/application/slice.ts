@@ -41,6 +41,16 @@ export type ChainStats = {
   last_reconfiguration_time: string
 }
 
+export type Geo = {
+  address: string
+  network: string
+  country: string
+  city: string
+  lat: string
+  lon: string
+  ip: string
+}
+
 type SliceState = {
   readonly language: string
   readonly openModal: ApplicationModal | null
@@ -49,6 +59,7 @@ type SliceState = {
   readonly dateFormat: DateFormat
   readonly pageSize: number
   readonly dateOrBlock: DateOrBlock
+  readonly geo: Geo[]
 }
 
 const initialState: SliceState = {
@@ -66,6 +77,7 @@ const initialState: SliceState = {
   dateFormat: DateFormat.AGE,
   dateOrBlock: DateOrBlock.DATE,
   pageSize: 25,
+  geo: [],
 }
 
 export const applicationSlice = createSlice({
@@ -91,9 +103,20 @@ export const applicationSlice = createSlice({
     setPageSize(state, { payload }: PayloadAction<number>) {
       state.pageSize = payload
     },
+
+    setGeo(state, { payload }: PayloadAction<Geo[]>) {
+      console.log('payload', payload)
+      for (const item of payload) {
+        const data = state.geo.find((i) => i.address === item.address)
+        if (!data) {
+          state.geo.push(item)
+        }
+      }
+    },
   },
 })
 
-export const { setLanguage, setOpenModal, setDateFormat, setPageSize, setDateOrBlock } = applicationSlice.actions
+export const { setLanguage, setOpenModal, setDateFormat, setPageSize, setDateOrBlock, setGeo } =
+  applicationSlice.actions
 
 export default applicationSlice.reducer

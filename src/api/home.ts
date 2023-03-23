@@ -76,7 +76,7 @@ export const homeApi = emptySplitApi.injectEndpoints({
         return response?.map((item) => {
           return {
             ...item,
-            network_addresses: deserializeNetworkAddress(item.network_addresses),
+            network: deserializeNetworkAddress(item.network_addresses),
             non_voting_power: (
               BigInt(item.voting_power_detail.pending_active) + BigInt(item.voting_power_detail.inactive)
             ).toString(),

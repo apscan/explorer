@@ -24,6 +24,7 @@ const LegendIcon = styled(Box)`
 
 export const ValidatorMap = () => {
   const { data } = useGeoQuery()
+
   const [map, setMap] = useState(null)
 
   useEffect(() => {
@@ -53,10 +54,10 @@ export const ValidatorMap = () => {
     let maxLon = -1 * Number.MAX_SAFE_INTEGER
 
     for (const item of data) {
-      minLat = Math.min(minLat, item.lat)
-      maxLat = Math.max(maxLat, item.lat)
-      minLon = Math.min(minLon, item.lon)
-      maxLon = Math.max(maxLon, item.lon)
+      minLat = Math.min(minLat, Number(item.lat))
+      maxLat = Math.max(maxLat, Number(item.lat))
+      minLon = Math.min(minLon, Number(item.lon))
+      maxLon = Math.max(maxLon, Number(item.lon))
     }
 
     const distanceLon = maxLon - minLon
@@ -72,7 +73,7 @@ export const ValidatorMap = () => {
       distanceLat,
       bufferLat: distanceLat * 0.02,
       bufferLon: distanceLon * 0.02,
-      mapData: (data as any).reduce((result: any, current: any) => {
+      mapData: data.reduce((result: any, current: any) => {
         const findCurrent = result.find((item: any) => item.city === current.city && item.type === current.type)
         if (!findCurrent) {
           result.push({

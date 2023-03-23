@@ -53,7 +53,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Stake Pool Owner',
-    cell: (info) => <Hash size="full" value={info.getValue()} />,
+    cell: (info) => <Address size="short" value={info.getValue()} />,
   }),
   helper.accessor('data.num_votes', {
     meta: {
