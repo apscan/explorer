@@ -82,31 +82,31 @@ const columns = [
       <Tooltip
         label={
           <Box>
-            Proposed: {info.getValue().successful_proposals}, Failed: {info.getValue().failed_proposals}
+            Proposed: {info.getValue()?.successful_proposals}, Failed: {info.getValue()?.failed_proposals}
           </Box>
         }
       >
         <Box>
-          {info.getValue().successful_proposals}
-          {info.getValue().failed_proposals !== '0' && (
+          {info.getValue()?.successful_proposals}
+          {info.getValue()?.failed_proposals !== '0' && info.getValue()?.failed_proposals ? (
             <>
               (
               <Box as="span" color={vars.text.error}>
-                {info.getValue().failed_proposals}
+                {info.getValue()?.failed_proposals}
               </Box>
               )
             </>
-          )}
+          ) : null}
         </Box>
       </Tooltip>
     ),
   }),
-  helper.accessor('rewards.rewards_amount', {
+  helper.accessor('rewards', {
     meta: {
       nowrap: true,
     },
     header: 'Reward (APT)',
-    cell: (info) => <AmountFormat postfix={false} value={info.getValue()} />,
+    cell: (info) => <AmountFormat postfix={false} value={info.getValue()?.rewards_amount} />,
   }),
 ]
 
