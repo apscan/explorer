@@ -20,21 +20,23 @@ export const AppUpdater = () => {
   const { data } = useGeoQuery()
 
   useEffect(() => {
-    dispatch(
-      setGeo(
-        data.map((item: any) => {
-          return {
-            address: item.type === 'fullnode' ? item.fullnode_addresses : item.network_addresses,
-            network: item.type === 'fullnode' ? item.fullnode : item.network,
-            country: item.country,
-            city: item.city,
-            lat: item.lat,
-            lon: item.lon,
-            ip: item.query,
-          }
-        })
+    if (data) {
+      dispatch(
+        setGeo(
+          data.map((item: any) => {
+            return {
+              address: item.type === 'fullnode' ? item.fullnode_addresses : item.network_addresses,
+              network: item.type === 'fullnode' ? item.fullnode : item.network,
+              country: item.country,
+              city: item.city,
+              lat: item.lat,
+              lon: item.lon,
+              ip: item.query,
+            }
+          })
+        )
       )
-    )
+    }
   }, [data, dispatch])
 
   return null

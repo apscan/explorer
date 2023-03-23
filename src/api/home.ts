@@ -90,8 +90,8 @@ export const homeApi = emptySplitApi.injectEndpoints({
       query: () => ({ url: `${window.location.origin}/api/geo` }),
     }),
 
-    location: builder.query<string, void>({
-      keepUnusedDataFor: 3600, // keep for 1 hour
+    location: builder.query<any, string>({
+      keepUnusedDataFor: 3600 * 24, // keep for 24 hour
       query: (address) => ({ url: `${window.location.origin}/api/location?address=${address}` }),
     }),
 
