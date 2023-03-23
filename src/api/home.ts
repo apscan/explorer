@@ -90,6 +90,11 @@ export const homeApi = emptySplitApi.injectEndpoints({
       query: () => ({ url: `${window.location.origin}/api/geo` }),
     }),
 
+    location: builder.query<string, void>({
+      keepUnusedDataFor: 3600, // keep for 1 hour
+      query: (address) => ({ url: `${window.location.origin}/api/location?address=${address}` }),
+    }),
+
     search: builder.query<
       {
         transaction: null | string
@@ -191,4 +196,5 @@ export const {
   useSearchQuery,
   useChainConfigQuery,
   useGeoQuery,
+  useLocationQuery,
 } = homeApi
