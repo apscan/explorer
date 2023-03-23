@@ -37,7 +37,7 @@ export const epochApi = emptySplitApi.injectEndpoints({
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
-          url: `/epoch_validators${queryString}`,
+          url: `/epoch_validators_stats${queryString}`,
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,

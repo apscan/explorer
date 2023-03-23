@@ -10,9 +10,11 @@ import { Hash } from 'components/Hash'
 import { DataTable } from 'components/table'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
+import { Tooltip } from 'components/Tooltip'
 import TableStat from 'components/TotalStat'
 import { usePageSize } from 'hooks/usePageSize'
 import { useRangePagination } from 'hooks/useRangePagination'
+import { vars } from 'theme/theme.css'
 
 const helper = createColumnHelper<any>()
 
@@ -69,19 +71,40 @@ const columns = [
     header: 'Voting Power',
     cell: (info) => <AmountFormat value={info.getValue()} />,
   }),
-  helper.accessor('blocks', {
+  helper.accessor('proposal_status', {
     meta: {
       nowrap: true,
     },
     header: 'Blocks',
-    cell: (info) => null,
+    cell: (info) => (
+      <Tooltip
+        label={
+          <Box>
+            Proposed: {info.getValue().successful_proposals}, Failed: {info.getValue().failed_proposals}
+          </Box>
+        }
+      >
+        <Box>
+          {info.getValue().successful_proposals}
+          {info.getValue().failed_proposals !== '0' && (
+            <>
+              (
+              <Box as="span" color={vars.text.error}>
+                {info.getValue().failed_proposals}
+              </Box>
+              )
+            </>
+          )}
+        </Box>
+      </Tooltip>
+    ),
   }),
-  helper.accessor('reward', {
+  helper.accessor('rewards.rewards_amount', {
     meta: {
       nowrap: true,
     },
     header: 'Reward (APT)',
-    cell: (info) => null,
+    cell: (info) => <AmountFormat postfix={false} value={info.getValue()} />,
   }),
 ]
 
