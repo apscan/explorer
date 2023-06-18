@@ -27,9 +27,7 @@ const columns = [
       nowrap: true,
     },
     header: 'Tx Version',
-    cell: (info) => (
-      <NumberFormat as={Link} to={`/tx/${info.getValue()}`} value={info.getValue()} />
-    ),
+    cell: (info) => <NumberFormat as={Link} to={`/tx/${info.getValue()}`} value={info.getValue()} />,
   }),
   helper.accessor('transaction_index', {
     meta: {
@@ -90,9 +88,7 @@ const columns = [
     },
     cell: (info) => {
       const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
-      const value = `${info.row.original?.data?.move_resource_name}${
-        resourceType ? '<' + resourceType + '>' : ''
-      }`
+      const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
       return <TypeParam fallback="-" value={value} />
     },
@@ -136,18 +132,14 @@ const columns = [
         />
       )
     },
-    cell: (info) => (
-      <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
-    ),
+    cell: (info) => <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />,
   }),
 ]
 
 const renderSubComponent = ({ row }: { row: any }) => {
   const data = row.original?.data?.move_resource_data
   const resourceType = (row.original?.data?.move_resource_generic_type_params || [])[0]
-  const value = `${row.original?.data?.move_resource_name}${
-    resourceType ? '<' + resourceType + '>' : ''
-  }`
+  const value = `${row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
   if (!resourceType) {
     return <JsonView fallback="-" src={data} withContainer />

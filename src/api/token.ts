@@ -151,10 +151,7 @@ export type TokenHolder = {
 
 export const tokenApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
-    tokens: builder.query<
-      PageResult<TokenByAddress>,
-      { address?: string; start?: number; pageSize?: number }
-    >({
+    tokens: builder.query<PageResult<TokenByAddress>, { address?: string; start?: number; pageSize?: number }>({
       query: ({ start = 0, pageSize, address }) => {
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
@@ -178,10 +175,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
-    tokenDetail: builder.query<
-      TokenDetail,
-      { creator: string; name: string; collectionName: string }
-    >({
+    tokenDetail: builder.query<TokenDetail, { creator: string; name: string; collectionName: string }>({
       query: ({ creator, name, collectionName }) => {
         return {
           url: `/tokens?collection_name=eq.${encodeURIComponent(
@@ -204,9 +198,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
-          url: `/tokens?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(
-            name
-          )}`,
+          url: `/tokens?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
           headers: {
             prefer: 'count=exact',
             'Range-Unit': 'items',
@@ -221,10 +213,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
-    accountTokenEvents: builder.query<
-      PageResult<{}>,
-      { id?: string; start?: number; pageSize?: number }
-    >({
+    accountTokenEvents: builder.query<PageResult<{}>, { id?: string; start?: number; pageSize?: number }>({
       query: ({ start = 0, pageSize, id }) => {
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
@@ -250,7 +239,13 @@ export const tokenApi = emptySplitApi.injectEndpoints({
     }),
     tokenHolders: builder.query<
       TokenHolder[],
-      { creator: string; name: string; collectionName: string; start?: number; pageSize?: number }
+      {
+        creator: string
+        name: string
+        collectionName: string
+        start?: number
+        pageSize?: number
+      }
     >({
       query: ({ creator, name, collectionName, start, pageSize }) => {
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
@@ -271,7 +266,13 @@ export const tokenApi = emptySplitApi.injectEndpoints({
     }),
     tokenEvents: builder.query<
       TokenEvent[],
-      { creator: string; name: string; collectionName: string; start?: number; pageSize?: number }
+      {
+        creator: string
+        name: string
+        collectionName: string
+        start?: number
+        pageSize?: number
+      }
     >({
       query: ({ creator, name, collectionName, start, pageSize }) => {
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined

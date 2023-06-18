@@ -1,10 +1,4 @@
-import {
-  clearTimer,
-  setPosition,
-  setText,
-  setTimerId,
-  toggleTooltip,
-} from '../../state/tooltip/tooltipSlice'
+import { clearTimer, setPosition, setText, setTimerId, toggleTooltip } from '../../state/tooltip/tooltipSlice'
 import { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'

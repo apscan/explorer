@@ -83,5 +83,4 @@ export const coinApi = emptySplitApi.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useCoinsQuery, useCoinDetailQuery, useCoinHoldersQuery, useCoinsCountQuery } =
-  coinApi
+export const { useCoinsQuery, useCoinDetailQuery, useCoinHoldersQuery, useCoinsCountQuery } = coinApi

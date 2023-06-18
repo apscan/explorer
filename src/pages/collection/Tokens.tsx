@@ -27,9 +27,9 @@ const columns = [
 
       return (
         <Link
-          to={`/token/${data.creator_address}/${encodeURIComponent(
-            data.collection_name
-          )}/${encodeURIComponent(data.token_name)}`}
+          to={`/token/${data.creator_address}/${encodeURIComponent(data.collection_name)}/${encodeURIComponent(
+            data.token_name
+          )}`}
           maxW="250px"
           overflow="hidden"
           whiteSpace="nowrap"
@@ -57,12 +57,7 @@ const columns = [
       return (
         <>
           <Address value={data.token_data.royalty?.payee_address} size="short" fallback="-" />
-          <NumberFormat
-            maximumFractionDigits={2}
-            prefix=" ("
-            postfix="%)"
-            value={isNaN(fee) ? undefined : fee}
-          />
+          <NumberFormat maximumFractionDigits={2} prefix=" (" postfix="%)" value={isNaN(fee) ? undefined : fee} />
         </>
       )
     },
@@ -118,15 +113,7 @@ const columns = [
   }),
 ]
 
-export const Tokens = ({
-  creator,
-  name,
-  count,
-}: {
-  creator: string
-  name: string
-  count: number
-}) => {
+export const Tokens = ({ creator, name, count }: { creator: string; name: string; count: number }) => {
   const maxCount = queryRangeLimitMap['tokens?collection_name&creator_address']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data = [] } = {}, isLoading } = useTokensByCollectionQuery(

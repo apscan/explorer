@@ -47,9 +47,7 @@ export const Collection = () => {
             count={data.addresses_count}
             name={data.collection_name}
             creator={data.creator_address}
-            supply={
-              data.collection_data?.supply ? parseInt(data.collection_data?.supply) : undefined
-            }
+            supply={data.collection_data?.supply ? parseInt(data.collection_data?.supply) : undefined}
           />
         ),
         hide: !data.addresses_count,
@@ -57,21 +55,13 @@ export const Collection = () => {
       {
         label: tabNameWithCount('Tokens', tokenCount),
         key: 'tokens',
-        children: (
-          <Tokens name={data.collection_name} creator={data.creator_address} count={tokenCount} />
-        ),
+        children: <Tokens name={data.collection_name} creator={data.creator_address} count={tokenCount} />,
         hide: !tokenCount,
       },
       {
         label: tabNameWithCount('Token Events', data.events_count),
         key: 'token events',
-        children: (
-          <TokenEvents
-            name={data.collection_name}
-            creator={data.creator_address}
-            count={data.events_count}
-          />
-        ),
+        children: <TokenEvents name={data.collection_name} creator={data.creator_address} count={data.events_count} />,
         hide: !data.events_count,
       },
     ].filter((item) => !item.hide) as any

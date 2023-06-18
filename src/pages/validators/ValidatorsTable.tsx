@@ -48,11 +48,7 @@ const columns = [
     },
     header: 'Network Address',
     cell: (info) => (
-      <Hash
-        tooltip={info.getValue()}
-        ellipsis
-        value={info.getValue()?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2]}
-      />
+      <Hash tooltip={info.getValue()} ellipsis value={info.getValue()?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2]} />
     ),
   }),
   helper.accessor('location', {
@@ -64,9 +60,7 @@ const columns = [
   }),
   helper.accessor(
     (data) => {
-      return (
-        BigInt(data.voting_power_detail.pending_active) + BigInt(data.voting_power_detail.inactive)
-      )
+      return BigInt(data.voting_power_detail.pending_active) + BigInt(data.voting_power_detail.inactive)
     },
     {
       meta: {
@@ -83,9 +77,7 @@ const columns = [
   ),
   helper.accessor(
     (data) => {
-      return (
-        BigInt(data.voting_power_detail.active) + BigInt(data.voting_power_detail.pending_inactive)
-      )
+      return BigInt(data.voting_power_detail.active) + BigInt(data.voting_power_detail.pending_inactive)
     },
     {
       meta: {
@@ -121,18 +113,17 @@ const columns = [
         <InlineBox alignItems="center">
           <NumberFormat value={info.row.original?.successful_proposals_count} />
 
-          {info.row.original?.failed_proposals_count &&
-            info.row.original?.failed_proposals_count !== '0' && (
-              <InlineBox
-                css={css`
-                  margin-left: 4px;
-                  color: ${vars.text.error};
-                `}
-              >
-                (
-                <NumberFormat value={info.row.original?.failed_proposals_count} />)
-              </InlineBox>
-            )}
+          {info.row.original?.failed_proposals_count && info.row.original?.failed_proposals_count !== '0' && (
+            <InlineBox
+              css={css`
+                margin-left: 4px;
+                color: ${vars.text.error};
+              `}
+            >
+              (
+              <NumberFormat value={info.row.original?.failed_proposals_count} />)
+            </InlineBox>
+          )}
         </InlineBox>
       </Tooltip>
     ),

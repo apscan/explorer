@@ -3,9 +3,7 @@ import React from 'react'
 
 export const isSystemTx = memoizeOne((str: any) => {
   if (typeof str !== 'string') return false
-  return ['user_transaction', 'genesis_transaction', 'block_metadata_transaction'].includes(
-    str.toLowerCase()
-  )
+  return ['user_transaction', 'genesis_transaction', 'block_metadata_transaction'].includes(str.toLowerCase())
 })
 
 export const parseHeaders = (

@@ -152,11 +152,7 @@ export const Overview = ({ data }: { data: TokenDetail | undefined }) => {
             !data ? (
               '-'
             ) : (
-              <Link
-                to={`/collection/${data.creator_address}/${encodeURIComponent(
-                  data.collection_name
-                )}`}
-              >
+              <Link to={`/collection/${data.creator_address}/${encodeURIComponent(data.collection_name)}`}>
                 {data.creator_address}::{data.collection_name}
               </Link>
             )

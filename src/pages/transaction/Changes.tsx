@@ -62,10 +62,7 @@ const columns = [
     },
     header: 'Address | Handle',
     cell: (info) => {
-      if (
-        info.row.original.tx_type === 'WriteTableItem' ||
-        info.row.original.type === 'DeleteTableItem'
-      ) {
+      if (info.row.original.tx_type === 'WriteTableItem' || info.row.original.type === 'DeleteTableItem') {
         return (
           <Hash
             css={css`
@@ -101,15 +98,9 @@ const columns = [
       }
       const [address, module] =
         info.getValue() === 'resource_changes'
-          ? [
-              info.row.original?.data?.move_resource_address,
-              info.row.original?.data?.move_resource_module,
-            ]
+          ? [info.row.original?.data?.move_resource_address, info.row.original?.data?.move_resource_module]
           : info.getValue() === 'module_changes'
-          ? [
-              info.row.original?.data?.move_module_address,
-              info.row.original?.data?.move_module_name,
-            ]
+          ? [info.row.original?.data?.move_module_address, info.row.original?.data?.move_module_name]
           : []
 
       if (!address || !module) return '-'
@@ -135,9 +126,7 @@ const columns = [
 
       if (isResourceType(info.row.original?.tx_type)) {
         const resourceType = (info.row.original?.data?.move_resource_generic_type_params || [])[0]
-        const value = `${info.row.original?.data?.move_resource_name}${
-          resourceType ? '<' + resourceType + '>' : ''
-        }`
+        const value = `${info.row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
         return <TypeParam fallback="-" value={value} />
       }
@@ -184,9 +173,7 @@ const columns = [
         />
       )
     },
-    cell: (info) => (
-      <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
-    ),
+    cell: (info) => <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />,
   }),
 ]
 
@@ -210,9 +197,7 @@ const renderSubComponent = ({ row }: { row: any }) => {
 
   if (isResourceType(row.original?.tx_type)) {
     const resourceType = (row.original?.data?.move_resource_generic_type_params || [])[0]
-    const value = `${row.original?.data?.move_resource_name}${
-      resourceType ? '<' + resourceType + '>' : ''
-    }`
+    const value = `${row.original?.data?.move_resource_name}${resourceType ? '<' + resourceType + '>' : ''}`
 
     if (!resourceType) {
       return <JsonView fallback="-" src={row.original?.data?.move_resource_data} withContainer />

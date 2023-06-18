@@ -22,10 +22,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           <DateTime format={DateFormat.FULL} value={data?.epoch_start_time_microseconds / 1000} />
         )}
         {renderRow('Start Block', <BlockHeight value={data?.epoch_start_block_height} />)}
-        {renderRow(
-          'End Time',
-          <DateTime format={DateFormat.FULL} value={data?.epoch_end_time_microseconds / 1000} />
-        )}
+        {renderRow('End Time', <DateTime format={DateFormat.FULL} value={data?.epoch_end_time_microseconds / 1000} />)}
         {renderRow('End Block', <BlockHeight value={data?.epoch_end_block_height} />, {
           border: true,
         })}
@@ -39,23 +36,13 @@ export const Overview = ({ data }: { data: any | undefined }) => {
             pendingActive={data?.validators?.pending_active}
           />
         )}
-        {renderRow('Annual Reward Rate', <AnnualRewardRate value={data} />, { border: true })}
-        {renderRow(
-          'Minimum Stake',
-          <AmountFormat value={data?.staking_config_data?.minimum_stake} />
-        )}
-        {renderRow(
-          'Maximum Stake',
-          <AmountFormat value={data?.staking_config_data?.maximum_stake} />
-        )}
-        {renderRow(
-          'Total Voting Power',
-          <AmountFormat fallback="-" value={data?.validators?.total_voting_power} />
-        )}
-        {renderRow(
-          'Total Joining Power',
-          <AmountFormat fallback="-" value={data?.validators?.total_joining_power} />
-        )}
+        {renderRow('Annual Reward Rate', <AnnualRewardRate value={data} />, {
+          border: true,
+        })}
+        {renderRow('Minimum Stake', <AmountFormat value={data?.staking_config_data?.minimum_stake} />)}
+        {renderRow('Maximum Stake', <AmountFormat value={data?.staking_config_data?.maximum_stake} />)}
+        {renderRow('Total Voting Power', <AmountFormat fallback="-" value={data?.validators?.total_voting_power} />)}
+        {renderRow('Total Joining Power', <AmountFormat fallback="-" value={data?.validators?.total_joining_power} />)}
         {renderRow(
           'Voting Power Increase Limit',
           <AmountFormat value={data?.staking_config_data?.voting_power_increase_limit} />,

@@ -58,10 +58,7 @@ export const accountApi = emptySplitApi.injectEndpoints({
         return { data, page: parseHeaders(meta?.response?.headers) }
       },
     }),
-    accountTransfer: builder.query<
-      any,
-      { id?: string; type?: string; start?: number; pageSize?: number }
-    >({
+    accountTransfer: builder.query<any, { id?: string; type?: string; start?: number; pageSize?: number }>({
       query: ({ id, type, start = 0, pageSize }) => {
         if (!id && !type) throw new Error('miss account id or type')
         let end = pageSize != null && start != null ? start + pageSize - 1 : undefined

@@ -1,11 +1,6 @@
 import { useCallback } from 'react'
 
-export const useRangePagination = (
-  page: number,
-  pageSize: number,
-  count: number,
-  setPage: (page: number) => void
-) => {
+export const useRangePagination = (page: number, pageSize: number, count: number, setPage: (page: number) => void) => {
   const onNextPage = useCallback(() => {
     if (page * pageSize < count) {
       setPage(page + 1)

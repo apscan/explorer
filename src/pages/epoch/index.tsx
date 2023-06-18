@@ -63,9 +63,7 @@ const EpochTitle = ({ id, latest }: { id?: string; latest?: string }) => {
           toNext={!isDisableNext ? `/epoch/${Number(id) + 1}` : undefined}
           toPrev={!isDisablePrev ? `/epoch/${Number(id) - 1}` : undefined}
           nextTooltip={isDisableNext ? 'You have reached the latest epoch' : 'View next epoch'}
-          prevTooltip={
-            isDisablePrev ? 'You have reached the earliest epoch' : 'View previous epoch'
-          }
+          prevTooltip={isDisablePrev ? 'You have reached the earliest epoch' : 'View previous epoch'}
           css={css`
             transform: translateY(-1.5px);
           `}
@@ -84,9 +82,7 @@ export const Epoch = () => {
 
   const items = useMemo(() => {
     const totalValidators = data?.validators?.active_validators
-      ? data?.validators?.pending_active +
-        data?.validators?.active_validators +
-        data?.validators?.pending_inactive
+      ? data?.validators?.pending_active + data?.validators?.active_validators + data?.validators?.pending_inactive
       : undefined
 
     const result = [
@@ -109,11 +105,7 @@ export const Epoch = () => {
 
   return (
     <Container>
-      <DocumentTitle
-        value={`Aptos Epoch ${
-          data?.proposal_id !== undefined ? `#${data.proposal_id}` : '-'
-        } | Apscan`}
-      />
+      <DocumentTitle value={`Aptos Epoch ${data?.proposal_id !== undefined ? `#${data.proposal_id}` : '-'} | Apscan`} />
       <PageTitle value={<EpochTitle latest={String(latest)} id={data?.epoch_data?.epoch} />} />
       <Card>
         <Tabs onChange={onTabChange} activeKey={activeKey} size="large" items={items} />

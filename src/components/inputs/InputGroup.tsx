@@ -1,7 +1,4 @@
-import {
-  InputGroup as ChaInputGroup,
-  InputRightElement as ChaInputRightElement,
-} from '@chakra-ui/react'
+import { InputGroup as ChaInputGroup, InputRightElement as ChaInputRightElement } from '@chakra-ui/react'
 import { css } from '@emotion/react'
 import { forwardRef } from 'react'
 import { BaseInput, BaseInputProps } from './BaseInput'

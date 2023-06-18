@@ -9,34 +9,21 @@ import { NumberFormat } from 'components/NumberFormat'
 import { Link } from 'components/link'
 import { Text } from '@chakra-ui/react'
 
-export const Overview = ({
-  data,
-  totalCount,
-}: {
-  data: Collection | undefined
-  totalCount: number
-}) => {
+export const Overview = ({ data, totalCount }: { data: Collection | undefined; totalCount: number }) => {
   return (
     <Card>
       <Box padding="0 12px">
         {renderRow(
           'Creation',
-          <DateTime
-            format={DateFormat.FULL}
-            value={data?.created_at?.time_microseconds.toString()}
-          />
+          <DateTime format={DateFormat.FULL} value={data?.created_at?.time_microseconds.toString()} />
         )}
         {renderRow(
           'Token Supply',
           <NumberFormat
-            to={`/collection/${data?.creator_address}/${encodeURIComponent(
-              data?.collection_name || ''
-            )}?tab=tokens`}
+            to={`/collection/${data?.creator_address}/${encodeURIComponent(data?.collection_name || '')}?tab=tokens`}
             useGrouping
             fallback="-"
-            value={
-              data?.collection_data?.supply === '0' ? undefined : data?.collection_data?.supply
-            }
+            value={data?.collection_data?.supply === '0' ? undefined : data?.collection_data?.supply}
           />
         )}
         {renderRow(
@@ -46,11 +33,7 @@ export const Overview = ({
               <NumberFormat
                 useGrouping
                 fallback={data?.collection_data?.maximum === '0' ? 'Unlimited' : '-'}
-                value={
-                  data?.collection_data?.maximum === '0'
-                    ? undefined
-                    : data?.collection_data?.maximum
-                }
+                value={data?.collection_data?.maximum === '0' ? undefined : data?.collection_data?.maximum}
               />
               <Mutability mutable={data?.collection_data?.mutability_config.maximum} />
             </Flex>

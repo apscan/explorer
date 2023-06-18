@@ -1,19 +1,13 @@
-import {
-  BaseQueryFn,
-  createApi,
-  FetchArgs,
-  fetchBaseQuery,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react'
+import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 
 const BASE_URL = process.env.REACT_APP_API_HOST || ''
 
 const baseQuery = fetchBaseQuery({ baseUrl: BASE_URL })
-const baseQueryWithErrorHandle: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
+const baseQueryWithErrorHandle: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions
+) => {
   const result = await baseQuery(args, api, extraOptions)
   const isApscanAPi = (result.meta?.request.url ?? '').indexOf(BASE_URL) > -1
 

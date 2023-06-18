@@ -30,28 +30,20 @@ const ellipsisStyle = css`
   vertical-align: bottom;
 `
 
-export const Hash = memo(
-  ({ tooltip, copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
-    const hash = useMemo(
-      () => (ellipsis ? value : truncatedWithSize(value, size)),
-      [value, size, ellipsis]
-    )
-    const copy = useMemo(
-      () => (copyable !== undefined ? copyable : size === 'full'),
-      [copyable, size]
-    )
+export const Hash = memo(({ tooltip, copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
+  const hash = useMemo(() => (ellipsis ? value : truncatedWithSize(value, size)), [value, size, ellipsis])
+  const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
 
-    if (!hash) return <>{fallback}</>
+  if (!hash) return <>{fallback}</>
 
-    return (
-      <Tooltip label={typeof tooltip === 'boolean' ? value : tooltip} isDisabled={!tooltip}>
-        <Box css={[container, ellipsis ? ellipsisStyle : false]} {...props}>
-          {hash}
-          {copy && value && <CopyButton text={value} />}
-        </Box>
-      </Tooltip>
-    )
-  }
-)
+  return (
+    <Tooltip label={typeof tooltip === 'boolean' ? value : tooltip} isDisabled={!tooltip}>
+      <Box css={[container, ellipsis ? ellipsisStyle : false]} {...props}>
+        {hash}
+        {copy && value && <CopyButton text={value} />}
+      </Box>
+    </Tooltip>
+  )
+})
 
 Hash.displayName = 'Hash'

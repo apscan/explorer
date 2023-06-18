@@ -38,13 +38,9 @@ export const ProposalStatus = ({
   const [tip, icon] = useMemo(() => {
     if (value === 'Voting') return ['Voting is in progress', VotingIcon]
     if (value === 'Failed') return ['Proposal failed because of not enough votes', FailedIcon]
-    if (value === 'Rejected')
-      return ['Proposal is rejected by the majority of voters', RejectedIcon]
+    if (value === 'Rejected') return ['Proposal is rejected by the majority of voters', RejectedIcon]
     if (value === 'Awaiting Execution')
-      return [
-        'Proposal is passed by the majority of voters and waiting for execution',
-        AwaitingIcon,
-      ]
+      return ['Proposal is passed by the majority of voters and waiting for execution', AwaitingIcon]
     if (value === 'Executed') return ['Proposal is passed and executed on chain', ExecutedIcon]
     return []
   }, [value])

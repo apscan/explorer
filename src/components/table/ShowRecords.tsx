@@ -27,8 +27,7 @@ export const ShowRecords = ({
   pageSize: number
 }) => {
   const [search, setSearch] = useCustomSearchParams()
-  const setPageToUrlParams = (pageSize: number) =>
-    setSearch({ ...search, pageSize: `${pageSize}`, page: '1' })
+  const setPageToUrlParams = (pageSize: number) => setSearch({ ...search, pageSize: `${pageSize}`, page: '1' })
 
   return (
     <Wrapper>

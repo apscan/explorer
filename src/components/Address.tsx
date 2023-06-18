@@ -54,10 +54,7 @@ export const Address = memo(
       return value
     }, [value, size])
 
-    const copy = useMemo(
-      () => (copyable !== undefined ? copyable : size === 'full'),
-      [copyable, size]
-    )
+    const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
 
     const tooltip = useMemo(() => {
       if (hideTooltip) return undefined

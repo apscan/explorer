@@ -9,9 +9,7 @@ export type TransactionCounterparty = {
 //    the transaction is a user transfer (account A send money to account B)
 // when the transaction counterparty is a "smartContract",
 //    the transaction is a user interaction (account A interact with smart contract account B)
-export function getTransactionCounterparty(
-  transaction: Types.Transaction
-): TransactionCounterparty | undefined {
+export function getTransactionCounterparty(transaction: Types.Transaction): TransactionCounterparty | undefined {
   if (transaction.type !== 'user_transaction') {
     return undefined
   }

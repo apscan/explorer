@@ -30,8 +30,7 @@ import { DateFormat } from 'state/application/slice'
 // }
 
 const renderUserTransactionSection = (data: any) => {
-  const gasFee =
-    BigInt(data?.gas_used || 0) * BigInt(data?.user_transaction_detail?.gas_unit_price || 0)
+  const gasFee = BigInt(data?.gas_used || 0) * BigInt(data?.user_transaction_detail?.gas_unit_price || 0)
 
   const gasUsedPercentage = data?.user_transaction_detail
     ? Number(data?.gas_used) / Number(data?.user_transaction_detail?.max_gas_amount)
@@ -41,10 +40,7 @@ const renderUserTransactionSection = (data: any) => {
     <>
       <Divider />
       {/* {renderUserTransfer(data)} */}
-      {renderRow(
-        'Sequence Number',
-        <NumberFormat value={data?.user_transaction_detail?.sequence_number} />
-      )}
+      {renderRow('Sequence Number', <NumberFormat value={data?.user_transaction_detail?.sequence_number} />)}
       {renderRow(
         'Expiration Timestamp',
         <DateTime
@@ -68,13 +64,7 @@ const renderUserTransactionSection = (data: any) => {
           <NumberFormat fallback="-" value={data?.gas_used} />
           <InlineBox marginLeft="4px">
             (
-            <NumberFormat
-              maximumFractionDigits={1}
-              fallback="-"
-              type="percent"
-              value={gasUsedPercentage}
-            />
-            )
+            <NumberFormat maximumFractionDigits={1} fallback="-" type="percent" value={gasUsedPercentage} />)
           </InlineBox>
         </InlineBox>
       )}
@@ -88,12 +78,7 @@ const renderUserTransactionSection = (data: any) => {
             `}
           >
             (
-            <NumberFormat
-              postfix=" Octa"
-              fallback="-"
-              value={data?.user_transaction_detail?.gas_unit_price}
-            />
-            )
+            <NumberFormat postfix=" Octa" fallback="-" value={data?.user_transaction_detail?.gas_unit_price} />)
           </InlineBox>
         </InlineBox>,
         { border: true }
@@ -121,39 +106,22 @@ const renderBlockMetadataTransactionSection = (data: any) => {
   return (
     <>
       <Divider />
-      {renderRow(
-        'ID',
-        <Hash fallback="-" value={data?.block_metadata_transaction_detail?.id} size="full" />
-      )}
-      {renderRow(
-        'Epoch',
-        <NumberFormat fallback="-" value={data?.block_metadata_transaction_detail?.epoch} />
-      )}
-      {renderRow(
-        'Round',
-        <NumberFormat fallback="-" value={data?.block_metadata_transaction_detail?.round} />
-      )}
+      {renderRow('ID', <Hash fallback="-" value={data?.block_metadata_transaction_detail?.id} size="full" />)}
+      {renderRow('Epoch', <NumberFormat fallback="-" value={data?.block_metadata_transaction_detail?.epoch} />)}
+      {renderRow('Round', <NumberFormat fallback="-" value={data?.block_metadata_transaction_detail?.round} />)}
       {renderRow(
         'Proposer',
         <AddressesTable
           key="Proposer"
           value={[
             {
-              content: (
-                <Address
-                  size="full"
-                  fallback="-"
-                  value={data?.block_metadata_transaction_detail?.proposer}
-                />
-              ),
+              content: <Address size="full" fallback="-" value={data?.block_metadata_transaction_detail?.proposer} />,
               label: <VmStatus withPadding={false} withBg={false} value="Executed successfully" />,
             },
-            ...(data?.block_metadata_transaction_detail?.failed_proposers?.map(
-              (failedProposer: any) => ({
-                content: <Address size="full" fallback="-" value={failedProposer} />,
-                label: <VmStatus withPadding={false} withBg={false} value="" failedText="Failed" />,
-              })
-            ) || []),
+            ...(data?.block_metadata_transaction_detail?.failed_proposers?.map((failedProposer: any) => ({
+              content: <Address size="full" fallback="-" value={failedProposer} />,
+              label: <VmStatus withPadding={false} withBg={false} value="" failedText="Failed" />,
+            })) || []),
           ]}
         />,
         { border: false }
@@ -209,10 +177,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
       <Box>
         {renderRow('Block', <BlockHeight value={data?.block_height} />)}
         {renderRow('Hash', <TxHash as="span" value={data?.hash} size="full" />)}
-        {renderRow(
-          'Timestamp',
-          <DateTime format={DateFormat.FULL} value={data?.time_microseconds} />
-        )}
+        {renderRow('Timestamp', <DateTime format={DateFormat.FULL} value={data?.time_microseconds} />)}
         {renderRow(
           <InlineBox
             css={css`
@@ -224,10 +189,7 @@ export const Overview = ({ data }: { data: any | undefined }) => {
           <VmStatus value={data?.vm_status} />
         )}
 
-        {renderRow(
-          <InlineBox>VM Status</InlineBox>,
-          data?.vm_status && <Box>{data?.vm_status}</Box>
-        )}
+        {renderRow(<InlineBox>VM Status</InlineBox>, data?.vm_status && <Box>{data?.vm_status}</Box>)}
 
         {renderRow(
           'Sender',

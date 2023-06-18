@@ -55,10 +55,7 @@ const columns = [
     },
     header: () => <SwitchDateBlock dateLabel="Start Time" blockLabel="Start Block" />,
     cell: (info) => (
-      <ShowDateOrBlock
-        date={info.getValue() / 1000}
-        block={info.row.original.epoch_start_block_height}
-      />
+      <ShowDateOrBlock date={info.getValue() / 1000} block={info.row.original.epoch_start_block_height} />
     ),
   }),
   helper.accessor('epoch_end_time_microseconds', {
@@ -68,10 +65,7 @@ const columns = [
     header: () => <SwitchDateBlock dateLabel="End Time" blockLabel="End Block" />,
     cell: (info) =>
       info.getValue() ? (
-        <ShowDateOrBlock
-          date={info.getValue() / 1000}
-          block={info.row.original.epoch_end_block_height}
-        />
+        <ShowDateOrBlock date={info.getValue() / 1000} block={info.row.original.epoch_end_block_height} />
       ) : (
         '-'
       ),
@@ -109,14 +103,7 @@ const columns = [
       nowrap: true,
     },
     header: () => 'Total Voting Power (APT)',
-    cell: (info) => (
-      <AmountFormat
-        fallback="-"
-        maximumFractionDigits={1}
-        postfix={false}
-        value={info.getValue()}
-      />
-    ),
+    cell: (info) => <AmountFormat fallback="-" maximumFractionDigits={1} postfix={false} value={info.getValue()} />,
   }),
   helper.accessor('annual_reward_rate', {
     meta: {

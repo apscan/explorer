@@ -8,13 +8,7 @@ import { Link } from './link'
 import { Tooltip } from './Tooltip'
 
 export const SwitchDateBlock = memo(
-  ({
-    dateLabel = 'Time',
-    blockLabel = 'Block',
-  }: {
-    dateLabel?: React.ReactNode
-    blockLabel?: React.ReactNode
-  }) => {
+  ({ dateLabel = 'Time', blockLabel = 'Block' }: { dateLabel?: React.ReactNode; blockLabel?: React.ReactNode }) => {
     const format = useAppSelector((state) => state.application.dateOrBlock)
     const dispatch = useAppDispatch()
 

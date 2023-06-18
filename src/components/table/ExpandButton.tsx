@@ -29,11 +29,7 @@ export const ExpandButton = ({
   if (isDisabled) return <>{fallback}</>
 
   return (
-    <Tooltip
-      label={
-        !expanded ? (expandAll ? 'Expand All' : 'Expand') : expandAll ? 'Collapse All' : 'Collapse'
-      }
-    >
+    <Tooltip label={!expanded ? (expandAll ? 'Expand All' : 'Expand') : expandAll ? 'Collapse All' : 'Collapse'}>
       <BaseButton
         css={css`
           cursor: pointer;

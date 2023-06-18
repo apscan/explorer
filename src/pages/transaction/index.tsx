@@ -32,13 +32,7 @@ const tabs: Record<string, { name: string; key: string }> = {
   },
 }
 
-const TransactionTitle = ({
-  version,
-  latestVersion,
-}: {
-  version?: string
-  latestVersion?: string
-}) => {
+const TransactionTitle = ({ version, latestVersion }: { version?: string; latestVersion?: string }) => {
   const isDisableNext = useMemo(() => {
     // return Number(version) >= Number(latestVersion)
     return false
@@ -75,9 +69,7 @@ const TransactionTitle = ({
           toNext={!isDisableNext ? `/tx/${Number(version) + 1}` : undefined}
           toPrev={!isDisablePrev ? `/tx/${Number(version) - 1}` : undefined}
           nextTooltip={isDisableNext ? 'You have reached the latest version' : 'View next version'}
-          prevTooltip={
-            isDisablePrev ? 'You have reached the earliest version' : 'View previous version'
-          }
+          prevTooltip={isDisablePrev ? 'You have reached the earliest version' : 'View previous version'}
           css={css`
             transform: translateY(-1.5px);
           `}
@@ -99,7 +91,11 @@ export const Transaction = () => {
 
   const items = useMemo(() => {
     const result = [
-      { label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> },
+      {
+        label: tabs.overview.name,
+        key: tabs.overview.key,
+        children: <Overview data={data} />,
+      },
     ]
 
     if (data?.changes_count > 0) {
@@ -124,14 +120,8 @@ export const Transaction = () => {
 
   return (
     <Container>
-      <DocumentTitle
-        value={`Aptos Trasaction ${
-          data?.version !== undefined ? `#${data.version}` : '-'
-        } | Apscan`}
-      />
-      <PageTitle
-        value={<TransactionTitle latestVersion={String(latestVersion)} version={version} />}
-      />
+      <DocumentTitle value={`Aptos Trasaction ${data?.version !== undefined ? `#${data.version}` : '-'} | Apscan`} />
+      <PageTitle value={<TransactionTitle latestVersion={String(latestVersion)} version={version} />} />
       <Card>
         <Tabs onChange={onTabChange} activeKey={activeKey} size="large" items={items} />
       </Card>

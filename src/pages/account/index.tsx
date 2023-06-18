@@ -28,7 +28,9 @@ export const Account = () => {
 
   const { data } = useAccountDetailQuery(id)
   const address = useMemo(() => data?.address, [data])
-  const { data: coin } = useCoinDetailQuery({ type: '0x1::aptos_coin::AptosCoin' })
+  const { data: coin } = useCoinDetailQuery({
+    type: '0x1::aptos_coin::AptosCoin',
+  })
   const { data: history = [] } = useAccountBalanceHistoryQuery({ id: address }, { skip: !address })
   const showHistory = useMemo(
     () => !!coin && !!history.filter((item) => item.timestamp && item.value !== undefined).length,
@@ -37,10 +39,8 @@ export const Account = () => {
   const tabs = useMemo(() => {
     if (!data || !address) return undefined
 
-    const coinEventsCount =
-      data?.coin_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
-    const tokenEventsCount =
-      data?.token_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
+    const coinEventsCount = data?.coin_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
+    const tokenEventsCount = data?.token_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
 
     return [
       {
@@ -58,13 +58,7 @@ export const Account = () => {
       {
         label: tabNameWithCount('Transactions', data?.transactions_count),
         key: 'tx',
-        children: (
-          <AccountTransactions
-            key={address}
-            id={address}
-            count={(data?.sequence_number ?? -1) + 1}
-          />
-        ),
+        children: <AccountTransactions key={address} id={address} count={(data?.sequence_number ?? -1) + 1} />,
         hide: !data?.transactions_count,
       },
       {

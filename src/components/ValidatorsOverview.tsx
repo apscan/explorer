@@ -47,8 +47,7 @@ export const ValidatorsOverview = ({
     <Tooltip
       label={
         <Box>
-          Active {activeValidators}, Pending Inactive {pendingInactive}, Pending Active{' '}
-          {pendingActive}
+          Active {activeValidators}, Pending Inactive {pendingInactive}, Pending Active {pendingActive}
         </Box>
       }
       isDisabled={type === 'detail'}
@@ -70,21 +69,9 @@ export const ValidatorsOverview = ({
             `}
           />
         )}
-        <Item
-          label={type === 'detail' ? 'Active' : undefined}
-          color="#4361ee"
-          value={activeValidators}
-        />
-        <Item
-          label={type === 'detail' ? 'Pending Inactive' : undefined}
-          color="#4895ef"
-          value={pendingInactive}
-        />
-        <Item
-          label={type === 'detail' ? 'Pending Active' : undefined}
-          color="#4cc9f0"
-          value={pendingActive}
-        />
+        <Item label={type === 'detail' ? 'Active' : undefined} color="#4361ee" value={activeValidators} />
+        <Item label={type === 'detail' ? 'Pending Inactive' : undefined} color="#4895ef" value={pendingInactive} />
+        <Item label={type === 'detail' ? 'Pending Active' : undefined} color="#4cc9f0" value={pendingActive} />
       </Box>
     </Tooltip>
   )

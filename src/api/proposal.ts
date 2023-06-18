@@ -25,8 +25,7 @@ export const proposalApi = emptySplitApi.injectEndpoints({
               creation_time: item.proposal_content.creation_time_secs * 1000,
               expiration_time: item.proposal_content.expiration_secs * 1000,
               min_vote_threshold: item.proposal_content.min_vote_threshold,
-              early_resolution_vote_threshold:
-                item.proposal_content.early_resolution_vote_threshold.vec[0],
+              early_resolution_vote_threshold: item.proposal_content.early_resolution_vote_threshold.vec[0],
             }
           }),
           page: parseHeaders(meta?.response?.headers),

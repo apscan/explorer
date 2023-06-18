@@ -109,11 +109,10 @@ const columns = [
 export const Proposals = () => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
 
-  const { data: { data, page: { count } = { count: undefined } } = {}, isLoading } =
-    useProposalsQuery({
-      start: (page - 1) * pageSize,
-      pageSize,
-    })
+  const { data: { data, page: { count } = { count: undefined } } = {}, isLoading } = useProposalsQuery({
+    start: (page - 1) * pageSize,
+    pageSize,
+  })
 
   const pageProps = useRangePagination(page, pageSize, count, setPage)
 

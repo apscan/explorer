@@ -34,12 +34,7 @@ const Title = styled(Box)`
   color: #fff;
 `
 
-const Brand = ({
-  title,
-  url,
-  children,
-  ...rest
-}: React.PropsWithChildren<{ title: string; url: string }>) => {
+const Brand = ({ title, url, children, ...rest }: React.PropsWithChildren<{ title: string; url: string }>) => {
   return (
     <Link
       tooltip={title}

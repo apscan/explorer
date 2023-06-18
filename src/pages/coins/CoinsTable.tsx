@@ -79,9 +79,7 @@ export const CoinsTable = ({ data, price }: { data?: any; price?: number }) => {
       }),
       helper.accessor('price', {
         header: 'Price',
-        cell: (info) => (
-          <CoinPrice type={info.row.original?.move_resource_generic_type_params[0]} />
-        ),
+        cell: (info) => <CoinPrice type={info.row.original?.move_resource_generic_type_params[0]} />,
       }),
       helper.accessor('addresses_count', {
         header: 'Holders',

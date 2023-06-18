@@ -32,12 +32,7 @@ export const Collections = () => {
       <PageTitle value="Collections" />
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
-          <TableStat
-            maxCount={maxCount}
-            variant="table"
-            count={data?.page.count}
-            object="collections"
-          />
+          <TableStat maxCount={maxCount} variant="table" count={data?.page.count} object="collections" />
           <Pagination {...pageProps} />
         </CardHead>
         <CollectionsTable data={data?.data || []} />

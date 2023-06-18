@@ -9,14 +9,16 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        printWidth: 100,
         endOfLine: 'lf',
-        singleQuote: true,
-        trailingComma: 'es5',
+        "semi": false,
+        "singleQuote": true,
+        "printWidth": 120
       },
     ],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
     // allows ignoring ts checks
     '@typescript-eslint/ban-ts-comment': 'off',
     // allows destructuring to ignore fields

@@ -9,13 +9,7 @@ import { Link } from './link'
 import { Tooltip } from './Tooltip'
 
 export const SwitchDateFormat = memo(
-  ({
-    timeLabel = 'Time',
-    ageLabel = 'Age',
-  }: {
-    timeLabel?: React.ReactNode
-    ageLabel?: React.ReactNode
-  }) => {
+  ({ timeLabel = 'Time', ageLabel = 'Age' }: { timeLabel?: React.ReactNode; ageLabel?: React.ReactNode }) => {
     const dateFormat = useAppSelector((state) => state.application.dateFormat)
     const dispatch = useAppDispatch()
 

@@ -80,21 +80,11 @@ const PriceSources: React.FC<{ coin: string }> = ({ coin }) => {
   )
 }
 
-export const Market = ({
-  data,
-  percentChange24h,
-  price,
-}: {
-  price?: number
-  data?: any
-  percentChange24h: number
-}) => {
+export const Market = ({ data, percentChange24h, price }: { price?: number; data?: any; percentChange24h: number }) => {
   data = data || {}
   const fully = useMemo(
     () =>
-      !price
-        ? undefined
-        : new RealBigNumber(price).multipliedBy(data.total_supply).div(Math.pow(10, data.decimals)),
+      !price ? undefined : new RealBigNumber(price).multipliedBy(data.total_supply).div(Math.pow(10, data.decimals)),
     [data.decimals, data.total_supply, price]
   )
   const coin = data.move_resource_generic_type_params?.[0]
@@ -130,12 +120,7 @@ export const Market = ({
         )}
         {renderRow(
           'Total Supply',
-          <AmountFormat
-            fallback="-"
-            postfix={` ${data.symbol}`}
-            value={data.total_supply}
-            decimals={data.decimals}
-          />
+          <AmountFormat fallback="-" postfix={` ${data.symbol}`} value={data.total_supply} decimals={data.decimals} />
         )}
         {renderRow(
           'Fully Diluted Val.',
@@ -152,11 +137,7 @@ export const Market = ({
         )}
         {renderRow(
           'Creation Time',
-          data?.created_at ? (
-            <DateTime format={DateFormat.FULL} value={data?.created_at.timestamp} />
-          ) : (
-            '-'
-          )
+          data?.created_at ? <DateTime format={DateFormat.FULL} value={data?.created_at.timestamp} /> : '-'
         )}
       </Box>
     </Card>

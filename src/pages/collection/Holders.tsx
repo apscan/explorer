@@ -56,9 +56,7 @@ export const Holders = ({
           nowrap: true,
         },
         header: 'Amount',
-        cell: (info) => (
-          <NumberFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />
-        ),
+        cell: (info) => <NumberFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
       }),
       helper.accessor('percentage', {
         meta: {

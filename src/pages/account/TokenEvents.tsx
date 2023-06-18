@@ -175,8 +175,7 @@ const columns: ColumnDef<any, any>[] = [
     },
     header: 'Collection',
     cell: (info) => {
-      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)
-        ?.token_data_id as {
+      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)?.token_data_id as {
         collection: string
         name: string
         creator: string
@@ -200,8 +199,7 @@ const columns: ColumnDef<any, any>[] = [
     },
     header: 'Token',
     cell: (info) => {
-      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)
-        ?.token_data_id as {
+      const id = (info.row.original?.data?.id || info.row.original?.data?.new_id)?.token_data_id as {
         collection: string
         name: string
         creator: string
@@ -212,11 +210,7 @@ const columns: ColumnDef<any, any>[] = [
       }
 
       return (
-        <Link
-          to={`/token/${id.creator}/${encodeURIComponent(id.collection)}/${encodeURIComponent(
-            id.name
-          )}`}
-        >
+        <Link to={`/token/${id.creator}/${encodeURIComponent(id.collection)}/${encodeURIComponent(id.name)}`}>
           {id?.name}
         </Link>
       )

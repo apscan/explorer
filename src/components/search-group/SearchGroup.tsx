@@ -200,9 +200,7 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
       </StyledSelectWrapper>
       <Popover gutter={0} matchWidth autoFocus={false} isOpen={isOpen}>
         <PopoverTrigger>
-          <Box
-            width={variant === 'header' ? (isSmall ? '95%' : '100%') : isSmall ? '100%' : '642px'}
-          >
+          <Box width={variant === 'header' ? (isSmall ? '95%' : '100%') : isSmall ? '100%' : '642px'}>
             <SearchInputGroup
               onFocus={() => setInside(true)}
               onBlur={onBlur}
@@ -227,10 +225,7 @@ export const SearchGroup = ({ variant }: { variant?: 'home' | 'header' }) => {
             ) : (
               <>
                 {data?.ansAddress !== undefined && data?.ansAddress !== null && (
-                  <StyledSearchSection
-                    onClick={() => onSearch()}
-                    to={`/account/${data.ansAddress}`}
-                  >
+                  <StyledSearchSection onClick={() => onSearch()} to={`/account/${data.ansAddress}`}>
                     Aptos Names
                     <StyledSearchItemSmall>
                       <Address value={data.ansAddress} size="short" />

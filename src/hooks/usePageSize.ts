@@ -10,10 +10,7 @@ export const usePageSize = () => {
   const [page, setPage] = useState<number>(1)
   const location = useLocation()
   const dispatch = useAppDispatch()
-  const setPageSize = useCallback(
-    (pageSize: number) => dispatch(setPageSizeAction(pageSize)),
-    [dispatch]
-  )
+  const setPageSize = useCallback((pageSize: number) => dispatch(setPageSizeAction(pageSize)), [dispatch])
   const pageSize = useMemo(() => {
     const pageSizeInUrl = parseInt(queryString.parse(location.search)?.pageSize as string)
 

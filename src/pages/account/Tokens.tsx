@@ -107,11 +107,7 @@ const Collection: React.FC<CollectionType & { needCollasped?: boolean }> = ({
         justifyContent="space-between"
       >
         <InlineBox alignItems="center" justifyContent="space-between">
-          <Link
-            to={`/collection/${creator}/${encodeURIComponent(name)}`}
-            fontWeight="600"
-            sx={{ wordWrap: 'nowrap' }}
-          >
+          <Link to={`/collection/${creator}/${encodeURIComponent(name)}`} fontWeight="600" sx={{ wordWrap: 'nowrap' }}>
             {truncated(creator, 8)}::{name}
           </Link>
           <Text>&nbsp;({tokens.length})</Text>
@@ -247,15 +243,10 @@ export const Tokens = ({ address }: { address?: string }) => {
     }, [])
   }, [collections, search])
   const needCollasped = useMemo(
-    () =>
-      filteredCollections.length > 1 &&
-      filteredCollections.reduce((all, curr) => all + curr.tokens.length, 0) > 14,
+    () => filteredCollections.length > 1 && filteredCollections.reduce((all, curr) => all + curr.tokens.length, 0) > 14,
     [filteredCollections]
   )
-  const tokensCount = useMemo(
-    () => collections.reduce((all, curr) => all + curr.tokens.length, 0),
-    [collections]
-  )
+  const tokensCount = useMemo(() => collections.reduce((all, curr) => all + curr.tokens.length, 0), [collections])
 
   return (
     <Menu>

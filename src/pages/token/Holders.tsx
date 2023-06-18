@@ -161,14 +161,14 @@ export const Holders = ({
           nowrap: true,
         },
         header: 'Deposit Events',
-        cell: (info) => <NumberFormat fallback="-" useGrouping value={undefined} />,
+        cell: () => <NumberFormat fallback="-" useGrouping value={undefined} />,
       }),
       helper.accessor('withdraw_events_count', {
         meta: {
           nowrap: true,
         },
         header: 'Withdraw Events',
-        cell: (info) => <NumberFormat fallback="-" useGrouping value={undefined} />,
+        cell: () => <NumberFormat fallback="-" useGrouping value={undefined} />,
       }),
       helper.accessor('properties', {
         meta: {
@@ -206,12 +206,7 @@ export const Holders = ({
             return null
           }
 
-          return (
-            <ExpandButton
-              expanded={info.row.getIsExpanded()}
-              onClick={() => info.row.toggleExpanded()}
-            />
-          )
+          return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
         },
       }),
     ],

@@ -46,10 +46,7 @@ export const Transactions = () => {
 
   const [showPage, totalPage] = useMemo(() => {
     if (latestVersion && pageSize) {
-      return [
-        Math.floor((latestVersion + 1 - currentMax) / pageSize) + 1,
-        Math.floor(latestVersion / pageSize),
-      ]
+      return [Math.floor((latestVersion + 1 - currentMax) / pageSize) + 1, Math.floor(latestVersion / pageSize)]
     }
 
     return []

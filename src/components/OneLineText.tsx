@@ -27,24 +27,22 @@ const ellipsisStyle = css`
   vertical-align: bottom;
 `
 
-export const OneLineText = memo(
-  ({ tooltip, copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
-    // const text = useMemo(() => ((value?.length || 0) > 40 ? <span>{value?.slice(0, value.indexOf('<'))}&lt;<span style={{color: vars.colors.link}}>...</span>&gt;</span> : value), [value])
-    const text = useMemo(
-      () => ((value?.length || 0) > 50 ? `${value?.slice(0, value.indexOf('<'))}<...>` : value),
-      [value]
-    )
+export const OneLineText = memo(({ tooltip, copyable, value, ellipsis, size, fallback, ...props }: HashProps) => {
+  // const text = useMemo(() => ((value?.length || 0) > 40 ? <span>{value?.slice(0, value.indexOf('<'))}&lt;<span style={{color: vars.colors.link}}>...</span>&gt;</span> : value), [value])
+  const text = useMemo(
+    () => ((value?.length || 0) > 50 ? `${value?.slice(0, value.indexOf('<'))}<...>` : value),
+    [value]
+  )
 
-    if (!text) return <>{fallback}</>
+  if (!text) return <>{fallback}</>
 
-    return (
-      <Tooltip label={typeof tooltip === 'boolean' ? value : tooltip} isDisabled={!tooltip}>
-        <Box css={[container, ellipsis ? ellipsisStyle : false]} {...props}>
-          {text}
-        </Box>
-      </Tooltip>
-    )
-  }
-)
+  return (
+    <Tooltip label={typeof tooltip === 'boolean' ? value : tooltip} isDisabled={!tooltip}>
+      <Box css={[container, ellipsis ? ellipsisStyle : false]} {...props}>
+        {text}
+      </Box>
+    </Tooltip>
+  )
+})
 
 OneLineText.displayName = 'OneLineText'

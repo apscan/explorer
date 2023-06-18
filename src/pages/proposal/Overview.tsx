@@ -20,28 +20,16 @@ export const Overview = ({ data }: { data: any | undefined }) => {
     <Wrapper>
       <Box>
         {renderRow('Status', <ProposalStatus size="lg" value={data?.proposal_status} />)}
-        {renderRow(
-          'Proposer',
-          <Address withAnsIcon size="full" value={data?.proposal_content?.proposer} />
-        )}
+        {renderRow('Proposer', <Address withAnsIcon size="full" value={data?.proposal_content?.proposer} />)}
         {renderRow(
           'Creation Time',
-          <DateTime
-            format={DateFormat.FULL}
-            value={data?.proposal_content?.creation_time_secs * 1000}
-          />
+          <DateTime format={DateFormat.FULL} value={data?.proposal_content?.creation_time_secs * 1000} />
         )}
         {renderRow(
           'Voting End Time',
-          <DateTime
-            format={DateFormat.FULL}
-            value={data?.proposal_content?.expiration_secs * 1000}
-          />
+          <DateTime format={DateFormat.FULL} value={data?.proposal_content?.expiration_secs * 1000} />
         )}
-        {renderRow(
-          'Min Vote Threshold',
-          <AmountFormat value={data?.proposal_content?.min_vote_threshold} />
-        )}
+        {renderRow('Min Vote Threshold', <AmountFormat value={data?.proposal_content?.min_vote_threshold} />)}
         {renderRow(
           'Early Resolution Threshold',
           <AmountFormat value={data?.proposal_content?.early_resolution_vote_threshold.vec[0]} />
@@ -55,16 +43,9 @@ export const Overview = ({ data }: { data: any | undefined }) => {
         )}
         {renderRow(
           'Execution Date',
-          <DateTime
-            fallback="-"
-            format={DateFormat.FULL}
-            value={data?.proposal_content?.resolution_time_secs}
-          />
+          <DateTime fallback="-" format={DateFormat.FULL} value={data?.proposal_content?.resolution_time_secs} />
         )}
-        {renderRow(
-          'Execution Hash',
-          <Hash fallback="-" value={data?.proposal_content?.execution_hash} size="full" />
-        )}
+        {renderRow('Execution Hash', <Hash fallback="-" value={data?.proposal_content?.execution_hash} size="full" />)}
         {renderRow(
           'Metadata',
           <HashesTable

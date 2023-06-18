@@ -1,9 +1,6 @@
 import { useMemo } from 'react'
 
-export const useTabActiveKey = (
-  tabs: Record<string, { name: string; key: string }>,
-  searchParams: URLSearchParams
-) => {
+export const useTabActiveKey = (tabs: Record<string, { name: string; key: string }>, searchParams: URLSearchParams) => {
   const activeKey = useMemo(() => {
     const tabParam = searchParams.get('tab')
 

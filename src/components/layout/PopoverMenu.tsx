@@ -23,9 +23,7 @@ export const slideInUp = keyframes`
   }
 `
 
-export const PopoverMenu = styled(({ isOpen, ...props }: { isOpen: boolean }) => (
-  <PopoverContent {...props} />
-))<
+export const PopoverMenu = styled(({ isOpen, ...props }: { isOpen: boolean }) => <PopoverContent {...props} />)<
   {
     isOpen: boolean
   } & BoxProps
@@ -52,7 +50,12 @@ export const PopoverMenuItem = ({
   onClose,
   children,
   ...props
-}: { path?: string; onClose: () => void; isDisabled?: boolean; isActive?: boolean } & BoxProps) => {
+}: {
+  path?: string
+  onClose: () => void
+  isDisabled?: boolean
+  isActive?: boolean
+} & BoxProps) => {
   return (
     <LinkBox onClick={isDisabled ? undefined : onClose} css={linkBox} {...props}>
       <LinkOverlay

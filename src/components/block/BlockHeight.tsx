@@ -23,24 +23,22 @@ export interface BlockHeightProps extends BoxProps {
 }
 
 export const BlockHeight = memo(
-  forwardRef<HTMLDivElement, BlockHeightProps>(
-    ({ value, as = Link, timestamp, fallback, ...props }, ref) => {
-      if (isNaN(value as any)) return <>{fallback}</>
+  forwardRef<HTMLDivElement, BlockHeightProps>(({ value, as = Link, timestamp, fallback, ...props }, ref) => {
+    if (isNaN(value as any)) return <>{fallback}</>
 
-      return (
-        <Box as={as} to={`/block/${value}`} css={container} ref={ref} {...props}>
-          {timestamp ? (
-            <Box css={timestampContainer}>
-              <NumberFormat value={value} />
-              <DateTime fontSize="12px" fontWeight="400" value={timestamp} />
-            </Box>
-          ) : (
+    return (
+      <Box as={as} to={`/block/${value}`} css={container} ref={ref} {...props}>
+        {timestamp ? (
+          <Box css={timestampContainer}>
             <NumberFormat value={value} />
-          )}
-        </Box>
-      )
-    }
-  )
+            <DateTime fontSize="12px" fontWeight="400" value={timestamp} />
+          </Box>
+        ) : (
+          <NumberFormat value={value} />
+        )}
+      </Box>
+    )
+  })
 )
 
 BlockHeight.displayName = 'BlockHeight'

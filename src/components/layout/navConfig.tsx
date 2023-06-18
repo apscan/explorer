@@ -12,7 +12,11 @@ export const findPath = (nav: INavItem, path: string) => {
 
 export const navConfig: INavItem[] = [
   { name: 'Home', path: '/' },
-  { name: 'Accounts', path: '/accounts', activePaths: ['/accounts', '/account'] },
+  {
+    name: 'Accounts',
+    path: '/accounts',
+    activePaths: ['/accounts', '/account'],
+  },
   {
     name: 'Blockchain',
     activePaths: ['/blocks', '/txs', '/block', '/tx', '/modules', '/module'],
