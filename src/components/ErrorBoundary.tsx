@@ -47,7 +47,9 @@ export class ErrorBoundary extends React.Component<PropsWithChildren<unknown>, E
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } })
+    Sentry.captureException(error, {
+      contexts: { react: { componentStack: errorInfo.componentStack } },
+    })
     console.log({
       ...error,
       ...errorInfo,

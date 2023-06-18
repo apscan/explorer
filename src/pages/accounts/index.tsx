@@ -66,21 +66,27 @@ export const Accounts = () => {
           nowrap: true,
         },
         header: 'Available (APT)',
-        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => (
+          <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />
+        ),
       }),
       helper.accessor('aptos_coin_staked', {
         meta: {
           nowrap: true,
         },
         header: 'Staked (APT)',
-        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => (
+          <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />
+        ),
       }),
       helper.accessor('aptos_coin_total_balance', {
         meta: {
           nowrap: true,
         },
         header: 'Balance (APT)',
-        cell: (info) => <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />,
+        cell: (info) => (
+          <AmountFormat minimumFractionDigits={0} postfix={false} value={info.getValue()} />
+        ),
       }),
       helper.accessor('percentage', {
         meta: {
@@ -90,7 +96,10 @@ export const Accounts = () => {
         cell: (info) => {
           if (!totalSupply || info.row.original?.aptos_coin_total_balance === undefined) return '-'
 
-          const aptosCoinBalance = toFixedNumber(info.row.original?.aptos_coin_total_balance || 0, 'fixed128x18')
+          const aptosCoinBalance = toFixedNumber(
+            info.row.original?.aptos_coin_total_balance || 0,
+            'fixed128x18'
+          )
           const _totalSupply = toFixedNumber(totalSupply || 0, 'fixed128x18')
 
           return (
@@ -108,7 +117,12 @@ export const Accounts = () => {
           nowrap: true,
         },
         header: 'Txs',
-        cell: (info) => <NumberFormat to={`/account/${info.row.original.address}?tab=tx`} value={info.getValue()} />,
+        cell: (info) => (
+          <NumberFormat
+            to={`/account/${info.row.original.address}?tab=tx`}
+            value={info.getValue()}
+          />
+        ),
       }),
       // helper.accessor('resources_count', {
       //   header: 'Resources',
@@ -129,7 +143,12 @@ export const Accounts = () => {
     [totalSupply]
   )
 
-  const pageProps = useRangePagination(page, pageSize, !count ? count : count > maxCount ? maxCount : count, setPage)
+  const pageProps = useRangePagination(
+    page,
+    pageSize,
+    !count ? count : count > maxCount ? maxCount : count,
+    setPage
+  )
 
   return (
     <Container>

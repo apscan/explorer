@@ -53,7 +53,11 @@ export const blockApi = emptySplitApi.injectEndpoints({
         }
       },
       transformResponse(result: any[]) {
-        return { data: result, page: { max: result?.[0]?.height }, min: result?.[result.length - 1]?.height }
+        return {
+          data: result,
+          page: { max: result?.[0]?.height },
+          min: result?.[result.length - 1]?.height,
+        }
       },
     }),
     blockDetail: builder.query<any, string | void>({

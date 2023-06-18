@@ -3,7 +3,7 @@ import { Box } from 'components/container'
 import { useEffect, useRef } from 'react'
 import RealBigNumber from 'bignumber.js'
 import { lightTheme } from 'theme/theme.css'
-var Highcharts = require('highcharts')
+const Highcharts = require('highcharts')
 
 require('highcharts/modules/exporting')(Highcharts)
 

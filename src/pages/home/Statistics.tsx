@@ -124,7 +124,9 @@ export const Statistics = ({ ...rest }) => {
 
   const epochPercent = useMemo(() => {
     if (stats?.last_reconfiguration_time && stats?.time_microseconds && stats?.epoch_interval) {
-      const last_reconfiguration_time = FixedNumber.fromString(stats.last_reconfiguration_time.toString())
+      const last_reconfiguration_time = FixedNumber.fromString(
+        stats.last_reconfiguration_time.toString()
+      )
       const time_microseconds = FixedNumber.fromString(stats.time_microseconds.toString())
       const epochInterval = FixedNumber.fromString(stats.epoch_interval.toString())
 
@@ -208,7 +210,9 @@ export const Statistics = ({ ...rest }) => {
                 {market?.quotes?.USD?.percent_change_24h && (
                   <InlineBox
                     css={css`
-                      color: ${market?.quotes?.USD?.percent_change_24h < 0 ? vars.text.error : vars.text.success};
+                      color: ${market?.quotes?.USD?.percent_change_24h < 0
+                        ? vars.text.error
+                        : vars.text.success};
                     `}
                     fontSize="14px"
                     marginLeft="4px"
@@ -295,7 +299,12 @@ export const Statistics = ({ ...rest }) => {
             )}
             {renderStatistic(
               'Gas Price',
-              <NumberFormat separate={false} postfix=" Octa 🔥" fallback="-" value={stats?.latest_gas_fee} />,
+              <NumberFormat
+                separate={false}
+                postfix=" Octa 🔥"
+                fallback="-"
+                value={stats?.latest_gas_fee}
+              />,
               'right'
             )}
           </StatisticItem>
@@ -310,7 +319,12 @@ export const Statistics = ({ ...rest }) => {
             {renderStatistic(
               'Validators',
               <>
-                <NumberFormat to="/validators" useGrouping value={stats?.active_validators_count} fallback="-" />
+                <NumberFormat
+                  to="/validators"
+                  useGrouping
+                  value={stats?.active_validators_count}
+                  fallback="-"
+                />
               </>,
               'right'
             )}

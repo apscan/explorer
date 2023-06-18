@@ -35,7 +35,8 @@ export const homeApi = emptySplitApi.injectEndpoints({
 
         return {
           ...data,
-          validators_count: (data.active_validators_count || 0) + (data.pending_validators_count || 0),
+          validators_count:
+            (data.active_validators_count || 0) + (data.pending_validators_count || 0),
           staked_percent: toFixedNumber(data.actively_staked, 'fixed128x8')
             .divUnsafe(toFixedNumber(data.total_supply, 'fixed128x8'))
             .toString(),
@@ -78,7 +79,8 @@ export const homeApi = emptySplitApi.injectEndpoints({
             ...item,
             network: deserializeNetworkAddress(item.network_addresses),
             non_voting_power: (
-              BigInt(item.voting_power_detail.pending_active) + BigInt(item.voting_power_detail.inactive)
+              BigInt(item.voting_power_detail.pending_active) +
+              BigInt(item.voting_power_detail.inactive)
             ).toString(),
           }
         })
@@ -132,7 +134,9 @@ export const homeApi = emptySplitApi.injectEndpoints({
             isNumber ? `version=eq.${value}` : `hash=eq.${value}`
           }&limit=1&select=version,hash`,
           account: `/accounts?address=eq.${value}&limit=1&select=address`,
-          block: `/blocks?${isNumber ? `height=eq.${value}` : `hash=eq.${value}`}&limit=1&select=height,hash`,
+          block: `/blocks?${
+            isNumber ? `height=eq.${value}` : `hash=eq.${value}`
+          }&limit=1&select=height,hash`,
           apt: `https://www.aptosnames.com/api/mainnet/v1/address/${value}`,
         }
 

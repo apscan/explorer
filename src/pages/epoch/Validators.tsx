@@ -54,7 +54,11 @@ const columns = [
     },
     header: 'Network Address',
     cell: (info) => (
-      <Hash tooltip={info.getValue()} ellipsis value={info.getValue()?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2]} />
+      <Hash
+        tooltip={info.getValue()}
+        ellipsis
+        value={info.getValue()?.match(/^\/(ip4|dns)\/(.*?)\//)?.[2]}
+      />
     ),
   }),
   helper.accessor('geo', {
@@ -80,7 +84,8 @@ const columns = [
       <Tooltip
         label={
           <Box>
-            Proposed: {info.getValue()?.successful_proposals}, Failed: {info.getValue()?.failed_proposals}
+            Proposed: {info.getValue()?.successful_proposals}, Failed:{' '}
+            {info.getValue()?.failed_proposals}
           </Box>
         }
       >
@@ -110,16 +115,17 @@ const columns = [
 
 export const Validators = ({ id }: { id: any }) => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
-  const { data: { data, page: { count } = { count: undefined } } = {}, isLoading } = useEpochValidatorsQuery(
-    {
-      id: id!,
-      start: (page - 1) * pageSize,
-      pageSize,
-    },
-    {
-      skip: id == null,
-    }
-  )
+  const { data: { data, page: { count } = { count: undefined } } = {}, isLoading } =
+    useEpochValidatorsQuery(
+      {
+        id: id!,
+        start: (page - 1) * pageSize,
+        pageSize,
+      },
+      {
+        skip: id == null,
+      }
+    )
 
   const pageProps = useRangePagination(page, pageSize, count, setPage)
 

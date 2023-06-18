@@ -37,8 +37,10 @@ export const Account = () => {
   const tabs = useMemo(() => {
     if (!data || !address) return undefined
 
-    const coinEventsCount = data?.coin_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
-    const tokenEventsCount = data?.token_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
+    const coinEventsCount =
+      data?.coin_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
+    const tokenEventsCount =
+      data?.token_events_count?.reduce((all: any, curr: any) => all + curr.events_count, 0) || 0
 
     return [
       {
@@ -56,7 +58,13 @@ export const Account = () => {
       {
         label: tabNameWithCount('Transactions', data?.transactions_count),
         key: 'tx',
-        children: <AccountTransactions key={address} id={address} count={(data?.sequence_number ?? -1) + 1} />,
+        children: (
+          <AccountTransactions
+            key={address}
+            id={address}
+            count={(data?.sequence_number ?? -1) + 1}
+          />
+        ),
         hide: !data?.transactions_count,
       },
       {

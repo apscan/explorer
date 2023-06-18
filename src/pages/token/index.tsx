@@ -16,7 +16,11 @@ import { tabNameWithCount } from 'utils'
 import { Events } from './Events'
 
 export const Token = () => {
-  const { creator, name, collectionName } = useParams<{ creator: string; collectionName: string; name: string }>()
+  const { creator, name, collectionName } = useParams<{
+    creator: string
+    collectionName: string
+    name: string
+  }>()
   const { data } = useTokenDetailQuery(
     { creator: creator!, name: name!, collectionName: collectionName! },
     {

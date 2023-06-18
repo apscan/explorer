@@ -109,7 +109,13 @@ export const HistoryChart = memo(() => {
               axisLine={false}
             />
             <Tooltip content={<CustomTooltip />} />
-            <Line type="monotone" isAnimationActive={false} dataKey="transactions_count" dot={false} stroke="#333333" />
+            <Line
+              type="monotone"
+              isAnimationActive={false}
+              dataKey="transactions_count"
+              dot={false}
+              stroke="#333333"
+            />
           </LineChart>
         </ResponsiveContainer>
       </Box>

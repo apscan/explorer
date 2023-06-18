@@ -105,7 +105,7 @@ export const collectionApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
     collections: builder.query<PageResult<Collection>, { start?: number; pageSize?: number }>({
       query: ({ start = 0, pageSize }) => {
-        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
           url: `/collections`,
@@ -126,7 +126,9 @@ export const collectionApi = emptySplitApi.injectEndpoints({
     collectionDetail: builder.query<Collection, { creator: string; name: string }>({
       query: ({ creator, name }) => {
         return {
-          url: `/collections?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
+          url: `/collections?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(
+            name
+          )}`,
         }
       },
       transformResponse(data: Collection[]) {
@@ -138,10 +140,12 @@ export const collectionApi = emptySplitApi.injectEndpoints({
       { creator: string; name: string; start?: number; pageSize?: number }
     >({
       query: ({ creator, name, start = 0, pageSize }) => {
-        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
-          url: `/collection_holders?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
+          url: `/collection_holders?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(
+            name
+          )}`,
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,
@@ -161,7 +165,9 @@ export const collectionApi = emptySplitApi.injectEndpoints({
         end = getLimitedEnd('token_events?creator_address&collection_name', end)
 
         return {
-          url: `/token_events?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
+          url: `/token_events?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(
+            name
+          )}`,
           headers: {
             'Range-Unit': 'items',
             Range: `${start}-${end ?? ''}`,

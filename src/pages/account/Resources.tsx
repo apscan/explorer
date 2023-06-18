@@ -40,7 +40,11 @@ const columns = [
   helper.accessor('move_resource_generic_type_params', {
     header: 'Resource Type',
     cell: (info) =>
-      info.getValue() ? <TypeParam value={info.row.original?.move_resource_generic_type_params[0]} /> : '-',
+      info.getValue() ? (
+        <TypeParam value={info.row.original?.move_resource_generic_type_params[0]} />
+      ) : (
+        '-'
+      ),
   }),
   helper.accessor('move_resource_data', {
     meta: {
@@ -65,7 +69,12 @@ const columns = [
       )
     },
     cell: (info) => {
-      return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+      return (
+        <ExpandButton
+          expanded={info.row.getIsExpanded()}
+          onClick={() => info.row.toggleExpanded()}
+        />
+      )
     },
   }),
 ]

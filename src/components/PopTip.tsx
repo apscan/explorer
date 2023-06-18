@@ -1,4 +1,10 @@
-import { Popover, PopoverProps, PopoverTrigger, PopoverContent, PopoverArrow } from 'components/popover'
+import {
+  Popover,
+  PopoverProps,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+} from 'components/popover'
 import { Icon } from './Icon'
 import { vars } from 'theme/theme.css'
 import { css } from '@emotion/react'

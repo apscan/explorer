@@ -247,7 +247,12 @@ export const Transfers = ({ id, count, type }: { id?: string; count: number; typ
   return (
     <CardBody isLoading={isLoading}>
       <CardHead variant="tabletab">
-        <TableStat variant="tabletab" maxCount={maxCount} object={type ? 'events' : 'coin events'} count={count} />
+        <TableStat
+          variant="tabletab"
+          maxCount={maxCount}
+          object={type ? 'events' : 'coin events'}
+          count={count}
+        />
         {pageProps.total > 1 && <Pagination {...pageProps} />}
       </CardHead>
       <DataTable

@@ -16,7 +16,11 @@ export const txApi = emptySplitApi.injectEndpoints({
         }
       },
       transformResponse(result: any[]) {
-        return { data: result, page: { max: result?.[0]?.version }, min: result?.[result.length - 1]?.version }
+        return {
+          data: result,
+          page: { max: result?.[0]?.version },
+          min: result?.[result.length - 1]?.version,
+        }
       },
     }),
     transactionDetail: builder.query<any, string | void>({

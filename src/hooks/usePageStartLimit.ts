@@ -10,7 +10,10 @@ export const usePageStartLimit = (initialStart?: number) => {
   const [start, setStart] = useState<number | undefined>(initialStart)
   const location = useLocation()
   const dispatch = useAppDispatch()
-  const setPageSize = useCallback((pageSize: number) => dispatch(setPageSizeAction(pageSize)), [dispatch])
+  const setPageSize = useCallback(
+    (pageSize: number) => dispatch(setPageSizeAction(pageSize)),
+    [dispatch]
+  )
 
   const limit = useMemo(() => {
     const limitInUrl = parseInt(queryString.parse(location.search)?.limit as string)
@@ -23,5 +26,8 @@ export const usePageStartLimit = (initialStart?: number) => {
     setStart(!startString ? undefined : parseInt(startString))
   }, [location.search])
 
-  return useMemo(() => ({ limit, setLimit: setPageSize, start, setStart }), [limit, setPageSize, start])
+  return useMemo(
+    () => ({ limit, setLimit: setPageSize, start, setStart }),
+    [limit, setPageSize, start]
+  )
 }

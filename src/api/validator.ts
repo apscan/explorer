@@ -23,7 +23,8 @@ export const validatorApi = emptySplitApi.injectEndpoints({
               ...item,
               network: deserializeNetworkAddress(item.network_addresses),
               non_voting_power: (
-                BigInt(item.voting_power_detail.pending_active) + BigInt(item.voting_power_detail.inactive)
+                BigInt(item.voting_power_detail.pending_active) +
+                BigInt(item.voting_power_detail.inactive)
               ).toString(),
             }
           }),

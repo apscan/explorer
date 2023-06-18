@@ -9,7 +9,12 @@ import { useCallback, useMemo } from 'react'
 import { useCustomSearchParams } from 'hooks/useCustomSearchParams'
 
 export const AccountTransactions = ({ id, count }: { id: string; count: number }) => {
-  const { limit: pageSize, setLimit: setPageSize, start = count - 1, setStart } = usePageStartLimit()
+  const {
+    limit: pageSize,
+    setLimit: setPageSize,
+    start = count - 1,
+    setStart,
+  } = usePageStartLimit()
   const [search, setSearch] = useCustomSearchParams()
 
   const { data: { data } = {}, isLoading } = useAccountTransactionsQuery(

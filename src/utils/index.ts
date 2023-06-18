@@ -3,7 +3,9 @@ import React from 'react'
 
 export const isSystemTx = memoizeOne((str: any) => {
   if (typeof str !== 'string') return false
-  return ['user_transaction', 'genesis_transaction', 'block_metadata_transaction'].includes(str.toLowerCase())
+  return ['user_transaction', 'genesis_transaction', 'block_metadata_transaction'].includes(
+    str.toLowerCase()
+  )
 })
 
 export const parseHeaders = (
@@ -28,12 +30,12 @@ export const tabNameWithCount = (name: React.ReactNode, count?: number | undefin
 }
 
 export const isLargeObject = (object: any): boolean => {
-  let objectList = []
-  let stack = [object]
+  const objectList = []
+  const stack = [object]
   let bytes = 0
 
   while (stack.length) {
-    let value = stack.pop()
+    const value = stack.pop()
 
     if (typeof value === 'boolean') {
       bytes += 4
@@ -44,7 +46,7 @@ export const isLargeObject = (object: any): boolean => {
     } else if (typeof value === 'object' && objectList.indexOf(value) === -1) {
       objectList.push(value)
 
-      for (let i in value) {
+      for (const i in value) {
         stack.push(value[i])
       }
     }

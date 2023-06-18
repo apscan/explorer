@@ -2,7 +2,8 @@ import { assignInlineVars } from '@vanilla-extract/dynamic'
 
 import { Theme, themeVars } from './theme.css'
 
-const resolveTheme = (theme: Theme | (() => Theme)) => (typeof theme === 'function' ? theme() : theme)
+const resolveTheme = (theme: Theme | (() => Theme)) =>
+  typeof theme === 'function' ? theme() : theme
 
 export function cssObjectFromTheme(
   theme: Theme | (() => Theme),
@@ -19,7 +20,9 @@ export function cssObjectFromTheme(
   const resolvedBaseThemeVars = assignInlineVars(themeVars, resolveTheme(baseTheme))
 
   const filteredVars = Object.fromEntries(
-    Object.entries(resolvedThemeVars).filter(([varName, value]) => value !== resolvedBaseThemeVars[varName])
+    Object.entries(resolvedThemeVars).filter(
+      ([varName, value]) => value !== resolvedBaseThemeVars[varName]
+    )
   )
 
   return filteredVars

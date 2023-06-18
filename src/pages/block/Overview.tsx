@@ -42,16 +42,30 @@ const BlockVotesBitvec = ({ id }: { id: string }) => {
   return <Box>{show}</Box>
 }
 
-export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta?: any | undefined }) => {
+export const Overview = ({
+  data,
+  blockMeta,
+}: {
+  data: any | undefined
+  blockMeta?: any | undefined
+}) => {
   return (
     <Wrapper>
       <Box>
-        {renderRow('Hash', data ? <BlockHash fallback="-" as="span" value={data?.hash} size="full" /> : '', {
-          border: false,
-        })}
-        {renderRow('Timestamp', <DateTime format={DateFormat.FULL} value={data?.time_microseconds} />, {
-          border: false,
-        })}
+        {renderRow(
+          'Hash',
+          data ? <BlockHash fallback="-" as="span" value={data?.hash} size="full" /> : '',
+          {
+            border: false,
+          }
+        )}
+        {renderRow(
+          'Timestamp',
+          <DateTime format={DateFormat.FULL} value={data?.time_microseconds} />,
+          {
+            border: false,
+          }
+        )}
         {renderRow('Epoch', <NumberFormat value={data?.epoch} />, { border: false })}
         {renderRow('Round', <NumberFormat value={data?.round} />, { border: true })}
         {renderRow(
@@ -61,10 +75,14 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
             value={[
               {
                 content: <Address withAnsIcon size="full" value={data?.proposer} />,
-                label: <VmStatus withPadding={false} withBg={false} value="Executed successfully" />,
+                label: (
+                  <VmStatus withPadding={false} withBg={false} value="Executed successfully" />
+                ),
               },
               ...(data?.failedProposers?.map((failedProposer: any) => ({
-                content: <Address withAnsIcon size="full" value={failedProposer?.proposer_address} />,
+                content: (
+                  <Address withAnsIcon size="full" value={failedProposer?.proposer_address} />
+                ),
                 label: <VmStatus withPadding={false} withBg={false} value="" failedText="Failed" />,
               })) || []),
             ]}
@@ -91,9 +109,13 @@ export const Overview = ({ data, blockMeta }: { data: any | undefined; blockMeta
           ) : null,
           { border: false }
         )}
-        {renderRow('Fees', <AmountFormat symbol={undefined} postfix=" APT 🔥" value={data?.gas_fees} />, {
-          border: true,
-        })}
+        {renderRow(
+          'Fees',
+          <AmountFormat symbol={undefined} postfix=" APT 🔥" value={data?.gas_fees} />,
+          {
+            border: true,
+          }
+        )}
         {renderRow(
           'More Hashes',
           blockMeta && (

@@ -1,4 +1,7 @@
-import { InputGroup as ChaInputGroup, InputRightElement as ChaInputRightElement } from '@chakra-ui/react'
+import {
+  InputGroup as ChaInputGroup,
+  InputRightElement as ChaInputRightElement,
+} from '@chakra-ui/react'
 import { css } from '@emotion/react'
 import { forwardRef, useCallback, useState } from 'react'
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg'

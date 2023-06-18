@@ -59,4 +59,13 @@ const MenuOptionGroup = styled(CMenuOptionGroup)``
 
 const MenuDivider = styled(CMenuDivider)``
 
-export { Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider }
+export {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+}

@@ -1,6 +1,13 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { ColumnDef, flexRender, getCoreRowModel, getExpandedRowModel, Row, useReactTable } from '@tanstack/react-table'
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getExpandedRowModel,
+  Row,
+  useReactTable,
+} from '@tanstack/react-table'
 import { Fragment, memo, useEffect, useRef } from 'react'
 import { Box, BoxProps } from '../container/Box'
 import { Table, Tbody, Td, Th, Thead, Tr } from './TableComponents'
@@ -28,7 +35,15 @@ const rowModel = getCoreRowModel()
 const expandedRowModel = getExpandedRowModel()
 
 export const DataTable = memo(
-  ({ dataSource, page, columns, columnVisibility, renderSubComponent, getRowCanExpand, ...props }: DataTableProps) => {
+  ({
+    dataSource,
+    page,
+    columns,
+    columnVisibility,
+    renderSubComponent,
+    getRowCanExpand,
+    ...props
+  }: DataTableProps) => {
     const table = useReactTable({
       data: dataSource || [],
       columns: columns,
@@ -91,7 +106,9 @@ export const DataTable = memo(
                       key={header.id}
                       colSpan={header.colSpan}
                     >
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </Th>
                   )
                 })}

@@ -74,7 +74,9 @@ export const ValidatorMap = () => {
       bufferLat: distanceLat * 0.02,
       bufferLon: distanceLon * 0.02,
       mapData: data.reduce((result: any, current: any) => {
-        const findCurrent = result.find((item: any) => item.city === current.city && item.type === current.type)
+        const findCurrent = result.find(
+          (item: any) => item.city === current.city && item.type === current.type
+        )
         if (!findCurrent) {
           result.push({
             type: current.type,

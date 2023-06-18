@@ -151,9 +151,12 @@ export type TokenHolder = {
 
 export const tokenApi = emptySplitApi.injectEndpoints({
   endpoints: (builder) => ({
-    tokens: builder.query<PageResult<TokenByAddress>, { address?: string; start?: number; pageSize?: number }>({
+    tokens: builder.query<
+      PageResult<TokenByAddress>,
+      { address?: string; start?: number; pageSize?: number }
+    >({
       query: ({ start = 0, pageSize, address }) => {
-        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
           url: `/tokens_by_address?address=eq.${address}`,
@@ -175,7 +178,10 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
-    tokenDetail: builder.query<TokenDetail, { creator: string; name: string; collectionName: string }>({
+    tokenDetail: builder.query<
+      TokenDetail,
+      { creator: string; name: string; collectionName: string }
+    >({
       query: ({ creator, name, collectionName }) => {
         return {
           url: `/tokens?collection_name=eq.${encodeURIComponent(
@@ -195,10 +201,12 @@ export const tokenApi = emptySplitApi.injectEndpoints({
       { creator: string; name: string; start?: number; pageSize?: number }
     >({
       query: ({ start = 0, pageSize, creator, name }) => {
-        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
-          url: `/tokens?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(name)}`,
+          url: `/tokens?creator_address=eq.${creator}&collection_name=eq.${encodeURIComponent(
+            name
+          )}`,
           headers: {
             prefer: 'count=exact',
             'Range-Unit': 'items',
@@ -213,9 +221,12 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
-    accountTokenEvents: builder.query<PageResult<{}>, { id?: string; start?: number; pageSize?: number }>({
+    accountTokenEvents: builder.query<
+      PageResult<{}>,
+      { id?: string; start?: number; pageSize?: number }
+    >({
       query: ({ start = 0, pageSize, id }) => {
-        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
           url: `/token_events_by_address?address=eq.${id}`,
@@ -242,7 +253,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
       { creator: string; name: string; collectionName: string; start?: number; pageSize?: number }
     >({
       query: ({ creator, name, collectionName, start, pageSize }) => {
-        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
           url: `/token_holders?collection_name=eq.${encodeURIComponent(
@@ -263,7 +274,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
       { creator: string; name: string; collectionName: string; start?: number; pageSize?: number }
     >({
       query: ({ creator, name, collectionName, start, pageSize }) => {
-        let end = pageSize != null && start != null ? start + pageSize - 1 : undefined
+        const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 
         return {
           url: `/token_events?collection_name=eq.${encodeURIComponent(

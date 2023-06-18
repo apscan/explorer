@@ -26,7 +26,10 @@ const themeContractValues = {
 
 export type Theme = typeof themeContractValues
 
-export const themeVars = createGlobalThemeContract(themeContractValues, (_, path) => `ap-${path.join('-')}`)
+export const themeVars = createGlobalThemeContract(
+  themeContractValues,
+  (_, path) => `ap-${path.join('-')}`
+)
 
 export const darkTheme: Theme = {
   colors: {

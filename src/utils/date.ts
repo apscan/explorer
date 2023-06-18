@@ -103,7 +103,7 @@ export const formatDate = (
 
   let time = dayjs(value)
   let local = time.format(formatString)
-  let localFull = time.format('YYYY-MM-DD HH:mm:ss.SSS')
+  const localFull = time.format('YYYY-MM-DD HH:mm:ss.SSS')
 
   time = time.utc()
 

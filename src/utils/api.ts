@@ -1,6 +1,9 @@
 import { queryRangeLimitMap } from 'config/api'
 
-export function getLimitedEnd(url: keyof typeof queryRangeLimitMap, end?: number): number | undefined {
+export function getLimitedEnd(
+  url: keyof typeof queryRangeLimitMap,
+  end?: number
+): number | undefined {
   if (!end) {
     return end
   }

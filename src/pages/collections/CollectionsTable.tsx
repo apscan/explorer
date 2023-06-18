@@ -52,7 +52,9 @@ const columns = [
 
       return (
         <NumberFormat
-          to={`/collection/${data.creator_address}/${encodeURIComponent(data.collection_name)}?tab=tokens`}
+          to={`/collection/${data.creator_address}/${encodeURIComponent(
+            data.collection_name
+          )}?tab=tokens`}
           useGrouping
           fallback="-"
           value={data.collection_data?.supply === '0' ? undefined : data.collection_data?.supply}
@@ -118,7 +120,9 @@ const columns = [
     meta: {
       isExpandButton: true,
     },
-    cell: (info) => <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />,
+    cell: (info) => (
+      <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+    ),
   }),
 ]
 

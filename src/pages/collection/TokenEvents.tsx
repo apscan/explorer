@@ -88,9 +88,9 @@ const columns = [
 
       return (
         <Link
-          to={`/token/${data.creator_address}/${encodeURIComponent(data.collection_name)}/${encodeURIComponent(
-            data.token_name
-          )}`}
+          to={`/token/${data.creator_address}/${encodeURIComponent(
+            data.collection_name
+          )}/${encodeURIComponent(data.token_name)}`}
           maxW="250px"
           overflow="hidden"
           whiteSpace="nowrap"
@@ -112,7 +112,15 @@ const columns = [
   }),
 ]
 
-export const TokenEvents = ({ creator, name, count }: { creator: string; name: string; count: number }) => {
+export const TokenEvents = ({
+  creator,
+  name,
+  count,
+}: {
+  creator: string
+  name: string
+  count: number
+}) => {
   const maxCount = queryRangeLimitMap['token_events?creator_address&collection_name']
   const [pageSize, setPageSize, page, setPage] = usePageSize()
   const { data: { data = [] } = {}, isLoading } = useTokenEventsByCollectionQuery(

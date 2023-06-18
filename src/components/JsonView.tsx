@@ -15,7 +15,10 @@ const JsonViewContainer = ({
   data: object
   isDisabled?: boolean
 }) => {
-  const text = useMemo(() => (!isDisabled && data ? JSON.stringify(data, null, 2) : undefined), [isDisabled, data])
+  const text = useMemo(
+    () => (!isDisabled && data ? JSON.stringify(data, null, 2) : undefined),
+    [isDisabled, data]
+  )
 
   if (isDisabled) return <>{children}</>
 

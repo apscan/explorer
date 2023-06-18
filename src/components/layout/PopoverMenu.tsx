@@ -23,7 +23,9 @@ export const slideInUp = keyframes`
   }
 `
 
-export const PopoverMenu = styled(({ isOpen, ...props }: { isOpen: boolean }) => <PopoverContent {...props} />)<
+export const PopoverMenu = styled(({ isOpen, ...props }: { isOpen: boolean }) => (
+  <PopoverContent {...props} />
+))<
   {
     isOpen: boolean
   } & BoxProps

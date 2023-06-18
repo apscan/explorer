@@ -68,7 +68,12 @@ export const Holders = ({
         },
         header: 'Balance',
         cell: (info) => (
-          <AmountFormat minimumFractionDigits={0} postfix={false} decimals={decimals} value={info.getValue()} />
+          <AmountFormat
+            minimumFractionDigits={0}
+            postfix={false}
+            decimals={decimals}
+            value={info.getValue()}
+          />
         ),
       }),
       helper.accessor('percentage', {
@@ -119,8 +124,9 @@ export const Holders = ({
         header: 'Deposit Events',
         cell: (info) => {
           const deposit_events =
-            info.row.original?.events_count?.find((event: any) => event.event_type.includes('DepositEvent'))
-              ?.events_count || 0
+            info.row.original?.events_count?.find((event: any) =>
+              event.event_type.includes('DepositEvent')
+            )?.events_count || 0
 
           return (
             <NumberFormat
@@ -138,8 +144,9 @@ export const Holders = ({
         header: 'Withdraw Events',
         cell: (info) => {
           const withdraw_events =
-            info.row.original?.events_count?.find((event: any) => event.event_type.includes('WithdrawEvent'))
-              ?.events_count || 0
+            info.row.original?.events_count?.find((event: any) =>
+              event.event_type.includes('WithdrawEvent')
+            )?.events_count || 0
 
           return (
             <NumberFormat

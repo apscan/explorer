@@ -53,7 +53,8 @@ export const DateTime = memo(
         }
 
         return formatDate(value, {
-          withUTCPostfix: withUTCPostfix !== undefined ? withUTCPostfix : format === DateFormat.FULL,
+          withUTCPostfix:
+            withUTCPostfix !== undefined ? withUTCPostfix : format === DateFormat.FULL,
           full: format === DateFormat.FULL,
         })
       }, [value, withUTCPostfix, format])

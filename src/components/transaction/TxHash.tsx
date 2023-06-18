@@ -34,9 +34,22 @@ export interface TxHashProps extends BoxProps {
 }
 
 export const TxHash = memo(
-  ({ value, as = Link, copyable, vmStatus, size, timestamp, success, fallback, ...props }: TxHashProps) => {
+  ({
+    value,
+    as = Link,
+    copyable,
+    vmStatus,
+    size,
+    timestamp,
+    success,
+    fallback,
+    ...props
+  }: TxHashProps) => {
     const hash = useMemo(() => truncatedWithSize(value, size), [value, size])
-    const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
+    const copy = useMemo(
+      () => (copyable !== undefined ? copyable : size === 'full'),
+      [copyable, size]
+    )
 
     if (!hash) return <>{fallback}</>
 

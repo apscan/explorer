@@ -22,7 +22,11 @@ const columns = [
       nowrap: true,
     },
     cell: (info) => (
-      <Version vmStatus={info.row.original.vm_status} success={info.row.original.success} value={info.getValue()} />
+      <Version
+        vmStatus={info.row.original.vm_status}
+        success={info.row.original.success}
+        value={info.getValue()}
+      />
     ),
   }),
   helper.accessor('block_height', {
@@ -55,13 +59,19 @@ const columns = [
   helper.accessor('changes_count', {
     header: 'Changes',
     cell: (info) => (
-      <NumberFormat to={info.getValue() && `/tx/${info.row.original.version}?tab=changes`} value={info.getValue()} />
+      <NumberFormat
+        to={info.getValue() && `/tx/${info.row.original.version}?tab=changes`}
+        value={info.getValue()}
+      />
     ),
   }),
   helper.accessor('events_count', {
     header: 'Events',
     cell: (info) => (
-      <NumberFormat to={info.getValue() && `/tx/${info.row.original.version}?tab=events`} value={info.getValue()} />
+      <NumberFormat
+        to={info.getValue() && `/tx/${info.row.original.version}?tab=events`}
+        value={info.getValue()}
+      />
     ),
   }),
   helper.accessor('gas_fees', {
@@ -77,7 +87,9 @@ const columns = [
         info.row.original?.user_transaction_detail?.gas_unit_price && (
           <AmountFormat
             postfix=" 🔥"
-            value={info.row.original.gas_used * info.row.original.user_transaction_detail.gas_unit_price}
+            value={
+              info.row.original.gas_used * info.row.original.user_transaction_detail.gas_unit_price
+            }
           />
         )
       )
@@ -113,12 +125,20 @@ const columns = [
         info.row.original.type === 'user_transaction' &&
         info.row.original?.payload?.type === 'entry_function_payload'
       ) {
-        return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+        return (
+          <ExpandButton
+            expanded={info.row.getIsExpanded()}
+            onClick={() => info.row.toggleExpanded()}
+          />
+        )
       }
 
       return (
         info.row.original.payload && (
-          <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+          <ExpandButton
+            expanded={info.row.getIsExpanded()}
+            onClick={() => info.row.toggleExpanded()}
+          />
         )
       )
     },

@@ -28,7 +28,13 @@ const tabs: Record<string, { name: string; key: string }> = {
   },
 }
 
-const BlockTitle = ({ blockHeight, latestBlockHeight }: { blockHeight?: string; latestBlockHeight?: string }) => {
+const BlockTitle = ({
+  blockHeight,
+  latestBlockHeight,
+}: {
+  blockHeight?: string
+  latestBlockHeight?: string
+}) => {
   const isDisableNext = useMemo(() => {
     // return Number(blockHeight) >= Number(latestBlockHeight)
     return false
@@ -65,7 +71,9 @@ const BlockTitle = ({ blockHeight, latestBlockHeight }: { blockHeight?: string; 
           toNext={!isDisableNext ? `/block/${Number(blockHeight) + 1}` : undefined}
           toPrev={!isDisablePrev ? `/block/${Number(blockHeight) - 1}` : undefined}
           nextTooltip={isDisableNext ? 'You have reached the latest block' : 'View next block'}
-          prevTooltip={isDisablePrev ? 'You have reached the earliest block' : 'View previous block'}
+          prevTooltip={
+            isDisablePrev ? 'You have reached the earliest block' : 'View previous block'
+          }
           css={css`
             transform: translateY(-1.5px);
           `}
@@ -114,8 +122,14 @@ export const Block = () => {
 
   return (
     <Container>
-      <DocumentTitle value={`Aptos Block ${blockHeight !== undefined ? `#${data?.height}` : '-'} | Apscan`} />
-      <PageTitle value={<BlockTitle latestBlockHeight={String(latestBlockHeight)} blockHeight={blockHeight} />} />
+      <DocumentTitle
+        value={`Aptos Block ${blockHeight !== undefined ? `#${data?.height}` : '-'} | Apscan`}
+      />
+      <PageTitle
+        value={
+          <BlockTitle latestBlockHeight={String(latestBlockHeight)} blockHeight={blockHeight} />
+        }
+      />
       <Card>
         <Tabs onChange={onTabChange} activeKey={activeKey} size="large" items={items} />
       </Card>

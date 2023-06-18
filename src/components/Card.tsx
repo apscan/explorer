@@ -43,7 +43,11 @@ const Loading = ({ ...props }: BoxProps) => {
   )
 }
 
-export const Card = ({ variant, isLoading, ...props }: BoxProps & { isLoading?: boolean; variant?: string }) => {
+export const Card = ({
+  variant,
+  isLoading,
+  ...props
+}: BoxProps & { isLoading?: boolean; variant?: string }) => {
   if (isLoading)
     return (
       <Box
@@ -72,7 +76,11 @@ export const Card = ({ variant, isLoading, ...props }: BoxProps & { isLoading?: 
   )
 }
 
-export const CardBody = ({ variant, isLoading, ...props }: BoxProps & { isLoading?: boolean; variant?: string }) => {
+export const CardBody = ({
+  variant,
+  isLoading,
+  ...props
+}: BoxProps & { isLoading?: boolean; variant?: string }) => {
   if (isLoading)
     return (
       <Box padding="12px" {...props}>

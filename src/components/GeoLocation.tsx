@@ -3,7 +3,14 @@ import { selectGeoSelector } from 'state/application/selectors'
 import { useAppSelector } from 'state/hooks'
 import { Hash } from './Hash'
 
-export const GeoLocation = ({ value, fallback, ...props }: { value: string; fallback?: React.ReactNode }) => {
+export const GeoLocation = ({
+  value,
+  fallback,
+  ...props
+}: {
+  value: string
+  fallback?: React.ReactNode
+}) => {
   const data = useAppSelector((state) => state.api.queries['stats(undefined)']?.data)
   const location = useAppSelector((state) => selectGeoSelector(state, value))
 

@@ -58,6 +58,7 @@ export const tooltipContentSelector = (state: AppState) => state.tooltip.text
 export const tooltipPositionSelector = (state: AppState) => state.tooltip.position
 export const tooltipCopiedSelector = (state: AppState) => state.tooltip.copied
 
-export const { setText, setPosition, toggleTooltip, clearTimer, setTimerId, setCopied } = tooltipSlice.actions
+export const { setText, setPosition, toggleTooltip, clearTimer, setTimerId, setCopied } =
+  tooltipSlice.actions
 
 export default tooltipSlice.reducer

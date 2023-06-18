@@ -116,7 +116,9 @@ const columns = [
       nowrap: true,
     },
     header: 'First Tx',
-    cell: (info) => <Link as={NumberFormat} to={`/tx/${info.getValue()}`} value={info.getValue()} />,
+    cell: (info) => (
+      <Link as={NumberFormat} to={`/tx/${info.getValue()}`} value={info.getValue()} />
+    ),
   }),
   helper.accessor('', {
     meta: {
@@ -124,7 +126,8 @@ const columns = [
     },
     header: 'Last Tx',
     cell: (info) => {
-      const lastTxVersion = info.row.original.transaction_version + info.row.original.transactions_count - 1
+      const lastTxVersion =
+        info.row.original.transaction_version + info.row.original.transactions_count - 1
       return <Link as={NumberFormat} to={`/tx/${lastTxVersion}`} value={lastTxVersion} />
     },
   }),
@@ -133,14 +136,21 @@ const columns = [
       nowrap: true,
     },
     header: 'Txs',
-    cell: (info) => <Link as={NumberFormat} to={`/block/${info.row.original.height}?tab=tx`} value={info.getValue()} />,
+    cell: (info) => (
+      <Link
+        as={NumberFormat}
+        to={`/block/${info.row.original.height}?tab=tx`}
+        value={info.getValue()}
+      />
+    ),
   }),
   helper.accessor('gas_fees', {
     meta: {
       nowrap: true,
     },
     header: 'Fees (APT)',
-    cell: (info) => (info.getValue() ? <AmountFormat postfix=" 🔥" value={info.getValue()} /> : '-'),
+    cell: (info) =>
+      info.getValue() ? <AmountFormat postfix=" 🔥" value={info.getValue()} /> : '-',
   }),
 ]
 
@@ -168,7 +178,9 @@ export const Blocks = () => {
     return isLoading
   }, [start, isLoading, isFetching])
 
-  const latestBlockHeight = useMaxValue(lastBlockHeight > (page?.max ?? 0) ? lastBlockHeight : page?.max)
+  const latestBlockHeight = useMaxValue(
+    lastBlockHeight > (page?.max ?? 0) ? lastBlockHeight : page?.max
+  )
 
   const [currentMinBlock, currentMaxBlock] = useMemo(() => {
     if (!data) return []

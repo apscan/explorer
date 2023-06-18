@@ -20,11 +20,20 @@ export const ExpandButton = ({
   expanded,
   expandAll,
   ...props
-}: { fallback?: React.ReactNode; isDisabled?: boolean; expanded: boolean; expandAll?: boolean } & BoxProps) => {
+}: {
+  fallback?: React.ReactNode
+  isDisabled?: boolean
+  expanded: boolean
+  expandAll?: boolean
+} & BoxProps) => {
   if (isDisabled) return <>{fallback}</>
 
   return (
-    <Tooltip label={!expanded ? (expandAll ? 'Expand All' : 'Expand') : expandAll ? 'Collapse All' : 'Collapse'}>
+    <Tooltip
+      label={
+        !expanded ? (expandAll ? 'Expand All' : 'Expand') : expandAll ? 'Collapse All' : 'Collapse'
+      }
+    >
       <BaseButton
         css={css`
           cursor: pointer;

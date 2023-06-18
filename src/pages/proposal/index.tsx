@@ -63,8 +63,12 @@ const ProposalTitle = ({ id, latest }: { id?: string; latest?: string }) => {
           prevDisabled={isDisablePrev}
           toNext={!isDisableNext ? `/proposal/${Number(id) + 1}` : undefined}
           toPrev={!isDisablePrev ? `/proposal/${Number(id) - 1}` : undefined}
-          nextTooltip={isDisableNext ? 'You have reached the latest proposal' : 'View next proposal'}
-          prevTooltip={isDisablePrev ? 'You have reached the earliest proposal' : 'View previous proposal'}
+          nextTooltip={
+            isDisableNext ? 'You have reached the latest proposal' : 'View next proposal'
+          }
+          prevTooltip={
+            isDisablePrev ? 'You have reached the earliest proposal' : 'View previous proposal'
+          }
           css={css`
             transform: translateY(-1.5px);
           `}
@@ -84,7 +88,7 @@ export const Proposal = () => {
   const latest = count - 1
 
   const items = useMemo(() => {
-    let result = [
+    const result = [
       { label: tabs.overview.name, key: tabs.overview.key, children: <Overview data={data} /> },
       {
         label: tabNameWithCount(tabs.votes.name, voters),
@@ -101,7 +105,9 @@ export const Proposal = () => {
   return (
     <Container>
       <DocumentTitle
-        value={`Aptos Proposal ${data?.proposal_id !== undefined ? `#${data.proposal_id}` : '-'} | Apscan`}
+        value={`Aptos Proposal ${
+          data?.proposal_id !== undefined ? `#${data.proposal_id}` : '-'
+        } | Apscan`}
       />
       <PageTitle value={<ProposalTitle latest={String(latest)} id={data?.proposal_id} />} />
       <Card>

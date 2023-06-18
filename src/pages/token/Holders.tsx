@@ -206,7 +206,12 @@ export const Holders = ({
             return null
           }
 
-          return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+          return (
+            <ExpandButton
+              expanded={info.row.getIsExpanded()}
+              onClick={() => info.row.toggleExpanded()}
+            />
+          )
         },
       }),
     ],

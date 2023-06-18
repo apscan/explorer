@@ -31,9 +31,25 @@ export interface BlockHashProps extends BoxProps {
 }
 
 export const BlockHash = memo(
-  ({ value, copyable, size, timestamp, success, ellipsis, fallback, as = Link, ...props }: BlockHashProps) => {
-    const hash = useMemo(() => (ellipsis ? value : truncatedWithSize(value, size)), [value, ellipsis, size])
-    const copy = useMemo(() => (copyable !== undefined ? copyable : size === 'full'), [copyable, size])
+  ({
+    value,
+    copyable,
+    size,
+    timestamp,
+    success,
+    ellipsis,
+    fallback,
+    as = Link,
+    ...props
+  }: BlockHashProps) => {
+    const hash = useMemo(
+      () => (ellipsis ? value : truncatedWithSize(value, size)),
+      [value, ellipsis, size]
+    )
+    const copy = useMemo(
+      () => (copyable !== undefined ? copyable : size === 'full'),
+      [copyable, size]
+    )
 
     if (!hash) return <>{fallback}</>
 

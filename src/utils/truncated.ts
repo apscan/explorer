@@ -4,7 +4,10 @@ export const truncated = (param: string, max = 8): string => {
     : param
 }
 
-export const truncatedWithSize = (value?: string, size: 'full' | 'short' | 'long' = 'short'): string | undefined => {
+export const truncatedWithSize = (
+  value?: string,
+  size: 'full' | 'short' | 'long' = 'short'
+): string | undefined => {
   if (typeof value !== 'string') return
   if (size === 'short') {
     return value.length > 13 ? `${value.substring(0, 10)}...` : value

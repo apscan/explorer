@@ -18,30 +18,32 @@ const Wrapper = styled(Box)`
   white-space: nowrap;
 `
 
-export const TxType = memo(({ value, size, ...props }: { value: TransactionType | string; size?: 'sm' }) => {
-  const type = useMemo(() => {
-    if (value === TransactionType.BLOCK_METADATA) {
-      return 'Block Metadata'
-    } else if (value === TransactionType.GENESIS_TRANSACTION) {
-      return 'Genesis Transaction'
-    } else if (value === TransactionType.STATE_CHECKPOINT) {
-      return 'State Checkpoint'
-    } else if (value === TransactionType.USER_TRANSACTION) {
-      return 'User Transaction'
-    }
-  }, [value])
+export const TxType = memo(
+  ({ value, size, ...props }: { value: TransactionType | string; size?: 'sm' }) => {
+    const type = useMemo(() => {
+      if (value === TransactionType.BLOCK_METADATA) {
+        return 'Block Metadata'
+      } else if (value === TransactionType.GENESIS_TRANSACTION) {
+        return 'Genesis Transaction'
+      } else if (value === TransactionType.STATE_CHECKPOINT) {
+        return 'State Checkpoint'
+      } else if (value === TransactionType.USER_TRANSACTION) {
+        return 'User Transaction'
+      }
+    }, [value])
 
-  return (
-    <Wrapper
-      css={css`
-        ${size === 'sm' &&
-        css`
-          height: 20px;
+    return (
+      <Wrapper
+        css={css`
+          ${size === 'sm' &&
+          css`
+            height: 20px;
+          `}
         `}
-      `}
-      {...props}
-    >
-      {type}
-    </Wrapper>
-  )
-})
+        {...props}
+      >
+        {type}
+      </Wrapper>
+    )
+  }
+)

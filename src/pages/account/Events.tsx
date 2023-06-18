@@ -93,7 +93,12 @@ const columns = [
       )
     },
     cell: (info) => {
-      return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+      return (
+        <ExpandButton
+          expanded={info.row.getIsExpanded()}
+          onClick={() => info.row.toggleExpanded()}
+        />
+      )
     },
   }),
 ]
