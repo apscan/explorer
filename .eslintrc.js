@@ -6,10 +6,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
   rules: {
-    'prettier/prettier': [
-      'error',
-      {},
-    ],
+    'prettier/prettier': 'error',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
