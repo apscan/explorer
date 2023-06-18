@@ -6,3 +6,4 @@
 next.config.js
 stories
 .eslintrc.js
+api/*

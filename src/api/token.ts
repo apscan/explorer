@@ -213,7 +213,7 @@ export const tokenApi = emptySplitApi.injectEndpoints({
         }
       },
     }),
-    accountTokenEvents: builder.query<PageResult<{}>, { id?: string; start?: number; pageSize?: number }>({
+    accountTokenEvents: builder.query<PageResult<object>, { id?: string; start?: number; pageSize?: number }>({
       query: ({ start = 0, pageSize, id }) => {
         const end = pageSize != null && start != null ? start + pageSize - 1 : undefined
 

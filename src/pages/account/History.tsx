@@ -3,8 +3,11 @@ import { Box } from 'components/container'
 import { useEffect, useRef } from 'react'
 import RealBigNumber from 'bignumber.js'
 import { lightTheme } from 'theme/theme.css'
+
+//eslint-disable-next-line
 const Highcharts = require('highcharts')
 
+//eslint-disable-next-line
 require('highcharts/modules/exporting')(Highcharts)
 
 export const History = ({

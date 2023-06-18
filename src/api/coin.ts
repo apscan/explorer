@@ -68,7 +68,7 @@ export const coinApi = emptySplitApi.injectEndpoints({
         return { data }
       },
     }),
-    coinsCount: builder.query<number, {}>({
+    coinsCount: builder.query<number, object>({
       query: () => {
         return {
           url: 'coin_info_count',

@@ -5,7 +5,7 @@ import { Fragment, memo, useEffect, useRef } from 'react'
 import { Box, BoxProps } from '../container/Box'
 import { Table, Tbody, Td, Th, Thead, Tr } from './TableComponents'
 
-interface DataTableProps<TData extends object = {}> extends BoxProps {
+interface DataTableProps<TData extends object = any> extends BoxProps {
   dataSource?: TData[]
   columns: ColumnDef<any, any>[]
   columnVisibility?: Record<string, boolean>

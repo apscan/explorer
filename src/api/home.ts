@@ -113,7 +113,8 @@ export const homeApi = emptySplitApi.injectEndpoints({
       }
     >({
       async queryFn(args, _queryApi, extraOptions, baseQuery) {
-        let { filter, value } = args
+        let { value } = args
+        const { filter } = args
         const result: {
           transaction: null | string
           account: null | string
