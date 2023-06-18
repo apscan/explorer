@@ -8,12 +8,7 @@ module.exports = {
   rules: {
     'prettier/prettier': [
       'error',
-      {
-        endOfLine: 'lf',
-        "semi": false,
-        "singleQuote": true,
-        "printWidth": 120
-      },
+      {},
     ],
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'off',

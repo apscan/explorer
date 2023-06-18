@@ -5,3 +5,4 @@
 **/__mock__/*
 next.config.js
 stories
+.eslintrc.js
