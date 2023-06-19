@@ -50,7 +50,13 @@ const columns = [
       nowrap: true,
     },
     header: () => 'Historical Changes',
-    cell: (info) => info.getValue(),
+    cell: (info) => (
+      <Link
+        to={`/module/${info.row.original?.move_module_address}?module=${info.row.original?.move_module_name}&tab=historical`}
+      >
+        {info.getValue()}
+      </Link>
+    ),
   }),
   helper.accessor('abi_info.friends_count', {
     meta: {
