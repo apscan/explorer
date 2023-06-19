@@ -23,11 +23,11 @@ import { ModuleLink } from 'components/ModuleLink'
 const helper = createColumnHelper<any>()
 
 const renderSubComponent = ({ row }: { row: any }) => {
-  return <JsonView src={row.original?.move_module_abi} withContainer />
+  return <JsonView src={row.original?.abi_info?.abi} withContainer />
 }
 
 const getRowCanExpand = (row: any) => {
-  return Boolean(row?.original?.move_module_abi)
+  return Boolean(row?.original?.abi_info?.abi)
 }
 
 const columns = [
