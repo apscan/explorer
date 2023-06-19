@@ -1,140 +1,160 @@
 import { createColumnHelper } from '@tanstack/react-table'
-import { AmountFormat } from 'components/AmountFormat'
 import { Card, CardFooter, CardHead } from 'components/Card'
-import { Container } from 'components/container'
-import { DateTime } from 'components/DateTime'
+import { Box, Container } from 'components/container'
 import { DocumentTitle } from 'components/DocumentTitle'
 import { Link } from 'components/link'
 import { PageTitle } from 'components/PageTitle'
 import { DataTable } from 'components/table'
 
 import { css } from '@emotion/react'
-import { useEpochsQuery } from 'api/epoch'
-import { AnnualRewardRate } from 'components/AnnualRewardRate'
-import { BlockHeight } from 'components/block/BlockHeight'
-import { SwitchDateBlock } from 'components/SwitchDateBlock'
+import { useModulesQuery } from 'api'
+import { CopyButton } from 'components/CopyButton'
+import { JsonView, JsonViewEllipsis } from 'components/JsonView'
+import { ExpandButton } from 'components/table/ExpandButton'
 import { Pagination } from 'components/table/Pagination'
 import { ShowRecords } from 'components/table/ShowRecords'
 import TableStat from 'components/TotalStat'
-import { ValidatorsOverview } from 'components/ValidatorsOverview'
 import { usePageSize } from 'hooks/usePageSize'
 import { useRangePagination } from 'hooks/useRangePagination'
-import { useAppStats } from 'state/api/hooks'
-import { DateOrBlock } from 'state/application/slice'
-import { useAppSelector } from 'state/hooks'
+import { formatBytes } from 'utils/formatBytes'
+import { truncated } from 'utils/truncated'
+import { ModuleLink } from 'components/ModuleLink'
 
 const helper = createColumnHelper<any>()
 
-const ShowDateOrBlock = ({ date, block }: { date: string | number; block: string }) => {
-  const format = useAppSelector((state) => state.application.dateOrBlock)
+const renderSubComponent = ({ row }: { row: any }) => {
+  return <JsonView src={row.original?.move_module_abi} withContainer />
+}
 
-  return format === DateOrBlock.BLOCK ? <BlockHeight value={block} /> : <DateTime value={date} />
+const getRowCanExpand = (row: any) => {
+  return Boolean(row?.original?.move_module_abi)
 }
 
 const columns = [
-  helper.accessor('epoch_data.epoch', {
+  helper.accessor('move_module_name', {
     meta: {
       nowrap: true,
     },
-    header: 'ID',
-    cell: (info) => (
-      <Link
-        css={css`
-          display: inline-flex;
-          align-items: center;
-        `}
-        to={`/epoch/${info.getValue()}`}
-      >
-        {info.getValue()}
-      </Link>
-    ),
+    header: () => 'Name',
+    cell: (info) => <ModuleLink address={info.row.original.move_module_address} module={info.getValue()} />,
   }),
-  helper.accessor('epoch_start_time_microseconds', {
+  helper.accessor('address_modules_count', {
     meta: {
       nowrap: true,
     },
-    header: () => <SwitchDateBlock dateLabel="Start Time" blockLabel="Start Block" />,
-    cell: (info) => (
-      <ShowDateOrBlock date={info.getValue() / 1000} block={info.row.original.epoch_start_block_height} />
-    ),
+    header: () => 'Modules by Address',
+    cell: (info) => info.getValue(),
   }),
-  helper.accessor('epoch_end_time_microseconds', {
+  helper.accessor('historical_changes', {
     meta: {
       nowrap: true,
     },
-    header: () => <SwitchDateBlock dateLabel="End Time" blockLabel="End Block" />,
-    cell: (info) =>
-      info.getValue() ? (
-        <ShowDateOrBlock date={info.getValue() / 1000} block={info.row.original.epoch_end_block_height} />
-      ) : (
-        '-'
-      ),
+    header: () => 'Historical Changes',
+    cell: (info) => info.getValue(),
   }),
-  helper.accessor('validators', {
+  helper.accessor('abi_info.friends_count', {
     meta: {
       nowrap: true,
     },
-    header: 'Validators',
-    cell: (info) => (
-      <ValidatorsOverview
-        allowChange={info.row.original.staking_config_data.allow_validator_set_change}
-        activeValidators={info.getValue().active_validators}
-        pendingInactive={info.getValue().pending_inactive}
-        pendingActive={info.getValue().pending_active}
-      />
-    ),
+    header: () => 'Friends',
+    cell: (info) => info.getValue(),
   }),
-  helper.accessor('staking_config_data.minimum_stake', {
+  helper.accessor('abi_info.structs_count', {
     meta: {
       nowrap: true,
     },
-    header: () => 'Minimum Stake (APT)',
-    cell: (info) => <AmountFormat postfix={false} value={info.getValue()} />,
+    header: () => 'Structs',
+    cell: (info) => info.getValue(),
   }),
-  helper.accessor('staking_config_data.maximum_stake', {
+  helper.accessor('abi_info.exposed_functions_count', {
     meta: {
       nowrap: true,
     },
-    header: () => 'Maximum Stake (APT)',
-    cell: (info) => <AmountFormat postfix={false} value={info.getValue()} />,
+    header: () => 'Exposed Functions',
+    cell: (info) => info.getValue(),
   }),
-  helper.accessor('validators.total_voting_power', {
+  helper.accessor('abi_info.move_module_bytecode_length', {
     meta: {
       nowrap: true,
     },
-    header: () => 'Total Voting Power (APT)',
-    cell: (info) => <AmountFormat fallback="-" maximumFractionDigits={1} postfix={false} value={info.getValue()} />,
+    header: () => 'Bytecode',
+    cell: (info) => {
+      return (
+        <Box>
+          {formatBytes(info.getValue())}
+          {/* <CopyButton text={info.row.original?.move_module_bytecode} /> */}
+        </Box>
+      )
+    },
   }),
-  helper.accessor('annual_reward_rate', {
+  helper.accessor('source_code', {
     meta: {
       nowrap: true,
     },
-    header: () => 'Annual Reward Rate',
-    cell: (info) => <AnnualRewardRate value={info.row.original} />,
+    header: () => 'Source Code',
+    cell: (info) => {
+      const sourceCode = info.getValue()
+      if (!sourceCode) return '-'
+
+      return (
+        <Box>
+          {formatBytes((sourceCode.length - 2) / 2)}
+          <CopyButton text={info.row.original?.move_module_bytecode} />
+        </Box>
+      )
+    },
+  }),
+  helper.accessor('abi_info.abi', {
+    header: 'ABI',
+    cell: (info) => <JsonViewEllipsis src={info.getValue()} />,
+  }),
+  helper.accessor('expand', {
+    meta: {
+      nowrap: true,
+      isExpandButton: true,
+    },
+    header: (header) => {
+      return (
+        <ExpandButton
+          expandAll
+          expanded={header.table.getIsSomeRowsExpanded()}
+          onClick={() => header.table.toggleAllRowsExpanded()}
+        />
+      )
+    },
+    cell: (info) => {
+      return <ExpandButton expanded={info.row.getIsExpanded()} onClick={() => info.row.toggleExpanded()} />
+    },
   }),
 ]
 
 export const Modules = () => {
   const [pageSize, setPageSize, page, setPage] = usePageSize()
-  const { epoch: count } = useAppStats()
 
-  const { data: { data } = {}, isLoading } = useEpochsQuery({
+  const { data: { data, page: { count } = { count: undefined } } = {}, isLoading } = useModulesQuery({
     start: (page - 1) * pageSize,
     pageSize,
   })
+
+  console.log(data)
 
   const pageProps = useRangePagination(page, pageSize, count, setPage)
 
   return (
     <Container>
-      <DocumentTitle value="Aptos Epochs | Apscan" />
-      <PageTitle value="Epochs" />
+      <DocumentTitle value="Aptos Modules | Apscan" />
+      <PageTitle value="Modules" />
       <Card variant="table" isLoading={isLoading}>
         <CardHead variant="table">
           <TableStat variant="table" object="proposals" count={count} />
           <Pagination {...pageProps} />
         </CardHead>
-        <DataTable dataSource={data} columns={columns} />
+        <DataTable
+          renderSubComponent={renderSubComponent}
+          getRowCanExpand={getRowCanExpand}
+          dataSource={data}
+          columns={columns}
+        />
         <CardFooter variant="table">
           <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
           <Pagination {...pageProps} />
