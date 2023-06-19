@@ -93,23 +93,6 @@ const columns = [
       )
     },
   }),
-  helper.accessor('source_code', {
-    meta: {
-      nowrap: true,
-    },
-    header: () => 'Source Code',
-    cell: (info) => {
-      const sourceCode = info.getValue()
-      if (!sourceCode) return '-'
-
-      return (
-        <Box>
-          {formatBytes((sourceCode.length - 2) / 2)}
-          <CopyButton text={info.row.original?.move_module_bytecode} />
-        </Box>
-      )
-    },
-  }),
   helper.accessor('abi_info.abi', {
     header: 'ABI',
     cell: (info) => <JsonViewEllipsis src={info.getValue()} />,
