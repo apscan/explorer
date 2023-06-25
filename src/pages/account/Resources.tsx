@@ -12,6 +12,7 @@ import { TypeParam } from 'components/TypeParam'
 import { useRangePagination } from 'hooks/useRangePagination'
 import { usePageSize } from 'hooks/usePageSize'
 import TableStat from 'components/TotalStat'
+import { ModuleLink } from 'components/ModuleLink'
 
 const helper = createColumnHelper<any>()
 
@@ -20,16 +21,17 @@ const columns = [
     meta: {
       nowrap: true,
     },
-    header: 'Module Address',
-    cell: (info) => <Address value={info.getValue()} size="short" />,
+    header: 'Module',
+    // cell: (info) => <Address value={info.getValue()} size="short" />,
+    cell: (info) => <ModuleLink module={info.row.original.move_resource_module} address={info.getValue()} />,
   }),
-  helper.accessor('move_resource_module', {
-    meta: {
-      nowrap: true,
-    },
-    header: 'Module Name',
-    cell: (info) => <Box>{info.getValue()}</Box>,
-  }),
+  // helper.accessor('move_resource_module', {
+  //   meta: {
+  //     nowrap: true,
+  //   },
+  //   header: 'Module Name',
+  //   cell: (info) => <Box>{info.getValue()}</Box>,
+  // }),
   helper.accessor('move_resource_name', {
     meta: {
       nowrap: true,

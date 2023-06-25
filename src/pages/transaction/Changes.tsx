@@ -16,6 +16,7 @@ import { usePageSize } from 'hooks/usePageSize'
 import { TypeParam } from 'components/TypeParam'
 import { Divider, Text } from '@chakra-ui/react'
 import TableStat from 'components/TotalStat'
+import { ModuleLink } from 'components/ModuleLink'
 
 const helper = createColumnHelper<any>()
 
@@ -105,12 +106,7 @@ const columns = [
 
       if (!address || !module) return '-'
 
-      return (
-        <>
-          <Address size="short" value={address} />
-          ::{module}
-        </>
-      )
+      return <ModuleLink module={module} address={address} />
     },
   }),
 

@@ -1,30 +1,24 @@
 import { createColumnHelper } from '@tanstack/react-table'
-import { useAccountModulesQuery } from 'api'
-import { CardBody, CardFooter, CardHead } from 'components/Card'
-import { Box } from 'components/container'
+import { CardBody, CardHead } from 'components/Card'
 import { CopyButton } from 'components/CopyButton'
 import { JsonView, JsonViewEllipsis } from 'components/JsonView'
 import { NumberFormat } from 'components/NumberFormat'
+import TableStat from 'components/TotalStat'
+import { Box } from 'components/container'
 import { DataTable } from 'components/table'
 import { ExpandButton } from 'components/table/ExpandButton'
-import { Pagination } from 'components/table/Pagination'
-import { ShowRecords } from 'components/table/ShowRecords'
-import { useRangePagination } from 'hooks/useRangePagination'
+import { Version } from 'components/transaction/Version'
 import numbro from 'numbro'
-import { usePageSize } from 'hooks/usePageSize'
-import TableStat from 'components/TotalStat'
-import { ModuleLink } from 'components/ModuleLink'
 
 const helper = createColumnHelper<any>()
 
 const columns = [
-  helper.accessor('move_module_name', {
+  helper.accessor('transaction_version', {
     meta: {
       nowrap: true,
     },
-    header: 'Module',
-    // cell: (info) => <Box>{info.getValue()}</Box>,
-    cell: (info) => <ModuleLink module={info.getValue()} address={info.row.original.move_module_address} />,
+    header: 'Version',
+    cell: (info) => <Version value={info.getValue()} />,
   }),
   helper.accessor('move_module_abi.friends', {
     meta: {
@@ -109,26 +103,11 @@ const getRowCanExpand = (row: any) => {
   return Boolean(row?.original?.move_module_abi)
 }
 
-export const Modules = ({ id, count }: { id: any; count: number }) => {
-  const [pageSize, setPageSize, page, setPage] = usePageSize()
-  const { data: { data } = {}, isLoading } = useAccountModulesQuery(
-    {
-      id: id!,
-      start: (page - 1) * pageSize,
-      pageSize,
-    },
-    {
-      skip: id == null || !count,
-    }
-  )
-
-  const pageProps = useRangePagination(page, pageSize, count, setPage)
-
+export const Historical = ({ data }: { data: any }) => {
   return (
-    <CardBody isLoading={isLoading}>
+    <CardBody isLoading={!data}>
       <CardHead variant="tabletab">
-        <TableStat count={count} variant="tabletab" object="modules" />
-        {pageProps.total > 1 && <Pagination {...pageProps} />}
+        <TableStat count={data?.length} variant="tabletab" object="historical modules" />
       </CardHead>
       <DataTable
         renderSubComponent={renderSubComponent}
@@ -136,12 +115,6 @@ export const Modules = ({ id, count }: { id: any; count: number }) => {
         dataSource={data}
         columns={columns}
       />
-      {pageProps.total > 1 && (
-        <CardFooter variant="table">
-          <ShowRecords pageSize={pageSize} onSelect={setPageSize} />
-          <Pagination {...pageProps} />
-        </CardFooter>
-      )}
     </CardBody>
   )
 }

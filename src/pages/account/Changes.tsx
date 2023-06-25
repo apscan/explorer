@@ -18,6 +18,7 @@ import { TypeParam } from 'components/TypeParam'
 import { Divider } from '@chakra-ui/react'
 import TableStat from 'components/TotalStat'
 import { queryRangeLimitMap } from 'config/api'
+import { ModuleLink } from 'components/ModuleLink'
 
 const helper = createColumnHelper<any>()
 
@@ -72,12 +73,7 @@ const columns = [
 
       if (!address || !module) return '-'
 
-      return (
-        <>
-          <Address size="short" value={address} />
-          ::{module}
-        </>
-      )
+      return <ModuleLink module={module} address={address} />
     },
   }),
 

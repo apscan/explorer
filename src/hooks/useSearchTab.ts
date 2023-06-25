@@ -28,12 +28,13 @@ export const useSearchTab = (tabs?: TabItem[]) => {
     (activeKey: string) => {
       const tab = tabs?.find((item) => item.key === activeKey)
       if (!tab || tab.key === tabs?.[0]?.key) {
-        setSearchParams({}, { replace: true })
+        searchParams.delete('tab')
       } else {
-        setSearchParams({ tab: tab.key }, { replace: true })
+        searchParams.set('tab', tab.key)
       }
+      setSearchParams(searchParams, { replace: true })
     },
-    [tabs, setSearchParams]
+    [tabs, searchParams, setSearchParams]
   )
 
   return [activeKey, onTabChange] as const
